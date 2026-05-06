@@ -1,4 +1,4 @@
-***REMOVED***!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 SCRIPT: smoke_local_ui_and_api
 PURPOSE: Basic local smoke check for UI pages + key APIs (Phase 1-3)
@@ -41,25 +41,25 @@ def main() -> int:
     base_url = str(args.base_url).rstrip("/")
 
     checks = [
-        ***REMOVED*** Core
+        # Core
         "/healthz",
         "/readyz",
         "/docs",
         "/openapi.json",
-        ***REMOVED*** Phase 1
+        # Phase 1
         "/ui/en/app_shell.html",
         "/ui/en/operational_cockpit.html",
-        ***REMOVED*** Phase 2
+        # Phase 2
         "/ui/en/results_hub_v2.html",
         "/ui/en/retrieval_intelligence.html",
         "/ui/en/procurement_workflow.html",
         "/ui/en/intelligence_search.html",
         "/ui/en/relationship_graphs.html",
-        ***REMOVED*** Phase 3
+        # Phase 3
         "/ui/en/event_stream_center.html",
         "/ui/en/agent_operations_center.html",
         "/ui/en/approval_center.html",
-        ***REMOVED*** Key APIs (GET only)
+        # Key APIs (GET only)
         "/api/v1/results/opportunities",
         "/api/v1/results/evidence",
         "/api/v1/results/explainability",

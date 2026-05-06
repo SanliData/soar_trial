@@ -1,6 +1,6 @@
-***REMOVED***!/bin/bash
-***REMOVED*** Run Uvicorn locally with reload (Windows git-bash compatible).
-***REMOVED*** Usage (from backend/): scripts/run_uvicorn_reload_local.sh
+#!/bin/bash
+# Run Uvicorn locally with reload (Windows git-bash compatible).
+# Usage (from backend/): scripts/run_uvicorn_reload_local.sh
 
 set -euo pipefail
 

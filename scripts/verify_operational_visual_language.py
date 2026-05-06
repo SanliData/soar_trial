@@ -1,4 +1,4 @@
-***REMOVED***!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 SCRIPT: verify_operational_visual_language
 PURPOSE: Verify SOAR B2B Operational Visual Language System deliverables exist and are wired
@@ -51,7 +51,7 @@ def _not_contains(rel: str, needle: str) -> Check:
 def main() -> int:
     checks: list[Check] = []
 
-    ***REMOVED*** Shared CSS foundations
+    # Shared CSS foundations
     for rel in [
         "backend/src/ui/shared/operational_tokens.css",
         "backend/src/ui/shared/operational_typography.css",
@@ -63,17 +63,17 @@ def main() -> int:
     ]:
         checks.append(_exists(rel))
 
-    ***REMOVED*** Typography rules: medium/regular only (guardrail via tokens and no 650/700 in typography file)
+    # Typography rules: medium/regular only (guardrail via tokens and no 650/700 in typography file)
     checks.append(_contains("backend/src/ui/shared/operational_tokens.css", "--op-weight-regular: 400"))
     checks.append(_contains("backend/src/ui/shared/operational_tokens.css", "--op-weight-medium: 500"))
     checks.append(_not_contains("backend/src/ui/shared/operational_typography.css", "font-weight: 650"))
     checks.append(_not_contains("backend/src/ui/shared/operational_typography.css", "font-weight: 700"))
 
-    ***REMOVED*** AI text treatment exists
+    # AI text treatment exists
     checks.append(_contains("backend/src/ui/shared/operational_components.css", ".op-ai-block"))
     checks.append(_contains("backend/src/ui/shared/operational_components.css", ".op-ai-attrib"))
 
-    ***REMOVED*** Docs deliverables
+    # Docs deliverables
     for rel in [
         "docs/SOARB2B_OPERATIONAL_DENSITY_GUIDE.md",
         "docs/SOARB2B_VISUAL_ANTI_PATTERNS.md",
@@ -83,11 +83,11 @@ def main() -> int:
     ]:
         checks.append(_exists(rel))
 
-    ***REMOVED*** MainBook / LiveBook sections
+    # MainBook / LiveBook sections
     checks.append(_contains("backend/docs/main_book/FinderOS_MainBook_v0.1.html", "48E. Operational Visual Language System"))
     checks.append(_contains("backend/docs/live_book/FinderOS_LiveBook_2025-12-13.html", "48E. Verification — Operational Visual System"))
 
-    ***REMOVED*** Print
+    # Print
     failures = 0
     for c in checks:
         tag = "OK " if c.ok else "BAD"
