@@ -1,0 +1,32 @@
+/* operational_spacing.css
+   PURPOSE: Standard spacing helpers for operational UI
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+@import url("/ui/shared/operational_tokens.css");
+
+/* 4px base grid, 8px operational rhythm */
+.op-stack-4 > * + * { margin-top: var(--op-space-4); }
+.op-stack-8 > * + * { margin-top: var(--op-space-8); }
+.op-stack-12 > * + * { margin-top: var(--op-space-12); }
+.op-stack-16 > * + * { margin-top: var(--op-space-16); }
+.op-stack-20 > * + * { margin-top: var(--op-space-20); }
+.op-stack-24 > * + * { margin-top: var(--op-space-24); }
+
+.op-row{ display:flex; align-items:center; gap: var(--op-space-10); }
+.op-row-wrap{ display:flex; align-items:center; gap: var(--op-space-10); flex-wrap: wrap; }
+.op-row-dense{ display:flex; align-items:center; gap: var(--op-space-8); }
+.op-row-dense-wrap{ display:flex; align-items:center; gap: var(--op-space-8); flex-wrap: wrap; }
+
+.op-pad-8{ padding: var(--op-space-8); }
+.op-pad-12{ padding: var(--op-space-12); }
+.op-pad-16{ padding: var(--op-space-16); }
+.op-pad-20{ padding: var(--op-space-20); }
+.op-pad-24{ padding: var(--op-space-24); }
+
+.op-inset-12{ padding: var(--op-space-12) var(--op-space-16); }
+.op-inset-16{ padding: var(--op-space-16) var(--op-space-20); }
+
+/* Nested spacing rules (dense-but-readable) */
+.op-nest > * + *{ margin-top: var(--op-space-8); }
+.op-nest-tight > * + *{ margin-top: var(--op-space-4); }

@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Procurement Workflow</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+      textarea, input{
+        width: 100%;
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 10px 12px;
+        color: var(--op-fg);
+        outline: none;
+      }
+      textarea{ min-height: 92px; resize: vertical; }
+      .step{ border-left: 2px solid rgba(110,168,255,0.22); padding-left: 12px; }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div style="font-weight:750; letter-spacing:.02em; color:var(--op-fg-strong);">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot ok"></span><span class="op-mono">procurement</span></span>
+        </div>
+        <nav class="op-nav" aria-label="Primary navigation" style="margin-top: 12px;">
+          <a href="/ui/en/operational_cockpit.html"><span>Operational Cockpit</span><span class="op-kbd">G</span></a>
+          <a href="/ui/en/results_hub_v2.html"><span>Results Hub V2</span><span class="op-kbd">R</span></a>
+          <a href="/ui/en/retrieval_intelligence.html"><span>Retrieval Intelligence</span><span class="op-kbd">I</span></a>
+          <a class="active" href="/ui/en/procurement_workflow.html"><span>Procurement Workflow</span><span class="op-kbd">P</span></a>
+        </nav>
+        <div style="margin-top: 16px;" class="op-alert info">
+          Phase 2 UX: intake → analysis → matching → recommendations → approvals.
+        </div>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-row">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span>Procurement Workflow</span>
+          </div>
+        </div>
+        <div class="right">
+          <a class="op-pill" href="/api/v1/system/hitl/checkpoints" target="_blank"><span class="op-dot warn"></span><span>checkpoints</span></a>
+          <a class="op-pill" href="/api/v1/system/hitl/review-queue" target="_blank"><span class="op-dot warn"></span><span>review queue</span></a>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div>
+            <div class="op-dashboard-title">Procurement workflow</div>
+            <div class="op-meta">Foundation workflow review surface. No self-executing actions.</div>
+          </div>
+
+          <div class="op-grid-2">
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Procurement intake</div><span class="op-meta">structured</span></div>
+              <div class="op-card-body op-stack-12">
+                <div class="op-meta">RFP / tender context (summary only).</div>
+                <input id="rfpTitle" placeholder="RFP title (e.g., Network equipment procurement)" />
+                <textarea id="rfpSummary" placeholder="RFP summary, constraints, deadlines…"></textarea>
+                <button class="op-btn op-focusable" type="button" id="analyzeBtn">Generate analysis (governed)</button>
+                <div class="op-meta">Analysis uses deterministic mock adapter unless connected to a workflow endpoint.</div>
+              </div>
+            </div>
+
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Approval checkpoints</div><span class="op-meta">HITL</span></div>
+              <div class="op-card-body op-stack-12" id="approvalBox">
+                <div class="op-state"><strong>Loading…</strong> checkpoints</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="op-grid-2">
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">RFP analysis</div><span class="op-meta">explainable</span></div>
+              <div class="op-card-body op-stack-12" id="analysisBox">
+                <div class="op-state"><strong>Awaiting intake</strong> submit an RFP summary.</div>
+              </div>
+            </div>
+
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Contractor matching</div><span class="op-meta">evidence-backed</span></div>
+              <div class="op-card-body">
+                <table class="op-table" aria-label="Contractor matching">
+                  <thead><tr><th>Contractor</th><th>Fit</th><th>Evidence</th></tr></thead>
+                  <tbody id="matchBody"><tr><td colspan="3" class="op-meta">Load analysis to populate matches.</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="op-card">
+            <div class="op-card-header"><div class="op-panel-title">Evidence-backed recommendations</div><span class="op-meta">linked to Results Hub</span></div>
+            <div class="op-card-body op-stack-12" id="recoBox">
+              <div class="op-state"><strong>Awaiting analysis</strong> recommendations will appear here.</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { getJson, escapeHtml } from "/ui/shared/op_surface_helpers.js";
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => qs("sidebar").classList.toggle("collapsed"));
+
+      const mockAnalysis = {
+        insights: [
+          { label: "Key constraints", value: "ISO 27001, net-30, delivery ≤ 12 weeks" },
+          { label: "Risk signals", value: "supplier concentration; delivery lead-time variance" },
+          { label: "Policy alignment", value: "approved under procurement scope; approvals required above spend threshold" },
+        ],
+        matches: [
+          { contractor_id: "ctr-001", name: "Atlas Network Supply", fit: "high", evidence: "recent tenders; strong authority" },
+          { contractor_id: "ctr-002", name: "NorthBridge Systems", fit: "moderate", evidence: "good pricing; mixed freshness" },
+        ],
+        recommendations: [
+          { rec_id: "rec-001", text: "Prioritize ctr-001; request compliance pack; route for approval checkpoint A1." },
+          { rec_id: "rec-002", text: "Run evidence refresh if freshness > 14 days." },
+        ],
+      };
+
+      async function loadApprovals(){
+        const cps = await getJson("/api/v1/system/hitl/checkpoints", null);
+        const rows = cps?.checkpoints || cps?.data?.checkpoints || cps?.approval_checkpoints || [];
+        const rq = await getJson("/api/v1/system/hitl/review-queue", null);
+        const pending = rq?.review_queue?.pending || rq?.data?.review_queue?.pending || [];
+        qs("approvalBox").innerHTML = `
+          <div class="op-stack-12">
+            <div class="op-row-wrap">
+              <span class="op-pill"><span class="op-dot warn"></span><span>checkpoints</span><span class="op-mono">${rows.length}</span></span>
+              <span class="op-pill"><span class="op-dot warn"></span><span>pending</span><span class="op-mono">${pending.length}</span></span>
+            </div>
+            <div class="op-meta">No auto-approval. These are governance surfaces only.</div>
+          </div>`;
+      }
+
+      function renderAnalysis(a){
+        qs("analysisBox").innerHTML = `
+          <div class="op-stack-12">
+            ${a.insights.map(i => `
+              <div class="op-panel strong op-pad-16 step">
+                <div class="op-panel-title">${escapeHtml(i.label)}</div>
+                <div class="op-meta" style="margin-top: 8px;">${escapeHtml(i.value)}</div>
+              </div>
+            `).join("")}
+          </div>`;
+
+        qs("matchBody").innerHTML = a.matches.map(m => `
+          <tr>
+            <td><span class="op-mono">${escapeHtml(m.contractor_id)}</span><div class="op-meta">${escapeHtml(m.name)}</div></td>
+            <td><span class="op-pill"><span class="op-dot ${m.fit === "high" ? "ok" : m.fit === "low" ? "crit" : "warn"}"></span><span>${escapeHtml(m.fit)}</span></span></td>
+            <td class="op-meta">${escapeHtml(m.evidence)}</td>
+          </tr>
+        `).join("");
+
+        qs("recoBox").innerHTML = a.recommendations.map(r => `
+          <div class="op-panel op-pad-16">
+            <div class="op-row-wrap" style="justify-content: space-between;">
+              <span class="op-pill"><span class="op-dot"></span><span class="op-mono">${escapeHtml(r.rec_id)}</span></span>
+              <a class="op-meta" href="/api/v1/results/recommendations" target="_blank">open results</a>
+            </div>
+            <div class="op-evidence" style="margin-top: 10px;">${escapeHtml(r.text)}</div>
+          </div>
+        `).join("");
+      }
+
+      qs("analyzeBtn").addEventListener("click", async () => {
+        // Phase 2: deterministic mock adapter (document missing integration)
+        const title = qs("rfpTitle").value.trim();
+        const summary = qs("rfpSummary").value.trim();
+        if(!title && !summary){
+          qs("analysisBox").innerHTML = '<div class="op-alert warn"><strong>Missing intake</strong> Provide an RFP title or summary.</div>';
+          return;
+        }
+        renderAnalysis(mockAnalysis);
+      });
+
+      loadApprovals();
+      setInterval(loadApprovals, 15000);
+    </script>
+  </body>
+</html>
+

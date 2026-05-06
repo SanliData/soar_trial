@@ -1,0 +1,58 @@
+/* operational_theme.css
+   PURPOSE: Base theme + resets for operational UI
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+@import url("/ui/shared/operational_tokens.css");
+
+*{ box-sizing:border-box; }
+html, body{ height:100%; }
+body{
+  margin:0;
+  font-family: var(--op-font-sans);
+  font-size: var(--op-font-size-14);
+  line-height: var(--op-line-body);
+  background: var(--op-bg);
+  color: var(--op-fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a{ color: var(--op-accent); text-decoration:none; }
+a:hover{ color: var(--op-accent-2); text-decoration: underline; }
+
+code, pre { font-family: var(--op-font-mono); }
+pre{
+  margin:0;
+  background: rgba(2,6,23,0.55);
+  border: var(--op-border-1) solid var(--op-border-color);
+  border-radius: var(--op-radius-12);
+  padding: var(--op-space-12);
+  overflow:auto;
+}
+
+button, input, select{
+  font: inherit;
+  color: inherit;
+}
+
+.op-muted{ color: var(--op-fg-muted); }
+.op-dim{ color: var(--op-fg-dim); }
+.op-mono{ font-family: var(--op-font-mono); }
+
+.op-kbd{
+  display:inline-block;
+  font-family: var(--op-font-mono);
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  border: var(--op-border-1) solid var(--op-border-color);
+  background: rgba(255,255,255,0.03);
+  color: var(--op-fg-muted);
+}
+
+.op-focusable:focus{
+  outline:none;
+  box-shadow: var(--op-focus);
+}
+

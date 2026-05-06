@@ -1,0 +1,94 @@
+/* operational_timeline.css
+   PURPOSE: Readable operational timeline primitives
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+@import url("/ui/shared/operational_tokens.css");
+
+.op-timeline{
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.op-timeline-item{
+  display:grid;
+  grid-template-columns: 16px 1fr;
+  gap: 12px;
+  align-items:start;
+}
+
+.op-timeline-rail{
+  position: relative;
+  width: 16px;
+  height: 100%;
+  min-height: 18px;
+}
+.op-timeline-rail:before{
+  content:"";
+  position:absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(148,163,184,0.16);
+  border-radius: 999px;
+}
+.op-timeline-dot{
+  position:absolute;
+  left: 4px;
+  top: 2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--op-info);
+  box-shadow: 0 0 0 3px rgba(110,168,255,0.12);
+}
+.op-timeline-dot.ok{ background: var(--op-ok); box-shadow: 0 0 0 3px rgba(49,196,141,0.14); }
+.op-timeline-dot.warn{ background: var(--op-warn); box-shadow: 0 0 0 3px rgba(244,184,96,0.14); }
+.op-timeline-dot.crit{ background: var(--op-crit); box-shadow: 0 0 0 3px rgba(255,107,107,0.14); }
+.op-timeline-dot.stale{ background: var(--op-stale); box-shadow: 0 0 0 3px rgba(154,166,178,0.14); }
+
+.op-timeline-content{
+  border: var(--op-border-1) solid rgba(148,163,184,0.12);
+  background: rgba(255,255,255,0.02);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+.op-timeline-content details summary{
+  cursor: pointer;
+  list-style: none;
+}
+.op-timeline-content details summary::-webkit-details-marker{ display:none; }
+
+/* Event type language (audit-first, operational) */
+.op-event-row{
+  display:flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.op-event-title{
+  font-size: 13px;
+  font-weight: var(--op-weight-medium);
+  color: var(--op-fg-strong);
+}
+.op-event-meta{
+  font-size: 12px;
+  color: var(--op-fg-tertiary);
+  font-family: var(--op-font-mono);
+}
+.op-event-kind{
+  font-size: 11px;
+  letter-spacing: var(--op-tracking-meta);
+  text-transform: uppercase;
+  color: var(--op-fg-tertiary);
+}
+
+.op-timeline-content.retrieval{ border-color: rgba(110,168,255,0.18); }
+.op-timeline-content.workflow{ border-color: rgba(148,163,184,0.16); }
+.op-timeline-content.approval{ border-color: rgba(244,184,96,0.20); background: rgba(244,184,96,0.04); }
+.op-timeline-content.escalation{ border-color: rgba(255,107,107,0.18); background: rgba(255,107,107,0.03); }
+.op-timeline-content.runtime{ border-color: rgba(148,163,184,0.18); }
+.op-timeline-content.cache{ border-color: rgba(110,168,255,0.16); background: rgba(110,168,255,0.03); }
+

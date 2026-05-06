@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Event Stream Center</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_timeline.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+      .split{ display:grid; grid-template-columns: 1fr 420px; gap: 16px; }
+      @media (max-width: 1100px){ .split{ grid-template-columns: 1fr; } }
+      .drawer{ position: sticky; top: 72px; height: calc(100vh - 96px); overflow:auto; }
+      .tagrow{ display:flex; gap: 8px; flex-wrap: wrap; }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div style="font-weight:500; letter-spacing:var(--op-tracking-meta); color:var(--op-fg-strong);">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot"></span><span class="op-mono">events</span></span>
+        </div>
+        <nav class="op-nav" aria-label="Primary navigation" style="margin-top: 12px;">
+          <a href="/ui/en/operational_cockpit.html"><span>Operational Cockpit</span><span class="op-kbd">G</span></a>
+          <a class="active" href="/ui/en/event_stream_center.html"><span>Event Stream Center</span><span class="op-kbd">E</span></a>
+          <a href="/ui/en/approval_center.html"><span>Approval Center</span><span class="op-kbd">P</span></a>
+          <a href="/ui/en/agent_operations_center.html"><span>Agent Operations</span><span class="op-kbd">A</span></a>
+        </nav>
+        <div style="margin-top: 16px;" class="op-alert info">
+          Polling-based operational timeline. Metadata only. No hidden orchestration.
+        </div>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-row">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span>Event Stream Center</span>
+          </div>
+        </div>
+        <div class="right">
+          <span class="op-pill"><span class="op-dot"></span><span class="op-mono">poll 15s</span></span>
+          <a class="op-pill" href="/api/v1/system/agui/events" target="_blank"><span class="op-dot"></span><span>events api</span></a>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div>
+            <div class="op-dashboard-title">Event stream center</div>
+            <div class="op-meta">Unified operational timeline: workflows, retrieval, approvals, escalations, runtime, cache lifecycle, orchestration traces.</div>
+          </div>
+
+          <div class="op-grid-3">
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">Runtime pressure</div></div><div class="op-card-body op-row-wrap">
+              <span class="op-pill"><span class="op-dot warn"></span><span>high-risk</span><span class="op-mono" id="highRisk">—</span></span>
+              <span class="op-pill"><span class="op-dot warn"></span><span>paused</span><span class="op-mono" id="paused">—</span></span>
+            </div></div>
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">Cache lifecycle</div></div><div class="op-card-body op-row-wrap">
+              <span class="op-pill"><span class="op-dot ok"></span><span>ratio</span><span class="op-mono" id="cacheRatio">—</span></span>
+              <span class="op-pill"><span class="op-dot"></span><span>breakpoint valid</span><span class="op-mono" id="bpValid">—</span></span>
+            </div></div>
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">Retrieval</div></div><div class="op-card-body op-row-wrap">
+              <span class="op-pill"><span class="op-dot"></span><span>pressure</span><span class="op-mono" id="retPressure">—</span></span>
+              <span class="op-pill"><span class="op-dot"></span><span>token savings</span><span class="op-mono" id="retSavings">—</span></span>
+            </div></div>
+          </div>
+
+          <div class="split">
+            <section class="op-card">
+              <div class="op-card-header">
+                <div class="op-panel-title">Unified timeline</div>
+                <span class="op-meta">workflow_id: <span class="op-mono">wf-demo-001</span></span>
+              </div>
+              <div class="op-card-body">
+                <div id="timeline" class="op-timeline">
+                  <div class="op-state"><strong>Loading…</strong> events</div>
+                </div>
+              </div>
+            </section>
+
+            <aside class="drawer op-stack-16">
+              <div class="op-card">
+                <div class="op-card-header"><div class="op-panel-title">Orchestration traces</div><span class="op-meta">visibility</span></div>
+                <div class="op-card-body" id="orch">
+                  <div class="op-state"><strong>Loading…</strong></div>
+                </div>
+              </div>
+              <div class="op-card">
+                <div class="op-card-header"><div class="op-panel-title">Approval events</div><span class="op-meta">AGUI stream</span></div>
+                <div class="op-card-body" id="approvalEvents">
+                  <div class="op-state"><strong>Loading…</strong></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { getJson, escapeHtml } from "/ui/shared/op_surface_helpers.js";
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => qs("sidebar").classList.toggle("collapsed"));
+
+      function sevDot(level){
+        if(level === "low") return "ok";
+        if(level === "moderate") return "warn";
+        if(level === "high" || level === "critical") return "crit";
+        return "";
+      }
+
+      function normalizeEvents(payload){
+        const base = [];
+        const ev = payload?.events || payload?.data?.events || [];
+        (ev || []).forEach(e => base.push({
+          ts: e.event_timestamp || "2026-01-01T00:00:00Z",
+          type: e.event_type || "EVENT",
+          source: e.source_service || "service",
+          risk: e.risk_level || "low",
+          details: e,
+        }));
+        const cache = payload?.cache_events || [];
+        (cache || []).forEach((c, i) => base.push({
+          ts: "2026-01-01T00:00:00Z",
+          type: String(c.event_type || "cache_event").toUpperCase(),
+          source: "cache_governance",
+          risk: c.cache_valid === false ? "moderate" : "low",
+          details: c,
+        }));
+        base.sort((a,b) => String(a.ts).localeCompare(String(b.ts)));
+        return base;
+      }
+
+      function renderTimeline(items){
+        if(!items.length){
+          qs("timeline").innerHTML = '<div class="op-state"><strong>No events</strong> stream empty.</div>';
+          return;
+        }
+        qs("timeline").innerHTML = items.map(it => `
+          <div class="op-timeline-item">
+            <div class="op-timeline-rail"><span class="op-timeline-dot ${sevDot(it.risk)}"></span></div>
+            <div class="op-timeline-content">
+              <details>
+                <summary>
+                  <span class="op-panel-title">${escapeHtml(it.type)}</span>
+                  <span class="op-meta">· ${escapeHtml(it.source)} · ${escapeHtml(it.ts)}</span>
+                </summary>
+                <pre style="margin-top:10px;">${escapeHtml(JSON.stringify(it.details, null, 2))}</pre>
+              </details>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      async function refresh(){
+        const events = await getJson("/api/v1/system/agui/events", {});
+        renderTimeline(normalizeEvents(events));
+
+        const orch = await getJson("/api/v1/system/visibility/orchestration", {});
+        const trace = orch?.orchestration?.orchestration_trace || orch?.orchestration || {};
+        qs("orch").innerHTML = `
+          <div class="tagrow">
+            <span class="op-pill"><span class="op-dot"></span><span>workflows</span><span class="op-mono">${escapeHtml(trace.workflow_count ?? "—")}</span></span>
+            <span class="op-pill"><span class="op-dot"></span><span>traces</span><span class="op-mono">${escapeHtml(trace.trace_count ?? "—")}</span></span>
+          </div>
+          <div class="op-meta" style="margin-top:10px;">Orchestration visibility is metadata-only in foundation.</div>
+        `;
+
+        const ap = await getJson("/api/v1/system/agui/approval-stream", {});
+        const rows = ap?.approval_events || ap?.data?.approval_events || [];
+        qs("approvalEvents").innerHTML = rows.length ? rows.slice(0,10).map(r => `
+          <div class="op-panel op-pad-16">
+            <div class="op-row-wrap" style="justify-content: space-between;">
+              <span class="op-pill"><span class="op-dot warn"></span><span>${escapeHtml(r.state || "pending")}</span></span>
+              <span class="op-meta">${escapeHtml(r.event_timestamp || "—")}</span>
+            </div>
+            <div class="op-meta" style="margin-top:8px;">checkpoint: <span class="op-mono">${escapeHtml(r.checkpoint_id || "—")}</span></div>
+          </div>
+        `).join("") : '<div class="op-state"><strong>No approval events</strong></div>';
+
+        const pressure = await getJson("/api/v1/system/visibility/runtime-pressure", {});
+        const fleet = pressure?.runtime_pressure?.agent_fleet || pressure?.runtime_pressure?.agent_fleet_runtime_pressure || pressure?.data?.runtime_pressure?.agent_fleet || {};
+        qs("highRisk").textContent = String(fleet.high_risk_agents ?? "—");
+        qs("paused").textContent = String(fleet.paused_agents ?? "—");
+
+        const ret = await getJson("/api/v1/system/visibility/retrieval", {});
+        const rv = ret?.retrieval?.retrieval_visibility || ret?.retrieval || {};
+        qs("retPressure").textContent = String(rv.retrieval_expansion_pressure ?? "—");
+        qs("retSavings").textContent = String(rv.selective_expansion_token_savings ?? "—");
+
+        const cache = await getJson("/api/v1/system/cache/efficiency", {});
+        const m = cache?.cache_efficiency?.cache_efficiency || cache?.cache_efficiency || cache?.data?.cache_efficiency || {};
+        qs("cacheRatio").textContent = String(m.cache_efficiency_ratio ?? "—");
+        const bps = await getJson("/api/v1/system/cache/breakpoints", {});
+        const bp = (bps?.breakpoints || bps?.data?.breakpoints || [])[0] || {};
+        qs("bpValid").textContent = String(bp.cache_valid ?? "—");
+      }
+
+      refresh();
+      setInterval(refresh, 15000);
+    </script>
+  </body>
+</html>
+

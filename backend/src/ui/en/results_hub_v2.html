@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Results Hub V2</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+
+      .feed{
+        display:grid;
+        grid-template-columns: 1fr 420px;
+        gap: var(--op-space-16);
+      }
+      @media (max-width: 1100px){ .feed{ grid-template-columns: 1fr; } }
+      .list{ display:flex; flex-direction: column; gap: 12px; }
+      .item{ cursor:pointer; }
+      .item:hover{ border-color: rgba(110,168,255,0.25); background: rgba(110,168,255,0.03); }
+      .kv{ display:grid; grid-template-columns: 140px 1fr; gap: 8px 12px; }
+      .kv .k{ color: var(--op-fg-muted); font-size: 12px; }
+      .drawer{
+        position: sticky;
+        top: 72px;
+        height: calc(100vh - 96px);
+        overflow:auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div style="font-weight:500; letter-spacing:var(--op-tracking-meta); color:var(--op-fg-strong);">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot ok"></span><span class="op-mono">results</span></span>
+        </div>
+        <nav class="op-nav" aria-label="Primary navigation" style="margin-top: 12px;">
+          <a href="/ui/en/operational_cockpit.html"><span>Operational Cockpit</span><span class="op-kbd">G</span></a>
+          <a class="active" href="/ui/en/results_hub_v2.html"><span>Results Hub V2</span><span class="op-kbd">R</span></a>
+          <a href="/ui/en/retrieval_intelligence.html"><span>Retrieval Intelligence</span><span class="op-kbd">I</span></a>
+          <a href="/ui/en/intelligence_search.html"><span>Intelligence Search</span><span class="op-kbd">K</span></a>
+          <a href="/ui/en/relationship_graphs.html"><span>Relationship Graphs</span><span class="op-kbd">H</span></a>
+        </nav>
+        <div style="margin-top: 16px;" class="op-alert info">
+          Every insight exposes <strong>why</strong>, <strong>evidence</strong>, <strong>lineage</strong>, and <strong>policy alignment</strong>.
+        </div>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-row">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span>Results Hub V2</span>
+          </div>
+        </div>
+        <div class="right">
+          <span id="runtimeStatus" class="op-pill" data-label="runtime"><span class="op-dot"></span><span>runtime</span></span>
+          <span id="approvals" class="op-pill"><span class="op-dot warn"></span><span>approvals</span><span class="op-mono" id="approvalCount">0</span></span>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div class="op-row-wrap" style="justify-content: space-between;">
+            <div>
+              <div class="op-dashboard-title">Results Hub V2</div>
+              <div class="op-meta">Opportunity feed, contractor intelligence, recommendations, evidence, and explainability.</div>
+            </div>
+            <div class="op-row-wrap">
+              <a class="op-pill" href="/api/v1/results/executive-summary" target="_blank"><span class="op-dot"></span><span>executive</span></a>
+              <a class="op-pill" href="/api/v1/results/recommendations" target="_blank"><span class="op-dot"></span><span>recommendations</span></a>
+              <a class="op-pill" href="/api/v1/results/evidence" target="_blank"><span class="op-dot"></span><span>evidence</span></a>
+            </div>
+          </div>
+
+          <div class="feed">
+            <section class="op-card">
+              <div class="op-card-header">
+                <div class="op-panel-title">Opportunity intelligence feed</div>
+                <span class="op-meta">click an item to inspect evidence</span>
+              </div>
+              <div class="op-card-body">
+                <div id="feed" class="list">
+                  <div class="op-state"><strong>Loading…</strong> retrieving opportunities</div>
+                </div>
+              </div>
+            </section>
+
+            <aside class="drawer op-stack-16">
+              <div class="op-card" id="explainabilityCard">
+                <div class="op-card-header">
+                  <div class="op-panel-title">Explainability</div>
+                  <span class="op-meta">why / confidence / policy</span>
+                </div>
+                <div class="op-card-body op-stack-12" id="explainability">
+                  <div class="op-state"><strong>Select an item</strong> to view rationale.</div>
+                </div>
+              </div>
+
+              <div class="op-card" id="evidenceCard">
+                <div class="op-card-header">
+                  <div class="op-panel-title">Evidence</div>
+                  <span class="op-meta">linked traces</span>
+                </div>
+                <div class="op-card-body op-stack-12" id="evidence">
+                  <div class="op-state"><strong>Select an item</strong> to view evidence traces.</div>
+                </div>
+              </div>
+
+              <div class="op-card">
+                <div class="op-card-header">
+                  <div class="op-panel-title">Retrieval lineage</div>
+                  <span class="op-meta">source / authority / freshness</span>
+                </div>
+                <div class="op-card-body" id="lineage">
+                  <div class="op-state"><strong>Loading…</strong> lineage</div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { getJson, escapeHtml } from "/ui/shared/op_surface_helpers.js";
+
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => qs("sidebar").classList.toggle("collapsed"));
+
+      const mock = {
+        opportunities: [
+          { opportunity_id: "opp-demo-001", title: "Public tender: network equipment", risk: "moderate", confidence: 0.78, recommendation: "prioritize", why: "high authority + fresh signal" },
+          { opportunity_id: "opp-demo-002", title: "Procurement refresh: enterprise software", risk: "low", confidence: 0.71, recommendation: "monitor", why: "medium authority; stable timing" },
+        ],
+        evidence: [{ record_id: "ev-demo-001", source: "internal_repository", snippet: "Bid notice: ISO 27001; net-30", authority: 0.88, freshness_days: 3 }],
+        explainability: [{ panel_id: "xp-demo-001", rationale: "Ranked by authority + freshness; aligned with procurement policy", confidence_rationale: "confidence reflects stable evidence and low variance", policy_alignment: "allowed under governed scope" }],
+      };
+
+      async function loadStatus(){
+        const approvals = await getJson("/api/v1/system/visibility/approvals", null);
+        const pending = approvals?.approvals?.approval_queue?.pending_count ?? 0;
+        qs("approvalCount").textContent = String(pending);
+
+        const health = await getJson("/api/v1/system/visibility/health", null);
+        const st = health?.health?.system_health?.overall_status ?? "unknown";
+        qs("runtimeStatus").innerHTML = (st === "ok")
+          ? '<span class="op-dot ok"></span><span>runtime</span>'
+          : '<span class="op-dot warn"></span><span>runtime</span>';
+      }
+
+      async function loadLineage(){
+        const lineage = await getJson("/api/v1/system/retrieval/lineage", null);
+        const l = lineage?.lineage ?? lineage?.data?.lineage;
+        if(!l){
+          qs("lineage").innerHTML = '<div class="op-state"><strong>Unavailable</strong> lineage endpoint not responding.</div>';
+          return;
+        }
+        qs("lineage").innerHTML = `
+          <div class="kv">
+            <div class="k">source</div><div class="op-mono">${escapeHtml(l.source_name || l.source)}</div>
+            <div class="k">type</div><div class="op-mono">${escapeHtml(l.source_type || "")}</div>
+            <div class="k">authority</div><div class="op-mono">${escapeHtml(l.authority_score)}</div>
+            <div class="k">freshness</div><div class="op-mono">${escapeHtml(l.freshness_days)} days</div>
+          </div>`;
+      }
+
+      async function loadFeed(){
+        const opp = await getJson("/api/v1/results/opportunities", null);
+        const rows = opp?.opportunities || opp?.data?.opportunities || mock.opportunities;
+        const feed = qs("feed");
+        feed.innerHTML = rows.map((o, idx) => `
+          <div class="op-panel item op-pad-16" data-idx="${idx}">
+            <div class="op-row-wrap" style="justify-content: space-between;">
+              <div class="op-section-title">${escapeHtml(o.title || o.opportunity_title || "Opportunity")}</div>
+              <span class="op-pill"><span class="op-dot ${o.risk === "low" ? "ok" : o.risk === "critical" ? "crit" : "warn"}"></span><span>${escapeHtml(o.risk || "moderate")}</span></span>
+            </div>
+            <div class="op-meta" style="margin-top: 6px;">
+              <span class="op-mono">${escapeHtml(o.opportunity_id || o.id || "—")}</span> · confidence <span class="op-mono">${escapeHtml(o.confidence ?? "—")}</span> · ${escapeHtml(o.recommendation || "review")}
+            </div>
+            <div class="op-evidence" style="margin-top: 10px;">${escapeHtml(o.why || "Why: evidence-linked scoring")}</div>
+          </div>
+        `).join("");
+
+        feed.querySelectorAll(".item").forEach(el => {
+          el.addEventListener("click", () => selectItem(rows[Number(el.dataset.idx)]));
+        });
+        if(rows.length) selectItem(rows[0]);
+      }
+
+      async function selectItem(item){
+        const exp = await getJson("/api/v1/results/explainability", null);
+        const panels = exp?.explainability_panels || exp?.data?.explainability_panels || mock.explainability;
+
+        qs("explainability").innerHTML = `
+          <div class="op-stack-12">
+            <div class="op-panel strong op-pad-16">
+              <div class="op-panel-title">Why this appeared</div>
+              <div class="op-evidence" style="margin-top: 8px;">${escapeHtml(item.why || panels[0]?.rationale || "Rationale unavailable")}</div>
+            </div>
+            <div class="op-panel op-pad-16">
+              <div class="op-panel-title">Confidence rationale</div>
+              <div class="op-meta" style="margin-top: 8px;">${escapeHtml(panels[0]?.confidence_rationale || "Confidence derived from stable evidence + governed heuristics.")}</div>
+            </div>
+            <div class="op-panel op-pad-16">
+              <div class="op-panel-title">Policy alignment</div>
+              <div class="op-meta" style="margin-top: 8px;">${escapeHtml(panels[0]?.policy_alignment || "Aligned with governed procurement scope.")}</div>
+            </div>
+          </div>`;
+
+        const ev = await getJson("/api/v1/results/evidence", null);
+        const traces = ev?.evidence_traces || ev?.data?.evidence_traces || mock.evidence;
+        qs("evidence").innerHTML = traces.slice(0,6).map(t => `
+          <div class="op-panel op-pad-16">
+            <div class="op-row-wrap" style="justify-content: space-between;">
+              <span class="op-pill"><span class="op-dot"></span><span class="op-mono">${escapeHtml(t.record_id || t.evidence_id || "evidence")}</span></span>
+              <span class="op-meta">${escapeHtml(t.freshness_days ?? "—")}d</span>
+            </div>
+            <div class="op-evidence" style="margin-top: 10px;">${escapeHtml(t.snippet || t.summary || "")}</div>
+            <div class="op-meta" style="margin-top: 8px;">source: <span class="op-mono">${escapeHtml(t.source || t.source_type || "—")}</span> · authority <span class="op-mono">${escapeHtml(t.authority ?? t.authority_score ?? "—")}</span></div>
+          </div>
+        `).join("");
+      }
+
+      loadStatus();
+      loadLineage();
+      loadFeed();
+      setInterval(loadStatus, 15000);
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,30 @@
+/* operational_tables.css
+   PURPOSE: Dense but readable operational tables
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+@import url("/ui/shared/operational_tokens.css");
+
+.op-table{
+  width: 100%;
+  border-collapse: collapse;
+  border: var(--op-border-1) solid var(--op-border-color);
+  border-radius: var(--op-radius-12);
+  overflow:hidden;
+}
+.op-table th, .op-table td{
+  padding: 10px 12px;
+  border-bottom: var(--op-border-1) solid rgba(148,163,184,0.10);
+  text-align:left;
+  vertical-align: top;
+  font-size: 13px;
+}
+.op-table th{
+  background: rgba(255,255,255,0.03);
+  color: rgba(248,250,252,0.92);
+  font-weight: 650;
+}
+.op-table tr:hover td{
+  background: rgba(110,168,255,0.03);
+}
+

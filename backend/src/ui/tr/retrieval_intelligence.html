@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Retrieval Intelligence</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div style="font-weight:750; letter-spacing:.02em; color:var(--op-fg-strong);">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot"></span><span class="op-mono">retrieval</span></span>
+        </div>
+        <nav class="op-nav" aria-label="Primary navigation" style="margin-top: 12px;">
+          <a href="/ui/tr/operational_cockpit.html"><span>Operasyon Kokpiti</span><span class="op-kbd">G</span></a>
+          <a href="/ui/tr/results_hub_v2.html"><span>Results Hub V2</span><span class="op-kbd">R</span></a>
+          <a class="active" href="/ui/tr/retrieval_intelligence.html"><span>Retrieval Intelligence</span><span class="op-kbd">I</span></a>
+          <a href="/ui/tr/intelligence_search.html"><span>Intelligence Search</span><span class="op-kbd">K</span></a>
+        </nav>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-row">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span>Retrieval Intelligence</span>
+          </div>
+        </div>
+        <div class="right">
+          <a class="op-pill" href="/api/v1/system/retrieval/observability" target="_blank"><span class="op-dot"></span><span>observability</span></a>
+          <a class="op-pill" href="/api/v1/system/cache/efficiency" target="_blank"><span class="op-dot"></span><span>cache</span></a>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div>
+            <div class="op-dashboard-title">Retrieval Intelligence</div>
+            <div class="op-meta">Connector freshness, selective expansion, token pressure, cache efficiency, lineage.</div>
+          </div>
+
+          <div class="op-grid-3">
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Connector freshness</div></div>
+              <div class="op-card-body op-stack-12">
+                <div class="op-row-wrap">
+                  <span class="op-pill"><span class="op-dot ok"></span><span>connectors</span><span class="op-mono" id="connectorCount">—</span></span>
+                  <span class="op-pill"><span class="op-dot warn"></span><span>stale</span><span class="op-mono" id="staleCount">—</span></span>
+                </div>
+                <div class="op-meta" id="connectorNote">Yükleniyor…</div>
+              </div>
+            </div>
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Selective expansion</div></div>
+              <div class="op-card-body op-stack-12">
+                <div class="op-meta">Görünürlük yüzeyi (kontrolsüz expansion yok).</div>
+                <div class="op-row-wrap">
+                  <span class="op-pill"><span class="op-dot"></span><span>token savings</span><span class="op-mono" id="tokenSavings">—</span></span>
+                  <span class="op-pill"><span class="op-dot warn"></span><span>pressure</span><span class="op-mono" id="tokenPressure">—</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Cache efficiency</div></div>
+              <div class="op-card-body op-stack-12">
+                <div class="op-row-wrap">
+                  <span class="op-pill"><span class="op-dot ok"></span><span>ratio</span><span class="op-mono" id="cacheRatio">—</span></span>
+                  <span class="op-pill"><span class="op-dot"></span><span>prefill saved</span><span class="op-mono" id="prefillSaved">—</span></span>
+                </div>
+                <div class="op-meta">Deterministik tahmin; provider claim yok.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="op-grid-2">
+            <div class="op-card">
+              <div class="op-card-header">
+                <div class="op-panel-title">Federated retrieval dashboard</div>
+                <span class="op-meta">connectors</span>
+              </div>
+              <div class="op-card-body">
+                <table class="op-table" aria-label="Connectors">
+                  <thead><tr><th>Connector</th><th>Status</th><th>Freshness</th></tr></thead>
+                  <tbody id="connectorsBody"><tr><td colspan="3" class="op-meta">Yükleniyor…</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="op-card">
+              <div class="op-card-header">
+                <div class="op-panel-title">Retrieval lineage explorer</div>
+                <span class="op-meta">tek örnek</span>
+              </div>
+              <div class="op-card-body" id="lineageBody">
+                <div class="op-state"><strong>Yükleniyor…</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { getJson, escapeHtml } from "/ui/shared/op_surface_helpers.js";
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => qs("sidebar").classList.toggle("collapsed"));
+
+      const mock = { connectors: [{ connector_id: "internal_docs", status: "ok", freshness_days: 2 }] };
+
+      async function refresh(){
+        const visConn = await getJson("/api/v1/system/visibility/connectors", null);
+        const c = visConn?.connectors?.connector_freshness || visConn?.connectors || {};
+        qs("connectorCount").textContent = String(c.connector_count ?? "—");
+        qs("staleCount").textContent = String(c.stale_connector_count ?? "—");
+        qs("connectorNote").textContent = "Visibility layer summary (deterministic).";
+
+        const visRet = await getJson("/api/v1/system/visibility/retrieval", null);
+        const r = visRet?.retrieval?.retrieval_visibility || visRet?.retrieval || {};
+        qs("tokenSavings").textContent = String(r.selective_expansion_token_savings ?? "—");
+        qs("tokenPressure").textContent = String(r.retrieval_expansion_pressure ?? "—");
+
+        const cache = await getJson("/api/v1/system/cache/efficiency", null);
+        const metrics = cache?.cache_efficiency?.cache_efficiency || cache?.cache_efficiency || cache?.data?.cache_efficiency || null;
+        if(metrics && metrics.cache_efficiency_ratio !== undefined){
+          qs("cacheRatio").textContent = String(metrics.cache_efficiency_ratio);
+          qs("prefillSaved").textContent = String(metrics.estimated_prefill_saved_tokens ?? "—");
+        }
+
+        const conn = await getJson("/api/v1/system/retrieval/connectors", null);
+        const rows = conn?.connectors || conn?.data?.connectors || conn?.connectors?.connectors || mock.connectors;
+        const tbody = qs("connectorsBody");
+        tbody.innerHTML = (rows || []).slice(0,10).map(x => {
+          const id = x.connector_id || x.name || "connector";
+          const st = x.status || "ok";
+          const fd = x.freshness_days ?? "—";
+          return `<tr><td class="op-mono">${escapeHtml(id)}</td><td>${escapeHtml(st)}</td><td class="op-mono">${escapeHtml(fd)}d</td></tr>`;
+        }).join("") || '<tr><td colspan="3" class="op-meta">Connector raporlanmadı.</td></tr>';
+
+        const lin = await getJson("/api/v1/system/retrieval/lineage", null);
+        const l = lin?.lineage || lin?.data?.lineage;
+        if(!l){
+          qs("lineageBody").innerHTML = '<div class="op-state"><strong>Yok</strong> lineage endpoint yanıt vermiyor.</div>';
+        }else{
+          qs("lineageBody").innerHTML = `
+            <div class="op-stack-12">
+              <div class="op-panel strong op-pad-16">
+                <div class="op-panel-title">${escapeHtml(l.source_name || "source")}</div>
+                <div class="op-meta" style="margin-top: 8px;">${escapeHtml(l.original_reference || "")}</div>
+              </div>
+              <div class="op-row-wrap">
+                <span class="op-pill"><span class="op-dot"></span><span>authority</span><span class="op-mono">${escapeHtml(l.authority_score)}</span></span>
+                <span class="op-pill"><span class="op-dot"></span><span>freshness</span><span class="op-mono">${escapeHtml(l.freshness_days)}d</span></span>
+              </div>
+            </div>`;
+        }
+      }
+
+      refresh();
+      setInterval(refresh, 15000);
+    </script>
+  </body>
+</html>
+

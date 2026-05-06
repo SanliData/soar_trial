@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Relationship Graphs</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+      input, select{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 9px 10px;
+        color: var(--op-fg);
+        outline: none;
+      }
+      .filters{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div style="font-weight:750; letter-spacing:.02em; color:var(--op-fg-strong);">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot"></span><span class="op-mono">graphs</span></span>
+        </div>
+        <nav class="op-nav" aria-label="Primary navigation" style="margin-top: 12px;">
+          <a href="/ui/en/operational_cockpit.html"><span>Operational Cockpit</span><span class="op-kbd">G</span></a>
+          <a href="/ui/en/results_hub_v2.html"><span>Results Hub V2</span><span class="op-kbd">R</span></a>
+          <a href="/ui/en/intelligence_search.html"><span>Intelligence Search</span><span class="op-kbd">K</span></a>
+          <a class="active" href="/ui/en/relationship_graphs.html"><span>Relationship Graphs</span><span class="op-kbd">H</span></a>
+        </nav>
+        <div style="margin-top: 16px;" class="op-alert info">
+          Operational graph UX only: restrained, readable, filter-first. No chaotic node explosions.
+        </div>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-row">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span>Relationship Graphs</span>
+          </div>
+        </div>
+        <div class="right">
+          <a class="op-pill" href="/api/v1/results/relationships" target="_blank"><span class="op-dot"></span><span>relationships</span></a>
+          <a class="op-pill" href="/api/v1/system/graph/traversals" target="_blank"><span class="op-dot"></span><span>traversals</span></a>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div>
+            <div class="op-dashboard-title">Relationship graphs</div>
+            <div class="op-meta">Operational graph surfaces: filtered lists + small projections (not a full graph canvas).</div>
+          </div>
+
+          <div class="op-card">
+            <div class="op-card-header"><div class="op-panel-title">Filters</div><span class="op-meta">metadata-only</span></div>
+            <div class="op-card-body op-stack-12">
+              <div class="filters">
+                <input id="q" placeholder="filter text (e.g., contractor)" style="min-width: 320px;" />
+                <select id="type">
+                  <option value="">edge type: any</option>
+                  <option value="supplier">supplier</option>
+                  <option value="partner">partner</option>
+                  <option value="risk">risk</option>
+                </select>
+                <button class="op-btn op-focusable" type="button" id="apply">Apply</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="op-grid-2">
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Relationship edges</div><span class="op-meta">top</span></div>
+              <div class="op-card-body">
+                <table class="op-table" aria-label="Relationship edges">
+                  <thead><tr><th>From</th><th>To</th><th>Type</th></tr></thead>
+                  <tbody id="edges"><tr><td colspan="3" class="op-meta">Loading…</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Traversal manifest</div><span class="op-meta">projection</span></div>
+              <div class="op-card-body" id="trav">
+                <div class="op-state"><strong>Loading…</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { getJson, escapeHtml } from "/ui/shared/op_surface_helpers.js";
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => qs("sidebar").classList.toggle("collapsed"));
+
+      const mockEdges = [
+        { from: "ctr-001", to: "opp-demo-001", type: "supplier" },
+        { from: "ctr-001", to: "ctr-002", type: "partner" },
+      ];
+
+      function applyFilters(rows){
+        const q = qs("q").value.trim().toLowerCase();
+        const t = qs("type").value;
+        return rows.filter(e => {
+          if(t && e.type !== t) return false;
+          if(q && !(String(e.from).toLowerCase().includes(q) || String(e.to).toLowerCase().includes(q) || String(e.type).toLowerCase().includes(q))) return false;
+          return true;
+        });
+      }
+
+      async function load(){
+        const rel = await getJson("/api/v1/results/relationships", null);
+        const rows = rel?.relationships || rel?.data?.relationships || rel?.relationship_snapshot || mockEdges;
+        const filtered = applyFilters(rows);
+
+        qs("edges").innerHTML = (filtered.length ? filtered : []).slice(0,20).map(e => `
+          <tr>
+            <td class="op-mono">${escapeHtml(e.from || e.source || "—")}</td>
+            <td class="op-mono">${escapeHtml(e.to || e.target || "—")}</td>
+            <td>${escapeHtml(e.type || e.edge_type || "—")}</td>
+          </tr>
+        `).join("") || '<tr><td colspan="3" class="op-meta">No edges match filters.</td></tr>';
+
+        const trav = await getJson("/api/v1/system/graph/traversals", null);
+        const t = trav?.traversals || trav?.data?.traversals;
+        if(!t){
+          qs("trav").innerHTML = '<div class="op-state"><strong>Unavailable</strong> traversal manifest not responding.</div>';
+          return;
+        }
+        const count = Array.isArray(t) ? t.length : Object.keys(t).length;
+        qs("trav").innerHTML = `
+          <div class="op-stack-12">
+            <div class="op-panel strong op-pad-16">
+              <div class="op-panel-title">Traversal surface</div>
+              <div class="op-meta" style="margin-top: 8px;">manifest items: <span class="op-mono">${escapeHtml(count)}</span></div>
+            </div>
+            <div class="op-meta">This page intentionally avoids a full interactive graph canvas in Phase 2.</div>
+          </div>`;
+      }
+
+      qs("apply").addEventListener("click", load);
+      load();
+    </script>
+  </body>
+</html>
+

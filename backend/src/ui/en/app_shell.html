@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Operational Shell</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_timeline.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-brand{ font-weight: 750; letter-spacing: 0.02em; color: var(--op-fg-strong); }
+      .op-subnav{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      @media (max-width: 860px){ .op-search{ min-width: 0; width: 100%; } }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div class="op-brand">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot ok"></span><span class="op-mono">foundation</span></span>
+        </div>
+
+        <div class="op-stack-12" style="margin-top: 14px;">
+          <div class="op-meta">Workspace</div>
+          <div class="op-row-wrap">
+            <span class="op-pill op-focusable" tabindex="0">Operational</span>
+            <span class="op-pill op-focusable" tabindex="0">Procurement</span>
+            <span class="op-pill op-focusable" tabindex="0">Admin</span>
+          </div>
+        </div>
+
+        <nav class="op-nav" aria-label="Primary navigation">
+          <a class="active" href="/ui/en/operational_cockpit.html"><span>Operational Cockpit</span><span class="op-kbd">G</span></a>
+          <a href="/ui/en/results_hub.html"><span>Results Hub</span><span class="op-kbd">R</span></a>
+          <a href="/api/v1/system/retrieval/summary" target="_blank"><span>Retrieval Intelligence</span><span class="op-kbd">I</span></a>
+          <a href="/api/v1/system/workflows/overview" target="_blank"><span>Workflow Center</span><span class="op-kbd">W</span></a>
+          <a href="/api/v1/system/identity/registry" target="_blank"><span>Agent Operations</span><span class="op-kbd">A</span></a>
+          <a href="/ui/en/system_visibility_dashboard.html"><span>Runtime Visibility</span><span class="op-kbd">V</span></a>
+          <a href="/ui/en/hitl_runtime_demo.html"><span>Approval Center</span><span class="op-kbd">P</span></a>
+          <a href="/api/v1/system/admin/config" target="_blank"><span>Settings</span><span class="op-kbd">S</span></a>
+        </nav>
+
+        <div style="margin-top: 16px;" class="op-stack-12">
+          <div class="op-meta">Governance</div>
+          <div class="op-state">
+            <strong>Visible-by-default:</strong> lineage, approvals, and policy scope.
+            <div class="op-meta" style="margin-top: 8px;">Phase 1: no self-executing actions.</div>
+          </div>
+        </div>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-subnav">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span id="crumb">Operational Cockpit</span>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="op-search op-focusable" tabindex="0" title="Global intelligence search (foundation)">
+            <span class="op-dim op-mono">Search</span>
+            <input id="globalSearch" placeholder="Find workflows, agents, evidence…" />
+            <span class="op-kbd">Ctrl K</span>
+          </div>
+          <span id="runtimeStatus" class="op-pill"><span class="op-dot"></span><span>runtime</span></span>
+          <span id="approvalIndicator" class="op-pill"><span class="op-dot warn"></span><span>approvals</span><span class="op-mono" id="approvalCount">0</span></span>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div class="op-card">
+            <div class="op-card-header">
+              <div class="op-panel-title">Application shell</div>
+              <span class="op-pill"><span class="op-dot ok"></span><span>calm</span></span>
+            </div>
+            <div class="op-card-body op-stack-12">
+              <div class="op-body">
+                This is the **Phase 1 operational foundation**: layout, navigation, and reusable primitives.
+                It intentionally avoids chat-centric UX, flashy dashboards, and self-executing actions.
+              </div>
+              <div class="op-grid-3">
+                <div class="op-panel">
+                  <div class="op-panel-header"><div class="op-panel-title">Explainability</div></div>
+                  <div class="op-panel-body op-meta">Evidence and lineage are visible surfaces.</div>
+                </div>
+                <div class="op-panel">
+                  <div class="op-panel-header"><div class="op-panel-title">Governance</div></div>
+                  <div class="op-panel-body op-meta">Approvals and policy scope are never hidden.</div>
+                </div>
+                <div class="op-panel">
+                  <div class="op-panel-header"><div class="op-panel-title">Operational density</div></div>
+                  <div class="op-panel-body op-meta">Low cognitive load; progressive disclosure.</div>
+                </div>
+              </div>
+              <div class="op-meta">
+                Next: open <a href="/ui/en/operational_cockpit.html">Operational Cockpit</a>.
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => {
+        qs("sidebar").classList.toggle("collapsed");
+      });
+
+      // Foundation: metadata-only status indicators (no real-time streaming UX)
+      async function refreshApprovalCount(){
+        try{
+          const res = await fetch("/api/v1/system/visibility/approvals");
+          const data = await res.json();
+          const n = (data && data.data && data.data.approval_queue && data.data.approval_queue.pending_count) || 0;
+          qs("approvalCount").textContent = String(n);
+        }catch(e){
+          qs("approvalCount").textContent = "—";
+        }
+      }
+      async function refreshRuntimeStatus(){
+        try{
+          const res = await fetch("/api/v1/system/visibility/health");
+          const data = await res.json();
+          const ok = (data && data.data && data.data.system_health && data.data.system_health.overall_status) || "unknown";
+          qs("runtimeStatus").innerHTML = (ok === "ok")
+            ? '<span class="op-dot ok"></span><span>runtime</span>'
+            : '<span class="op-dot warn"></span><span>runtime</span>';
+        }catch(e){
+          qs("runtimeStatus").innerHTML = '<span class="op-dot warn"></span><span>runtime</span>';
+        }
+      }
+
+      refreshApprovalCount();
+      refreshRuntimeStatus();
+      setInterval(refreshApprovalCount, 15000);
+      setInterval(refreshRuntimeStatus, 15000);
+    </script>
+  </body>
+</html>
+

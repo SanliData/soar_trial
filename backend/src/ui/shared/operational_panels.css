@@ -1,0 +1,57 @@
+/* operational_panels.css
+   PURPOSE: Panel system + hierarchy
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+@import url("/ui/shared/operational_tokens.css");
+
+.op-panel{
+  border: var(--op-border-1) solid var(--op-border-color);
+  background: var(--op-panel);
+  border-radius: var(--op-radius-16);
+}
+.op-panel.strong{
+  background: var(--op-panel-strong);
+  border-color: var(--op-border-strong);
+}
+.op-panel.subtle{
+  background: var(--op-panel-subtle);
+  border-color: rgba(148,163,184,0.14);
+}
+.op-panel.elevated{
+  background: var(--op-surface-2);
+  border-color: rgba(148,163,184,0.20);
+  box-shadow: var(--op-shadow-1);
+}
+
+/* Panel roles (visual language only; keep existing layout) */
+.op-panel.operational{ }
+.op-panel.intelligence{ border-color: rgba(110,168,255,0.22); }
+.op-panel.explainability{ border-color: rgba(110,168,255,0.22); background: rgba(110,168,255,0.05); }
+.op-panel.evidence{ border-color: rgba(148,163,184,0.18); }
+.op-panel.workflow{ border-color: rgba(148,163,184,0.18); }
+.op-panel.approval{ border-color: rgba(244,184,96,0.22); background: rgba(244,184,96,0.05); }
+.op-panel.telemetry{ border-color: rgba(148,163,184,0.16); background: rgba(255,255,255,0.02); }
+.op-panel-header{
+  padding: 12px 16px;
+  border-bottom: var(--op-border-1) solid rgba(148,163,184,0.10);
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.op-panel-body{ padding: 16px; }
+
+/* Explainability drawer language */
+.op-drawer{
+  border: var(--op-border-1) solid rgba(110,168,255,0.18);
+  background: rgba(110,168,255,0.04);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+.op-drawer summary{
+  cursor: pointer;
+  list-style: none;
+}
+.op-drawer summary::-webkit-details-marker{ display:none; }
+

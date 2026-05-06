@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Operasyon Kokpiti</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_timeline.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+      .op-surface-grid{
+        display:grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: var(--op-space-16);
+      }
+      @media (max-width: 1100px){ .op-surface-grid{ grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div style="font-weight:750; letter-spacing:.02em; color:var(--op-fg-strong);">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot ok"></span><span class="op-mono">cockpit</span></span>
+        </div>
+        <nav class="op-nav" aria-label="Primary navigation" style="margin-top: 12px;">
+          <a class="active" href="/ui/tr/operational_cockpit.html"><span>Operasyon Kokpiti</span><span class="op-kbd">G</span></a>
+          <a href="/ui/tr/results_hub.html"><span>Sonuç Merkezi</span><span class="op-kbd">R</span></a>
+          <a href="/ui/tr/system_visibility_dashboard.html"><span>Runtime Visibility</span><span class="op-kbd">V</span></a>
+          <a href="/ui/tr/hitl_runtime_demo.html"><span>Onay Merkezi</span><span class="op-kbd">P</span></a>
+          <a href="/ui/tr/app_shell.html"><span>Shell</span><span class="op-kbd">S</span></a>
+        </nav>
+        <div style="margin-top: 16px;" class="op-stack-12">
+          <div class="op-meta">Operasyonel duruş</div>
+          <div class="op-alert info">
+            Bu kokpit **foundation komut yüzeyi**: health, pressure, approvals, retrieval activity gibi governance-metinli özetleri gösterir.
+          </div>
+        </div>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-row">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span>Operasyon Kokpiti</span>
+          </div>
+        </div>
+        <div class="right">
+          <span id="envIndicator" class="op-pill"><span class="op-dot ok"></span><span class="op-mono">foundation</span></span>
+          <span id="runtimeStatus" class="op-pill"><span class="op-dot"></span><span>runtime</span></span>
+          <span id="approvals" class="op-pill"><span class="op-dot warn"></span><span>onaylar</span><span class="op-mono" id="approvalCount">0</span></span>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div class="op-row-wrap" style="justify-content: space-between;">
+            <div>
+              <div class="op-dashboard-title">Operasyon Kokpiti</div>
+              <div class="op-meta">Uzun operasyon oturumları için sakin komut merkezi.</div>
+            </div>
+            <div class="op-row-wrap">
+              <span class="op-pill"><span class="op-dot ok"></span><span id="connectorHealth">connectors</span></span>
+              <span class="op-pill"><span class="op-dot"></span><span id="retrievalActivity">retrieval</span></span>
+              <span class="op-pill"><span class="op-dot warn"></span><span id="runtimePressure">pressure</span></span>
+            </div>
+          </div>
+
+          <div class="op-surface-grid">
+            <section class="op-stack-16">
+              <div class="op-card">
+                <div class="op-card-header">
+                  <div class="op-panel-title">Aktif workflow’lar</div>
+                  <span class="op-meta">önizleme</span>
+                </div>
+                <div class="op-card-body">
+                  <table class="op-table" aria-label="Aktif workflow listesi">
+                    <thead>
+                      <tr>
+                        <th>Workflow</th>
+                        <th>Durum</th>
+                        <th>Throughput</th>
+                      </tr>
+                    </thead>
+                    <tbody id="workflowsBody">
+                      <tr><td colspan="3" class="op-meta">Yükleniyor…</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="op-card">
+                <div class="op-card-header">
+                  <div class="op-panel-title">Operasyonel zaman çizelgesi</div>
+                  <span class="op-meta">detay açılabilir</span>
+                </div>
+                <div class="op-card-body">
+                  <div id="timeline" class="op-timeline">
+                    <div class="op-timeline-item">
+                      <div class="op-timeline-rail"><span class="op-timeline-dot ok"></span></div>
+                      <div class="op-timeline-content">
+                        <details open>
+                          <summary><span class="op-panel-title">workflow başladı</span> <span class="op-meta">wf-demo-001</span></summary>
+                          <div class="op-meta" style="margin-top: 8px;">Yalnızca governance-metadata. Gizli aksiyon yok.</div>
+                        </details>
+                      </div>
+                    </div>
+                    <div class="op-timeline-item">
+                      <div class="op-timeline-rail"><span class="op-timeline-dot"></span></div>
+                      <div class="op-timeline-content">
+                        <details>
+                          <summary><span class="op-panel-title">retrieval başladı</span> <span class="op-meta">connector activity</span></summary>
+                          <div class="op-meta" style="margin-top: 8px;">Evidence ve lineage görünür yüzeylerdir.</div>
+                        </details>
+                      </div>
+                    </div>
+                    <div class="op-timeline-item">
+                      <div class="op-timeline-rail"><span class="op-timeline-dot warn"></span></div>
+                      <div class="op-timeline-content">
+                        <details>
+                          <summary><span class="op-panel-title">onay gerekiyor</span> <span class="op-meta">checkpoint önizleme</span></summary>
+                          <div class="op-meta" style="margin-top: 8px;">Onaylar görünür; bypass yok.</div>
+                        </details>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <aside class="op-stack-16">
+              <div class="op-card">
+                <div class="op-card-header">
+                  <div class="op-panel-title">Runtime pressure</div>
+                  <span class="op-meta">özet</span>
+                </div>
+                <div class="op-card-body op-grid-2">
+                  <div class="op-metric">
+                    <div class="label">High-risk agents</div>
+                    <div class="value" id="highRiskAgents">—</div>
+                  </div>
+                  <div class="op-metric">
+                    <div class="label">Paused agents</div>
+                    <div class="value" id="pausedAgents">—</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="op-card">
+                <div class="op-card-header">
+                  <div class="op-panel-title">Connector health</div>
+                  <span class="op-meta">freshness</span>
+                </div>
+                <div class="op-card-body op-stack-12">
+                  <div class="op-row-wrap">
+                    <span class="op-pill"><span class="op-dot ok"></span><span>connectors</span><span class="op-mono" id="connectorCount">—</span></span>
+                    <span class="op-pill"><span class="op-dot warn"></span><span>stale</span><span class="op-mono" id="staleConnectors">—</span></span>
+                  </div>
+                  <div class="op-meta">Foundation deterministik özetleri gösterir; derin görünüm Runtime Visibility altında.</div>
+                </div>
+              </div>
+
+              <div class="op-card">
+                <div class="op-card-header">
+                  <div class="op-panel-title">Onay kuyruğu</div>
+                  <span class="op-meta">önizleme</span>
+                </div>
+                <div class="op-card-body op-stack-12">
+                  <div class="op-row-wrap">
+                    <span class="op-pill"><span class="op-dot warn"></span><span>pending</span><span class="op-mono" id="pendingApprovals">—</span></span>
+                    <span class="op-pill"><span class="op-dot"></span><span>policy</span><span class="op-mono">visible</span></span>
+                  </div>
+                  <div class="op-meta"><a href="/ui/tr/hitl_runtime_demo.html">Onay Merkezi</a></div>
+                </div>
+              </div>
+
+              <div class="op-alert warn">
+                <strong>Phase 1 notu:</strong> gerçek zamanlı streaming AI UX yok, generative UI yok, kendiliğinden çalışan aksiyon yok. Bu, operasyonel kabuk foundation’ıdır.
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => qs("sidebar").classList.toggle("collapsed"));
+
+      async function getJson(url){
+        const res = await fetch(url);
+        return await res.json();
+      }
+
+      async function refresh(){
+        try{
+          const health = await getJson("/api/v1/system/visibility/health");
+          const status = (health && health.data && health.data.system_health && health.data.system_health.overall_status) || "unknown";
+          qs("runtimeStatus").innerHTML = (status === "ok")
+            ? '<span class="op-dot ok"></span><span>runtime</span>'
+            : '<span class="op-dot warn"></span><span>runtime</span>';
+        }catch(e){}
+
+        try{
+          const pressure = await getJson("/api/v1/system/visibility/runtime-pressure");
+          const fleet = (pressure && pressure.data && pressure.data.runtime_pressure && pressure.data.runtime_pressure.agent_fleet) || {};
+          qs("highRiskAgents").textContent = String(fleet.high_risk_agents ?? "—");
+          qs("pausedAgents").textContent = String(fleet.paused_agents ?? "—");
+          qs("runtimePressure").textContent = "pressure";
+        }catch(e){}
+
+        try{
+          const connectors = await getJson("/api/v1/system/visibility/connectors");
+          const c = (connectors && connectors.data && connectors.data.connector_freshness) || {};
+          qs("connectorCount").textContent = String(c.connector_count ?? "—");
+          qs("staleConnectors").textContent = String(c.stale_connector_count ?? "—");
+          qs("connectorHealth").textContent = "connectors";
+        }catch(e){}
+
+        try{
+          const approvals = await getJson("/api/v1/system/visibility/approvals");
+          const q = (approvals && approvals.data && approvals.data.approval_queue) || {};
+          const n = (q.pending_count ?? 0);
+          qs("approvalCount").textContent = String(n);
+          qs("pendingApprovals").textContent = String(n);
+        }catch(e){
+          qs("approvalCount").textContent = "—";
+          qs("pendingApprovals").textContent = "—";
+        }
+
+        try{
+          const audit = await getJson("/api/v1/system/visibility/workflow-audit");
+          const rows = (audit && audit.data && audit.data.workflow_audit && audit.data.workflow_audit.active_workflows) || [];
+          const body = qs("workflowsBody");
+          if(!rows.length){
+            body.innerHTML = '<tr><td colspan="3" class="op-meta">Aktif workflow raporlanmadı.</td></tr>';
+            return;
+          }
+          body.innerHTML = rows.slice(0,5).map(w => {
+            const name = w.workflow_id || w.workflow_name || "workflow";
+            const st = w.status || "active";
+            const t = w.throughput || w.throughput_per_min || "—";
+            return `<tr><td class="op-mono">${name}</td><td>${st}</td><td class="op-mono">${t}</td></tr>`;
+          }).join("");
+        }catch(e){
+          qs("workflowsBody").innerHTML = '<tr><td class="op-mono">wf-demo-001</td><td>active</td><td class="op-mono">—</td></tr>';
+        }
+      }
+
+      refresh();
+      setInterval(refresh, 15000);
+    </script>
+  </body>
+</html>
+

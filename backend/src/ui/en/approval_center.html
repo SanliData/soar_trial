@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Approval Center</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+      .grid{ display:grid; grid-template-columns: 1fr 420px; gap: 16px; }
+      @media (max-width: 1100px){ .grid{ grid-template-columns: 1fr; } }
+      .drawer{ position: sticky; top: 72px; height: calc(100vh - 96px); overflow:auto; }
+      .disabled{
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div style="font-weight:500; letter-spacing:var(--op-tracking-meta); color:var(--op-fg-strong);">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot warn"></span><span class="op-mono">approvals</span></span>
+        </div>
+        <nav class="op-nav" aria-label="Primary navigation" style="margin-top: 12px;">
+          <a href="/ui/en/event_stream_center.html"><span>Event Stream</span><span class="op-kbd">E</span></a>
+          <a class="active" href="/ui/en/approval_center.html"><span>Approval Center</span><span class="op-kbd">P</span></a>
+          <a href="/ui/en/agent_operations_center.html"><span>Agent Operations</span><span class="op-kbd">A</span></a>
+        </nav>
+        <div style="margin-top: 16px;" class="op-alert warn">
+          No automatic approvals. This center is a governance surface with reviewer accountability metadata.
+        </div>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-row">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span>Approval Center</span>
+          </div>
+        </div>
+        <div class="right">
+          <span class="op-pill"><span class="op-dot"></span><span class="op-mono">poll 15s</span></span>
+          <a class="op-pill" href="/api/v1/system/hitl/review-queue" target="_blank"><span class="op-dot warn"></span><span>review api</span></a>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div>
+            <div class="op-dashboard-title">Approval center</div>
+            <div class="op-meta">Approval queue, escalation queue, workflow checkpoints, rationale surfaces, and pause/resume UX (metadata-only).</div>
+          </div>
+
+          <div class="op-grid-3">
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">Approval queue</div></div>
+              <div class="op-card-body op-row-wrap">
+                <span class="op-pill"><span class="op-dot warn"></span><span>pending</span><span class="op-mono" id="pending">—</span></span>
+                <span class="op-pill"><span class="op-dot"></span><span>reviewers</span><span class="op-mono" id="reviewers">—</span></span>
+              </div>
+            </div>
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">Escalations</div></div>
+              <div class="op-card-body op-row-wrap">
+                <span class="op-pill"><span class="op-dot warn"></span><span>count</span><span class="op-mono" id="escalations">—</span></span>
+              </div>
+            </div>
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">Workflow checkpoints</div></div>
+              <div class="op-card-body op-row-wrap">
+                <span class="op-pill"><span class="op-dot warn"></span><span>checkpoints</span><span class="op-mono" id="checkpoints">—</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <section class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Review queue</div><span class="op-meta">select an item for rationale</span></div>
+              <div class="op-card-body">
+                <table class="op-table" aria-label="Review queue">
+                  <thead><tr><th>Workflow</th><th>Checkpoint</th><th>Status</th></tr></thead>
+                  <tbody id="queue"><tr><td colspan="3" class="op-meta">Loading…</td></tr></tbody>
+                </table>
+              </div>
+            </section>
+            <aside class="drawer op-stack-16">
+              <div class="op-card">
+                <div class="op-card-header"><div class="op-panel-title">Approval rationale</div><span class="op-meta">policy + accountability</span></div>
+                <div class="op-card-body op-stack-12" id="rationale">
+                  <div class="op-state"><strong>Select an item</strong> to view rationale.</div>
+                </div>
+              </div>
+              <div class="op-card">
+                <div class="op-card-header"><div class="op-panel-title">Pause / resume</div><span class="op-meta">UX only</span></div>
+                <div class="op-card-body op-stack-12">
+                  <div class="op-meta">Phase 3 provides visibility and reviewer intent capture. No live execution in UI.</div>
+                  <button class="op-btn disabled" type="button" disabled>Pause workflow</button>
+                  <button class="op-btn disabled" type="button" disabled>Resume workflow</button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { getJson, escapeHtml } from "/ui/shared/op_surface_helpers.js";
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => qs("sidebar").classList.toggle("collapsed"));
+
+      function renderRationale(item){
+        qs("rationale").innerHTML = `
+          <div class="op-panel strong op-pad-16">
+            <div class="op-panel-title">Why approval is required</div>
+            <div class="op-meta" style="margin-top: 8px;">${escapeHtml(item.reason || item.rationale || "Policy + governance checkpoint.")}</div>
+          </div>
+          <div class="op-panel op-pad-16">
+            <div class="op-panel-title">Reviewer accountability</div>
+            <div class="op-meta" style="margin-top: 8px;">reviewer: <span class="op-mono">${escapeHtml(item.reviewer || "unassigned")}</span></div>
+            <div class="op-meta">workflow: <span class="op-mono">${escapeHtml(item.workflow_id || "—")}</span></div>
+            <div class="op-meta">checkpoint: <span class="op-mono">${escapeHtml(item.checkpoint_id || "—")}</span></div>
+          </div>`;
+      }
+
+      async function refresh(){
+        const q = await getJson("/api/v1/system/hitl/review-queue", {});
+        const rows = q?.review_queue?.pending || q?.data?.review_queue?.pending || [];
+        qs("pending").textContent = String(rows.length ?? 0);
+        const reviewerSet = new Set(rows.map(x => x.reviewer || "").filter(Boolean));
+        qs("reviewers").textContent = String(reviewerSet.size);
+
+        const cps = await getJson("/api/v1/system/hitl/checkpoints", {});
+        const checkpoints = cps?.checkpoints || cps?.data?.checkpoints || [];
+        qs("checkpoints").textContent = String(checkpoints.length ?? 0);
+
+        const esc = await getJson("/api/v1/system/hitl/escalations", {});
+        const escalations = esc?.escalations || esc?.data?.escalations || [];
+        qs("escalations").textContent = String(escalations.length ?? 0);
+
+        const tbody = qs("queue");
+        if(!rows.length){
+          tbody.innerHTML = '<tr><td colspan="3" class="op-meta">No pending approvals.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = rows.slice(0,20).map((r, i) => `
+          <tr data-idx="${i}">
+            <td class="op-mono">${escapeHtml(r.workflow_id || "wf")}</td>
+            <td class="op-mono">${escapeHtml(r.checkpoint_id || "cp")}</td>
+            <td><span class="op-pill"><span class="op-dot warn"></span><span>${escapeHtml(r.state || "pending")}</span></span></td>
+          </tr>
+        `).join("");
+        tbody.querySelectorAll("tr[data-idx]").forEach(tr => {
+          tr.addEventListener("click", () => renderRationale(rows[Number(tr.dataset.idx)]));
+        });
+        renderRationale(rows[0]);
+      }
+
+      refresh();
+      setInterval(refresh, 15000);
+    </script>
+  </body>
+</html>
+

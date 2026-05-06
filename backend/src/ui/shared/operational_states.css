@@ -1,0 +1,56 @@
+/* operational_states.css
+   PURPOSE: Operational states (loading/empty/error) and alert hierarchy
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+@import url("/ui/shared/operational_tokens.css");
+
+.op-state{
+  border: var(--op-border-1) dashed rgba(148,163,184,0.22);
+  background: rgba(255,255,255,0.02);
+  border-radius: var(--op-radius-16);
+  padding: 14px 16px;
+  color: var(--op-fg-muted);
+}
+.op-state strong{ color: var(--op-fg-strong); }
+
+.op-alert{
+  border: var(--op-border-1) solid rgba(148,163,184,0.18);
+  border-radius: var(--op-radius-12);
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.02);
+}
+.op-alert.info{ border-color: rgba(110,168,255,0.25); background: rgba(110,168,255,0.07); }
+.op-alert.warn{ border-color: rgba(244,184,96,0.28); background: rgba(244,184,96,0.08); }
+.op-alert.crit{ border-color: rgba(255,107,107,0.30); background: rgba(255,107,107,0.08); }
+
+/* Unified operational status language (subtle but scannable) */
+.op-status{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: var(--op-border-1) solid rgba(148,163,184,0.16);
+  background: rgba(255,255,255,0.02);
+  color: var(--op-fg-muted);
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.op-status .dot{
+  width: 7px; height: 7px; border-radius: 999px;
+  background: var(--op-info);
+  box-shadow: 0 0 0 3px rgba(110,168,255,0.12);
+}
+.op-status.healthy .dot{ background: var(--op-ok); box-shadow: 0 0 0 3px rgba(49,196,141,0.14); }
+.op-status.warning .dot{ background: var(--op-warn); box-shadow: 0 0 0 3px rgba(244,184,96,0.14); }
+.op-status.elevated .dot{ background: var(--op-elevated); box-shadow: 0 0 0 3px rgba(231,184,90,0.14); }
+.op-status.critical .dot{ background: var(--op-crit); box-shadow: 0 0 0 3px rgba(255,107,107,0.14); }
+.op-status.approved .dot{ background: var(--op-approval-approved); box-shadow: 0 0 0 3px rgba(49,196,141,0.14); }
+.op-status.pending .dot{ background: var(--op-approval-pending); box-shadow: 0 0 0 3px rgba(244,184,96,0.14); }
+.op-status.blocked .dot{ background: var(--op-approval-blocked); box-shadow: 0 0 0 3px rgba(255,107,107,0.14); }
+.op-status.stale .dot{ background: var(--op-stale); box-shadow: 0 0 0 3px rgba(154,166,178,0.14); }
+.op-status.live .dot{ background: var(--op-live); box-shadow: 0 0 0 3px rgba(49,196,141,0.14); }
+.op-status.cached .dot{ background: var(--op-cached); box-shadow: 0 0 0 3px rgba(110,168,255,0.14); }
+

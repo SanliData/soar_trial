@@ -1892,6 +1892,149 @@ python -m pytest tests/test_h050_prompt_cache_deployment.py -q</code></pre>
   DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
 </p>
 </div>
+<div class="container">
+<h2>48A. Verification — Operational UI Foundation (Phase 1)</h2>
+
+<h3>48A.1 Assets</h3>
+<div class="box">
+  <pre><code>backend/src/ui/shared/operational_tokens.css
+backend/src/ui/shared/operational_theme.css
+backend/src/ui/shared/operational_typography.css
+backend/src/ui/shared/operational_layout.css
+backend/src/ui/shared/operational_components.css
+backend/src/ui/shared/operational_tables.css
+backend/src/ui/shared/operational_panels.css
+backend/src/ui/shared/operational_timeline.css
+backend/src/ui/shared/operational_states.css</code></pre>
+</div>
+
+<h3>48A.2 Pages</h3>
+<div class="box">
+  <pre><code>/ui/en/app_shell.html
+/ui/tr/app_shell.html
+/ui/en/operational_cockpit.html
+/ui/tr/operational_cockpit.html</code></pre>
+</div>
+
+<h3>48A.3 Behaviour checks</h3>
+<ul>
+  <li>Shared CSS system exists and is used by the shell + cockpit.</li>
+  <li>Operational shell includes: top nav, collapsible sidebar, breadcrumbs, environment indicator, runtime status chip, approvals indicator.</li>
+  <li>Operational cockpit exists and reads metadata from existing system endpoints (no advanced AI streaming UX).</li>
+  <li>No chatbot-centric UI; no flashy dashboard gimmicks; no autonomous action affordances.</li>
+</ul>
+
+<h3>48A.4 Automation</h3>
+<pre><code>python scripts/verify_phase1_operational_ui.py</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>48B. Verification — Intelligence Product Surfaces (Phase 2)</h2>
+
+<h3>48B.1 Pages</h3>
+<div class="box">
+  <pre><code>/ui/en/results_hub_v2.html
+/ui/tr/results_hub_v2.html
+/ui/en/retrieval_intelligence.html
+/ui/tr/retrieval_intelligence.html
+/ui/en/procurement_workflow.html
+/ui/tr/procurement_workflow.html
+/ui/en/intelligence_search.html
+/ui/tr/intelligence_search.html
+/ui/en/relationship_graphs.html
+/ui/tr/relationship_graphs.html</code></pre>
+</div>
+
+<h3>48B.2 Evidence + explainability assets</h3>
+<div class="box">
+  <pre><code>backend/src/ui/shared/evidence_drawer.html
+backend/src/ui/shared/explainability_panel.html
+backend/src/ui/shared/retrieval_lineage_panel.html
+backend/src/ui/shared/policy_alignment_panel.html
+backend/src/ui/shared/approval_reason_panel.html</code></pre>
+</div>
+
+<h3>48B.3 Behaviour checks</h3>
+<ul>
+  <li>Phase 1 design system and application shell are preserved (no redesign).</li>
+  <li>Results surfaces connect to existing endpoints where available: <code>/api/v1/results/*</code>, <code>/api/v1/system/retrieval/*</code>, <code>/api/v1/system/visibility/*</code>, <code>/api/v1/system/hitl/*</code>.</li>
+  <li>If an endpoint is missing, a deterministic mock adapter is used and the surface remains explainable.</li>
+  <li>No uncontrolled live streaming UX; no autonomous actions; no chaotic graph overload.</li>
+</ul>
+
+<h3>48B.4 Automation</h3>
+<pre><code>python scripts/verify_phase2_intelligence_surfaces.py</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>48C. Verification — Live Operational AI Experience (Phase 3)</h2>
+
+<h3>48C.1 Pages</h3>
+<div class="box">
+  <pre><code>/ui/en/event_stream_center.html
+/ui/tr/event_stream_center.html
+/ui/en/agent_operations_center.html
+/ui/tr/agent_operations_center.html
+/ui/en/approval_center.html
+/ui/tr/approval_center.html</code></pre>
+</div>
+
+<h3>48C.2 Behaviour checks</h3>
+<ul>
+  <li>Event stream UX is polling-based (no fake real-time) and uses existing endpoints: <code>/api/v1/system/agui/*</code>, <code>/api/v1/system/visibility/*</code>, <code>/api/v1/system/cache/*</code>.</li>
+  <li>Approval center shows review queue, checkpoints, escalations, and rationale; no auto-approval.</li>
+  <li>Agent operations center shows identity attribution, capability scope visibility, shadow warnings, and MCP governance.</li>
+  <li>No uncontrolled autonomous UX; no hidden orchestration; no overloaded visibility.</li>
+</ul>
+
+<h3>48C.3 Automation</h3>
+<pre><code>python scripts/verify_phase3_operational_ai_experience.py</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>48E. Verification — Operational Visual System</h2>
+
+<h3>48E.1 Deliverables</h3>
+<div class="box">
+  <pre><code>backend/src/ui/shared/operational_tokens.css
+backend/src/ui/shared/operational_typography.css
+backend/src/ui/shared/operational_spacing.css
+backend/src/ui/shared/operational_panels.css
+backend/src/ui/shared/operational_states.css
+backend/src/ui/shared/operational_timeline.css
+backend/src/ui/shared/operational_components.css
+backend/src/ui/shared/operational_motion_rules.md
+docs/SOARB2B_OPERATIONAL_DENSITY_GUIDE.md
+docs/SOARB2B_VISUAL_ANTI_PATTERNS.md</code></pre>
+</div>
+
+<h3>48E.2 Visual checks (manual)</h3>
+<ul>
+  <li><strong>Typography</strong>: Inter-first; only 400/500 weights; no oversized headings; sentence-case UI; metadata labels small uppercase.</li>
+  <li><strong>Palette</strong>: grayscale-first; muted operational blue accents; semantic colors restrained and informational (not alarming).</li>
+  <li><strong>AI text treatment</strong>: AI output is attributed and evidence-linked; no chat-bubble styling; no glow; no “magic assistant” UI.</li>
+  <li><strong>Density</strong>: panels remain dense-but-readable; progressive disclosure via expandable details.</li>
+  <li><strong>Metadata visibility</strong>: timestamps, IDs, token counts, lineage exist but recede; monospace used only for identifiers.</li>
+  <li><strong>Approval / governance language</strong>: calm, serious; no screaming red; scannable status vocabulary.</li>
+  <li><strong>Anti-pattern compliance</strong>: no cyberpunk visuals, no neon/glow, no giant chatbot windows, no graph chaos.</li>
+</ul>
+
+<h3>48E.3 Automation</h3>
+<pre><code>python scripts/verify_operational_visual_language.py</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
 <script src="/ui/assets/ad-rails.js"></script>
 
 </body>

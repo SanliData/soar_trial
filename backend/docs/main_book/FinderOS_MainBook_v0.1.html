@@ -1482,6 +1482,99 @@
   DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
 </p>
 </div>
+<div class="container">
+<h2>48A. Productization Phase 1 — Operational Design System &amp; Application Shell</h2>
+<p>
+  <strong>Phase 1 productization focuses only on the operational UI foundation:</strong> a calm design system, an enterprise-grade application shell, and a workflow-centric cockpit surface.
+  This intentionally avoids advanced AI streaming UX, generative UI systems, and dashboard theater.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Shared operational design system</strong>: reusable tokens, typography, layout primitives, panels, tables, states, and timeline styles.</li>
+    <li><strong>Application shell</strong>: top navigation, collapsible sidebar, breadcrumbs, environment indicator, runtime and approvals indicators.</li>
+    <li><strong>Operational cockpit</strong>: command-center foundation showing workflows, runtime pressure, connector health, approvals preview, and operational alerts.</li>
+    <li><strong>Explainability visible</strong>: evidence/lineage/approval states are treated as first-class UI surfaces.</li>
+  </ul>
+</div>
+<p>
+  Guidelines: <code>docs/SOARB2B_OPERATIONAL_UI_GUIDELINES.md</code>.
+  Validation rules: <code>backend/src/ui/shared/ui_validation_rules.md</code>.
+  Demo pages: <code>/ui/en/app_shell.html</code>, <code>/ui/en/operational_cockpit.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>48B. Productization Phase 2 — Intelligence Product Surfaces</h2>
+<p>
+  <strong>Phase 2 makes operational intelligence visible as product surfaces</strong> while preserving the Phase 1 shell and design system.
+  This phase focuses on Results Hub V2, evidence + explainability UX, retrieval intelligence, procurement workflow review flows, intelligence search, and restrained relationship graph views.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Results Hub V2</strong>: opportunity intelligence feed, contractor cards, executive summary, recommendations with evidence links.</li>
+    <li><strong>Evidence + explainability</strong>: every insight exposes why, evidence traces, retrieval lineage, confidence rationale, and policy alignment.</li>
+    <li><strong>Retrieval intelligence UX</strong>: connector freshness, selective expansion visibility, token pressure, and cache efficiency surfaces.</li>
+    <li><strong>Procurement workflow UX</strong>: intake → analysis → matching → recommendations → HITL checkpoints (no self-executing actions).</li>
+    <li><strong>Intelligence search</strong>: federated search with metadata filters and evidence preview.</li>
+    <li><strong>Relationship graphs</strong>: operational, filter-first graph surfaces (no chaotic graph overload).</li>
+  </ul>
+</div>
+<p>
+  Demo pages: <code>/ui/en/results_hub_v2.html</code>, <code>/ui/en/retrieval_intelligence.html</code>, <code>/ui/en/procurement_workflow.html</code>,
+  <code>/ui/en/intelligence_search.html</code>, <code>/ui/en/relationship_graphs.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>48C. Productization Phase 3 — Live Operational AI Experience</h2>
+<p>
+  <strong>Phase 3 adds a living operational AI platform experience</strong> as deterministic, governance-first operational UX surfaces.
+  The UI remains non-autonomous: event streams are polled, approvals are explicit, and orchestration remains visible and auditable.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Event Stream Center</strong>: unified operational timeline for workflows, retrieval, approvals/escalations, runtime signals, cache lifecycle, and orchestration visibility.</li>
+    <li><strong>Approval Center</strong>: review queue, checkpoints, escalation visibility, rationale surfaces, and reviewer accountability (no auto-approval; no hidden bypass).</li>
+    <li><strong>Agent Operations Center</strong>: active agents, identity attribution, capability scopes, shadow warnings, and MCP endpoint governance visibility.</li>
+    <li><strong>Operational telemetry</strong>: runtime/retrieval pressure and cache efficiency surfaced as calm, explainable tiles.</li>
+  </ul>
+</div>
+<p>
+  Demo pages: <code>/ui/en/event_stream_center.html</code>, <code>/ui/en/approval_center.html</code>, <code>/ui/en/agent_operations_center.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>48E. Operational Visual Language System</h2>
+<p>
+  FinderOS visually communicates <strong>trustworthy operational intelligence</strong>.
+  The UI is calm, precise, governed, readable, enterprise-grade, and explainability-first.
+  This is intentionally <em>not</em> a marketing redesign and <em>not</em> an “AI toy” dashboard.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Grayscale-first palette</strong>: dark-mode-first clarity with restrained operational blue accents and informational state colors.</li>
+    <li><strong>Typography discipline</strong>: Inter-first sans, <strong>400/500 weights only</strong>, sentence-case UI, small uppercase metadata labels.</li>
+    <li><strong>Metadata hierarchy</strong>: timestamps, workflow/agent IDs, token counts, and lineage always exist but visually recede (monospace only for identifiers).</li>
+    <li><strong>AI text treatment</strong>: AI output appears as an attributed operational note (subtle left-rail), evidence-linked and subordinate to workflow surfaces.</li>
+    <li><strong>Status language</strong>: subtle, scannable states (healthy/warning/elevated/critical; approved/pending/blocked; stale/live/cached) without screaming color.</li>
+    <li><strong>Explainability-first</strong>: evidence, lineage, and policy alignment are first-class surfaces; confidence indicators avoid “confidence theater”.</li>
+  </ul>
+</div>
+<p>
+  Foundations: <code>backend/src/ui/shared/operational_tokens.css</code>, <code>operational_typography.css</code>, <code>operational_spacing.css</code>,
+  <code>operational_panels.css</code>, <code>operational_states.css</code>, <code>operational_timeline.css</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
 <script src="/ui/assets/ad-rails.js"></script>
 
 </body>

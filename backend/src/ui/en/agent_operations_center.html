@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SOAR B2B — Agent Operations Center</title>
+    <link rel="stylesheet" href="/ui/shared/operational_theme.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_typography.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_spacing.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_layout.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_panels.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_components.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_tables.css" />
+    <link rel="stylesheet" href="/ui/shared/operational_states.css" />
+    <style>
+      .op-sidebar.collapsed{ display:none; }
+      .op-topbar .right{ display:flex; align-items:center; gap: 10px; }
+      .op-btn{
+        border: var(--op-border-1) solid var(--op-border-color);
+        background: rgba(255,255,255,0.02);
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .op-btn:hover{ background: rgba(110,168,255,0.06); border-color: rgba(110,168,255,0.25); }
+      .grid{ display:grid; grid-template-columns: 1fr 420px; gap: 16px; }
+      @media (max-width: 1100px){ .grid{ grid-template-columns: 1fr; } }
+      .drawer{ position: sticky; top: 72px; height: calc(100vh - 96px); overflow:auto; }
+    </style>
+  </head>
+  <body>
+    <div class="op-app">
+      <aside id="sidebar" class="op-sidebar">
+        <div class="op-row" style="justify-content: space-between;">
+          <div style="font-weight:500; letter-spacing:var(--op-tracking-meta); color:var(--op-fg-strong);">SOAR B2B</div>
+          <span class="op-pill"><span class="op-dot"></span><span class="op-mono">agents</span></span>
+        </div>
+        <nav class="op-nav" aria-label="Primary navigation" style="margin-top: 12px;">
+          <a href="/ui/en/event_stream_center.html"><span>Event Stream</span><span class="op-kbd">E</span></a>
+          <a href="/ui/en/approval_center.html"><span>Approval Center</span><span class="op-kbd">P</span></a>
+          <a class="active" href="/ui/en/agent_operations_center.html"><span>Agent Operations</span><span class="op-kbd">A</span></a>
+        </nav>
+        <div style="margin-top: 16px;" class="op-alert info">
+          Identity-governed agent visibility: attribution, scopes, shadow warnings, and MCP governance.
+        </div>
+      </aside>
+
+      <header class="op-topbar">
+        <div class="op-row">
+          <button id="toggleSidebar" class="op-btn op-focusable" type="button">Sidebar</button>
+          <div class="op-breadcrumbs">
+            <span class="op-mono">SOAR</span><span class="op-dim">/</span><span>Agent Operations</span>
+          </div>
+        </div>
+        <div class="right">
+          <span class="op-pill"><span class="op-dot"></span><span class="op-mono">poll 15s</span></span>
+          <a class="op-pill" href="/api/v1/system/identity/registry" target="_blank"><span class="op-dot"></span><span>identity api</span></a>
+        </div>
+      </header>
+
+      <main class="op-main">
+        <div class="op-container op-stack-16">
+          <div>
+            <div class="op-dashboard-title">Agent operations center</div>
+            <div class="op-meta">Active agents, runtime attribution, capability scopes, approval-scoped actions, shadow warnings, MCP governance.</div>
+          </div>
+
+          <div class="op-grid-3">
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">Active agents</div></div>
+              <div class="op-card-body op-row-wrap">
+                <span class="op-pill"><span class="op-dot"></span><span>active</span><span class="op-mono" id="activeAgents">—</span></span>
+                <span class="op-pill"><span class="op-dot warn"></span><span>paused</span><span class="op-mono" id="pausedAgents">—</span></span>
+              </div>
+            </div>
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">Shadow warnings</div></div>
+              <div class="op-card-body op-row-wrap">
+                <span class="op-pill"><span class="op-dot warn"></span><span>signals</span><span class="op-mono" id="shadowSignals">—</span></span>
+              </div>
+            </div>
+            <div class="op-card"><div class="op-card-header"><div class="op-panel-title">MCP governance</div></div>
+              <div class="op-card-body op-row-wrap">
+                <span class="op-pill"><span class="op-dot"></span><span>endpoints</span><span class="op-mono" id="mcpCount">—</span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <section class="op-card">
+              <div class="op-card-header"><div class="op-panel-title">Agent registry + fleet</div><span class="op-meta">H-045 + H-046</span></div>
+              <div class="op-card-body op-stack-12">
+                <table class="op-table" aria-label="Agents">
+                  <thead><tr><th>Agent</th><th>Role</th><th>Status</th></tr></thead>
+                  <tbody id="agentsBody"><tr><td colspan="3" class="op-meta">Loading…</td></tr></tbody>
+                </table>
+              </div>
+            </section>
+
+            <aside class="drawer op-stack-16">
+              <div class="op-card">
+                <div class="op-card-header"><div class="op-panel-title">Runtime attribution</div><span class="op-meta">identity</span></div>
+                <div class="op-card-body" id="attribution">
+                  <div class="op-state"><strong>Loading…</strong></div>
+                </div>
+              </div>
+              <div class="op-card">
+                <div class="op-card-header"><div class="op-panel-title">Capability scopes</div><span class="op-meta">policies</span></div>
+                <div class="op-card-body" id="policies">
+                  <div class="op-state"><strong>Loading…</strong></div>
+                </div>
+              </div>
+              <div class="op-card">
+                <div class="op-card-header"><div class="op-panel-title">Permission gate sample</div><span class="op-meta">fail-closed</span></div>
+                <div class="op-card-body"><pre id="perm">Loading…</pre></div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { getJson, escapeHtml } from "/ui/shared/op_surface_helpers.js";
+      function qs(id){ return document.getElementById(id); }
+      qs("toggleSidebar").addEventListener("click", () => qs("sidebar").classList.toggle("collapsed"));
+
+      async function refresh(){
+        const vis = await getJson("/api/v1/system/visibility/agents", {});
+        const agents = vis?.agents?.active_agents || vis?.agents || vis?.data?.agents?.active_agents || [];
+        const activeCount = Array.isArray(agents) ? agents.length : 0;
+        qs("activeAgents").textContent = String(activeCount);
+
+        const fleet = await getJson("/api/v1/system/agents/fleet", {});
+        const f = fleet?.fleet || fleet?.data?.fleet || {};
+        qs("pausedAgents").textContent = String(f.paused_agents ?? "—");
+
+        const shadow = await getJson("/api/v1/system/identity/shadow-agents", {});
+        const sig = shadow?.shadow_agent_detection?.signals || shadow?.data?.shadow_agent_detection?.signals || [];
+        qs("shadowSignals").textContent = String(sig.length ?? 0);
+
+        const mcp = await getJson("/api/v1/system/identity/mcp-governance", {});
+        const eps = mcp?.mcp_endpoints || mcp?.data?.mcp_endpoints || [];
+        qs("mcpCount").textContent = String(eps.length ?? 0);
+
+        // Agent list: use agent registry + roles if present
+        const reg = await getJson("/api/v1/system/agents", {});
+        const rows = reg?.registry || reg?.data?.registry || [];
+        qs("agentsBody").innerHTML = (rows || []).slice(0,12).map(a => `
+          <tr>
+            <td><div class="op-mono">${escapeHtml(a.agent_id || a.name || "agent")}</div><div class="op-meta">${escapeHtml(a.description || "")}</div></td>
+            <td class="op-mono">${escapeHtml(a.role || a.agent_role || "—")}</td>
+            <td><span class="op-pill"><span class="op-dot ${a.status === "ok" ? "ok" : "warn"}"></span><span>${escapeHtml(a.status || "active")}</span></span></td>
+          </tr>
+        `).join("") || '<tr><td colspan="3" class="op-meta">No registry rows.</td></tr>';
+
+        const ids = await getJson("/api/v1/system/identity/registry", {});
+        const first = (ids?.identity_registry?.identities || ids?.data?.identity_registry?.identities || ids?.registry?.cryptographic_identities || [])[0] || null;
+        qs("attribution").innerHTML = first ? `
+          <div class="op-stack-12">
+            <span class="op-pill"><span class="op-dot"></span><span>identity</span><span class="op-mono">${escapeHtml(first.identity_id || first.id || "id")}</span></span>
+            <div class="op-meta">fingerprint: <span class="op-mono">${escapeHtml(first.identity_fingerprint || first.fingerprint || "—")}</span></div>
+            <div class="op-meta">scope: <span class="op-mono">${escapeHtml(first.scope || first.identity_scope || "—")}</span></div>
+          </div>
+        ` : '<div class="op-state"><strong>No identity</strong> registry empty.</div>';
+
+        const pol = await getJson("/api/v1/system/identity/policies", {});
+        qs("policies").innerHTML = `<pre>${escapeHtml(JSON.stringify(pol, null, 2))}</pre>`;
+
+        const perm = await getJson("/api/v1/system/agents/permissions", {});
+        qs("perm").textContent = JSON.stringify(perm, null, 2);
+      }
+
+      refresh();
+      setInterval(refresh, 15000);
+    </script>
+  </body>
+</html>
+

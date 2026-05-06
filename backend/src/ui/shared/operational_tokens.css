@@ -1,0 +1,118 @@
+/* operational_tokens.css
+   PURPOSE: Token system for Phase 1 operational UI shell
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+:root{
+  /* Typography */
+  --op-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --op-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --op-weight-regular: 400;
+  --op-weight-medium: 500;
+
+  --op-font-size-12: 12px;
+  --op-font-size-13: 13px;
+  --op-font-size-14: 14px;
+  --op-font-size-16: 16px;
+  --op-font-size-18: 18px;
+  --op-font-size-20: 20px;
+  --op-font-size-24: 24px;
+  --op-font-size-28: 28px;
+  --op-line-compact: 1.35;
+  --op-line-body: 1.55;
+  --op-tracking-tight: -0.01em;
+  --op-tracking-normal: 0.00em;
+  --op-tracking-meta: 0.06em;
+
+  /* Spacing scale */
+  --op-space-0: 0px;
+  --op-space-2: 2px;
+  --op-space-4: 4px;
+  --op-space-6: 6px;
+  --op-space-8: 8px;
+  --op-space-10: 10px;
+  --op-space-12: 12px;
+  --op-space-14: 14px;
+  --op-space-16: 16px;
+  --op-space-18: 18px;
+  --op-space-20: 20px;
+  --op-space-24: 24px;
+  --op-space-28: 28px;
+  --op-space-32: 32px;
+  --op-space-40: 40px;
+
+  /* Radius scale */
+  --op-radius-6: 6px;
+  --op-radius-10: 10px;
+  --op-radius-12: 12px;
+  --op-radius-16: 16px;
+
+  /* Border system */
+  --op-border-1: 1px;
+  --op-border-color: rgba(148, 163, 184, 0.16);
+  --op-border-strong: rgba(148, 163, 184, 0.22);
+
+  /* Shadow scale (low fatigue) */
+  --op-shadow-1: 0 1px 0 rgba(15, 23, 42, 0.25);
+  --op-shadow-2: 0 10px 30px rgba(2, 6, 23, 0.35);
+
+  /* Operational color palette (dark-mode-first, grayscale-first) */
+  --op-bg: ***REMOVED***0b1220;                 /* base background */
+  --op-bg-0: ***REMOVED***070c16;               /* deepest */
+  --op-bg-1: ***REMOVED***0b1220;               /* base */
+  --op-bg-2: ***REMOVED***0e1728;               /* topbar */
+  --op-surface-1: rgba(255,255,255,0.03);
+  --op-surface-2: rgba(255,255,255,0.05);
+  --op-surface-3: rgba(255,255,255,0.07);
+
+  --op-fg: ***REMOVED***e5e7eb;
+  --op-fg-strong: ***REMOVED***f8fafc;
+  --op-fg-muted: rgba(229,231,235,0.72);
+  --op-fg-dim: rgba(229,231,235,0.55);
+  --op-fg-tertiary: rgba(229,231,235,0.42); /* metadata recedes */
+
+  /* Muted blue operational accents */
+  --op-accent: ***REMOVED***6ea8ff;
+  --op-accent-2: ***REMOVED***4b82f6;
+  --op-accent-soft: rgba(110,168,255,0.14);
+  --op-accent-border: rgba(110,168,255,0.26);
+
+  /* Semantic colors (restrained, operational) */
+  --op-ok: ***REMOVED***31c48d;                 /* healthy */
+  --op-warn: ***REMOVED***f4b860;               /* warning / pending */
+  --op-elevated: ***REMOVED***e7b85a;           /* elevated */
+  --op-crit: ***REMOVED***ff6b6b;               /* critical */
+  --op-info: ***REMOVED***6ea8ff;               /* informational */
+  --op-stale: ***REMOVED***9aa6b2;              /* stale */
+  --op-cached: ***REMOVED***6ea8ff;             /* cached */
+  --op-live: ***REMOVED***31c48d;               /* live */
+
+  /* Panel hierarchy */
+  --op-panel: var(--op-surface-1);
+  --op-panel-strong: var(--op-surface-2);
+  --op-panel-subtle: rgba(255,255,255,0.02);
+  --op-panel-border: var(--op-border-color);
+
+  /* Confidence states (trustworthy, not theatrical) */
+  --op-confidence-high: rgba(49,196,141,0.85);
+  --op-confidence-med: rgba(244,184,96,0.85);
+  --op-confidence-low: rgba(255,107,107,0.82);
+
+  /* Approval / governance states */
+  --op-approval-approved: rgba(49,196,141,0.85);
+  --op-approval-pending: rgba(244,184,96,0.85);
+  --op-approval-blocked: rgba(255,107,107,0.82);
+
+  /* Connector health states */
+  --op-connector-healthy: rgba(49,196,141,0.85);
+  --op-connector-stale: rgba(244,184,96,0.85);
+  --op-connector-broken: rgba(255,107,107,0.82);
+
+  /* Evidence states */
+  --op-evidence-strong: rgba(110,168,255,0.85);
+  --op-evidence-weak: rgba(148,163,184,0.65);
+
+  /* Focus ring */
+  --op-focus: 0 0 0 3px rgba(110,168,255,0.20);
+}
+

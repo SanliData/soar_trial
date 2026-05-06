@@ -1,0 +1,70 @@
+/* operational_typography.css
+   PURPOSE: Calm enterprise readability hierarchy
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+@import url("/ui/shared/operational_tokens.css");
+
+.op-title{
+  font-size: var(--op-font-size-28);
+  line-height: 1.2;
+  letter-spacing: var(--op-tracking-tight);
+  font-weight: var(--op-weight-medium);
+  color: var(--op-fg-strong);
+}
+.op-dashboard-title{
+  font-size: var(--op-font-size-20);
+  line-height: 1.25;
+  font-weight: var(--op-weight-medium);
+  color: var(--op-fg-strong);
+}
+.op-section-title{
+  font-size: var(--op-font-size-16);
+  line-height: 1.25;
+  font-weight: var(--op-weight-medium);
+  color: var(--op-fg-strong);
+}
+.op-panel-title{
+  font-size: var(--op-font-size-14);
+  line-height: 1.25;
+  font-weight: var(--op-weight-medium);
+  color: var(--op-fg-strong);
+}
+.op-body{
+  font-size: var(--op-font-size-14);
+  line-height: var(--op-line-body);
+  font-weight: var(--op-weight-regular);
+  color: var(--op-fg);
+}
+.op-meta{
+  font-size: var(--op-font-size-12);
+  line-height: var(--op-line-compact);
+  color: var(--op-fg-muted);
+}
+.op-label{
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: var(--op-tracking-meta);
+  text-transform: uppercase;
+  color: var(--op-fg-tertiary);
+}
+.op-evidence{
+  font-size: var(--op-font-size-13);
+  line-height: 1.45;
+  color: rgba(229,231,235,0.80);
+}
+.op-audit{
+  font-size: var(--op-font-size-12);
+  line-height: 1.45;
+  color: rgba(229,231,235,0.70);
+  font-family: var(--op-font-mono);
+}
+
+/* Operational metric */
+.op-metric-value{
+  font-size: var(--op-font-size-18);
+  font-weight: var(--op-weight-medium);
+  letter-spacing: var(--op-tracking-tight);
+  color: var(--op-fg-strong);
+}
+

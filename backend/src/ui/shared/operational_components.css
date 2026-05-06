@@ -1,0 +1,156 @@
+/* operational_components.css
+   PURPOSE: Reusable operational UI primitives (Phase 1)
+   ENCODING: UTF-8 WITHOUT BOM
+*/
+
+@import url("/ui/shared/operational_tokens.css");
+
+.op-card{
+  border: var(--op-border-1) solid var(--op-border-color);
+  background: var(--op-panel);
+  border-radius: var(--op-radius-16);
+  box-shadow: var(--op-shadow-1);
+}
+
+.op-card-header{
+  padding: var(--op-space-14) var(--op-space-16);
+  border-bottom: var(--op-border-1) solid rgba(148,163,184,0.10);
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: var(--op-space-12);
+}
+
+.op-card-body{ padding: var(--op-space-16); }
+
+.op-pill{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: var(--op-border-1) solid var(--op-border-color);
+  background: rgba(255,255,255,0.02);
+  color: var(--op-fg-muted);
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.op-dot{
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--op-info);
+  box-shadow: 0 0 0 3px rgba(110,168,255,0.12);
+}
+.op-dot.ok{ background: var(--op-ok); box-shadow: 0 0 0 3px rgba(49,196,141,0.14); }
+.op-dot.warn{ background: var(--op-warn); box-shadow: 0 0 0 3px rgba(244,184,96,0.14); }
+.op-dot.crit{ background: var(--op-crit); box-shadow: 0 0 0 3px rgba(255,107,107,0.14); }
+.op-dot.stale{ background: var(--op-stale); box-shadow: 0 0 0 3px rgba(154,166,178,0.14); }
+.op-dot.cached{ background: var(--op-cached); box-shadow: 0 0 0 3px rgba(110,168,255,0.14); }
+.op-dot.live{ background: var(--op-live); box-shadow: 0 0 0 3px rgba(49,196,141,0.14); }
+
+/* Component library primitives */
+.operational_card{ }
+.intelligence_panel{ }
+.evidence_chip{ }
+.lineage_badge{ }
+.risk_indicator{ }
+.escalation_banner{ }
+.approval_chip{ }
+.confidence_indicator{ }
+.runtime_status_chip{ }
+.workflow_status_badge{ }
+.operational_metric_tile{ }
+
+/* Minimal styled implementations */
+.op-metric{
+  display:flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.op-metric .label{ font-size: 12px; color: var(--op-fg-muted); }
+.op-metric .value{ font-size: 18px; font-weight: var(--op-weight-medium); color: var(--op-fg-strong); letter-spacing: var(--op-tracking-tight); }
+
+.op-banner{
+  border: var(--op-border-1) solid rgba(244,184,96,0.35);
+  background: rgba(244,184,96,0.08);
+  color: rgba(248,250,252,0.92);
+  border-radius: var(--op-radius-12);
+  padding: 10px 12px;
+}
+
+.op-search{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: var(--op-border-1) solid var(--op-border-color);
+  background: rgba(255,255,255,0.02);
+  min-width: 340px;
+}
+.op-search input{
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--op-fg);
+}
+
+.op-nav{
+  display:flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: var(--op-space-12);
+}
+.op-nav a{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: var(--op-border-1) solid transparent;
+  color: rgba(229,231,235,0.86);
+  text-decoration:none;
+}
+.op-nav a:hover{
+  border-color: rgba(110,168,255,0.25);
+  background: rgba(110,168,255,0.06);
+  text-decoration:none;
+}
+.op-nav a.active{
+  border-color: rgba(110,168,255,0.28);
+  background: rgba(110,168,255,0.09);
+}
+
+/* AI text treatment (subordinate, operational, evidence-linked) */
+.op-ai-block{
+  border-left: 3px solid rgba(110,168,255,0.42);
+  background: rgba(255,255,255,0.02);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.op-ai-attrib{
+  font-size: 11px;
+  letter-spacing: var(--op-tracking-meta);
+  text-transform: uppercase;
+  color: var(--op-fg-tertiary);
+}
+.op-ai-attrib a{
+  color: var(--op-accent);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+/* Metadata visibility system */
+.op-id{ font-family: var(--op-font-mono); color: var(--op-fg-muted); }
+.op-ts{ color: var(--op-fg-tertiary); }
+.op-token{ font-family: var(--op-font-mono); color: var(--op-fg-tertiary); }
+
+/* Confidence strip (left border language) */
+.op-confidence-high{ border-left: 3px solid var(--op-confidence-high); }
+.op-confidence-med{ border-left: 3px solid var(--op-confidence-med); }
+.op-confidence-low{ border-left: 3px solid var(--op-confidence-low); }
+
