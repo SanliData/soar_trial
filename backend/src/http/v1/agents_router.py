@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/agents", tags=["agents"])
 
-***REMOVED*** Redis key TTL for job result (1 hour)
+# Redis key TTL for job result (1 hour)
 AGENTS_JOB_TTL = 3600
 
 
@@ -132,7 +132,7 @@ async def get_lead_generation_job(job_id: str):
         raise HTTPException(status_code=500, detail="Invalid job result")
 
 
-***REMOVED*** ---------- Sales Engine ----------
+# ---------- Sales Engine ----------
 
 
 @router.post("/sales-engine/run", response_model=SalesEngineRunResponse)

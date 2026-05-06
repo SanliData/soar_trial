@@ -10,7 +10,7 @@ from typing import Any
 
 from src.trajectory_evaluation.trajectory_schema import Trajectory
 
-***REMOVED*** Weights sum to 1.0 for the positive linear model; hallucination uses (1 - risk).
+# Weights sum to 1.0 for the positive linear model; hallucination uses (1 - risk).
 _W_CU = 0.25
 _W_GC = 0.20
 _W_GR = 0.15

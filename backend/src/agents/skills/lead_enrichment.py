@@ -21,7 +21,7 @@ async def run_lead_enrichment(
         personas = c.get("personas", [])
         contacts = []
         for p in personas:
-            ***REMOVED*** Placeholder: real impl would call enrichment APIs (Clearbit, Apollo, etc.)
+            # Placeholder: real impl would call enrichment APIs (Clearbit, Apollo, etc.)
             contacts.append({
                 "name": p.get("name", "Unknown"),
                 "role": p.get("role", ""),

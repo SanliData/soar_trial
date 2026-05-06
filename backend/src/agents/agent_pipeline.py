@@ -28,7 +28,7 @@ async def run_agent_pipeline(
     5. LLM Response: optional summary/response from updated context
     If trace_id is None, a new execution trace is created and stored in Redis (context["trace_id"]).
     """
-    ***REMOVED*** 1. Context Engine
+    # 1. Context Engine
     context = build_context_from_request(
         user_request,
         session_id=session_id,
@@ -37,7 +37,7 @@ async def run_agent_pipeline(
     intent = context.get("intent", "unknown")
     entities = context.get("entities", {})
 
-    ***REMOVED*** Execution trace: create or use provided
+    # Execution trace: create or use provided
     if trace_id is None:
         try:
             from src.agents.execution_trace import create_trace
@@ -47,7 +47,7 @@ async def run_agent_pipeline(
     context["trace_id"] = trace_id
     context["execution_trace"] = {"trace_id": trace_id} if trace_id else None
 
-    ***REMOVED*** 2. Agent Reasoning: pick skill sequence from intent (or use provided)
+    # 2. Agent Reasoning: pick skill sequence from intent (or use provided)
     if skill_sequence is None:
         skill_sequence = _reason_skill_sequence(intent, entities, context.get("available_skills", []))
     if trace_id and skill_sequence:
@@ -57,7 +57,7 @@ async def run_agent_pipeline(
         except Exception:
             pass
 
-    ***REMOVED*** 3. Skill Execution (async pipeline) + 4. Tool Results -> Updated Context
+    # 3. Skill Execution (async pipeline) + 4. Tool Results -> Updated Context
     if not skill_sequence:
         if trace_id:
             try:
@@ -99,7 +99,7 @@ async def run_agent_pipeline(
             except Exception:
                 pass
 
-    ***REMOVED*** 5. LLM Response (optional)
+    # 5. LLM Response (optional)
     if include_llm_response:
         context["llm_response"] = _build_llm_response(context, user_request)
 
@@ -124,7 +124,7 @@ def _reason_skill_sequence(
         ]
         return [s for s in preferred if s in skill_names][:6] or ["company_discovery", "email_generation"]
     if intent == "analytics_query":
-        return []  ***REMOVED*** handled by NL query route
+        return []   # handled by NL query route
     return []
 
 

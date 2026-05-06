@@ -14,7 +14,7 @@ from src.semantic_capabilities.capability_loader import load_capabilities
 
 
 def _fingerprint_capabilities(caps: list[Any]) -> str:
-    ***REMOVED*** Stable ordering fingerprint: capability_id -> (endpoint, method, domain, approval_required)
+    # Stable ordering fingerprint: capability_id -> (endpoint, method, domain, approval_required)
     rows = []
     for c in sorted(caps, key=lambda x: getattr(x, "capability_id", "")):
         cid = getattr(c, "capability_id", "")
@@ -34,7 +34,7 @@ def _fingerprint_capabilities(caps: list[Any]) -> str:
 def export_tool_schema_stability(*, session_id: str = "sess-demo-001") -> dict[str, Any]:
     caps = load_capabilities()
     fp = _fingerprint_capabilities(caps)
-    ***REMOVED*** Foundation: no previous snapshot persisted; expose current fingerprint and stability requirements.
+    # Foundation: no previous snapshot persisted; expose current fingerprint and stability requirements.
     return {
         "session_id": (session_id or "").strip() or "sess-demo-001",
         "tool_schema_fingerprint": fp,

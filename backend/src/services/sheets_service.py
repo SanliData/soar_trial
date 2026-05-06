@@ -29,7 +29,7 @@ class SheetsService:
         self.service = None
         self.credentials = None
         
-        ***REMOVED*** Try to get credentials
+        # Try to get credentials
         credentials_path = os.getenv("GOOGLE_SHEETS_CREDENTIALS_PATH")
         service_account_email = os.getenv("GOOGLE_SHEETS_SERVICE_ACCOUNT_EMAIL")
         private_key = os.getenv("GOOGLE_SHEETS_PRIVATE_KEY")
@@ -37,13 +37,13 @@ class SheetsService:
         if SHEETS_AVAILABLE:
             try:
                 if credentials_path and os.path.exists(credentials_path):
-                    ***REMOVED*** Use service account JSON file
+                    # Use service account JSON file
                     self.credentials = service_account.Credentials.from_service_account_file(
                         credentials_path,
                         scopes=['https://www.googleapis.com/auth/spreadsheets']
                     )
                 elif service_account_email and private_key:
-                    ***REMOVED*** Use service account credentials from env vars
+                    # Use service account credentials from env vars
                     from google.oauth2 import service_account
                     import json
                     creds_dict = {
@@ -61,7 +61,7 @@ class SheetsService:
                         scopes=['https://www.googleapis.com/auth/spreadsheets']
                     )
                 else:
-                    ***REMOVED*** Try Application Default Credentials
+                    # Try Application Default Credentials
                     from google.auth import default
                     self.credentials, _ = default(scopes=['https://www.googleapis.com/auth/spreadsheets'])
                 
@@ -144,14 +144,14 @@ class SheetsService:
             }
         
         try:
-            ***REMOVED*** Prepare headers
+            # Prepare headers
             headers = [
                 "Record ID", "Company Name", "Address", "Website", "Phone", "Email",
                 "Source", "Status", "Industry", "Employee Count", "Technology Stack",
                 "Business Activity", "Created At", "Updated At"
             ]
             
-            ***REMOVED*** Prepare data rows
+            # Prepare data rows
             rows = [headers]
             for record in records:
                 row = [
@@ -172,14 +172,14 @@ class SheetsService:
                 ]
                 rows.append(row)
             
-            ***REMOVED*** Create or get sheet
+            # Create or get sheet
             try:
-                ***REMOVED*** Try to get existing sheet
+                # Try to get existing sheet
                 spreadsheet = self.service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
                 sheet_exists = any(sheet['properties']['title'] == sheet_name for sheet in spreadsheet.get('sheets', []))
                 
                 if not sheet_exists:
-                    ***REMOVED*** Create new sheet
+                    # Create new sheet
                     request_body = {
                         'requests': [{
                             'addSheet': {
@@ -196,7 +196,7 @@ class SheetsService:
             except HttpError:
                 pass
             
-            ***REMOVED*** Write data
+            # Write data
             range_name = f"{sheet_name}!A1"
             body = {
                 'values': rows
@@ -248,14 +248,14 @@ class SheetsService:
         if not title:
             title = f"FinderOS Discovery Records - {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
         
-        ***REMOVED*** Create spreadsheet
+        # Create spreadsheet
         create_result = self.create_spreadsheet(title)
         if not create_result.get("success"):
             return create_result
         
         spreadsheet_id = create_result.get("spreadsheet_id")
         
-        ***REMOVED*** Write records
+        # Write records
         write_result = self.write_records_to_sheet(spreadsheet_id, records)
         if not write_result.get("success"):
             return write_result
@@ -270,7 +270,7 @@ class SheetsService:
         }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _sheets_service_instance = None
 
 

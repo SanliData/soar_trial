@@ -16,7 +16,7 @@ def export_incremental_sync_status() -> dict[str, Any]:
     rows = []
     stale = 0
     warnings = 0
-    ***REMOVED*** Deterministic foundation timestamp (no live sync executed).
+    # Deterministic foundation timestamp (no live sync executed).
     now = "2026-01-01T00:00:00Z"
     for c in conns:
         enabled = bool(c["enabled"])

@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 PipelineStage = Literal["INGEST", "ENRICH", "EXPORT"]
 
-***REMOVED*** In-memory store for observability events (fallback when Acontext API not configured)
+# In-memory store for observability events (fallback when Acontext API not configured)
 _acontext_store: Dict[str, List[Dict[str, Any]]] = {}
 _store_lock = asyncio.Lock()
 
@@ -59,10 +59,10 @@ async def create_session(
     }
     if _is_configured():
         try:
-            ***REMOVED*** Placeholder: call Acontext API when available
-            ***REMOVED*** import httpx
-            ***REMOVED*** async with httpx.AsyncClient() as client:
-            ***REMOVED***     r = await client.post(f"{_get_api_base()}/sessions", json=session, ...)
+            # Placeholder: call Acontext API when available
+            # import httpx
+            # async with httpx.AsyncClient() as client:
+            # r = await client.post(f"{_get_api_base()}/sessions", json=session, ...)
             pass
         except Exception as e:
             logger.warning("Acontext create_session failed (fallback to store): %s", e)
@@ -88,7 +88,7 @@ async def store_message(
     }
     if _is_configured():
         try:
-            ***REMOVED*** Placeholder: call Acontext API
+            # Placeholder: call Acontext API
             pass
         except Exception as e:
             logger.warning("Acontext store_message failed: %s", e)
@@ -110,7 +110,7 @@ async def get_messages(
 
     async with _store_lock:
         events = _acontext_store.get(session_id, [])
-    ***REMOVED*** First event may have tenant_id; validate
+    # First event may have tenant_id; validate
     session_tenant = None
     for ev in events:
         p = ev.get("payload", {})
@@ -133,7 +133,7 @@ async def store_artifact(
     """Store artifact metadata (hash only, no raw sensitive values)."""
     enc_key = os.getenv("ACONTEXT_ENCRYPTION_KEY")
     if enc_key:
-        ***REMOVED*** AES encrypt hash before storing (simplified: use env key for deterministic encryption)
+        # AES encrypt hash before storing (simplified: use env key for deterministic encryption)
         hash_sha256 = hashlib.sha256((hash_sha256 + enc_key[:16]).encode()).hexdigest()
 
     artifact = {
@@ -145,7 +145,7 @@ async def store_artifact(
     }
     if _is_configured():
         try:
-            ***REMOVED*** Placeholder: call Acontext API
+            # Placeholder: call Acontext API
             pass
         except Exception as e:
             logger.warning("Acontext store_artifact failed: %s", e)
@@ -171,7 +171,7 @@ async def store_event(
     }
     if _is_configured():
         try:
-            ***REMOVED*** Placeholder: call Acontext API
+            # Placeholder: call Acontext API
             pass
         except Exception as e:
             logger.warning("Acontext store_event failed: %s", e)
@@ -195,7 +195,7 @@ async def get_events_for_replay(trace_id: str, tenant_id: str) -> List[Dict[str,
                 p = ev.get("payload", {})
                 tenant_in_payload = p.get("tenant_id") or (p.get("payload") or {}).get("tenant_id")
                 if tenant_in_payload and tenant_in_payload != tenant_id:
-                    continue  ***REMOVED*** skip cross-tenant
+                    continue   # skip cross-tenant
                 all_events.append(ev)
         all_events.sort(key=lambda e: e.get("payload", {}).get("ts", ""))
         return all_events

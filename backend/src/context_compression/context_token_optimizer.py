@@ -18,7 +18,7 @@ def export_context_token_optimizer_manifest() -> dict[str, Any]:
     Deterministic manifest only: provides a repeatable calculation shape
     without mutating runtime context.
     """
-    ***REMOVED*** Synthetic demo inputs (not reading files, not invoking models).
+    # Synthetic demo inputs (not reading files, not invoking models).
     sample_items: list[dict[str, Any]] = [
         {
             "context_id": "sample-inst",
@@ -48,7 +48,7 @@ def export_context_token_optimizer_manifest() -> dict[str, Any]:
         },
     ]
 
-    ***REMOVED*** Budget hint: treat typed context as orchestration budget
+    # Budget hint: treat typed context as orchestration budget
     budget = categorize_budget("orchestration")
     max_tokens_total = int(budget["budget_tokens"] * 0.18)
 

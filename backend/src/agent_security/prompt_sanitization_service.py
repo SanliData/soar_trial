@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-***REMOVED*** Suspicious instruction patterns (case-insensitive)
+# Suspicious instruction patterns (case-insensitive)
 _INJECTION_RX = [
     re.compile(r"(?i)\bignore\s+(all\s+)?(previous|prior|above)\s+(instructions|rules)\b"),
     re.compile(r"(?i)\[?\s*system\s*\]?\s*:\s*"),
@@ -32,7 +32,7 @@ def sanitize_prompt(text: str) -> dict[str, Any]:
         if rx.search(t):
             findings.append(f"matched_pattern:{rx.pattern[:48]}")
 
-    ***REMOVED*** Neutralize obvious delimiter abuse (deterministic strip, not semantic rewriting)
+    # Neutralize obvious delimiter abuse (deterministic strip, not semantic rewriting)
     if "</system>" in t.lower() or "<system>" in t.lower():
         findings.append("xml_style_role_tags")
         t = re.sub(r"(?i)</?system>", "", t)

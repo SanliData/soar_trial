@@ -28,18 +28,18 @@ class PrecisionExposureRequest(BaseModel):
     target_geography: Optional[str] = None
     target_roles: Optional[str] = None
     target_industry: Optional[str] = None
-    location_coordinates: Optional[dict] = None  ***REMOVED*** {"lat": 41.0082, "lng": 28.9784}
+    location_coordinates: Optional[dict] = None   # {"lat": 41.0082, "lng": 28.9784}
     location_radius_meters: Optional[int] = None
-    location_polygon: Optional[dict] = None  ***REMOVED*** GeoJSON polygon
+    location_polygon: Optional[dict] = None   # GeoJSON polygon
     management_type: str = Field("soar_managed", description="soar_managed, partner_managed, customer_agency")
-    target_context: Optional[dict] = None  ***REMOVED*** Contextual targeting (no PII)
+    target_context: Optional[dict] = None   # Contextual targeting (no PII)
 
 
 class ConversionTrackingRequest(BaseModel):
     """Request model for tracking conversion events (impressions, clicks, views)"""
     precision_exposure_id: int
     event_type: str = Field(..., description="impression, click, content_view")
-    event_context: Optional[dict] = None  ***REMOVED*** Contextual data only (no PII)
+    event_context: Optional[dict] = None   # Contextual data only (no PII)
 
 
 @router.post("/create")
@@ -54,7 +54,7 @@ async def create_precision_exposure(
     No personal data until explicit outreach stage.
     """
     try:
-        ***REMOVED*** Check access gate for exposure module
+        # Check access gate for exposure module
         access_gate = db.query(AccessGate).filter(
             AccessGate.user_id == user_id,
             AccessGate.module_type == "exposure"
@@ -66,7 +66,7 @@ async def create_precision_exposure(
                 detail="Precision exposure module requires purchase. Please unlock access first."
             )
         
-        ***REMOVED*** Create precision exposure campaign
+        # Create precision exposure campaign
         exposure = PrecisionExposure(
             user_id=user_id,
             feasibility_report_id=request.feasibility_report_id,
@@ -113,7 +113,7 @@ async def track_conversion(
     NO lead labeling at this stage - only interest signals.
     """
     try:
-        ***REMOVED*** Get or create conversion tracking record
+        # Get or create conversion tracking record
         conversion = db.query(ExposureConversion).filter(
             ExposureConversion.user_id == user_id,
             ExposureConversion.precision_exposure_id == request.precision_exposure_id,
@@ -121,7 +121,7 @@ async def track_conversion(
         ).first()
         
         if not conversion:
-            ***REMOVED*** Create new conversion tracking
+            # Create new conversion tracking
             conversion = ExposureConversion(
                 user_id=user_id,
                 precision_exposure_id=request.precision_exposure_id,
@@ -130,11 +130,11 @@ async def track_conversion(
                 impression_count=1 if request.event_type == "impression" else 0,
                 click_count=1 if request.event_type == "click" else 0,
                 content_view_count=1 if request.event_type == "content_view" else 0,
-                interest_score=10 if request.event_type == "click" else 5  ***REMOVED*** Soft interest scoring
+                interest_score=10 if request.event_type == "click" else 5   # Soft interest scoring
             )
             db.add(conversion)
         else:
-            ***REMOVED*** Update existing conversion tracking
+            # Update existing conversion tracking
             if request.event_type == "impression":
                 conversion.impression_count += 1
             elif request.event_type == "click":
@@ -146,7 +146,7 @@ async def track_conversion(
             
             conversion.last_event_at = datetime.utcnow()
             if request.event_context:
-                ***REMOVED*** Update context (merge, don't replace)
+                # Update context (merge, don't replace)
                 if conversion.event_context:
                     conversion.event_context.update(request.event_context)
                 else:
@@ -196,7 +196,7 @@ async def get_conversion_stats(
                 "conversions": []
             }
         
-        ***REMOVED*** Aggregate metrics
+        # Aggregate metrics
         total_impressions = sum(c.impression_count for c in conversions)
         total_clicks = sum(c.click_count for c in conversions)
         total_content_views = sum(c.content_view_count for c in conversions)

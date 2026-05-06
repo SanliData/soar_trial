@@ -30,7 +30,7 @@ def export_evaluation_governance(
         "stale_evaluation_logic": stale,
         "weak_comparison_quality": cw > 0.25,
         "governance_score": max(0.0, governance_score),
-        ***REMOVED*** H-048 integration (metadata only): conversational evaluation visibility
+        # H-048 integration (metadata only): conversational evaluation visibility
         "conversational_sessions_visible": True,
         "conversational_session_count": int(conv.get("session_count") or 0),
         "metadata": {

@@ -109,13 +109,13 @@ class UsageTrackingService:
             elif usage_type == "leads":
                 usage.leads_count += amount
             elif usage_type == "conversions":
-                ***REMOVED*** Track conversions by type
+                # Track conversions by type
                 if conversion_type == "appointment":
                     usage.appointments_count += amount
                 elif conversion_type == "direct_traffic":
-                    ***REMOVED*** Direct traffic conversions are tracked separately
-                    ***REMOVED*** We can add a new field later if needed
-                    usage.leads_count += amount  ***REMOVED*** Track as leads for now
+                    # Direct traffic conversions are tracked separately
+                    # We can add a new field later if needed
+                    usage.leads_count += amount   # Track as leads for now
                 else:
                     usage.leads_count += amount
             else:
@@ -161,20 +161,20 @@ class UsageTrackingService:
             
             usage = self.get_or_create_usage_tracking(user_id, period)
             
-            ***REMOVED*** Get user's subscription
+            # Get user's subscription
             subscription = self.payment_service.get_user_subscription(user_id)
             plan_type = subscription.get("plan_type", "free") if subscription else "free"
             plan = self.payment_service.PLANS.get(plan_type, self.payment_service.PLANS["free"])
             limits = plan.get("limits", {})
             
-            ***REMOVED*** Calculate usage percentages
+            # Calculate usage percentages
             companies_limit = limits.get("companies_per_month", 0)
             personas_limit = limits.get("personas_per_month", 0)
             campaigns_limit = limits.get("campaigns_per_month", 0)
             
             companies_percentage = (
                 (usage.companies_count / companies_limit * 100) if companies_limit > 0 else 0
-            ) if companies_limit != -1 else 0  ***REMOVED*** -1 means unlimited
+            ) if companies_limit != -1 else 0   # -1 means unlimited
             
             personas_percentage = (
                 (usage.personas_count / personas_limit * 100) if personas_limit > 0 else 0
@@ -209,12 +209,12 @@ class UsageTrackingService:
                     },
                     "appointments": {
                         "count": usage.appointments_count,
-                        "limit": None,  ***REMOVED*** Appointments are typically unlimited
+                        "limit": None,   # Appointments are typically unlimited
                         "unlimited": True
                     },
                     "leads": {
                         "count": usage.leads_count,
-                        "limit": None,  ***REMOVED*** Leads are typically unlimited
+                        "limit": None,   # Leads are typically unlimited
                         "unlimited": True
                     }
                 }
@@ -258,7 +258,7 @@ class UsageTrackingService:
                     "error": f"Invalid usage type: {usage_type}"
                 }
             
-            ***REMOVED*** If unlimited, always allowed
+            # If unlimited, always allowed
             if usage_data.get("unlimited"):
                 return {
                     "allowed": True,
@@ -266,7 +266,7 @@ class UsageTrackingService:
                     "unlimited": True
                 }
             
-            ***REMOVED*** Check if limit reached
+            # Check if limit reached
             count = usage_data["count"]
             limit = usage_data["limit"]
             

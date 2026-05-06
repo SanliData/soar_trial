@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 REDIS_KEY_PREFIX = "experiment_engine:metrics"
-REDIS_TTL = 86400 * 90  ***REMOVED*** 90 days
+REDIS_TTL = 86400 * 90   # 90 days
 EVENT_TYPES = ("sent", "opened", "clicked", "replied")
 
 

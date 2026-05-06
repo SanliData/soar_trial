@@ -34,7 +34,7 @@ def run_conversation_evaluation(
         turn_analyses.append(analysis)
         append_trace_event(session_id=session_id, event_type="TURN_ANALYZED", source_service="turn_level_analysis_service", payload=analysis)
 
-    ***REMOVED*** Conversation alignment is aggregate of turn-level signals (simple deterministic).
+    # Conversation alignment is aggregate of turn-level signals (simple deterministic).
     any_bypass = any(a["policy_alignment_score"]["signals"]["approval_bypass_attempt"] for a in turn_analyses)
     any_unsafe = any(a["policy_alignment_score"]["signals"]["unsafe_recommendation"] for a in turn_analyses)
     any_compliance = any(a["policy_alignment_score"]["signals"]["compliance_violation"] for a in turn_analyses)

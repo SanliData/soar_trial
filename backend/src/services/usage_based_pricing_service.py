@@ -32,8 +32,8 @@ class UsageBasedPricingService:
     Reads pricing constants from src.config.pricing (single source of truth).
     """
     
-    ***REMOVED*** Query cap (non-negotiable unless admin override)
-    MAX_QUERY_RESULTS = MAX_RESULTS_PER_QUERY  ***REMOVED*** 100
+    # Query cap (non-negotiable unless admin override)
+    MAX_QUERY_RESULTS = MAX_RESULTS_PER_QUERY   # 100
     
     def __init__(self, db: Session):
         """Initialize usage-based pricing service."""
@@ -131,7 +131,7 @@ class UsageBasedPricingService:
         if avg_optional_modules is None:
             avg_optional_modules = []
         
-        ***REMOVED*** Calculate average cost per query
+        # Calculate average cost per query
         avg_query_cost = self.calculate_query_cost(
             include_persona_deepening="persona_deepening" in avg_optional_modules,
             include_visit_route="visit_route" in avg_optional_modules,
@@ -139,7 +139,7 @@ class UsageBasedPricingService:
             include_outreach_preparation="outreach_preparation" in avg_optional_modules
         )["total_cost"]
         
-        ***REMOVED*** Monthly costs
+        # Monthly costs
         activation_fee = ACCOUNT_ACTIVATION_FEE
         query_costs = avg_query_cost * estimated_queries_per_month
         total_monthly = activation_fee + query_costs
@@ -202,7 +202,7 @@ class UsageBasedPricingService:
             include_outreach_preparation=include_outreach_preparation
         )
         
-        ***REMOVED*** Generate quote token
+        # Generate quote token
         quote_info = generate_quote_token(
             total_cost=cost_breakdown["total_cost"],
             include_persona_deepening=include_persona_deepening,

@@ -27,13 +27,13 @@ except ImportError:
     HTTPAuthorizationCredentials = None
     Session = None
 
-***REMOVED*** Import get_db at module level (will be used in dependency)
+# Import get_db at module level (will be used in dependency)
 try:
     from src.db.base import get_db
 except ImportError:
     get_db = None
 
-***REMOVED*** Import Secret Manager
+# Import Secret Manager
 try:
     from src.core.secret_manager import get_secret_manager
     SECRET_MANAGER_AVAILABLE = True
@@ -70,17 +70,17 @@ class AuthService:
         Initialize Auth Service with configuration from Secret Manager (production) 
         or environment variables (development).
         """
-        ***REMOVED*** Initialize Secret Manager (with fallback to env vars)
+        # Initialize Secret Manager (with fallback to env vars)
         if SECRET_MANAGER_AVAILABLE:
             secret_mgr = get_secret_manager()
             self.google_client_id = secret_mgr.get_secret("GOOGLE_CLIENT_ID")
             self.jwt_secret = secret_mgr.get_secret("JWT_SECRET")
         else:
-            ***REMOVED*** Fallback to environment variables if Secret Manager not available
+            # Fallback to environment variables if Secret Manager not available
             self.google_client_id = os.getenv("GOOGLE_CLIENT_ID")
             self.jwt_secret = os.getenv("JWT_SECRET")
         
-        ***REMOVED*** These can remain as env vars (not sensitive). Production: max 24h.
+        # These can remain as env vars (not sensitive). Production: max 24h.
         self.jwt_algorithm = os.getenv("JWT_ALGORITHM") or "HS256"
         _exp = get_int_env("JWT_EXPIRATION_HOURS", 24)
         if (os.getenv("ENV") or "").strip().lower() == "production":
@@ -119,7 +119,7 @@ class AuthService:
             }
         
         try:
-            ***REMOVED*** Verify the token
+            # Verify the token
             request = requests.Request()
             idinfo = id_token.verify_oauth2_token(
                 id_token_string,
@@ -127,13 +127,13 @@ class AuthService:
                 self.google_client_id
             )
             
-            ***REMOVED*** Verify the issuer
+            # Verify the issuer
             if idinfo.get('iss') not in ('accounts.google.com', 'https://accounts.google.com'):
                 return {
                     "success": False,
                     "error": "Invalid token issuer"
                 }
-            ***REMOVED*** Explicit audience check: must match GOOGLE_CLIENT_ID (fail clearly on mismatch)
+            # Explicit audience check: must match GOOGLE_CLIENT_ID (fail clearly on mismatch)
             aud = idinfo.get('aud')
             if aud != self.google_client_id:
                 return {
@@ -141,7 +141,7 @@ class AuthService:
                     "error": "Token audience does not match GOOGLE_CLIENT_ID. Check frontend and backend use the same OAuth client."
                 }
             
-            ***REMOVED*** Extract user information
+            # Extract user information
             user_info = {
                 "google_id": idinfo.get('sub'),
                 "email": idinfo.get('email'),
@@ -204,10 +204,10 @@ class AuthService:
             }
         
         try:
-            ***REMOVED*** Calculate expiration time
+            # Calculate expiration time
             expires_at = datetime.utcnow() + timedelta(hours=self.jwt_expiration_hours)
             
-            ***REMOVED*** Create payload
+            # Create payload
             payload = {
                 "user_id": user_id,
                 "email": email,
@@ -217,7 +217,7 @@ class AuthService:
                 "type": "access"
             }
             
-            ***REMOVED*** Generate token
+            # Generate token
             token = jwt.encode(
                 payload,
                 self.jwt_secret,
@@ -228,7 +228,7 @@ class AuthService:
                 "success": True,
                 "token": token,
                 "expires_at": expires_at.isoformat(),
-                "expires_in": self.jwt_expiration_hours * 3600  ***REMOVED*** seconds
+                "expires_in": self.jwt_expiration_hours * 3600   # seconds
             }
             
         except Exception as e:
@@ -263,7 +263,7 @@ class AuthService:
             }
         
         try:
-            ***REMOVED*** Decode and verify token
+            # Decode and verify token
             payload = jwt.decode(
                 token,
                 self.jwt_secret,
@@ -305,7 +305,7 @@ class AuthService:
                 - jwt_token: Generated JWT token (if user_id provided)
                 - error: Error message if authentication fails
         """
-        ***REMOVED*** Step 1: Verify Google token
+        # Step 1: Verify Google token
         verify_result = self.verify_google_token(id_token_string)
         
         if not verify_result.get("success"):
@@ -313,7 +313,7 @@ class AuthService:
         
         user_info = verify_result.get("user_info", {})
         
-        ***REMOVED*** Return user info (JWT will be generated after user is created/retrieved from DB)
+        # Return user info (JWT will be generated after user is created/retrieved from DB)
         return {
             "success": True,
             "user_info": user_info
@@ -334,7 +334,7 @@ class AuthService:
         Returns:
             Complete authentication response
         """
-        ***REMOVED*** Generate JWT token
+        # Generate JWT token
         jwt_result = self.generate_jwt_token(
             user_id=user_id,
             email=user_info.get("email", ""),
@@ -360,7 +360,7 @@ class AuthService:
         }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _auth_service_instance = None
 
 
@@ -372,7 +372,7 @@ def get_auth_service() -> AuthService:
     return _auth_service_instance
 
 
-***REMOVED*** Admin emails: SOARB2B_ADMIN_EMAILS (comma-separated) + isanli058@gmail.com
+# Admin emails: SOARB2B_ADMIN_EMAILS (comma-separated) + isanli058@gmail.com
 def get_admin_emails() -> list:
     """Return list of emails allowed as admin (env SOARB2B_ADMIN_EMAILS + isanli058@gmail.com)."""
     env_val = os.getenv("SOARB2B_ADMIN_EMAILS", "")
@@ -406,7 +406,7 @@ def get_email_from_jwt(authorization: Optional[str]) -> Optional[str]:
     return (result.get("payload") or {}).get("email")
 
 
-***REMOVED*** Implementation function (called by both dependency wrapper and helper functions)
+# Implementation function (called by both dependency wrapper and helper functions)
 def get_current_user_impl(
     authorization: Optional[str],
     db: Session
@@ -443,7 +443,7 @@ def get_current_user_impl(
     
     from src.models.user import User
     
-    ***REMOVED*** Check authorization header
+    # Check authorization header
     if not authorization:
         raise HTTPException(
             status_code=401,
@@ -451,7 +451,7 @@ def get_current_user_impl(
             headers={"WWW-Authenticate": "Bearer"}
         )
     
-    ***REMOVED*** Extract token from "Bearer <token>" format
+    # Extract token from "Bearer <token>" format
     if not authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=401,
@@ -468,7 +468,7 @@ def get_current_user_impl(
             headers={"WWW-Authenticate": "Bearer"}
         )
     
-    ***REMOVED*** Verify token
+    # Verify token
     auth_service = get_auth_service()
     
     if not auth_service.is_configured():
@@ -486,7 +486,7 @@ def get_current_user_impl(
             headers={"WWW-Authenticate": "Bearer"}
         )
     
-    ***REMOVED*** Get user_id from token payload
+    # Get user_id from token payload
     payload = verify_result.get("payload", {})
     user_id = payload.get("user_id")
     
@@ -496,7 +496,7 @@ def get_current_user_impl(
             detail="Invalid token payload"
         )
     
-    ***REMOVED*** Get user from database
+    # Get user from database
     user = db.query(User).filter(User.id == user_id).first()
     
     if not user:
@@ -514,7 +514,7 @@ def get_current_user_impl(
     return user
 
 
-***REMOVED*** FastAPI Dependency wrapper (uses Depends for db)
+# FastAPI Dependency wrapper (uses Depends for db)
 def get_current_user_dependency(
     authorization: Optional[str] = Header(None, alias="Authorization"),
     db: Session = Depends(get_db)

@@ -32,8 +32,8 @@ def collect_linkedin_signals(
     """
     signals: List[Dict[str, Any]] = []
     try:
-        ***REMOVED*** Placeholder: in production integrate with LinkedIn API or scraped data
-        ***REMOVED*** Example: hiring spike when job count increase detected for company/industry
+        # Placeholder: in production integrate with LinkedIn API or scraped data
+        # Example: hiring spike when job count increase detected for company/industry
         if industry or region:
             sig = {
                 "type": SIGNAL_TYPE_HIRING_SPIKE,

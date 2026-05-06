@@ -18,9 +18,9 @@ from src.models.target_trace import TargetTrace
 router = APIRouter(prefix="/targets", tags=["explainer"])
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** RESPONSE MODELS
-***REMOVED*** ============================================================================
+# ============================================================================
+# RESPONSE MODELS
+# ============================================================================
 
 class WhyThisAccountResponse(BaseModel):
     """Response model for "Why this account?" trace"""
@@ -33,9 +33,9 @@ class WhyThisAccountResponse(BaseModel):
     updated_at: str
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** EXPLAINER ENDPOINTS
-***REMOVED*** ============================================================================
+# ============================================================================
+# EXPLAINER ENDPOINTS
+# ============================================================================
 
 @router.get("/{target_id}/why", response_model=WhyThisAccountResponse)
 async def get_why_this_account(
@@ -63,7 +63,7 @@ async def get_why_this_account(
     if target_type not in ["company", "persona"]:
         raise HTTPException(status_code=400, detail="target_type must be 'company' or 'persona'")
     
-    ***REMOVED*** Check if trace exists
+    # Check if trace exists
     trace = db.query(TargetTrace).filter(
         TargetTrace.user_id == user.id,
         TargetTrace.target_id == target_id,
@@ -72,7 +72,7 @@ async def get_why_this_account(
     ).first()
     
     if not trace:
-        ***REMOVED*** Generate trace on-the-fly
+        # Generate trace on-the-fly
         service = ExplainerService(db)
         try:
             trace = service.generate_trace(
@@ -84,7 +84,7 @@ async def get_why_this_account(
         except ValueError as e:
             raise HTTPException(status_code=404, detail=str(e))
     
-    ***REMOVED*** Build explanation object
+    # Build explanation object
     explanation = {
         "signals_used": trace.signals_used or [],
         "location_affinity": {
@@ -140,7 +140,7 @@ async def generate_why_this_account(
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     
-    ***REMOVED*** Build explanation object
+    # Build explanation object
     explanation = {
         "signals_used": trace.signals_used or [],
         "location_affinity": {

@@ -9,9 +9,9 @@ from typing import Dict
 logger = logging.getLogger(__name__)
 
 REDIS_KEY = "market_signals:signal_weights"
-REDIS_TTL = 86400 * 7  ***REMOVED*** 7 days
+REDIS_TTL = 86400 * 7   # 7 days
 
-***REMOVED*** Default weights (used when Redis has no override)
+# Default weights (used when Redis has no override)
 SIGNAL_WEIGHTS = {
     "hiring_spike": 0.6,
     "funding_event": 0.8,

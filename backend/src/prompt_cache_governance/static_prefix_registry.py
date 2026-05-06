@@ -28,7 +28,7 @@ def _hash(text: str) -> str:
 
 
 def export_static_prefix_registry() -> dict[str, Any]:
-    ***REMOVED*** Deterministic minimal content; no timestamps/uuids/random content inside cacheable components.
+    # Deterministic minimal content; no timestamps/uuids/random content inside cacheable components.
     components = []
     for ct in STATIC_COMPONENT_TYPES:
         content = f"{ct}:finderos_governed_foundation_v1"

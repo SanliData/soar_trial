@@ -45,7 +45,7 @@ def get_join_path(from_table: str, to_table: str, max_depth: int = 5) -> Optiona
             while t != from_table and t in parent and len(path) < max_steps:
                 ft, tt, fc, tc = parent[t]
                 path.append((ft, tt, fc, tc))
-                t = ft if t == tt else tt  ***REMOVED*** previous node in path
+                t = ft if t == tt else tt   # previous node in path
             if t != from_table:
                 return None
             path.reverse()
@@ -76,7 +76,7 @@ def list_tables() -> List[str]:
     return list(g.get("table_columns", {}).keys())
 
 
-***REMOVED*** ---- Semantic graph queries (company, contact, industry, campaign, message, geography) ----
+# ---- Semantic graph queries (company, contact, industry, campaign, message, geography) ----
 
 
 def similar_companies(

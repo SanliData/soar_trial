@@ -21,39 +21,39 @@ class ExportJob(Base):
     
     __tablename__ = "export_jobs"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Export identifier (UUID for public access)
+    # Export identifier (UUID for public access)
     export_id = Column(String(255), nullable=False, unique=True, index=True)
     
-    ***REMOVED*** Foreign key to PlanResult
+    # Foreign key to PlanResult
     plan_result_id = Column(Integer, ForeignKey("plan_results.id"), nullable=False, index=True)
     
-    ***REMOVED*** Export configuration
-    format = Column(String(20), nullable=False)  ***REMOVED*** csv, xlsx, json, zip
-    modules = Column(Text, nullable=True)  ***REMOVED*** JSON array of module types to export
+    # Export configuration
+    format = Column(String(20), nullable=False)   # csv, xlsx, json, zip
+    modules = Column(Text, nullable=True)   # JSON array of module types to export
     
-    ***REMOVED*** Export status
-    status = Column(String(50), default="pending", nullable=False, index=True)  ***REMOVED*** pending, processing, ready, failed
+    # Export status
+    status = Column(String(50), default="pending", nullable=False, index=True)   # pending, processing, ready, failed
     
-    ***REMOVED*** File information
-    file_path = Column(String(512), nullable=True)  ***REMOVED*** Path to generated export file
-    file_size_bytes = Column(Integer, nullable=True)  ***REMOVED*** File size in bytes
-    mime_type = Column(String(100), nullable=True)  ***REMOVED*** MIME type for download
+    # File information
+    file_path = Column(String(512), nullable=True)   # Path to generated export file
+    file_size_bytes = Column(Integer, nullable=True)   # File size in bytes
+    mime_type = Column(String(100), nullable=True)   # MIME type for download
     
-    ***REMOVED*** Error information (if failed)
+    # Error information (if failed)
     error_message = Column(Text, nullable=True)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Relationship
+    # Relationship
     plan_result = relationship("PlanResult", backref="export_jobs")
     
-    ***REMOVED*** Indexes
+    # Indexes
     __table_args__ = (
         Index('idx_export_job_export_id', 'export_id'),
         Index('idx_export_job_result_id', 'plan_result_id'),

@@ -24,7 +24,7 @@ from src.services.web_acquisition.compliance import (
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Feature flag
+# Feature flag
 STAGEHAND_ENABLED = os.getenv("SOAR_ENABLE_STAGEHAND", "false").lower() == "true"
 STAGEHAND_API_KEY = os.getenv("BROWSERBASE_API_KEY", "")
 STAGEHAND_API_URL = os.getenv("BROWSERBASE_API_URL", "https://www.browserbase.com/v1")
@@ -69,11 +69,11 @@ class StagehandAdapter:
             AcquisitionJobResult with acquired data
         """
         if not self.enabled:
-            ***REMOVED*** Dry-run mode: return mocked results
+            # Dry-run mode: return mocked results
             return self._mock_acquisition(target_type, geography, sources_policy, max_results)
         
-        ***REMOVED*** Real Stagehand integration would go here
-        ***REMOVED*** For now, return mocked results as placeholder
+        # Real Stagehand integration would go here
+        # For now, return mocked results as placeholder
         logger.warning("Stagehand enabled but not yet implemented - returning mocked results")
         return self._mock_acquisition(target_type, geography, sources_policy, max_results)
     
@@ -100,11 +100,11 @@ class StagehandAdapter:
         contacts: List[ContactAcquired] = []
         evidence: List[EvidenceSourceInfo] = []
         
-        ***REMOVED*** Mock official sources
+        # Mock official sources
         if SourcesPolicy.validate_sources_policy(sources_policy):
-            ***REMOVED*** Generate mock businesses
+            # Generate mock businesses
             if target_type in ["businesses", "both"]:
-                mock_businesses = min(5, max_results)  ***REMOVED*** Max 5 for mock
+                mock_businesses = min(5, max_results)   # Max 5 for mock
                 for i in range(mock_businesses):
                     businesses.append(BusinessAcquired(
                         name=f"Mock Company {i+1}",
@@ -123,7 +123,7 @@ class StagehandAdapter:
                     contacts_found=0
                 ))
             
-            ***REMOVED*** Generate mock contacts
+            # Generate mock contacts
             if target_type in ["contacts", "both"]:
                 mock_contacts = min(3, max_results - len(businesses))
                 for i in range(mock_contacts):
@@ -145,7 +145,7 @@ class StagehandAdapter:
                 if evidence:
                     evidence[0].contacts_found = mock_contacts
         
-        ***REMOVED*** Build coverage report
+        # Build coverage report
         emails = sum(1 for c in contacts if c.email)
         phones = sum(1 for c in contacts if c.phone) + sum(1 for b in businesses if b.phone)
         websites = sum(1 for b in businesses if b.website)
@@ -168,7 +168,7 @@ class StagehandAdapter:
         )
 
 
-***REMOVED*** Global adapter instance
+# Global adapter instance
 _stagehand_adapter: Optional[StagehandAdapter] = None
 
 

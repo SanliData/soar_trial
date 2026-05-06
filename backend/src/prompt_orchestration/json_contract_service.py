@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-***REMOVED*** Summaries use JSON-Schema-like keys for deterministic validation in evaluation — no free-form trees.
+# Summaries use JSON-Schema-like keys for deterministic validation in evaluation — no free-form trees.
 JSON_CONTRACTS: dict[str, dict[str, Any]] = {
     "results_hub_v1": {
         "description": "Results Hub artefact bundle",

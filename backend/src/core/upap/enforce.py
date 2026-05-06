@@ -88,7 +88,7 @@ def enforce(
         lead_copy["dropped_reason"] = None
         kept.append(lead_copy)
 
-    ***REMOVED*** Cap at company_limit
+    # Cap at company_limit
     if len(kept) > company_limit:
         excess = kept[company_limit:]
         kept = kept[:company_limit]

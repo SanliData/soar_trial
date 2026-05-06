@@ -37,7 +37,7 @@ async def run_monitoring_agent(
     failures = 0
 
     try:
-        ***REMOVED*** 1. Ingest
+        # 1. Ingest
         events = await ingest_logs(log_paths=log_paths, max_events=max_events)
         events_ingested = len(events)
         if not events:
@@ -52,20 +52,20 @@ async def run_monitoring_agent(
                 "analysis_duration_ms": duration_ms,
             }
 
-        ***REMOVED*** 2. Cluster
+        # 2. Cluster
         clusters = await cluster_errors(events)
         clusters_created = len(clusters)
 
         for cluster in clusters:
             try:
-                ***REMOVED*** 3. Root cause
+                # 3. Root cause
                 rca = await analyze_root_cause(cluster, use_openai=use_openai_root_cause)
-                ***REMOVED*** 4. Severity
+                # 4. Severity
                 sev = await classify_severity(cluster, clusters)
-                ***REMOVED*** 5. Likely files
+                # 5. Likely files
                 files = find_likely_files(cluster, cluster.get("sample_errors"))
                 likely_files = files.get("likely_files", [])
-                ***REMOVED*** 6. Check registry
+                # 6. Check registry
                 existing = await get_incident_by_cluster(cluster["cluster_id"])
                 title = f"{cluster.get('error_type', 'error')} affecting {', '.join((cluster.get('affected_components') or [])[:3])}"
                 if not title.strip():
@@ -80,7 +80,7 @@ async def run_monitoring_agent(
                     if t:
                         first_ts = min(first_ts, t) if first_ts else t
                         last_ts = max(last_ts, t) if last_ts else t
-                ***REMOVED*** 7. Register
+                # 7. Register
                 reg = await register_incident(
                     cluster_id=cluster["cluster_id"],
                     title=title,
@@ -115,7 +115,7 @@ async def run_monitoring_agent(
                     "last_seen_at": existing.get("last_seen_at") if existing else (last_ts.isoformat() if hasattr(last_ts, "isoformat") else str(last_ts) if last_ts else None),
                     "alert_status": alert_status,
                 }
-                ***REMOVED*** 8. Notify if new or escalation
+                # 8. Notify if new or escalation
                 if await should_notify(reg.get("incident_id", ""), sev.get("severity", "S3"), existing):
                     alert_result = await send_alert(
                         incident_payload,

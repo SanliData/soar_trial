@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Dict, FrozenSet
 
-***REMOVED*** Canonical catalog — orchestrators select from this set (deterministic strings).
+# Canonical catalog — orchestrators select from this set (deterministic strings).
 STRUCTURED_FAILURE_CODES: FrozenSet[str] = frozenset(
     {
         "missing_market_context",
@@ -20,7 +20,7 @@ STRUCTURED_FAILURE_CODES: FrozenSet[str] = frozenset(
     }
 )
 
-***REMOVED*** Deterministic recommendation strings keyed by failure code (template library).
+# Deterministic recommendation strings keyed by failure code (template library).
 DETERMINISTIC_RECOMMENDATIONS: Dict[str, str] = {
     "missing_market_context": (
         "Add stronger market-context guidance: require explicit industry, segment, and timing cues "

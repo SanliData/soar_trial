@@ -20,7 +20,7 @@ def project_compressed_chunk_context(
     source_type: str,
     source_record_id: str,
 ) -> dict[str, Any]:
-    ***REMOVED*** Represent chunk summaries as knowledge_context with tags (no new context_type introduced).
+    # Represent chunk summaries as knowledge_context with tags (no new context_type introduced).
     return build_knowledge_context(
         context_id=f"chunk-cmpr::{chunk_id}",
         workflow_scope=workflow_scope,

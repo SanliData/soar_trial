@@ -20,7 +20,7 @@ class TrialService:
     Service for managing 30-day free trial with usage limits.
     """
     
-    ***REMOVED*** Trial limits
+    # Trial limits
     TRIAL_LIMITS = {
         "max_companies": 100,
         "max_personas": 25,
@@ -50,11 +50,11 @@ class TrialService:
         
         now = datetime.utcnow()
         if subscription.trial_started_at:
-            ***REMOVED*** Check if trial has started
+            # Check if trial has started
             if now < subscription.trial_started_at:
                 return False
         
-        ***REMOVED*** Check if trial has ended
+        # Check if trial has ended
         return now < subscription.trial_end
     
     def start_trial(self, user_id: int) -> Dict[str, Any]:
@@ -68,13 +68,13 @@ class TrialService:
             Dictionary with result
         """
         try:
-            ***REMOVED*** Get or create subscription
+            # Get or create subscription
             subscription = self.db.query(Subscription).filter(
                 Subscription.user_id == user_id
             ).first()
             
             if not subscription:
-                ***REMOVED*** Create new subscription with trial
+                # Create new subscription with trial
                 subscription = Subscription(
                     user_id=user_id,
                     plan_type="usage_based",
@@ -82,11 +82,11 @@ class TrialService:
                     status="active",
                     trial_started_at=datetime.utcnow(),
                     trial_end=datetime.utcnow() + timedelta(days=self.TRIAL_DURATION_DAYS),
-                    base_subscription_price=0.0  ***REMOVED*** Free during trial
+                    base_subscription_price=0.0   # Free during trial
                 )
                 self.db.add(subscription)
             else:
-                ***REMOVED*** Update existing subscription to start trial
+                # Update existing subscription to start trial
                 if subscription.trial_end and datetime.utcnow() < subscription.trial_end:
                     return {
                         "success": False,
@@ -141,7 +141,7 @@ class TrialService:
             ).first()
             
             if not subscription or not self.is_trial_active(subscription):
-                ***REMOVED*** Not in trial, no limits
+                # Not in trial, no limits
                 return {
                     "success": True,
                     "in_trial": False,
@@ -150,7 +150,7 @@ class TrialService:
                     "current": current_count
                 }
             
-            ***REMOVED*** Check limits
+            # Check limits
             limit_map = {
                 "companies": self.TRIAL_LIMITS["max_companies"],
                 "personas": self.TRIAL_LIMITS["max_personas"],

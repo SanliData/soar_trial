@@ -56,7 +56,7 @@ class LeadService:
             Dictionary with lead creation result
         """
         try:
-            ***REMOVED*** Check if lead already exists (by Google Ads lead ID or email)
+            # Check if lead already exists (by Google Ads lead ID or email)
             existing_lead = None
             if google_ads_lead_id:
                 existing_lead = self.db.query(Lead).filter(
@@ -81,7 +81,7 @@ class LeadService:
                     "message": "Lead already exists"
                 }
             
-            ***REMOVED*** Create new lead
+            # Create new lead
             lead = Lead(
                 user_id=user_id,
                 campaign_id=campaign_id,
@@ -101,7 +101,7 @@ class LeadService:
             
             logger.info(f"Lead created: {lead.id} (email: {email}, user_id: {user_id})")
             
-            ***REMOVED*** Send notification for new lead
+            # Send notification for new lead
             try:
                 from src.services.notification_service import get_notification_service
                 notification_service = get_notification_service(self.db)
@@ -114,7 +114,7 @@ class LeadService:
             except Exception as e:
                 logger.warning(f"Failed to send lead notification: {str(e)}")
             
-            ***REMOVED*** Automatically convert to appointment (Step 11)
+            # Automatically convert to appointment (Step 11)
             appointment_result = self.convert_lead_to_appointment(lead.id)
             
             return {
@@ -165,7 +165,7 @@ class LeadService:
                 }
             
             if lead.appointment_id:
-                ***REMOVED*** Appointment already exists
+                # Appointment already exists
                 appointment = self.db.query(Appointment).filter(
                     Appointment.id == lead.appointment_id
                 ).first()
@@ -175,25 +175,25 @@ class LeadService:
                     "message": "Appointment already exists"
                 }
             
-            ***REMOVED*** Set default scheduled time (24 hours from now)
+            # Set default scheduled time (24 hours from now)
             if not scheduled_at:
                 scheduled_at = datetime.utcnow() + timedelta(hours=24)
             
-            ***REMOVED*** Set default title
+            # Set default title
             if not title:
                 title = f"Follow-up: {lead.full_name}"
             
-            ***REMOVED*** Set default description
+            # Set default description
             if not description:
                 description = f"Follow-up appointment for lead from Google Ads campaign. Email: {lead.email}"
                 if lead.phone:
                     description += f", Phone: {lead.phone}"
             
-            ***REMOVED*** Get user email for calendar integration
+            # Get user email for calendar integration
             user = self.db.query(User).filter(User.id == lead.user_id).first()
             user_email = user.email if user else None
             
-            ***REMOVED*** Create appointment
+            # Create appointment
             appointment = Appointment(
                 user_id=lead.user_id,
                 campaign_id=lead.campaign_id,
@@ -201,7 +201,7 @@ class LeadService:
                 description=description,
                 scheduled_at=scheduled_at,
                 duration_minutes=duration_minutes,
-                location="Virtual",  ***REMOVED*** Default to virtual meeting
+                location="Virtual",   # Default to virtual meeting
                 contact_name=lead.full_name,
                 contact_email=lead.email,
                 contact_phone=lead.phone,
@@ -213,7 +213,7 @@ class LeadService:
             self.db.commit()
             self.db.refresh(appointment)
             
-            ***REMOVED*** Create Google Calendar event if user email is available
+            # Create Google Calendar event if user email is available
             meet_link = None
             calendar_event_id = None
             if user_email:
@@ -236,16 +236,16 @@ class LeadService:
                         meet_link = calendar_result.get("meet_link")
                         calendar_event_id = calendar_result.get("event_id")
                         
-                        ***REMOVED*** Update appointment with Google Meet link
+                        # Update appointment with Google Meet link
                         appointment.meeting_url = meet_link
                         self.db.commit()
                         
                         logger.info(f"Google Calendar event created: {calendar_event_id}")
                 except Exception as e:
                     logger.warning(f"Failed to create Google Calendar event: {str(e)}")
-                    ***REMOVED*** Continue without calendar event
+                    # Continue without calendar event
             
-            ***REMOVED*** Update lead with appointment reference
+            # Update lead with appointment reference
             lead.appointment_id = appointment.id
             lead.status = "appointment_scheduled"
             lead.converted_at = datetime.utcnow()
@@ -253,10 +253,10 @@ class LeadService:
             
             logger.info(f"Lead {lead_id} converted to appointment {appointment.id}")
             
-            ***REMOVED*** Refresh appointment to get updated meeting_url
+            # Refresh appointment to get updated meeting_url
             self.db.refresh(appointment)
             
-            ***REMOVED*** Send notification for new appointment
+            # Send notification for new appointment
             try:
                 from src.services.notification_service import get_notification_service
                 notification_service = get_notification_service(self.db)

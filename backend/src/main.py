@@ -10,7 +10,7 @@ import uvicorn
 from pathlib import Path
 from dotenv import load_dotenv
 
-***REMOVED*** Load .env from backend/ (override=True so .env wins over existing env)
+# Load .env from backend/ (override=True so .env wins over existing env)
 _backend_dir = Path(__file__).resolve().parent.parent
 load_dotenv(_backend_dir / ".env", override=True)
 
@@ -18,7 +18,7 @@ from src.config.settings import get_settings, get_int_env
 
 if __name__ == "__main__":
     settings = get_settings()
-    ***REMOVED*** PORT from env (Cloud Run/Heroku) overrides FINDEROS_PORT
+    # PORT from env (Cloud Run/Heroku) overrides FINDEROS_PORT
     _default_port = int(settings.FINDEROS_PORT or "8000")
     port = get_int_env("PORT", _default_port)
     host = settings.FINDEROS_HOST

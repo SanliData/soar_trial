@@ -15,7 +15,7 @@ from src.config.settings import get_int_env
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Redis connection (lazy initialization)
+# Redis connection (lazy initialization)
 _redis_client = None
 
 
@@ -29,7 +29,7 @@ def get_redis_client():
     try:
         import redis
         
-        ***REMOVED*** Redis connection URL from environment
+        # Redis connection URL from environment
         redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
         redis_password = os.getenv("REDIS_PASSWORD", None)
         
@@ -60,7 +60,7 @@ def get_redis_client():
                 health_check_interval=30
             )
         
-        ***REMOVED*** Test connection
+        # Test connection
         _redis_client.ping()
         logger.info("Redis connection established for rate limiting")
         
@@ -74,10 +74,10 @@ def get_redis_client():
         return None
 
 
-***REMOVED*** Rate limits (requests per minute)
+# Rate limits (requests per minute)
 RATE_LIMITS = {
-    "default": (100, 60),  ***REMOVED*** 100 requests per 60 seconds per IP
-    "api_key": (100, 60),  ***REMOVED*** 100 requests per 60 seconds per API key (enterprise requirement)
+    "default": (100, 60),   # 100 requests per 60 seconds per IP
+    "api_key": (100, 60),   # 100 requests per 60 seconds per API key (enterprise requirement)
 }
 
 
@@ -92,15 +92,15 @@ class RateLimitRedisMiddleware(BaseHTTPMiddleware):
     """
     
     async def dispatch(self, request: Request, call_next):
-        ***REMOVED*** Skip rate limiting for health checks
+        # Skip rate limiting for health checks
         if request.url.path in ["/healthz", "/readyz", "/metrics"]:
             return await call_next(request)
         
-        ***REMOVED*** Only apply to /api/v1/* endpoints
+        # Only apply to /api/v1/* endpoints
         if not request.url.path.startswith("/api/v1/"):
             return await call_next(request)
         
-        ***REMOVED*** Get identifier (API key or IP)
+        # Get identifier (API key or IP)
         api_key = request.headers.get("X-API-Key")
         if api_key:
             identifier = f"api_key:{api_key.strip()}"
@@ -109,33 +109,33 @@ class RateLimitRedisMiddleware(BaseHTTPMiddleware):
             identifier = f"ip:{request.client.host if request.client else 'unknown'}"
             limit_type = "default"
         
-        ***REMOVED*** Get rate limit config
+        # Get rate limit config
         limit, window = RATE_LIMITS[limit_type]
         
-        ***REMOVED*** Check rate limit using Redis
+        # Check rate limit using Redis
         redis_client = get_redis_client()
         
         if redis_client is None:
-            ***REMOVED*** Fallback: no rate limiting if Redis unavailable
+            # Fallback: no rate limiting if Redis unavailable
             logger.warning("Redis unavailable - rate limiting disabled")
             return await call_next(request)
         
         try:
-            ***REMOVED*** Redis key for rate limit
+            # Redis key for rate limit
             redis_key = f"rate_limit:{identifier}"
             
-            ***REMOVED*** Get current count
+            # Get current count
             current_count = redis_client.get(redis_key)
             
             if current_count is None:
-                ***REMOVED*** First request - set initial count
+                # First request - set initial count
                 redis_client.setex(redis_key, window, 1)
                 remaining = limit - 1
             else:
                 current_count = int(current_count)
                 
                 if current_count >= limit:
-                    ***REMOVED*** Rate limit exceeded
+                    # Rate limit exceeded
                     ttl = redis_client.ttl(redis_key)
                     raise HTTPException(
                         status_code=429,
@@ -147,14 +147,14 @@ class RateLimitRedisMiddleware(BaseHTTPMiddleware):
                         }
                     )
                 
-                ***REMOVED*** Increment counter
+                # Increment counter
                 redis_client.incr(redis_key)
                 remaining = limit - (current_count + 1)
             
-            ***REMOVED*** Process request
+            # Process request
             response = await call_next(request)
             
-            ***REMOVED*** Add rate limit headers to response
+            # Add rate limit headers to response
             ttl = redis_client.ttl(redis_key)
             response.headers["X-RateLimit-Limit"] = str(limit)
             response.headers["X-RateLimit-Remaining"] = str(max(0, remaining))
@@ -163,10 +163,10 @@ class RateLimitRedisMiddleware(BaseHTTPMiddleware):
             return response
             
         except HTTPException:
-            ***REMOVED*** Re-raise HTTP exceptions (rate limit exceeded)
+            # Re-raise HTTP exceptions (rate limit exceeded)
             raise
         except Exception as e:
-            ***REMOVED*** If Redis error, allow request but log warning
+            # If Redis error, allow request but log warning
             logger.warning(f"Rate limit check failed: {e} - allowing request")
             try:
                 response = await call_next(request)

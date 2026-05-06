@@ -10,7 +10,7 @@ from typing import Any, Dict, Optional
 logger = logging.getLogger(__name__)
 
 QUEUE_KEY = "intelligence_graph:rebuild_queue"
-QUEUE_BLOCK_TIMEOUT = 5  ***REMOVED*** seconds for BRPOP
+QUEUE_BLOCK_TIMEOUT = 5   # seconds for BRPOP
 
 
 def _redis():

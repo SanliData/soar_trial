@@ -22,7 +22,7 @@ from src.commercial_graph.relationship_registry import validate_relationship_typ
 
 _ENTITIES: dict[str, CommercialEntity] = {}
 _RELATIONSHIPS: dict[str, CommercialRelationship] = {}
-***REMOVED*** entity_id -> list of (relationship_id, neighbor_id, relationship_type)
+# entity_id -> list of (relationship_id, neighbor_id, relationship_type)
 _ADJ_OUT: dict[str, list[tuple[str, str, str]]] = {}
 
 

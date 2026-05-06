@@ -1,4 +1,4 @@
-***REMOVED*** Next Best Opportunity Engine: detect, score, rank, recommend
+# Next Best Opportunity Engine: detect, score, rank, recommend
 from src.opportunity_engine.opportunity_detector import detect_opportunities
 from src.opportunity_engine.opportunity_ranker import rank_opportunities
 from src.opportunity_engine.recommendation_engine import get_recommendations

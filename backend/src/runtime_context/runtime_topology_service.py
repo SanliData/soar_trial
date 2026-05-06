@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-***REMOVED*** Curated topology — no arbitrary sys.modules or socket scans.
+# Curated topology — no arbitrary sys.modules or socket scans.
 _TOPOLOGY: dict[str, Any] = {
     "active_routers": sorted(
         [

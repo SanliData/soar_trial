@@ -22,7 +22,7 @@ def evaluate_sandbox(proposal_id: str) -> dict[str, Any]:
         raise ValueError("invalid mutation proposal id")
 
     ptype = str(p.get("proposal_type", ""))
-    ***REMOVED*** Fixed score vectors per type — explainable, reproducible.
+    # Fixed score vectors per type — explainable, reproducible.
     base_scores: dict[str, dict[str, float]] = {
         "workflow_optimization": {
             "regression_risk": 0.12,

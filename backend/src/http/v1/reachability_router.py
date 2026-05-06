@@ -27,8 +27,8 @@ class EscalationRequest(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     contact_preference: Optional[str] = Field(None, description="email, phone, linkedin, call_center")
-    escalation_context: Optional[dict] = None  ***REMOVED*** Contextual data only (no PII)
-    scheduled_at: Optional[str] = None  ***REMOVED*** ISO datetime string
+    escalation_context: Optional[dict] = None   # Contextual data only (no PII)
+    scheduled_at: Optional[str] = None   # ISO datetime string
 
 
 class EnableEscalationRequest(BaseModel):
@@ -48,7 +48,7 @@ async def create_escalation(
     Prepares architecture for call center partnerships.
     """
     try:
-        ***REMOVED*** Check if escalation module is enabled
+        # Check if escalation module is enabled
         escalation_gate = db.query(AccessGate).filter(
             AccessGate.user_id == user_id,
             AccessGate.module_type == "outreach"
@@ -60,7 +60,7 @@ async def create_escalation(
                 detail="Reachability escalation module is disabled by default. Please enable it first."
             )
         
-        ***REMOVED*** Parse scheduled_at if provided
+        # Parse scheduled_at if provided
         scheduled_at = None
         if request.scheduled_at:
             try:
@@ -68,7 +68,7 @@ async def create_escalation(
             except Exception:
                 pass
         
-        ***REMOVED*** Create escalation
+        # Create escalation
         escalation = ReachabilityEscalation(
             user_id=user_id,
             precision_exposure_id=request.precision_exposure_id,
@@ -113,7 +113,7 @@ async def enable_escalation_module(
     Disabled by default - user must explicitly enable it.
     """
     try:
-        ***REMOVED*** Get or create access gate for outreach module
+        # Get or create access gate for outreach module
         access_gate = db.query(AccessGate).filter(
             AccessGate.user_id == user_id,
             AccessGate.module_type == "outreach"
@@ -128,15 +128,15 @@ async def enable_escalation_module(
             )
             db.add(access_gate)
         else:
-            ***REMOVED*** Check if user has purchased access
+            # Check if user has purchased access
             if request.enable and not access_gate.is_unlocked:
-                ***REMOVED*** Require purchase to enable
+                # Require purchase to enable
                 raise HTTPException(
                     status_code=403,
                     detail="Reachability escalation module requires purchase. Please unlock access first."
                 )
             
-            ***REMOVED*** Update all escalations for this user
+            # Update all escalations for this user
             db.query(ReachabilityEscalation).filter(
                 ReachabilityEscalation.user_id == user_id
             ).update({"is_enabled": request.enable})

@@ -25,36 +25,36 @@ class PersonaSignalExclusion(Base):
     
     __tablename__ = "persona_signal_exclusions"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    persona_id = Column(Integer, ForeignKey("personas.id"), nullable=True, index=True)  ***REMOVED*** None = global exclusion
+    persona_id = Column(Integer, ForeignKey("personas.id"), nullable=True, index=True)   # None = global exclusion
     
-    ***REMOVED*** Exclusion configuration
-    signal_type = Column(String(100), nullable=False)  ***REMOVED*** "location", "industry", "job_title", etc.
-    signal_value = Column(String(500), nullable=False)  ***REMOVED*** Specific value to exclude (e.g., "Retail", "Istanbul")
+    # Exclusion configuration
+    signal_type = Column(String(100), nullable=False)   # "location", "industry", "job_title", etc.
+    signal_value = Column(String(500), nullable=False)   # Specific value to exclude (e.g., "Retail", "Istanbul")
     
-    ***REMOVED*** Metadata
-    exclusion_reason = Column(Text, nullable=True)  ***REMOVED*** Optional reason for exclusion
+    # Metadata
+    exclusion_reason = Column(Text, nullable=True)   # Optional reason for exclusion
     is_active = Column(Boolean, default=True, nullable=False)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="persona_signal_exclusions")
     persona = relationship("Persona", backref="signal_exclusions")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_signal_exclusion_user_id', 'user_id'),
         Index('idx_signal_exclusion_persona_id', 'persona_id'),
         Index('idx_signal_exclusion_type', 'signal_type'),
         Index('idx_signal_exclusion_value', 'signal_value'),
-        Index('idx_signal_exclusion_user_type_value', 'user_id', 'signal_type', 'signal_value'),  ***REMOVED*** For lookups
+        Index('idx_signal_exclusion_user_type_value', 'user_id', 'signal_type', 'signal_value'),   # For lookups
     )
     
     def __repr__(self):

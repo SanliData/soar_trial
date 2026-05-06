@@ -17,14 +17,14 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/monitoring", tags=["monitoring"])
 
 
-***REMOVED*** ---------- POST /monitoring/run response example ----------
-***REMOVED*** {
-***REMOVED***   "monitoring_run_id": "run_001",
-***REMOVED***   "events_ingested": 243,
-***REMOVED***   "clusters_created": 7,
-***REMOVED***   "new_incidents": 2,
-***REMOVED***   "alerts_sent": 1
-***REMOVED*** }
+# ---------- POST /monitoring/run response example ----------
+# {
+# "monitoring_run_id": "run_001",
+# "events_ingested": 243,
+# "clusters_created": 7,
+# "new_incidents": 2,
+# "alerts_sent": 1
+# }
 
 
 class RunMonitoringResponse(BaseModel):
@@ -65,7 +65,7 @@ async def post_run_monitoring():
     For synchronous run, call run_monitoring_agent() and await; here we trigger async and return.
     """
     try:
-        ***REMOVED*** Run in background so request returns quickly
+        # Run in background so request returns quickly
         result = await run_monitoring_agent()
         return RunMonitoringResponse(
             monitoring_run_id=result.get("monitoring_run_id", ""),

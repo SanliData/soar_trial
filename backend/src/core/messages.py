@@ -7,7 +7,7 @@ ENCODING: UTF-8 WITHOUT BOM
 from typing import Dict
 
 
-***REMOVED*** Language-aware message dictionaries
+# Language-aware message dictionaries
 MESSAGES: Dict[str, Dict[str, str]] = {
     "onboarding_received": {
         "en": "Your request has been received. A SOAR strategist will activate your plan.",

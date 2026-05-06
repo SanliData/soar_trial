@@ -19,70 +19,70 @@ class Persona(Base):
     
     __tablename__ = "personas"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     company_id = Column(Integer, ForeignKey("companies.id"), nullable=True, index=True)
     
-    ***REMOVED*** Personal information
+    # Personal information
     full_name = Column(String(255), nullable=False)
     first_name = Column(String(100), nullable=True)
     last_name = Column(String(100), nullable=True)
     email = Column(String(255), nullable=True)
     phone = Column(String(50), nullable=True)
     
-    ***REMOVED*** Professional information
+    # Professional information
     job_title = Column(String(255), nullable=True)
     department = Column(String(255), nullable=True)
-    seniority_level = Column(String(100), nullable=True)  ***REMOVED*** "C-Level", "Director", "Manager", etc.
+    seniority_level = Column(String(100), nullable=True)   # "C-Level", "Director", "Manager", etc.
     
-    ***REMOVED*** Work location
+    # Work location
     work_address = Column(Text, nullable=True)
-    work_location = Column(JSON, nullable=True)  ***REMOVED*** Coordinates
+    work_location = Column(JSON, nullable=True)   # Coordinates
     
-    ***REMOVED*** Location Affinity (First-Class Attribute)
-    location_affinity_score = Column(Float, nullable=True)  ***REMOVED*** 0.0 to 1.0
-    location_signals = Column(JSON, nullable=True)  ***REMOVED*** List of location signals: ["urban", "coastal", "industrial", etc.]
-    location_radius_meters = Column(Integer, nullable=True)  ***REMOVED*** Radius in meters for circular targeting
-    location_polygon = Column(JSON, nullable=True)  ***REMOVED*** GeoJSON polygon for custom area targeting
-    location_proximity_clusters = Column(JSON, nullable=True)  ***REMOVED*** List of cluster IDs for proximity grouping
+    # Location Affinity (First-Class Attribute)
+    location_affinity_score = Column(Float, nullable=True)   # 0.0 to 1.0
+    location_signals = Column(JSON, nullable=True)   # List of location signals: ["urban", "coastal", "industrial", etc.]
+    location_radius_meters = Column(Integer, nullable=True)   # Radius in meters for circular targeting
+    location_polygon = Column(JSON, nullable=True)   # GeoJSON polygon for custom area targeting
+    location_proximity_clusters = Column(JSON, nullable=True)   # List of cluster IDs for proximity grouping
     
-    ***REMOVED*** Personal details (hyper-personalization)
+    # Personal details (hyper-personalization)
     spouse_name = Column(String(255), nullable=True)
-    children_info = Column(JSON, nullable=True)  ***REMOVED*** List of children names/ages
-    interests = Column(JSON, nullable=True)  ***REMOVED*** List of interests
-    education = Column(JSON, nullable=True)  ***REMOVED*** Education history
-    professional_history = Column(JSON, nullable=True)  ***REMOVED*** Work history
-    preferences = Column(JSON, nullable=True)  ***REMOVED*** Preferences
-    behavioral_data = Column(JSON, nullable=True)  ***REMOVED*** Behavioral data
+    children_info = Column(JSON, nullable=True)   # List of children names/ages
+    interests = Column(JSON, nullable=True)   # List of interests
+    education = Column(JSON, nullable=True)   # Education history
+    professional_history = Column(JSON, nullable=True)   # Work history
+    preferences = Column(JSON, nullable=True)   # Preferences
+    behavioral_data = Column(JSON, nullable=True)   # Behavioral data
     
-    ***REMOVED*** Social media
+    # Social media
     linkedin_url = Column(String(512), nullable=True)
     profile_picture = Column(String(512), nullable=True)
     
-    ***REMOVED*** Additional data
-    persona_metadata = Column(JSON, nullable=True)  ***REMOVED*** Additional persona data
+    # Additional data
+    persona_metadata = Column(JSON, nullable=True)   # Additional persona data
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="active", nullable=False)  ***REMOVED*** "active", "inactive", "archived"
+    # Status
+    status = Column(String(50), default="active", nullable=False)   # "active", "inactive", "archived"
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="personas")
     company = relationship("Company", backref="personas")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_persona_user_id', 'user_id'),
         Index('idx_persona_company_id', 'company_id'),
         Index('idx_persona_name', 'full_name'),
         Index('idx_persona_job_title', 'job_title'),
-        Index('idx_persona_location_affinity', 'location_affinity_score'),  ***REMOVED*** For location-based queries
+        Index('idx_persona_location_affinity', 'location_affinity_score'),   # For location-based queries
     )
     
     def __repr__(self):

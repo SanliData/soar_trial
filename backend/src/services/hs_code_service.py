@@ -11,7 +11,7 @@ from src.services.gemini_analysis_service import get_gemini_analysis_service
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Keys in onboarding_data for HS / product customs
+# Keys in onboarding_data for HS / product customs
 HS_CODE_KEY = "hs_code"
 HS_CODE_SOURCE_KEY = "hs_code_source"
 PRODUCT_CUSTOMS_DESCRIPTION_KEY = "product_customs_description"
@@ -31,7 +31,7 @@ def ensure_hs_code_in_onboarding(onboarding_data: Dict[str, Any]) -> Dict[str, A
         if not onboarding_data.get(PRODUCT_CUSTOMS_DESCRIPTION_KEY):
             onboarding_data[PRODUCT_CUSTOMS_DESCRIPTION_KEY] = f"User-provided HS {onboarding_data[HS_CODE_KEY]}"
         return onboarding_data
-    ***REMOVED*** AI inference
+    # AI inference
     gemini = get_gemini_analysis_service()
     product_service = onboarding_data.get("product_service") or onboarding_data.get("product_type") or ""
     target_type = onboarding_data.get("target_type") or ""

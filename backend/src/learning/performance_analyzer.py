@@ -26,7 +26,7 @@ async def analyze_campaign_success(limit: int = 100) -> Dict[str, Any]:
     finally:
         db.close()
 
-    ***REMOVED*** Aggregate by industry (reply_rate, positive_rate)
+    # Aggregate by industry (reply_rate, positive_rate)
     industry_stats = {}
     role_stats = {}
     for r in rows:
@@ -51,7 +51,7 @@ async def analyze_campaign_success(limit: int = 100) -> Dict[str, Any]:
             except Exception:
                 pass
 
-    ***REMOVED*** Top industries by positive rate (min 10 sent)
+    # Top industries by positive rate (min 10 sent)
     industry_sorted = [
         (ind, (s["positive"] / s["sent"]) if s["sent"] else 0, s["sent"])
         for ind, s in industry_stats.items()
@@ -60,7 +60,7 @@ async def analyze_campaign_success(limit: int = 100) -> Dict[str, Any]:
     industry_sorted.sort(key=lambda x: -x[1])
     top_industries = [x[0] for x in industry_sorted[:10]]
 
-    ***REMOVED*** Top roles
+    # Top roles
     role_sorted = [
         (role, (s["positive"] / s["sent"]) if s["sent"] else 0, s["sent"])
         for role, s in role_stats.items()

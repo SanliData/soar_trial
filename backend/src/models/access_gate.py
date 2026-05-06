@@ -19,41 +19,41 @@ class AccessGate(Base):
     
     __tablename__ = "access_gates"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     feasibility_report_id = Column(Integer, ForeignKey("feasibility_reports.id"), nullable=True, index=True)
     
-    ***REMOVED*** Access control
-    module_type = Column(String(100), nullable=False, index=True)  ***REMOVED*** "feasibility", "exposure", "outreach", "contact_data"
-    is_unlocked = Column(Boolean, default=False, nullable=False, index=True)  ***REMOVED*** Access gate status
+    # Access control
+    module_type = Column(String(100), nullable=False, index=True)   # "feasibility", "exposure", "outreach", "contact_data"
+    is_unlocked = Column(Boolean, default=False, nullable=False, index=True)   # Access gate status
     
-    ***REMOVED*** Purchase reference
-    purchase_id = Column(String(255), nullable=True, index=True)  ***REMOVED*** Purchase/subscription ID
-    purchase_timestamp = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** When access was purchased
+    # Purchase reference
+    purchase_id = Column(String(255), nullable=True, index=True)   # Purchase/subscription ID
+    purchase_timestamp = Column(DateTime(timezone=True), nullable=True)   # When access was purchased
     
-    ***REMOVED*** Usage tracking for billing
-    access_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Number of times data accessed
-    last_accessed_at = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** Last access timestamp
+    # Usage tracking for billing
+    access_count = Column(Integer, default=0, nullable=False)   # Number of times data accessed
+    last_accessed_at = Column(DateTime(timezone=True), nullable=True)   # Last access timestamp
     
-    ***REMOVED*** Usage limits (based on subscription)
-    usage_limit = Column(Integer, nullable=True)  ***REMOVED*** Access limit (null = unlimited)
-    usage_reset_at = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** When usage resets
+    # Usage limits (based on subscription)
+    usage_limit = Column(Integer, nullable=True)   # Access limit (null = unlimited)
+    usage_reset_at = Column(DateTime(timezone=True), nullable=True)   # When usage resets
     
-    ***REMOVED*** Metadata
-    access_metadata = Column(JSON, nullable=True)  ***REMOVED*** Additional access control metadata
+    # Metadata
+    access_metadata = Column(JSON, nullable=True)   # Additional access control metadata
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="access_gates")
     feasibility_report = relationship("FeasibilityReport", backref="access_gates")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_gate_user_id', 'user_id'),
         Index('idx_gate_module_type', 'module_type'),

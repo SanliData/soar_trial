@@ -20,43 +20,43 @@ class PrecisionExposure(Base):
     
     __tablename__ = "precision_exposures"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     feasibility_report_id = Column(Integer, ForeignKey("feasibility_reports.id"), nullable=True, index=True)
     
-    ***REMOVED*** Campaign context (NOT personal identifiers)
+    # Campaign context (NOT personal identifiers)
     campaign_name = Column(String(255), nullable=False)
-    target_geography = Column(Text, nullable=True)  ***REMOVED*** Geographic region
-    target_roles = Column(String(500), nullable=True)  ***REMOVED*** "CEO, CTO" (roles, not names)
-    target_industry = Column(String(255), nullable=True)  ***REMOVED*** Industry context
+    target_geography = Column(Text, nullable=True)   # Geographic region
+    target_roles = Column(String(500), nullable=True)   # "CEO, CTO" (roles, not names)
+    target_industry = Column(String(255), nullable=True)   # Industry context
     
-    ***REMOVED*** Location targeting (contextual)
-    location_coordinates = Column(JSON, nullable=True)  ***REMOVED*** {"lat": 41.0082, "lng": 28.9784}
-    location_radius_meters = Column(Integer, nullable=True)  ***REMOVED*** Radius in meters
-    location_polygon = Column(JSON, nullable=True)  ***REMOVED*** GeoJSON polygon for custom areas
+    # Location targeting (contextual)
+    location_coordinates = Column(JSON, nullable=True)   # {"lat": 41.0082, "lng": 28.9784}
+    location_radius_meters = Column(Integer, nullable=True)   # Radius in meters
+    location_polygon = Column(JSON, nullable=True)   # GeoJSON polygon for custom areas
     
-    ***REMOVED*** Exposure management type
-    management_type = Column(String(50), default="soar_managed", nullable=False)  ***REMOVED*** "soar_managed", "partner_managed", "customer_agency"
+    # Exposure management type
+    management_type = Column(String(50), default="soar_managed", nullable=False)   # "soar_managed", "partner_managed", "customer_agency"
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="draft", nullable=False, index=True)  ***REMOVED*** "draft", "active", "paused", "completed"
+    # Status
+    status = Column(String(50), default="draft", nullable=False, index=True)   # "draft", "active", "paused", "completed"
     
-    ***REMOVED*** Targeting context (anonymized)
-    target_context = Column(JSON, nullable=True)  ***REMOVED*** Contextual targeting parameters (no PII)
+    # Targeting context (anonymized)
+    target_context = Column(JSON, nullable=True)   # Contextual targeting parameters (no PII)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     activated_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="precision_exposures")
     feasibility_report = relationship("FeasibilityReport", backref="precision_exposures")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_exposure_user_id', 'user_id'),
         Index('idx_exposure_report_id', 'feasibility_report_id'),

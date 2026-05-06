@@ -13,7 +13,7 @@ from typing import Optional, Dict, Any, List
 import os
 from enum import Enum
 
-***REMOVED*** Optional OpenAI import (for GPT Companion feature)
+# Optional OpenAI import (for GPT Companion feature)
 try:
     import openai
     OPENAI_AVAILABLE = True
@@ -24,16 +24,16 @@ except ImportError:
 
 class GPTCompanionMode(Enum):
     """GPT Companion modes"""
-    GUIDE = "guide"  ***REMOVED*** Explains features, suggests next steps
-    EXPLAINER = "explainer"  ***REMOVED*** Explains "Why this account?" in natural language
-    STRATEGY = "strategy"  ***REMOVED*** Suggests market exploration strategies
+    GUIDE = "guide"   # Explains features, suggests next steps
+    EXPLAINER = "explainer"   # Explains "Why this account?" in natural language
+    STRATEGY = "strategy"   # Suggests market exploration strategies
 
 
 class GPTCompanionService:
     """Service for GPT Companion integration"""
     
     def __init__(self):
-        ***REMOVED*** Initialize OpenAI client (if API key available and openai package installed)
+        # Initialize OpenAI client (if API key available and openai package installed)
         self.client = None
         if OPENAI_AVAILABLE:
             api_key = os.getenv("OPENAI_API_KEY")
@@ -92,14 +92,14 @@ Remember: You are a GUIDE, not an executor."""
             
             gpt_response = response.choices[0].message.content
             
-            ***REMOVED*** Extract suggested actions (if any) - but mark as non-executable by GPT
+            # Extract suggested actions (if any) - but mark as non-executable by GPT
             suggested_actions = self._extract_suggestions(gpt_response)
             
             return {
                 "mode": GPTCompanionMode.GUIDE.value,
                 "response": gpt_response,
                 "suggested_actions": suggested_actions,
-                "execution_required": False,  ***REMOVED*** GPT never executes
+                "execution_required": False,   # GPT never executes
                 "execution_note": "All actions must be executed through SOAR B2B backend API, not by GPT."
             }
         except Exception as e:
@@ -165,7 +165,7 @@ Provide a clear, concise explanation in 2-3 sentences."""
                 "mode": GPTCompanionMode.EXPLAINER.value,
                 "explanation": explanation,
                 "execution_required": False,
-                "trace_data": target_trace  ***REMOVED*** Include original trace for reference
+                "trace_data": target_trace   # Include original trace for reference
             }
         except Exception as e:
             return {
@@ -240,20 +240,20 @@ Provide 3-5 actionable strategy suggestions."""
     
     def _extract_suggestions(self, text: str) -> List[str]:
         """Extract suggested actions from GPT response"""
-        ***REMOVED*** Simple extraction (can be enhanced)
+        # Simple extraction (can be enhanced)
         suggestions = []
         lines = text.split("\n")
         for line in lines:
             if line.strip().startswith("-") or line.strip().startswith("*") or line.strip()[0].isdigit():
                 suggestions.append(line.strip())
-        return suggestions[:5]  ***REMOVED*** Limit to 5 suggestions
+        return suggestions[:5]   # Limit to 5 suggestions
     
     def _extract_strategies(self, text: str) -> List[str]:
         """Extract strategy suggestions from GPT response"""
-        ***REMOVED*** Similar to _extract_suggestions
+        # Similar to _extract_suggestions
         strategies = []
         lines = text.split("\n")
         for line in lines:
             if line.strip().startswith("-") or line.strip().startswith("*") or line.strip()[0].isdigit():
                 strategies.append(line.strip())
-        return strategies[:5]  ***REMOVED*** Limit to 5 strategies
+        return strategies[:5]   # Limit to 5 strategies

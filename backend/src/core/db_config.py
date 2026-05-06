@@ -16,7 +16,7 @@ _SQLITE_DEFAULT = "sqlite:///./soarb2b.db"
 _raw_url = (os.getenv("DATABASE_URL") or _SQLITE_DEFAULT).strip()
 DATABASE_URL = _raw_url if _raw_url else _SQLITE_DEFAULT
 
-***REMOVED*** Validate format
+# Validate format
 _lower = DATABASE_URL.lower()
 if not (_lower.startswith("sqlite://") or _lower.startswith("postgresql://") or _lower.startswith("postgres://")):
     raise ValueError(
@@ -24,24 +24,24 @@ if not (_lower.startswith("sqlite://") or _lower.startswith("postgresql://") or 
         f"Got: {DATABASE_URL[:50]!r}..."
     )
 
-***REMOVED*** Production: forbid SQLite (must use PostgreSQL)
+# Production: forbid SQLite (must use PostgreSQL)
 _env = (os.getenv("ENV") or "").strip().lower()
 if _env == "production" and DATABASE_URL and "sqlite" in DATABASE_URL.lower():
     raise ValueError(
         "Production must use PostgreSQL. Set DATABASE_URL to a postgres:// URL. SQLite is not allowed when ENV=production."
     )
 
-***REMOVED*** Determine database type
+# Determine database type
 IS_SQLITE = "sqlite" in DATABASE_URL.lower()
 IS_POSTGRESQL = "postgresql" in DATABASE_URL.lower() or "postgres" in DATABASE_URL.lower()
 
-***REMOVED*** Database connection pool settings (PostgreSQL only)
+# Database connection pool settings (PostgreSQL only)
 DB_POOL_SIZE = get_int_env("DB_POOL_SIZE", 10)
 DB_MAX_OVERFLOW = get_int_env("DB_MAX_OVERFLOW", 20)
 DB_POOL_TIMEOUT = get_int_env("DB_POOL_TIMEOUT", 30)
-DB_POOL_RECYCLE = get_int_env("DB_POOL_RECYCLE", 3600)  ***REMOVED*** 1 hour
+DB_POOL_RECYCLE = get_int_env("DB_POOL_RECYCLE", 3600)   # 1 hour
 
-***REMOVED*** Connection settings
+# Connection settings
 DB_CONNECT_TIMEOUT = get_int_env("DB_CONNECT_TIMEOUT", 10)
 DB_ECHO_SQL = get_bool_env("DB_ECHO_SQL", False)
 
@@ -59,18 +59,18 @@ def get_database_config() -> dict:
     }
     
     if IS_SQLITE:
-        ***REMOVED*** SQLite configuration (development)
+        # SQLite configuration (development)
         config["connect_args"] = {"check_same_thread": False}
         logger.info("📦 Using SQLite database (development mode)")
         
     elif IS_POSTGRESQL:
-        ***REMOVED*** PostgreSQL configuration (production)
+        # PostgreSQL configuration (production)
         config.update({
             "pool_size": DB_POOL_SIZE,
             "max_overflow": DB_MAX_OVERFLOW,
             "pool_timeout": DB_POOL_TIMEOUT,
             "pool_recycle": DB_POOL_RECYCLE,
-            "pool_pre_ping": True,  ***REMOVED*** Verify connections before using
+            "pool_pre_ping": True,   # Verify connections before using
             "connect_args": {
                 "connect_timeout": DB_CONNECT_TIMEOUT,
                 "application_name": "soarb2b-api",
@@ -79,7 +79,7 @@ def get_database_config() -> dict:
         logger.info(f"📦 Using PostgreSQL database (pool_size={DB_POOL_SIZE}, max_overflow={DB_MAX_OVERFLOW})")
         
     else:
-        ***REMOVED*** Default configuration for other databases
+        # Default configuration for other databases
         logger.warning(f"⚠️ Unknown database type: {DATABASE_URL}")
     
     return config

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-***REMOVED*** Synthetic unit pricing for deterministic manifests (USD per 1M input tokens).
+# Synthetic unit pricing for deterministic manifests (USD per 1M input tokens).
 _INPUT_RATE_PER_MILLION = 2.50
 _OUTPUT_RATE_PER_MILLION = 10.00
 

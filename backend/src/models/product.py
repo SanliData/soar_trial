@@ -19,36 +19,36 @@ class Product(Base):
     
     __tablename__ = "products"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     
-    ***REMOVED*** Product information
+    # Product information
     name = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
     category = Column(String(255), nullable=True)
     
-    ***REMOVED*** Identification
-    identification_type = Column(String(50), nullable=False)  ***REMOVED*** "name", "barcode", "qrcode", "giftcode"
-    code = Column(String(255), nullable=True)  ***REMOVED*** Barcode, QR code, or gift code
+    # Identification
+    identification_type = Column(String(50), nullable=False)   # "name", "barcode", "qrcode", "giftcode"
+    code = Column(String(255), nullable=True)   # Barcode, QR code, or gift code
     
-    ***REMOVED*** Additional data
-    product_metadata = Column(JSON, nullable=True)  ***REMOVED*** Additional product data
-    image_url = Column(String(512), nullable=True)  ***REMOVED*** Product image URL
+    # Additional data
+    product_metadata = Column(JSON, nullable=True)   # Additional product data
+    image_url = Column(String(512), nullable=True)   # Product image URL
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="active", nullable=False)  ***REMOVED*** "active", "inactive", "archived"
+    # Status
+    status = Column(String(50), default="active", nullable=False)   # "active", "inactive", "archived"
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="products")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_product_user_id', 'user_id'),
         Index('idx_product_name', 'name'),

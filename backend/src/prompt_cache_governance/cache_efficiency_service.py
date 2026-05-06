@@ -20,7 +20,7 @@ def compute_cache_efficiency(
     denom = cache_read_input_tokens + cache_creation_input_tokens
     ratio = float(cache_read_input_tokens) / float(denom) if denom > 0 else 0.0
     ratio = max(0.0, min(1.0, ratio))
-    ***REMOVED*** deterministic heuristic savings estimates (not provider claims)
+    # deterministic heuristic savings estimates (not provider claims)
     prefill_saved = int(max(0, cache_read_input_tokens - 512))
     cost_savings = int(prefill_saved // 10)
     out = {

@@ -19,44 +19,44 @@ class ErrorLog(Base):
     
     __tablename__ = "error_logs"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User (optional, for user-specific errors)
+    # Foreign key to User (optional, for user-specific errors)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     
-    ***REMOVED*** Error information
-    error_type = Column(String(255), nullable=False)  ***REMOVED*** Exception class name
-    error_message = Column(Text, nullable=False)  ***REMOVED*** Error message
-    error_traceback = Column(Text, nullable=True)  ***REMOVED*** Full traceback
+    # Error information
+    error_type = Column(String(255), nullable=False)   # Exception class name
+    error_message = Column(Text, nullable=False)   # Error message
+    error_traceback = Column(Text, nullable=True)   # Full traceback
     
-    ***REMOVED*** Context information
-    service_name = Column(String(100), nullable=True)  ***REMOVED*** Which service failed (auth, ads, calendar, etc.)
-    endpoint = Column(String(255), nullable=True)  ***REMOVED*** API endpoint if applicable
-    http_method = Column(String(10), nullable=True)  ***REMOVED*** GET, POST, etc.
+    # Context information
+    service_name = Column(String(100), nullable=True)   # Which service failed (auth, ads, calendar, etc.)
+    endpoint = Column(String(255), nullable=True)   # API endpoint if applicable
+    http_method = Column(String(10), nullable=True)   # GET, POST, etc.
     
-    ***REMOVED*** Request information
-    request_data = Column(JSON, nullable=True)  ***REMOVED*** Request payload/parameters
-    request_headers = Column(JSON, nullable=True)  ***REMOVED*** Request headers (sanitized)
+    # Request information
+    request_data = Column(JSON, nullable=True)   # Request payload/parameters
+    request_headers = Column(JSON, nullable=True)   # Request headers (sanitized)
     
-    ***REMOVED*** Error severity
-    severity = Column(String(20), default="error", nullable=False)  ***REMOVED*** "info", "warning", "error", "critical"
+    # Error severity
+    severity = Column(String(20), default="error", nullable=False)   # "info", "warning", "error", "critical"
     
-    ***REMOVED*** Resolution status
+    # Resolution status
     is_resolved = Column(Boolean, default=False, nullable=False, index=True)
     resolved_at = Column(DateTime(timezone=True), nullable=True)
     resolution_notes = Column(Text, nullable=True)
     
-    ***REMOVED*** Additional metadata
-    error_metadata = Column(JSON, nullable=True)  ***REMOVED*** Additional context
+    # Additional metadata
+    error_metadata = Column(JSON, nullable=True)   # Additional context
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="error_logs")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_error_log_user_id', 'user_id'),
         Index('idx_error_log_service', 'service_name'),

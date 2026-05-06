@@ -74,7 +74,7 @@ async def cluster_errors(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "affected_workflow": workflows[0] if workflows else None,
             "signature": sig,
         })
-    ***REMOVED*** Merge by error_type if many tiny clusters
+    # Merge by error_type if many tiny clusters
     by_type = defaultdict(list)
     for c in clusters:
         by_type[c["error_type"]].append(c)

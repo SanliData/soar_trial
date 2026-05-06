@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 PERSONA_CACHE_KEY = "campaign_learning:persona_scores"
-PERSONA_CACHE_TTL = 3600  ***REMOVED*** 1h
+PERSONA_CACHE_TTL = 3600   # 1h
 
 
 def _get_redis():

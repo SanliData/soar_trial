@@ -20,30 +20,30 @@ class EnrichmentSettings(Base):
     
     __tablename__ = "enrichment_settings"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User (one-to-one relationship)
+    # Foreign key to User (one-to-one relationship)
     user_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False, index=True)
     
-    ***REMOVED*** Confidence thresholds (0.0 to 1.0)
-    email_confidence_threshold = Column(Float, default=0.8, nullable=False)  ***REMOVED*** Minimum confidence for email enrichment
-    phone_confidence_threshold = Column(Float, default=0.8, nullable=False)  ***REMOVED*** Minimum confidence for phone enrichment
+    # Confidence thresholds (0.0 to 1.0)
+    email_confidence_threshold = Column(Float, default=0.8, nullable=False)   # Minimum confidence for email enrichment
+    phone_confidence_threshold = Column(Float, default=0.8, nullable=False)   # Minimum confidence for phone enrichment
     
-    ***REMOVED*** Consent tracking
-    require_explicit_consent = Column(Boolean, default=True, nullable=False)  ***REMOVED*** Require explicit consent before enrichment
-    consent_given = Column(Boolean, default=False, nullable=False)  ***REMOVED*** Has user given explicit consent?
-    consent_given_at = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** When consent was given
+    # Consent tracking
+    require_explicit_consent = Column(Boolean, default=True, nullable=False)   # Require explicit consent before enrichment
+    consent_given = Column(Boolean, default=False, nullable=False)   # Has user given explicit consent?
+    consent_given_at = Column(DateTime(timezone=True), nullable=True)   # When consent was given
     
-    ***REMOVED*** Opt-in preferences
-    enable_email_enrichment = Column(Boolean, default=False, nullable=False)  ***REMOVED*** Opt-in for email enrichment
-    enable_phone_enrichment = Column(Boolean, default=False, nullable=False)  ***REMOVED*** Opt-in for phone enrichment
+    # Opt-in preferences
+    enable_email_enrichment = Column(Boolean, default=False, nullable=False)   # Opt-in for email enrichment
+    enable_phone_enrichment = Column(Boolean, default=False, nullable=False)   # Opt-in for phone enrichment
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship
+    # Relationship
     user = relationship("User", backref="enrichment_settings", uselist=False)
     
     def __repr__(self):

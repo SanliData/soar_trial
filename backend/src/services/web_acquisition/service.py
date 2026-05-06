@@ -52,17 +52,17 @@ class WebAcquisitionService:
         Returns:
             Created AcquisitionJob
         """
-        ***REMOVED*** Enforce max_results cap
+        # Enforce max_results cap
         max_results = enforce_query_limit(request.max_results, is_admin=is_admin)
         
-        ***REMOVED*** Validate sources policy
+        # Validate sources policy
         if not SourcesPolicy.validate_sources_policy(request.sources_policy):
             raise ValueError(f"Invalid sources_policy: {request.sources_policy}")
         
-        ***REMOVED*** Generate unique job ID
+        # Generate unique job ID
         job_id = str(uuid.uuid4())
         
-        ***REMOVED*** Create job
+        # Create job
         job = AcquisitionJob(
             job_id=job_id,
             plan_id=request.plan_id,
@@ -96,7 +96,7 @@ class WebAcquisitionService:
         Returns:
             Updated AcquisitionJob
         """
-        ***REMOVED*** Get job
+        # Get job
         job = db.query(AcquisitionJob).filter(AcquisitionJob.job_id == job_id).first()
         if not job:
             raise ValueError(f"Job not found: {job_id}")
@@ -104,13 +104,13 @@ class WebAcquisitionService:
         if job.status not in ["queued", "running"]:
             raise ValueError(f"Job {job_id} is not in queued/running state")
         
-        ***REMOVED*** Update status to running
+        # Update status to running
         job.status = "running"
         job.started_at = datetime.utcnow()
         db.commit()
         
         try:
-            ***REMOVED*** Parse geography if available
+            # Parse geography if available
             geography = None
             if job.geography:
                 import json
@@ -119,7 +119,7 @@ class WebAcquisitionService:
                 except:
                     pass
             
-            ***REMOVED*** Execute acquisition via Stagehand adapter
+            # Execute acquisition via Stagehand adapter
             result = await self.stagehand.acquire_data(
                 target_type=job.target_type,
                 geography=geography,
@@ -128,10 +128,10 @@ class WebAcquisitionService:
                 plan_id=job.plan_id
             )
             
-            ***REMOVED*** Store results in database
+            # Store results in database
             self._store_results(job, result, db)
             
-            ***REMOVED*** Update job status
+            # Update job status
             job.status = "ready"
             job.completed_at = datetime.utcnow()
             job.coverage_report = result.coverage_report.dict()
@@ -140,7 +140,7 @@ class WebAcquisitionService:
             logger.info(f"Acquisition job {job_id} completed successfully")
             
         except Exception as e:
-            ***REMOVED*** Mark job as failed
+            # Mark job as failed
             job.status = "failed"
             job.error_message = str(e)
             job.error_details = {"exception_type": type(e).__name__}
@@ -165,7 +165,7 @@ class WebAcquisitionService:
             result: AcquisitionJobResult
             db: Database session
         """
-        ***REMOVED*** Store businesses
+        # Store businesses
         for business in result.businesses:
             db_result = AcquisitionResult(
                 job_id=job.id,
@@ -179,7 +179,7 @@ class WebAcquisitionService:
             )
             db.add(db_result)
         
-        ***REMOVED*** Store contacts
+        # Store contacts
         for contact in result.contacts:
             db_result = AcquisitionResult(
                 job_id=job.id,
@@ -194,7 +194,7 @@ class WebAcquisitionService:
             )
             db.add(db_result)
         
-        ***REMOVED*** Store evidence sources
+        # Store evidence sources
         for evidence in result.evidence:
             db_evidence = EvidenceSource(
                 job_id=job.id,
@@ -246,7 +246,7 @@ class WebAcquisitionService:
             EvidenceSourceInfo
         )
         
-        ***REMOVED*** Get results from database
+        # Get results from database
         db_results = db.query(AcquisitionResult).filter(
             AcquisitionResult.job_id == job.id
         ).all()
@@ -275,7 +275,7 @@ class WebAcquisitionService:
                     metadata=db_result.contact_metadata
                 ))
         
-        ***REMOVED*** Get evidence sources
+        # Get evidence sources
         db_evidence = db.query(EvidenceSource).filter(
             EvidenceSource.job_id == job.id
         ).all()
@@ -291,7 +291,7 @@ class WebAcquisitionService:
             for e in db_evidence
         ]
         
-        ***REMOVED*** Build coverage report
+        # Build coverage report
         coverage_report = CoverageReport(
             businesses_found=len(businesses),
             contacts_found=len(contacts),
@@ -310,7 +310,7 @@ class WebAcquisitionService:
         )
 
 
-***REMOVED*** Global service instance
+# Global service instance
 _acquisition_service: Optional[WebAcquisitionService] = None
 
 

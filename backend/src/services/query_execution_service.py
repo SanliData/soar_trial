@@ -47,10 +47,10 @@ class QueryExecutionService:
         """
         pricing_service = get_usage_based_pricing_service(self.db)
         
-        ***REMOVED*** Determine which optional modules are included based on objectives
+        # Determine which optional modules are included based on objectives
         include_persona_deepening = selected_objectives and "persona_summary" in selected_objectives
         include_visit_route = selected_objectives and "visit_route" in selected_objectives
-        include_export = True  ***REMOVED*** Export is always available
+        include_export = True   # Export is always available
         include_outreach_preparation = selected_objectives and "outreach_outcomes" in selected_objectives
         
         cost_breakdown = pricing_service.calculate_query_cost(
@@ -95,7 +95,7 @@ class QueryExecutionService:
             Execution result
         """
         try:
-            ***REMOVED*** Require cost confirmation unless auto-approved with explicit confirmation
+            # Require cost confirmation unless auto-approved with explicit confirmation
             if not cost_confirmed and not auto_approved:
                 pricing_service = get_usage_based_pricing_service(self.db)
                 cost_preview = self.calculate_query_cost_preview(plan_id, selected_objectives)
@@ -108,9 +108,9 @@ class QueryExecutionService:
             
             logger.info(f"Starting query pipeline for plan: {plan_id}, auto_approved: {auto_approved}, cost_confirmed: {cost_confirmed}")
             
-            ***REMOVED*** Standard queries (MAX 100) can proceed without admin approval
+            # Standard queries (MAX 100) can proceed without admin approval
             if auto_approved and not admin_override:
-                ***REMOVED*** Execute standard query pipeline
+                # Execute standard query pipeline
                 result = self._execute_standard_query(
                     plan_id=plan_id,
                     target_type=target_type,
@@ -119,10 +119,10 @@ class QueryExecutionService:
                 )
                 return result
             
-            ***REMOVED*** Admin approval required for:
-            ***REMOVED*** - Cap overrides (MAX 100+)
-            ***REMOVED*** - Custom algorithm personalization
-            ***REMOVED*** - High-cost outreach/advertising
+            # Admin approval required for:
+            # - Cap overrides (MAX 100+)
+            # - Custom algorithm personalization
+            # - High-cost outreach/advertising
             else:
                 logger.info(f"Query pipeline for plan {plan_id} requires admin approval")
                 return {
@@ -158,42 +158,42 @@ class QueryExecutionService:
             Execution result
         """
         try:
-            ***REMOVED*** Step 1: Generate feasibility report (preview)
+            # Step 1: Generate feasibility report (preview)
             feasibility_service = get_feasibility_service(self.db)
             
-            ***REMOVED*** TODO: Get actual user_id from authentication
-            ***REMOVED*** For now, feasibility report is generated without user association
-            ***REMOVED*** In production, extract user_id from authenticated session
+            # TODO: Get actual user_id from authentication
+            # For now, feasibility report is generated without user association
+            # In production, extract user_id from authenticated session
             
             logger.info(f"Generating feasibility report for plan: {plan_id}")
-            ***REMOVED*** feasibility_service.generate_feasibility_report(
-            ***REMOVED***     user_id=user_id,  ***REMOVED*** From authenticated session
-            ***REMOVED***     onboarding_plan_id=plan_id,
-            ***REMOVED***     geography=geography,
-            ***REMOVED***     target_type=target_type,
-            ***REMOVED***     decision_roles=decision_roles,
-            ***REMOVED***     region=geography
-            ***REMOVED*** )
+            # feasibility_service.generate_feasibility_report(
+            # user_id=user_id,  # From authenticated session
+            # onboarding_plan_id=plan_id,
+            # geography=geography,
+            # target_type=target_type,
+            # decision_roles=decision_roles,
+            # region=geography
+            # )
             
-            ***REMOVED*** Step 2: Update plan status
+            # Step 2: Update plan status
             from src.services.plan_service import get_plan_service
             plan_service = get_plan_service(self.db)
             plan = plan_service.get_plan(plan_id)
             
             if plan:
-                ***REMOVED*** Update plan stage to indicate query started
+                # Update plan stage to indicate query started
                 plan.current_stage = "QUERY_EXECUTING"
                 plan.status = "active"
                 self.db.commit()
                 logger.info(f"Plan {plan_id} status updated to QUERY_EXECUTING")
             
-            ***REMOVED*** Step 3: Initialize Results Hub if not exists
+            # Step 3: Initialize Results Hub if not exists
             result_service = get_result_service(self.db)
             try:
                 result_service.create_result_hub(plan_id)
                 logger.info(f"Results Hub initialized for plan: {plan_id}")
             except Exception as e:
-                ***REMOVED*** Results Hub might already exist, that's OK
+                # Results Hub might already exist, that's OK
                 logger.debug(f"Results Hub already exists for plan {plan_id}: {e}")
             
             return {
@@ -210,7 +210,7 @@ class QueryExecutionService:
             raise
 
 
-***REMOVED*** Global service instance per session
+# Global service instance per session
 def get_query_execution_service(db: Session) -> QueryExecutionService:
     """Get query execution service instance."""
     return QueryExecutionService(db)

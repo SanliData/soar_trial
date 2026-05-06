@@ -70,7 +70,7 @@ def get_port_processes(port: int) -> List[Tuple[int, str]]:
         except (psutil.AccessDenied, Exception):
             pass
     
-    ***REMOVED*** Fallback if psutil didn't find anything or not available
+    # Fallback if psutil didn't find anything or not available
     if not processes:
         if sys.platform == "win32":
             processes = _get_port_processes_windows(port)
@@ -109,7 +109,7 @@ def _get_port_processes_windows(port: int) -> List[Tuple[int, str]]:
                     pid = parts[-1]
                     try:
                         pid_int = int(pid)
-                        ***REMOVED*** Avoid duplicates
+                        # Avoid duplicates
                         if pid_int in seen_pids:
                             continue
                         seen_pids.add(pid_int)
@@ -142,7 +142,7 @@ def _get_port_process_info_linux(port: int) -> Optional[Tuple[int, str]]:
     Linux fallback using lsof or ss.
     """
     try:
-        ***REMOVED*** Try lsof first
+        # Try lsof first
         try:
             result = subprocess.run(
                 ["lsof", "-ti", f":{port}", "-sTCP:LISTEN"],
@@ -202,20 +202,20 @@ def main():
     """
     Main entry point for safe_run.
     """
-    ***REMOVED*** Read configuration from environment (safe parsing to avoid empty-string crash)
+    # Read configuration from environment (safe parsing to avoid empty-string crash)
     from src.config.settings import get_int_env
     port = get_int_env("PORT", get_int_env("FINDEROS_PORT", 8000))
     host = os.getenv("FINDEROS_HOST") or "127.0.0.1"
     
     print(f"Checking port {port}...")
     
-    ***REMOVED*** Check if port is available on both host and 0.0.0.0 (Windows can have both bound)
-    ***REMOVED*** A process on 0.0.0.0:port blocks binding to 127.0.0.1:port
+    # Check if port is available on both host and 0.0.0.0 (Windows can have both bound)
+    # A process on 0.0.0.0:port blocks binding to 127.0.0.1:port
     port_in_use = False
     if not is_port_available(host, port):
         port_in_use = True
     elif host != "0.0.0.0" and not is_port_available("0.0.0.0", port):
-        ***REMOVED*** Also check 0.0.0.0 if we're binding to a specific interface
+        # Also check 0.0.0.0 if we're binding to a specific interface
         port_in_use = True
     
     if port_in_use:
@@ -226,7 +226,7 @@ def main():
             for pid, cmd in processes:
                 print(f"  PID {pid}: {cmd}")
             
-            ***REMOVED*** Automatically kill all processes (non-interactive for script usage)
+            # Automatically kill all processes (non-interactive for script usage)
             print(f"\nKilling {len(processes)} process(es)...")
             all_killed = True
             
@@ -242,7 +242,7 @@ def main():
                 print(f"\nERROR: Failed to kill some processes")
                 sys.exit(1)
             
-            ***REMOVED*** Wait for port to be released (Windows can take a moment)
+            # Wait for port to be released (Windows can take a moment)
             max_wait = 5
             waited = 0
             while waited < max_wait:
@@ -251,7 +251,7 @@ def main():
                 if is_port_available(host, port):
                     break
             
-            ***REMOVED*** Verify port is now available
+            # Verify port is now available
             if not is_port_available(host, port):
                 print(f"\nERROR: Port {port} is still in use after killing processes")
                 print(f"To check manually:")
@@ -273,17 +273,17 @@ def main():
     else:
         print(f"Port {port} is free")
     
-    ***REMOVED*** Port is available, start uvicorn
+    # Port is available, start uvicorn
     print(f"\nStarting uvicorn...")
     
-    ***REMOVED*** Determine reload mode
+    # Determine reload mode
     reload = os.getenv("FINDEROS_RELOAD", "false").lower() == "true"
     if os.getenv("ENV") == "production":
         reload = False
     if sys.platform == "win32" and not os.getenv("FINDEROS_RELOAD"):
         reload = False
     
-    ***REMOVED*** Build uvicorn command
+    # Build uvicorn command
     cmd = [
         sys.executable,
         "-m", "uvicorn",
@@ -294,12 +294,12 @@ def main():
     
     if reload:
         cmd.append("--reload")
-        cmd.extend(["--reload-dir", "src"])  ***REMOVED*** Only watch src directory (excludes .venv)
+        cmd.extend(["--reload-dir", "src"])   # Only watch src directory (excludes .venv)
     
-    ***REMOVED*** Start uvicorn (use subprocess.Popen to maintain process chain)
+    # Start uvicorn (use subprocess.Popen to maintain process chain)
     try:
-        ***REMOVED*** Use Popen with wait to keep process alive and handle signals properly
-        ***REMOVED*** Don't redirect stdout/stderr so uvicorn logs appear in console
+        # Use Popen with wait to keep process alive and handle signals properly
+        # Don't redirect stdout/stderr so uvicorn logs appear in console
         process = subprocess.Popen(cmd)
         try:
             process.wait()

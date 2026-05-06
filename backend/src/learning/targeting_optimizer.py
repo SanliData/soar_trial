@@ -23,9 +23,9 @@ async def optimize_targeting(
     best_roles = insights.get("top_roles", [])
     best_industries = insights.get("top_industries", [])
 
-    ***REMOVED*** If user's industry is in top performers, keep; else suggest top ones
+    # If user's industry is in top performers, keep; else suggest top ones
     recommended_industries = [industry] if industry in best_industries else (best_industries[:3] or [industry])
-    ***REMOVED*** Prefer user's roles if they appear in best_roles; else suggest best_roles
+    # Prefer user's roles if they appear in best_roles; else suggest best_roles
     combined_roles = list(dict.fromkeys((roles or []) + best_roles))
     recommended_roles = [r for r in combined_roles if r in best_roles][:5]
     if not recommended_roles:

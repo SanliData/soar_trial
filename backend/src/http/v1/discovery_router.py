@@ -19,7 +19,7 @@ from src.middleware.plan_limit_middleware import check_companies_limit
 router = APIRouter(prefix="/discovery", tags=["discovery"])
 
 
-***REMOVED*** Helper function to create dependency with proper header injection
+# Helper function to create dependency with proper header injection
 def get_current_user_from_header(
     authorization: str = Header(None, alias="Authorization"),
     db: Session = Depends(get_db)
@@ -59,7 +59,7 @@ async def get_discovery_records(
     Get discovery records for the authenticated user.
     This is a protected route - requires valid JWT token.
     """
-    ***REMOVED*** Get user's discovery records from database
+    # Get user's discovery records from database
     records = db.query(DiscoveryRecord).filter(DiscoveryRecord.user_id == user.id).all()
     
     return DiscoveryListResponse(
@@ -80,7 +80,7 @@ async def create_discovery_record(
     Create a new discovery record for the authenticated user.
     This is a protected route - requires valid JWT token.
     """
-    ***REMOVED*** Create discovery record with user_id
+    # Create discovery record with user_id
     db_record = DiscoveryRecord(
         user_id=user.id,
         company_name=record.company_name,
@@ -100,12 +100,12 @@ async def create_discovery_record(
     db.commit()
     db.refresh(db_record)
     
-    ***REMOVED*** Increment usage tracking for companies
+    # Increment usage tracking for companies
     try:
         usage_service = get_usage_tracking_service(db)
         usage_service.increment_usage(user.id, "companies", 1)
     except Exception as e:
-        ***REMOVED*** Log error but don't fail the request
+        # Log error but don't fail the request
         import logging
         logging.error(f"Failed to increment usage tracking: {str(e)}")
     

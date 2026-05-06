@@ -25,13 +25,13 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["results"])
 
 
-***REMOVED*** Request Models
+# Request Models
 class ExportRequest(BaseModel):
     format: str = Field(..., description="Export format: csv, xlsx, json, zip")
     modules: Optional[List[str]] = Field(None, description="List of module types to export")
 
 
-***REMOVED*** Response Models
+# Response Models
 class PreviewReportResponse(BaseModel):
     plan_id: str
     target_region: str
@@ -50,7 +50,7 @@ class ExportJobResponse(BaseModel):
     created_at: str
 
 
-***REMOVED*** Endpoints
+# Endpoints
 @router.get("/plan/{plan_id}/preview", response_model=PreviewReportResponse)
 async def get_preview_report(
     plan_id: str,
@@ -179,7 +179,7 @@ async def download_export(
         
         export_job = result_service.get_export_status(export_id)
         
-        ***REMOVED*** Determine MIME type
+        # Determine MIME type
         mime_types = {
             "csv": "text/csv",
             "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

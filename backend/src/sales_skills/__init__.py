@@ -7,7 +7,7 @@ from src.sales_skills.skill_registry import register_skill, get_skill, list_skil
 from src.sales_skills.skill_executor import SkillExecutor, run_skill_sequence
 from src.sales_skills.register_all import register_all_sales_skills
 
-***REMOVED*** Register built-in skills when package is imported
+# Register built-in skills when package is imported
 register_all_sales_skills()
 
 __all__ = [

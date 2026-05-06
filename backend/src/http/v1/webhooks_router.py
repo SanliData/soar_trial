@@ -26,36 +26,36 @@ router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
 class GoogleAdsLeadFormData(BaseModel):
     """Google Ads Lead Form submission data structure."""
-    ***REMOVED*** Required fields
+    # Required fields
     full_name: str
     email: str
     
-    ***REMOVED*** Optional fields
+    # Optional fields
     phone: Optional[str] = None
     company_name: Optional[str] = None
     job_title: Optional[str] = None
     message: Optional[str] = None
     
-    ***REMOVED*** Google Ads metadata
+    # Google Ads metadata
     google_ads_lead_id: Optional[str] = None
     google_ads_campaign_id: Optional[str] = None
     google_ads_ad_group_id: Optional[str] = None
     google_ads_keyword: Optional[str] = None
     
-    ***REMOVED*** Additional form data
+    # Additional form data
     form_data: Optional[Dict[str, Any]] = None
 
 
 class GoogleAdsWebhookPayload(BaseModel):
     """Google Ads webhook payload structure."""
-    ***REMOVED*** Webhook metadata
+    # Webhook metadata
     webhook_id: Optional[str] = None
     timestamp: Optional[str] = None
     
-    ***REMOVED*** Lead data
+    # Lead data
     lead_data: GoogleAdsLeadFormData
     
-    ***REMOVED*** Campaign information
+    # Campaign information
     campaign_id: Optional[int] = None
     user_id: Optional[int] = None
 
@@ -78,19 +78,19 @@ def verify_google_ads_webhook(
         True if signature is valid
     """
     if not signature or not secret:
-        ***REMOVED*** If no signature/secret configured, allow (for development)
+        # If no signature/secret configured, allow (for development)
         logger.warning("Webhook signature verification skipped (not configured)")
         return True
     
     try:
-        ***REMOVED*** Calculate expected signature
+        # Calculate expected signature
         expected_signature = hmac.new(
             secret.encode('utf-8'),
             payload,
             hashlib.sha256
         ).hexdigest()
         
-        ***REMOVED*** Compare signatures (constant-time comparison)
+        # Compare signatures (constant-time comparison)
         return hmac.compare_digest(signature, expected_signature)
     except Exception as e:
         logger.error(f"Error verifying webhook signature: {str(e)}")
@@ -120,33 +120,33 @@ async def google_ads_lead_form_webhook(
             "google_ads_campaign_id": "...",
             ...
         },
-        "campaign_id": 123,  ***REMOVED*** Optional: FinderOS campaign ID
-        "user_id": 1  ***REMOVED*** Optional: FinderOS user ID
+        "campaign_id": 123,   # Optional: FinderOS campaign ID
+        "user_id": 1   # Optional: FinderOS user ID
     }
     """
     try:
-        ***REMOVED*** Get raw payload
+        # Get raw payload
         payload_bytes = await request.body()
         payload_str = payload_bytes.decode('utf-8')
         
-        ***REMOVED*** Verify webhook signature (if configured)
+        # Verify webhook signature (if configured)
         webhook_secret = os.getenv("GOOGLE_ADS_WEBHOOK_SECRET")
         if not verify_google_ads_webhook(payload_bytes, x_google_ads_signature, webhook_secret):
             logger.warning("Webhook signature verification failed")
             raise HTTPException(status_code=401, detail="Invalid webhook signature")
         
-        ***REMOVED*** Parse JSON payload
+        # Parse JSON payload
         try:
             payload_data = json.loads(payload_str)
         except json.JSONDecodeError:
-            ***REMOVED*** Try parsing as form data or other formats
+            # Try parsing as form data or other formats
             logger.warning(f"Failed to parse JSON payload: {payload_str[:200]}")
             raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
-        ***REMOVED*** Extract lead data
-        lead_data = payload_data.get("lead_data", payload_data)  ***REMOVED*** Support both nested and flat structures
+        # Extract lead data
+        lead_data = payload_data.get("lead_data", payload_data)   # Support both nested and flat structures
         
-        ***REMOVED*** Get required fields
+        # Get required fields
         full_name = lead_data.get("full_name") or lead_data.get("name") or lead_data.get("fullName")
         email = lead_data.get("email")
         
@@ -156,16 +156,16 @@ async def google_ads_lead_form_webhook(
                 detail="Missing required fields: full_name and email"
             )
         
-        ***REMOVED*** Get optional fields
+        # Get optional fields
         phone = lead_data.get("phone") or lead_data.get("phone_number")
         google_ads_lead_id = lead_data.get("google_ads_lead_id") or lead_data.get("lead_id")
         google_ads_campaign_id = lead_data.get("google_ads_campaign_id") or lead_data.get("campaign_id")
         
-        ***REMOVED*** Find user_id and campaign_id
+        # Find user_id and campaign_id
         user_id = payload_data.get("user_id")
         campaign_id = payload_data.get("campaign_id")
         
-        ***REMOVED*** If not provided, try to find by Google Ads campaign ID
+        # If not provided, try to find by Google Ads campaign ID
         if not user_id or not campaign_id:
             if google_ads_campaign_id:
                 campaign = db.query(Campaign).filter(
@@ -177,9 +177,9 @@ async def google_ads_lead_form_webhook(
                     campaign_id = campaign.id
                     logger.info(f"Found campaign {campaign_id} for Google Ads campaign {google_ads_campaign_id}")
         
-        ***REMOVED*** If still no user_id, use default or raise error
+        # If still no user_id, use default or raise error
         if not user_id:
-            ***REMOVED*** Try to get from environment or use a default
+            # Try to get from environment or use a default
             default_user_id = os.getenv("DEFAULT_WEBHOOK_USER_ID")
             if default_user_id:
                 user_id = int(default_user_id)
@@ -189,7 +189,7 @@ async def google_ads_lead_form_webhook(
                     detail="user_id not found. Please provide user_id in payload or configure DEFAULT_WEBHOOK_USER_ID"
                 )
         
-        ***REMOVED*** Create lead using LeadService
+        # Create lead using LeadService
         lead_service = get_lead_service(db)
         
         result = lead_service.create_lead_from_google_ads(
@@ -197,7 +197,7 @@ async def google_ads_lead_form_webhook(
             full_name=full_name,
             email=email,
             phone=phone,
-            form_data=lead_data,  ***REMOVED*** Store all form data
+            form_data=lead_data,   # Store all form data
             google_ads_lead_id=google_ads_lead_id,
             google_ads_campaign_id=google_ads_campaign_id,
             campaign_id=campaign_id
@@ -212,13 +212,13 @@ async def google_ads_lead_form_webhook(
         
         logger.info(f"Lead created successfully: {result['lead']['id']} (email: {email})")
         
-        ***REMOVED*** Get locale from request (webhook may have Accept-Language header)
+        # Get locale from request (webhook may have Accept-Language header)
         locale = get_locale_from_request(request)
         
-        ***REMOVED*** Get language-aware message
+        # Get language-aware message
         response_message = get_lead_received_message(locale)
         
-        ***REMOVED*** Return success response
+        # Return success response
         return {
             "success": True,
             "message": response_message,
@@ -285,7 +285,7 @@ async def stripe_webhook(
     Handles: subscription.created, subscription.updated, subscription.deleted,
     invoice.paid, invoice.payment_failed, etc.
     """
-    ***REMOVED*** Payment APIs are disabled
+    # Payment APIs are disabled
     raise HTTPException(
         status_code=503,
         detail="Payment APIs (Stripe/Iyzico) are currently disabled."
@@ -297,7 +297,7 @@ async def stripe_webhook(
         payload = await request.body()
         sig_header = request.headers.get("stripe-signature")
         
-        ***REMOVED*** Verify webhook signature
+        # Verify webhook signature
         try:
             event = stripe.Webhook.construct_event(
                 payload, sig_header, stripe_webhook_secret
@@ -309,18 +309,18 @@ async def stripe_webhook(
             logger.error(f"Invalid signature: {str(e)}")
             raise HTTPException(status_code=400, detail="Invalid signature")
         
-        ***REMOVED*** Handle event
+        # Handle event
         event_type = event["type"]
         event_data = event["data"]["object"]
         
         logger.info(f"Stripe webhook received: {event_type}")
         
         if event_type == "customer.subscription.created":
-            ***REMOVED*** New subscription created
+            # New subscription created
             subscription_id = event_data.get("id")
             customer_id = event_data.get("customer")
             
-            ***REMOVED*** Find user by customer_id
+            # Find user by customer_id
             from src.models.subscription import Subscription
             subscription = db.query(Subscription).filter(
                 Subscription.payment_customer_id == customer_id
@@ -333,7 +333,7 @@ async def stripe_webhook(
                 logger.info(f"Subscription updated: {subscription.id}")
         
         elif event_type == "customer.subscription.updated":
-            ***REMOVED*** Subscription updated
+            # Subscription updated
             subscription_id = event_data.get("id")
             
             from src.models.subscription import Subscription
@@ -344,7 +344,7 @@ async def stripe_webhook(
             if subscription:
                 subscription.status = event_data.get("status", "active")
                 
-                ***REMOVED*** Update period dates
+                # Update period dates
                 current_period_start = event_data.get("current_period_start")
                 current_period_end = event_data.get("current_period_end")
                 
@@ -359,7 +359,7 @@ async def stripe_webhook(
                 logger.info(f"Subscription updated: {subscription.id}")
         
         elif event_type == "customer.subscription.deleted":
-            ***REMOVED*** Subscription cancelled
+            # Subscription cancelled
             subscription_id = event_data.get("id")
             
             from src.models.subscription import Subscription
@@ -371,17 +371,17 @@ async def stripe_webhook(
                 subscription.status = "cancelled"
                 from datetime import datetime
                 subscription.cancelled_at = datetime.utcnow()
-                ***REMOVED*** Downgrade to free
+                # Downgrade to free
                 subscription.plan_type = "free"
                 subscription.price = 0
                 db.commit()
                 logger.info(f"Subscription cancelled: {subscription.id}")
         
         elif event_type == "invoice.paid":
-            ***REMOVED*** Invoice paid - create invoice record
+            # Invoice paid - create invoice record
             invoice_id = event_data.get("id")
             customer_id = event_data.get("customer")
-            amount = event_data.get("amount_paid", 0) / 100  ***REMOVED*** Convert from cents
+            amount = event_data.get("amount_paid", 0) / 100   # Convert from cents
             currency = event_data.get("currency", "usd").upper()
             
             from src.models.subscription import Subscription
@@ -412,7 +412,7 @@ async def stripe_webhook(
                 logger.info(f"Invoice created: {invoice.id}")
         
         elif event_type == "invoice.payment_failed":
-            ***REMOVED*** Payment failed
+            # Payment failed
             customer_id = event_data.get("customer")
             
             from src.models.subscription import Subscription

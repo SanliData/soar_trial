@@ -21,43 +21,43 @@ class UserAccount(Base):
     
     __tablename__ = "user_accounts"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True, index=True)
     
-    ***REMOVED*** Account status
-    account_status = Column(String(50), default="inactive", nullable=False, index=True)  ***REMOVED*** "inactive", "active", "suspended"
+    # Account status
+    account_status = Column(String(50), default="inactive", nullable=False, index=True)   # "inactive", "active", "suspended"
     
-    ***REMOVED*** Activation fee payment
+    # Activation fee payment
     activation_fee_paid = Column(Boolean, default=False, nullable=False)
     activation_fee_paid_at = Column(DateTime(timezone=True), nullable=True)
-    activation_fee_next_due = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** Next monthly due date
+    activation_fee_next_due = Column(DateTime(timezone=True), nullable=True)   # Next monthly due date
     
-    ***REMOVED*** Query cap (non-negotiable unless admin override)
-    query_cap = Column(Integer, default=100, nullable=False)  ***REMOVED*** MAX 100 results per query
-    admin_override_active = Column(Boolean, default=False, nullable=False)  ***REMOVED*** Admin override for higher caps
-    admin_override_cap = Column(Integer, nullable=True)  ***REMOVED*** Override cap (max 1000)
+    # Query cap (non-negotiable unless admin override)
+    query_cap = Column(Integer, default=100, nullable=False)   # MAX 100 results per query
+    admin_override_active = Column(Boolean, default=False, nullable=False)   # Admin override for higher caps
+    admin_override_cap = Column(Integer, nullable=True)   # Override cap (max 1000)
     
-    ***REMOVED*** Usage tracking (references usage_tracking table)
-    ***REMOVED*** Total queries executed this month
+    # Usage tracking (references usage_tracking table)
+    # Total queries executed this month
     queries_this_month = Column(Integer, default=0, nullable=False)
     queries_last_reset = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     
-    ***REMOVED*** Billing information
+    # Billing information
     currency = Column(String(10), default="USD", nullable=False)
-    payment_provider = Column(String(50), nullable=True)  ***REMOVED*** "stripe", "iyzico", etc.
+    payment_provider = Column(String(50), nullable=True)   # "stripe", "iyzico", etc.
     payment_customer_id = Column(String(255), nullable=True, index=True)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship
+    # Relationship
     user = relationship("User", backref="account", uselist=False)
     
-    ***REMOVED*** Indexes
+    # Indexes
     __table_args__ = (
         Index('idx_user_account_user_id', 'user_id'),
         Index('idx_user_account_status', 'account_status'),

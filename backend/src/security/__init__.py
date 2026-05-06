@@ -1,1 +1,1 @@
-***REMOVED*** Security: bot defense, CAPTCHA, abuse prevention
+# Security: bot defense, CAPTCHA, abuse prevention

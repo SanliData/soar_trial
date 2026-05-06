@@ -36,7 +36,7 @@ async def get_sessions() -> Dict[str, Any]:
 
 @router.get("/traces")
 async def get_traces() -> Dict[str, Any]:
-    ***REMOVED*** Demo session trace for foundation.
+    # Demo session trace for foundation.
     return _envelope(export_traces(session_id="sess-demo-001", limit=80))
 
 

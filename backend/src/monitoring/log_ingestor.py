@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** SOARB2B-known incident type patterns (module/error -> normalized type); order matters (first match)
+# SOARB2B-known incident type patterns (module/error -> normalized type); order matters (first match)
 INCIDENT_TYPE_PATTERNS = [
     (r"auth.*fail|OAuth|oauth|JWT|jwt.*invalid|token.*expired", "authentication_flow_failure"),
     (r"oauth.*callback|callback.*fail", "oauth_callback_failure"),
@@ -42,7 +42,7 @@ INCIDENT_TYPE_PATTERNS = [
     (r"opportunity_scoring_anomaly|score.*0\.95.*signals_count", "opportunity_scoring_anomaly"),
 ]
 
-***REMOVED*** Regex for common log formats (Python logging, uvicorn, PM2)
+# Regex for common log formats (Python logging, uvicorn, PM2)
 RE_TIMESTAMP = re.compile(r"(\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)")
 RE_REQUEST_ID = re.compile(r"(?:request[_-]?id|X-Request-ID)[=:\s]+([a-zA-Z0-9\-]+)", re.I)
 RE_MODULE = re.compile(r"(?:File \"[^\"]*\"|[\w/\\]+/)([\w/\\]+\.py)")
@@ -176,7 +176,7 @@ async def ingest_logs(
     """
     paths = log_paths or []
     if not paths:
-        backend = Path(__file__).resolve().parent.parent.parent.parent  ***REMOVED*** backend/
+        backend = Path(__file__).resolve().parent.parent.parent.parent   # backend/
         for name in (
             "logs/soarb2b-error.log",
             "logs/soarb2b-out.log",

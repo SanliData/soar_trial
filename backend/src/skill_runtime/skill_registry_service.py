@@ -29,7 +29,7 @@ SKILL_REGISTRY: dict[str, dict[str, Any]] = {
         "partition_priority": "procurement_documents",
         "retrieval_fallback_allowed": True,
         "sparse_reasoning_compatible": True,
-        ***REMOVED*** H-044 typed context integration (optional fields)
+        # H-044 typed context integration (optional fields)
         "required_context_types": ["instruction_context", "knowledge_context", "tool_context", "guardrail_context"],
         "forbidden_context_types": [],
         "context_scope": "workflow_scoped",

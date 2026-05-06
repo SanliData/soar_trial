@@ -20,7 +20,7 @@ class CompanyFilterSkill(BaseSkill):
         companies = context.get("companies", [])
         min_relevance = float(context.get("min_relevance_score", 0.0))
         max_companies = int(context.get("max_companies", 100))
-        industry_filter = context.get("industry_filter")  ***REMOVED*** optional: keep only if match
+        industry_filter = context.get("industry_filter")   # optional: keep only if match
         out = []
         for c in companies:
             score = float(c.get("relevance_score", 0.5))

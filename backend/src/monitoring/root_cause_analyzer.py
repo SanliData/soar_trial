@@ -15,7 +15,7 @@ try:
 except ImportError:
     openai = None
 
-***REMOVED*** Map error_type -> default root cause and suggested next step
+# Map error_type -> default root cause and suggested next step
 DEFAULT_ROOT_CAUSES = {
     "lead_generation_workflow_failure": ("Workflow execution failed in lead generation pipeline", "lead_generation_workflow", "Check skill_executor logs and workflow context", "Verify input context and skill order"),
     "decision_maker_detection_failure": ("Decision maker detection skill failed", "decision_maker_detection_skill", "Check OpenAI and company context", "Validate persona prompt and token limits"),

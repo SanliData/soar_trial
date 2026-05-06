@@ -18,7 +18,7 @@ _PROVIDER_CAPS: dict[str, dict[str, Any]] = {
     "vllm_future": {"streaming": True, "tool_calls": True, "batch": True, "hosted": False},
 }
 
-***REMOVED*** H-043 sparse / long-context metadata — informational only; no auto-switching.
+# H-043 sparse / long-context metadata — informational only; no auto-switching.
 _PROVIDER_SPARSE_METADATA: dict[str, dict[str, Any]] = {
     "openai": {
         "sparse_moe": True,
@@ -75,7 +75,7 @@ _PROVIDER_RESTRICTIONS: dict[str, dict[str, Any]] = {
     "vllm_future": {"egress": "internal_lb_only", "data_residency": "tenant_cluster", "max_chain_depth": 1},
 }
 
-***REMOVED*** task_profile -> deterministic routing (explainable; single rule match).
+# task_profile -> deterministic routing (explainable; single rule match).
 _ROUTING_TABLE: dict[str, tuple[str, str]] = {
     "default": ("local_llm", "prefer_local_first_privacy"),
     "privacy_strict": ("local_llm", "privacy_strict_profile"),

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-***REMOVED*** Workflow label → evaluation subsystem — static mapping only.
+# Workflow label → evaluation subsystem — static mapping only.
 WORKFLOW_EVALUATION_ROUTES: dict[str, str] = {
     "graph": "graph_evaluation",
     "graph_reasoning": "graph_evaluation",

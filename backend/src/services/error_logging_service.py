@@ -56,15 +56,15 @@ class ErrorLoggingService:
             Dictionary with error log creation result
         """
         try:
-            ***REMOVED*** Get error information
+            # Get error information
             error_type = type(error).__name__
             error_message = str(error)
             error_traceback = ''.join(traceback.format_exception(type(error), error, error.__traceback__))
             
-            ***REMOVED*** Sanitize headers (remove sensitive information)
+            # Sanitize headers (remove sensitive information)
             sanitized_headers = self._sanitize_headers(request_headers) if request_headers else None
             
-            ***REMOVED*** Create error log
+            # Create error log
             error_log = ErrorLog(
                 user_id=user_id,
                 error_type=error_type,
@@ -83,7 +83,7 @@ class ErrorLoggingService:
             self.db.commit()
             self.db.refresh(error_log)
             
-            ***REMOVED*** Also log to standard logger
+            # Also log to standard logger
             logger.error(f"Error logged to database: {error_log.id} - {error_type}: {error_message}")
             
             return {
@@ -94,7 +94,7 @@ class ErrorLoggingService:
             
         except Exception as e:
             self.db.rollback()
-            ***REMOVED*** Fallback to standard logging if database logging fails
+            # Fallback to standard logging if database logging fails
             logger.error(f"Failed to log error to database: {str(e)}")
             logger.error(f"Original error: {error_type}: {error_message}")
             return {
@@ -228,12 +228,12 @@ class ErrorLoggingService:
             from datetime import timedelta
             cutoff_date = datetime.utcnow() - timedelta(days=days)
             
-            ***REMOVED*** Total errors
+            # Total errors
             total_errors = self.db.query(ErrorLog).filter(
                 ErrorLog.created_at >= cutoff_date
             ).count()
             
-            ***REMOVED*** Errors by severity
+            # Errors by severity
             errors_by_severity = {}
             for severity in ['info', 'warning', 'error', 'critical']:
                 count = self.db.query(ErrorLog).filter(
@@ -242,7 +242,7 @@ class ErrorLoggingService:
                 ).count()
                 errors_by_severity[severity] = count
             
-            ***REMOVED*** Errors by service
+            # Errors by service
             errors_by_service = {}
             services = self.db.query(ErrorLog.service_name).filter(
                 ErrorLog.created_at >= cutoff_date,
@@ -257,7 +257,7 @@ class ErrorLoggingService:
                 ).count()
                 errors_by_service[service] = count
             
-            ***REMOVED*** Unresolved errors
+            # Unresolved errors
             unresolved_count = self.db.query(ErrorLog).filter(
                 ErrorLog.created_at >= cutoff_date,
                 ErrorLog.is_resolved == False

@@ -24,9 +24,9 @@ class LocationAffinityService:
     def __init__(self, db: Session):
         self.db = db
     
-    ***REMOVED*** ========================================================================
-    ***REMOVED*** LOCATION SIGNAL EXTRACTION
-    ***REMOVED*** ========================================================================
+    # ========================================================================
+    # LOCATION SIGNAL EXTRACTION
+    # ========================================================================
     
     def extract_location_signals(
         self,
@@ -46,35 +46,35 @@ class LocationAffinityService:
         """
         signals = []
         
-        ***REMOVED*** Basic signal extraction (would be enhanced with real geocoding APIs)
+        # Basic signal extraction (would be enhanced with real geocoding APIs)
         if address:
             address_lower = address.lower()
             
-            ***REMOVED*** Urban signals
+            # Urban signals
             if any(keyword in address_lower for keyword in ["center", "downtown", "şehir", "merkez"]):
                 signals.append("urban")
             
-            ***REMOVED*** Coastal signals
+            # Coastal signals
             if any(keyword in address_lower for keyword in ["coast", "beach", "sahil", "deniz", "marina"]):
                 signals.append("coastal")
             
-            ***REMOVED*** Industrial signals
+            # Industrial signals
             if any(keyword in address_lower for keyword in ["industrial", "sanayi", "zone", "park"]):
                 signals.append("industrial")
             
-            ***REMOVED*** Tourist destination signals
+            # Tourist destination signals
             if any(keyword in address_lower for keyword in ["tourist", "resort", "hotel", "otel", "turizm"]):
                 signals.append("tourist-destination")
         
-        ***REMOVED*** If no specific signals found, default to urban
+        # If no specific signals found, default to urban
         if not signals:
             signals.append("urban")
         
         return signals
     
-    ***REMOVED*** ========================================================================
-    ***REMOVED*** LOCATION AFFINITY SCORING
-    ***REMOVED*** ========================================================================
+    # ========================================================================
+    # LOCATION AFFINITY SCORING
+    # ========================================================================
     
     def calculate_location_affinity_score(
         self,
@@ -95,63 +95,63 @@ class LocationAffinityService:
         2. Signal matching (matching signals = higher score)
         3. Proximity (closer = higher score, but capped by radius)
         """
-        ***REMOVED*** Calculate distance (Haversine formula)
+        # Calculate distance (Haversine formula)
         distance_km = self._haversine_distance(persona_lat, persona_lng, target_lat, target_lng)
         
-        ***REMOVED*** Factor 1: Distance score (0.0 to 1.0)
+        # Factor 1: Distance score (0.0 to 1.0)
         distance_score = 0.0
         
         if persona_polygon:
-            ***REMOVED*** Check if target is within polygon
+            # Check if target is within polygon
             is_inside = self._point_in_polygon(target_lat, target_lng, persona_polygon)
             if is_inside:
                 distance_score = 1.0
             else:
-                ***REMOVED*** Score decreases with distance from polygon
-                distance_score = max(0.0, 1.0 - (distance_km / 100.0))  ***REMOVED*** Decay over 100km
+                # Score decreases with distance from polygon
+                distance_score = max(0.0, 1.0 - (distance_km / 100.0))   # Decay over 100km
         elif persona_radius:
-            ***REMOVED*** Check if target is within radius
+            # Check if target is within radius
             distance_meters = distance_km * 1000
             if distance_meters <= persona_radius:
                 distance_score = 1.0
             else:
-                ***REMOVED*** Score decreases with distance beyond radius
+                # Score decreases with distance beyond radius
                 excess_distance = distance_meters - persona_radius
-                distance_score = max(0.0, 1.0 - (excess_distance / (persona_radius * 2)))  ***REMOVED*** Decay over 2x radius
+                distance_score = max(0.0, 1.0 - (excess_distance / (persona_radius * 2)))   # Decay over 2x radius
         else:
-            ***REMOVED*** No radius/polygon, use distance decay
-            distance_score = max(0.0, 1.0 - (distance_km / 50.0))  ***REMOVED*** Decay over 50km
+            # No radius/polygon, use distance decay
+            distance_score = max(0.0, 1.0 - (distance_km / 50.0))   # Decay over 50km
         
-        ***REMOVED*** Factor 2: Signal matching score (0.0 to 1.0)
+        # Factor 2: Signal matching score (0.0 to 1.0)
         signal_score = 0.0
         if persona_signals and target_signals:
             matching_signals = set(persona_signals) & set(target_signals)
             if matching_signals:
                 signal_score = len(matching_signals) / max(len(persona_signals), len(target_signals))
         elif persona_signals or target_signals:
-            ***REMOVED*** If only one side has signals, no match = 0.5 (neutral)
+            # If only one side has signals, no match = 0.5 (neutral)
             signal_score = 0.5
         else:
-            ***REMOVED*** No signals on either side = 0.5 (neutral)
+            # No signals on either side = 0.5 (neutral)
             signal_score = 0.5
         
-        ***REMOVED*** Combined score (weighted average: 70% distance, 30% signals)
+        # Combined score (weighted average: 70% distance, 30% signals)
         location_affinity_score = (distance_score * 0.7) + (signal_score * 0.3)
         
         return min(1.0, max(0.0, location_affinity_score))
     
     def _haversine_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
         """Calculate distance between two points using Haversine formula (in kilometers)"""
-        ***REMOVED*** Earth radius in kilometers
+        # Earth radius in kilometers
         R = 6371.0
         
-        ***REMOVED*** Convert to radians
+        # Convert to radians
         lat1_rad = math.radians(lat1)
         lon1_rad = math.radians(lon1)
         lat2_rad = math.radians(lat2)
         lon2_rad = math.radians(lon2)
         
-        ***REMOVED*** Haversine formula
+        # Haversine formula
         dlat = lat2_rad - lat1_rad
         dlon = lon2_rad - lon1_rad
         
@@ -167,11 +167,11 @@ class LocationAffinityService:
         
         Polygon format: {
             "type": "Polygon",
-            "coordinates": [[[lng, lat], [lng, lat], ...]]  ***REMOVED*** First ring is exterior
+            "coordinates": [[[lng, lat], [lng, lat], ...]]   # First ring is exterior
         }
         """
         try:
-            ***REMOVED*** Get coordinates from GeoJSON polygon
+            # Get coordinates from GeoJSON polygon
             if polygon.get("type") != "Polygon":
                 return False
             
@@ -179,16 +179,16 @@ class LocationAffinityService:
             if not coordinates or not coordinates[0]:
                 return False
             
-            ***REMOVED*** Extract exterior ring (first ring)
+            # Extract exterior ring (first ring)
             exterior_ring = coordinates[0]
             
-            ***REMOVED*** Ray casting algorithm
+            # Ray casting algorithm
             inside = False
             j = len(exterior_ring) - 1
             
             for i in range(len(exterior_ring)):
-                xi, yi = exterior_ring[i]  ***REMOVED*** [lng, lat]
-                xj, yj = exterior_ring[j]  ***REMOVED*** [lng, lat]
+                xi, yi = exterior_ring[i]   # [lng, lat]
+                xj, yj = exterior_ring[j]   # [lng, lat]
                 
                 intersect = ((yi > lng) != (yj > lng)) and (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi)
                 if intersect:
@@ -197,12 +197,12 @@ class LocationAffinityService:
             
             return inside
         except Exception:
-            ***REMOVED*** If polygon is invalid, return False
+            # If polygon is invalid, return False
             return False
     
-    ***REMOVED*** ========================================================================
-    ***REMOVED*** LOCATION AFFINITY MANAGEMENT
-    ***REMOVED*** ========================================================================
+    # ========================================================================
+    # LOCATION AFFINITY MANAGEMENT
+    # ========================================================================
     
     def set_location_affinity(
         self,
@@ -230,7 +230,7 @@ class LocationAffinityService:
         if not persona:
             raise ValueError(f"Persona with ID {persona_id} not found")
         
-        ***REMOVED*** Extract location signals if not provided
+        # Extract location signals if not provided
         if location_signals is None:
             location_signals = self.extract_location_signals(
                 latitude,
@@ -238,7 +238,7 @@ class LocationAffinityService:
                 persona.work_address
             )
         
-        ***REMOVED*** Update persona location affinity
+        # Update persona location affinity
         if persona.work_location is None:
             persona.work_location = {}
         
@@ -250,9 +250,9 @@ class LocationAffinityService:
         persona.location_polygon = polygon
         persona.location_proximity_clusters = proximity_clusters
         
-        ***REMOVED*** Calculate initial affinity score (will be updated during matching)
+        # Calculate initial affinity score (will be updated during matching)
         if persona.work_location:
-            persona.location_affinity_score = 0.5  ***REMOVED*** Default neutral score
+            persona.location_affinity_score = 0.5   # Default neutral score
         
         self.db.commit()
         self.db.refresh(persona)

@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Components that imply user-facing or critical path
+# Components that imply user-facing or critical path
 USER_FACING_OR_CRITICAL = {
     "lead_generation_workflow", "sales_engine", "agents", "campaign_engine",
     "email_generation_skill", "contact_enrichment_skill", "decision_maker_detection_skill",
@@ -47,13 +47,13 @@ async def classify_severity(
     if isinstance(clusters, list):
         total_cluster_events = sum(c.get("count", 0) for c in clusters)
 
-    ***REMOVED*** S1: critical
+    # S1: critical
     if (count >= 50 and is_user_facing) or (is_campaign_blocking and count >= 20) or (count >= 100):
         severity = "S1"
-    ***REMOVED*** S2: major
+    # S2: major
     elif (count >= 10 and is_user_facing) or is_campaign_blocking or (count >= 30):
         severity = "S2"
-    ***REMOVED*** S3: isolated
+    # S3: isolated
     elif count >= 3 or is_user_facing:
         severity = "S3"
     else:

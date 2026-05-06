@@ -25,7 +25,7 @@ def project_mcp_tools(*, policy_scope: str = "internal_operator") -> dict[str, A
     """
     tools = []
     for c in load_capabilities():
-        ***REMOVED*** projection allows read/projection operations; destructive is excluded by default
+        # projection allows read/projection operations; destructive is excluded by default
         if c.destructive_action:
             continue
         if not c.orchestration_safe:

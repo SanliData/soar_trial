@@ -14,7 +14,7 @@ from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Same base as export router
+# Same base as export router
 EVIDENCE_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent / "data" / "exports" / "evidence"
 
 

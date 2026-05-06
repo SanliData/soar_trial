@@ -12,8 +12,8 @@ from src.adaptive_clustering.clustering_validation_service import validate_score
 
 
 def score_cluster_utility(*, isolation: float, overlap: float, redundancy: float, retrieval_value: float) -> dict[str, Any]:
-    ***REMOVED*** Deterministic explainable formula:
-    ***REMOVED*** utility = 0.4*retrieval_value + 0.3*isolation - 0.2*overlap - 0.1*redundancy
+    # Deterministic explainable formula:
+    # utility = 0.4*retrieval_value + 0.3*isolation - 0.2*overlap - 0.1*redundancy
     for x in (isolation, overlap, redundancy, retrieval_value):
         validate_score01(float(x))
     utility = 0.4 * retrieval_value + 0.3 * isolation - 0.2 * overlap - 0.1 * redundancy

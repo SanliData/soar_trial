@@ -6,7 +6,7 @@ ENCODING: UTF-8 WITHOUT BOM
 
 from __future__ import annotations
 
-***REMOVED*** Directed pairs (source_tool -> target_tool) permitted for orchestration graphs.
+# Directed pairs (source_tool -> target_tool) permitted for orchestration graphs.
 ALLOWED_DELEGATIONS: frozenset[tuple[str, str]] = frozenset(
     {
         ("results_hub_read", "graph_traverse"),

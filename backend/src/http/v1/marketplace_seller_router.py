@@ -17,9 +17,9 @@ from src.services.marketplace_seller_service import MarketplaceSellerService
 router = APIRouter(prefix="/marketplace-sellers", tags=["marketplace-sellers"])
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** REQUEST/RESPONSE MODELS
-***REMOVED*** ============================================================================
+# ============================================================================
+# REQUEST/RESPONSE MODELS
+# ============================================================================
 
 class DiscoverSellersRequest(BaseModel):
     marketplace: str = Field(..., description="Marketplace name: 'amazon', 'ebay', 'etsy', 'ali express', 'trendyol', 'hepsiburada'")
@@ -48,9 +48,9 @@ class MarketplaceSellerResponse(BaseModel):
     updated_at: str
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** MARKETPLACE SELLER ENDPOINTS
-***REMOVED*** ============================================================================
+# ============================================================================
+# MARKETPLACE SELLER ENDPOINTS
+# ============================================================================
 
 @router.post("/discover", response_model=List[MarketplaceSellerResponse])
 async def discover_marketplace_sellers(
@@ -151,7 +151,7 @@ async def infer_business_entity(
     
     service = MarketplaceSellerService(db)
     
-    ***REMOVED*** Verify seller belongs to user
+    # Verify seller belongs to user
     seller = service.get_seller(user.id, seller_id)
     if not seller:
         raise HTTPException(status_code=404, detail="Seller not found")
@@ -185,7 +185,7 @@ async def infer_owner(
     
     service = MarketplaceSellerService(db)
     
-    ***REMOVED*** Verify seller belongs to user
+    # Verify seller belongs to user
     seller = service.get_seller(user.id, seller_id)
     if not seller:
         raise HTTPException(status_code=404, detail="Seller not found")
@@ -211,7 +211,7 @@ async def extract_location_signals(
     
     service = MarketplaceSellerService(db)
     
-    ***REMOVED*** Verify seller belongs to user
+    # Verify seller belongs to user
     seller = service.get_seller(user.id, seller_id)
     if not seller:
         raise HTTPException(status_code=404, detail="Seller not found")

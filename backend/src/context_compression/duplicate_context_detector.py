@@ -34,7 +34,7 @@ def detect_duplicates(items: list[dict[str, Any]]) -> dict[str, Any]:
     for it in validated:
         validate_context_item(it)
 
-    ***REMOVED*** stable order
+    # stable order
     validated.sort(key=lambda x: (x["workflow_scope"], x["context_type"], x["context_id"]))
 
     buckets: dict[str, list[dict[str, Any]]] = {}
@@ -68,7 +68,7 @@ def detect_duplicates(items: list[dict[str, Any]]) -> dict[str, Any]:
         )
         recommended.extend([d["context_id"] for d in dups])
 
-    ***REMOVED*** Make deterministic list
+    # Make deterministic list
     recommended_sorted = sorted(set(recommended))
     return {
         "duplicate_groups": groups,

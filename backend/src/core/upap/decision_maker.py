@@ -30,11 +30,11 @@ def infer_role(
     keyword_intent = (keyword_intent or "").strip().lower()
     combined = " ".join([title, dept, keyword_intent])
 
-    ***REMOVED*** Procurement signals
+    # Procurement signals
     proc_keywords = ["procurement", "purchasing", "buyer", "sourcing", "supply", "purchase", "vendor"]
-    ***REMOVED*** QA signals
+    # QA signals
     qa_keywords = ["quality", "qa", "qc", "compliance", "regulatory", "audit", "inspection"]
-    ***REMOVED*** Ops signals
+    # Ops signals
     ops_keywords = ["operations", "ops", "production", "manufacturing", "plant", "facility", "logistics"]
 
     scores = {"Procurement": 0.0, "QA": 0.0, "Ops": 0.0}
@@ -48,7 +48,7 @@ def infer_role(
         if w in combined:
             scores["Ops"] += 0.35
 
-    ***REMOVED*** Title hints (stronger)
+    # Title hints (stronger)
     if any(t in title for t in ["procurement", "purchasing", "buyer", "sourcing"]):
         scores["Procurement"] += 0.4
     if any(t in title for t in ["quality", "qa", "qc", "compliance", "regulatory"]):
@@ -60,7 +60,7 @@ def infer_role(
     raw_score = scores[best_role]
     confidence = min(1.0, max(0.0, raw_score))
     if confidence < 0.1:
-        best_role = "Ops"  ***REMOVED*** default when no signal
+        best_role = "Ops"   # default when no signal
         confidence = 0.3
     return (best_role, round(confidence, 2))
 
@@ -107,7 +107,7 @@ def infer_decision_maker_persona(
         "role": role,
         "authority_level": _authority_level(title_s),
         "department": dept_s,
-        "decision_type": role,  ***REMOVED*** align with role for now
+        "decision_type": role,   # align with role for now
         "accessibility_score": _accessibility_score(title_s, role),
         "decision_maker_confidence": confidence,
         "is_decision_maker": confidence >= thresh,

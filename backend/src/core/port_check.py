@@ -57,7 +57,7 @@ def _get_port_process_info_windows(port: int) -> Optional[Tuple[int, str]]:
     
     try:
         import subprocess
-        ***REMOVED*** Use netstat to find process using port
+        # Use netstat to find process using port
         result = subprocess.run(
             ["netstat", "-ano"],
             capture_output=True,
@@ -68,7 +68,7 @@ def _get_port_process_info_windows(port: int) -> Optional[Tuple[int, str]]:
         if result.returncode != 0:
             return None
         
-        ***REMOVED*** Find line with LISTENING on our port
+        # Find line with LISTENING on our port
         port_str = f":{port}"
         for line in result.stdout.splitlines():
             if "LISTENING" in line and port_str in line:
@@ -77,7 +77,7 @@ def _get_port_process_info_windows(port: int) -> Optional[Tuple[int, str]]:
                     pid = parts[-1]
                     try:
                         pid_int = int(pid)
-                        ***REMOVED*** Get process command line
+                        # Get process command line
                         tasklist_result = subprocess.run(
                             ["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/V"],
                             capture_output=True,
@@ -87,7 +87,7 @@ def _get_port_process_info_windows(port: int) -> Optional[Tuple[int, str]]:
                         if tasklist_result.returncode == 0:
                             lines = tasklist_result.stdout.splitlines()
                             if len(lines) > 1:
-                                ***REMOVED*** CSV format: parse second line
+                                # CSV format: parse second line
                                 cmd = lines[1].split(',')[0].strip('"')
                                 return (pid_int, cmd)
                         return (pid_int, f"PID {pid}")
@@ -106,7 +106,7 @@ def _get_port_process_info_linux(port: int) -> Optional[Tuple[int, str]]:
     try:
         import subprocess
         
-        ***REMOVED*** Try lsof first
+        # Try lsof first
         try:
             result = subprocess.run(
                 ["lsof", "-ti", f":{port}", "-sTCP:LISTEN"],
@@ -116,7 +116,7 @@ def _get_port_process_info_linux(port: int) -> Optional[Tuple[int, str]]:
             )
             if result.returncode == 0 and result.stdout.strip():
                 pid = int(result.stdout.strip().split()[0])
-                ***REMOVED*** Get command name
+                # Get command name
                 cmd_result = subprocess.run(
                     ["ps", "-p", str(pid), "-o", "comm="],
                     capture_output=True,
@@ -131,7 +131,7 @@ def _get_port_process_info_linux(port: int) -> Optional[Tuple[int, str]]:
         except (FileNotFoundError, subprocess.TimeoutExpired, ValueError):
             pass
         
-        ***REMOVED*** Fallback to ss
+        # Fallback to ss
         try:
             result = subprocess.run(
                 ["ss", "-tulpn"],
@@ -142,7 +142,7 @@ def _get_port_process_info_linux(port: int) -> Optional[Tuple[int, str]]:
             if result.returncode == 0:
                 for line in result.stdout.splitlines():
                     if f":{port}" in line and "LISTEN" in line:
-                        ***REMOVED*** Parse PID from ss output (format: pid=12345)
+                        # Parse PID from ss output (format: pid=12345)
                         import re
                         match = re.search(r'pid=(\d+)', line)
                         if match:
@@ -217,7 +217,7 @@ def check_port_and_exit(host: str, port: int) -> None:
                     f"\nERROR: Port {port} is already in use.\n"
                     f"Cannot determine which process is holding it.\n"
                     f"\nTo check manually:\n"
-                    f"  lsof -i :{port}  ***REMOVED*** or: ss -tulpn | grep :{port}\n"
+                    f"  lsof -i :{port}   # or: ss -tulpn | grep :{port}\n"
                 )
         
         print(error_msg, file=sys.stderr)
@@ -225,7 +225,7 @@ def check_port_and_exit(host: str, port: int) -> None:
 
 
 if __name__ == "__main__":
-    ***REMOVED*** CLI tool for port checking and cleanup
+    # CLI tool for port checking and cleanup
     if len(sys.argv) < 2:
         print("Usage:")
         print("  python -m src.core.port_check --check <port>")

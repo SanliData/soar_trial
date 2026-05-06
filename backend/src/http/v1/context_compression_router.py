@@ -44,7 +44,7 @@ async def get_context_compression() -> Dict[str, Any]:
 
 @router.get("/system/context/duplicates")
 async def get_context_duplicates() -> Dict[str, Any]:
-    ***REMOVED*** create a deterministic duplicate sample
+    # create a deterministic duplicate sample
     items = export_instruction_context_examples() + export_instruction_context_examples()
     return _envelope({"duplicates": detect_duplicates(items)})
 

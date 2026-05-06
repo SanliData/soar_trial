@@ -13,7 +13,7 @@ from .activation_events import LeadCandidate, decide_activation
 from .geo_targeting_rules import GeoTargetingConfig
 
 
-***REMOVED*** Dallas Fort Worth reference point (demo)
+# Dallas Fort Worth reference point (demo)
 DFW_CENTER: Tuple[float, float] = (32.7767, -96.7970)
 
 

@@ -21,12 +21,12 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/support", tags=["support"])
 
-***REMOVED*** Data directory
+# Data directory
 DATA_DIR = Path(__file__).parent.parent.parent.parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 
-***REMOVED*** Request Models
+# Request Models
 class SupportMessageRequest(BaseModel):
     """Support message request"""
     name: str = Field(..., description="Contact name")
@@ -44,7 +44,7 @@ class SupportMessageResponse(BaseModel):
     created_at: str
 
 
-***REMOVED*** Endpoints
+# Endpoints
 @router.post("/contact", response_model=SupportMessageResponse)
 async def send_support_message(
     request: SupportMessageRequest,
@@ -57,13 +57,13 @@ async def send_support_message(
     message_id = str(uuid.uuid4())
     created_at = datetime.utcnow().isoformat()
     
-    ***REMOVED*** Get client IP
+    # Get client IP
     client_ip = http_request.client.host if http_request.client else "unknown"
     
-    ***REMOVED*** Get referrer
+    # Get referrer
     referrer_url = http_request.headers.get("referer", "unknown")
     
-    ***REMOVED*** Store message
+    # Store message
     message_data = {
         "message_id": message_id,
         "name": request.name,
@@ -77,7 +77,7 @@ async def send_support_message(
         "status": "pending"
     }
     
-    ***REMOVED*** Store to JSONL file
+    # Store to JSONL file
     messages_file = DATA_DIR / "support_messages.jsonl"
     try:
         with open(messages_file, "a", encoding="utf-8") as f:
@@ -89,7 +89,7 @@ async def send_support_message(
             detail="Failed to process support message"
         )
     
-    ***REMOVED*** Log message
+    # Log message
     logger.info(
         json.dumps({
             "event": "support_message_created",
@@ -101,10 +101,10 @@ async def send_support_message(
         }, ensure_ascii=False)
     )
     
-    ***REMOVED*** Get locale from request (prefer request locale, fallback to Accept-Language header)
+    # Get locale from request (prefer request locale, fallback to Accept-Language header)
     locale = request.language if request.language and request.language in ["tr", "en", "de", "es", "fr", "ar"] else get_locale_from_request(http_request)
     
-    ***REMOVED*** Get language-aware message
+    # Get language-aware message
     response_message = get_support_received_message(locale)
     
     return SupportMessageResponse(

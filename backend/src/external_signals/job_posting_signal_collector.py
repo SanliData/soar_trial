@@ -30,7 +30,7 @@ def collect_job_posting_signals(
     """
     signals: List[Dict[str, Any]] = []
     try:
-        ***REMOVED*** Placeholder: integrate with job boards / LinkedIn jobs API
+        # Placeholder: integrate with job boards / LinkedIn jobs API
         sig = {
             "type": SIGNAL_TYPE_HIRING_SPIKE,
             "source": "job_posting",

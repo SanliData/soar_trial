@@ -44,7 +44,7 @@ def analyze_turn(*, turn_id: str, role: str, content: str) -> dict[str, Any]:
     )
     rp = export_runtime_pressure()
 
-    ***REMOVED*** Deterministic mapping.
+    # Deterministic mapping.
     risk_points = int(alignment["risk_points"])
     if risk_points >= 8:
         risk = "critical"

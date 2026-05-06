@@ -42,22 +42,22 @@ class SalesPageAuditService:
             response = requests.get(url, headers=headers, timeout=10)
             response.raise_for_status()
             
-            ***REMOVED*** Parse HTML
+            # Parse HTML
             soup = BeautifulSoup(response.content, 'html.parser')
             
-            ***REMOVED*** Remove script and style elements
+            # Remove script and style elements
             for script in soup(["script", "style"]):
                 script.decompose()
             
-            ***REMOVED*** Extract text
+            # Extract text
             text = soup.get_text()
             
-            ***REMOVED*** Clean up whitespace
+            # Clean up whitespace
             lines = (line.strip() for line in text.splitlines())
             chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
             text = ' '.join(chunk for chunk in chunks if chunk)
             
-            return text[:5000]  ***REMOVED*** Limit to 5000 characters for Gemini
+            return text[:5000]   # Limit to 5000 characters for Gemini
         except Exception as e:
             logger.error(f"Error fetching page content: {e}")
             return None
@@ -81,7 +81,7 @@ class SalesPageAuditService:
             Dictionary with audit results and recommendations
         """
         try:
-            ***REMOVED*** Fetch page content
+            # Fetch page content
             page_content = self.fetch_page_content(url)
             
             if not page_content:
@@ -91,7 +91,7 @@ class SalesPageAuditService:
                     "url": url
                 }
             
-            ***REMOVED*** Language mapping for Gemini prompts
+            # Language mapping for Gemini prompts
             language_map = {
                 "tr": "Turkish",
                 "en": "English",
@@ -100,7 +100,7 @@ class SalesPageAuditService:
             }
             language = language_map.get(locale, "English")
             
-            ***REMOVED*** Build audit prompt
+            # Build audit prompt
             prompt = f"""
 Analyze this sales page for the {target_market} market and provide optimization recommendations.
 
@@ -168,7 +168,7 @@ Format your response as JSON with the following structure:
 }}
 """
             
-            ***REMOVED*** Get AI analysis
+            # Get AI analysis
             analysis_result = self.gemini_service.analyze_text(prompt)
             
             if not analysis_result.get("success"):
@@ -178,20 +178,20 @@ Format your response as JSON with the following structure:
                     "url": url
                 }
             
-            ***REMOVED*** Parse AI response
+            # Parse AI response
             analysis_text = analysis_result.get("analysis", "")
             
-            ***REMOVED*** Try to extract JSON from response
+            # Try to extract JSON from response
             try:
                 import json
-                ***REMOVED*** Find JSON in the response
+                # Find JSON in the response
                 start_idx = analysis_text.find("{")
                 end_idx = analysis_text.rfind("}") + 1
                 if start_idx >= 0 and end_idx > start_idx:
                     json_str = analysis_text[start_idx:end_idx]
                     audit_data = json.loads(json_str)
                 else:
-                    ***REMOVED*** Fallback: create structured response from text
+                    # Fallback: create structured response from text
                     audit_data = {
                         "overall_score": 70,
                         "analysis": analysis_text,
@@ -230,7 +230,7 @@ Format your response as JSON with the following structure:
             }
 
 
-***REMOVED*** Global instance
+# Global instance
 _sales_page_audit_service_instance = None
 
 

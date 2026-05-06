@@ -33,7 +33,7 @@ def build_memory_context(
         "token_estimate": max(0, int(len(summary or "") / 4)),
         "isolation_required": bool(isolation_required),
         "compression_allowed": True,
-        ***REMOVED*** Deterministic epoch required for governed foundation + repeatable tests.
+        # Deterministic epoch required for governed foundation + repeatable tests.
         "created_at": "2026-01-01T00:00:00Z",
         "tags": list(tags or ["memory"]),
     }
@@ -48,7 +48,7 @@ def export_memory_context_examples() -> list[dict[str, Any]]:
             workflow_scope="onboarding_generation",
             summary="User requested bilingual (EN/TR) onboarding checklist; avoid any secrets in output.",
             source_type="workflow_checkpoint",
-            source_record_id="wf-onboarding-2026-05-06***REMOVED***1",
+            source_record_id="wf-onboarding-2026-05-06#1",
             priority=55,
             isolation_required=True,
             tags=["memory", "onboarding"],

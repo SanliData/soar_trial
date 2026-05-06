@@ -37,7 +37,7 @@ def _fixed_ts() -> datetime:
     return datetime(2026, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
 
 
-***REMOVED*** Immutable definitions — created_at frozen for deterministic exports
+# Immutable definitions — created_at frozen for deterministic exports
 TOOL_REGISTRY: dict[str, ToolCapability] = {
     "results_hub_read": ToolCapability(
         tool_name="results_hub_read",
@@ -75,7 +75,7 @@ TOOL_REGISTRY: dict[str, ToolCapability] = {
         allowed_actions=["fetch_url"],
         external_execution=True,
         requires_human_approval=True,
-        allowed_domains=[],  ***REMOVED*** explicit host allow-list enforced elsewhere
+        allowed_domains=[],   # explicit host allow-list enforced elsewhere
         risk_level="high",
         created_at=_fixed_ts(),
     ),

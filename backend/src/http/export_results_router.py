@@ -32,7 +32,7 @@ from src.models.plan_lifecycle import PlanLifecycle
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Directory for export evidence artifacts (export_verification.json)
+# Directory for export evidence artifacts (export_verification.json)
 EXPORTS_EVIDENCE_DIR = Path(__file__).resolve().parent.parent.parent.parent / "data" / "exports" / "evidence"
 
 
@@ -94,7 +94,7 @@ def _record_export_observability(
                 "maps": "JSON",
                 "linkedin_ads": "CSV",
                 "google_ads": "CSV",
-                "both_ads": "JSON",  ***REMOVED*** ZIP contains CSVs
+                "both_ads": "JSON",   # ZIP contains CSVs
             }
             artifact_type = artifact_type_map.get(export_format, "JSON")
             artifact_id = str(uuid.uuid4())
@@ -192,7 +192,7 @@ def export_results(
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
-    ***REMOVED*** Query params for UPAP (regulated, simulation_mode, limits, etc.) from plan
+    # Query params for UPAP (regulated, simulation_mode, limits, etc.) from plan
     query_params = {}
     plan = db.query(PlanLifecycle).filter(PlanLifecycle.plan_id == query_id).first()
     if plan and getattr(plan, "onboarding_data", None):
@@ -203,7 +203,7 @@ def export_results(
         if getattr(plan, "regulated_domain", None) is not None:
             query_params["regulated_domain"] = plan.regulated_domain
 
-    ***REMOVED*** UPAP gates: single entry point; fail-fast on any FAIL; evidence written on PASS
+    # UPAP gates: single entry point; fail-fast on any FAIL; evidence written on PASS
     filtered_rows, upap_evidence, gate_status = run_upap_gates(
         stage="EXPORT",
         trace_id=trace_id,
@@ -242,7 +242,7 @@ def export_results(
         trace_id, run_id, export_format, query_id, len(filtered_rows),
     )
 
-    ***REMOVED*** Acontext: TOOL_CALL + store_artifact observability
+    # Acontext: TOOL_CALL + store_artifact observability
     _record_export_observability(
         trace_id=trace_id,
         run_id=run_id,
@@ -382,7 +382,7 @@ def _export_for_maps(
     return JSONResponse(payload)
 
 
-***REMOVED*** Protocol: Company Name, Company Domain, Location (City/Country), Company Size, Industry, Job Function
+# Protocol: Company Name, Company Domain, Location (City/Country), Company Size, Industry, Job Function
 LINKEDIN_ADS_HEADERS = [
     "Company Name",
     "Company Domain",
@@ -428,7 +428,7 @@ def _export_linkedin_ads(
     )
 
 
-***REMOVED*** Protocol: Business Name, Latitude, Longitude, City, Country, Keyword Intent (+ optional Customer Match)
+# Protocol: Business Name, Latitude, Longitude, City, Country, Keyword Intent (+ optional Customer Match)
 GOOGLE_ADS_HEADERS = [
     "Business Name",
     "Latitude",
@@ -522,7 +522,7 @@ google_ads.csv:
 """
 
 
-***REMOVED*** ZIP must contain exactly these names (protocol)
+# ZIP must contain exactly these names (protocol)
 ZIP_LINKEDIN_CSV_NAME = "linkedin_ads.csv"
 ZIP_GOOGLE_CSV_NAME = "google_ads.csv"
 ZIP_CAMPAIGN_SETUP_NAME = "campaign_setup.txt"

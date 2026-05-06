@@ -41,7 +41,7 @@ class PlanService:
         )
         self.db.add(plan)
         
-        ***REMOVED*** Create default timeline stages
+        # Create default timeline stages
         default_stages = [
             {"name": "market_scan", "order": 1, "description": "Your target geography and industry are analyzed. Relevant companies are identified."},
             {"name": "persona_mapping", "order": 2, "description": "Decision-making roles and departments are mapped. Authority and relevance levels are classified."},
@@ -63,14 +63,14 @@ class PlanService:
         self.db.commit()
         self.db.refresh(plan)
         
-        ***REMOVED*** Create Results Hub
+        # Create Results Hub
         try:
             from src.services.result_service import get_result_service
             result_service = get_result_service(self.db)
             result_service.create_result_hub(plan_id)
             logger.info(f"Results Hub created for plan: {plan_id}")
         except Exception as e:
-            ***REMOVED*** Don't fail plan creation if result hub creation fails
+            # Don't fail plan creation if result hub creation fails
             logger.warning(f"Results Hub creation skipped: {str(e)}")
         
         return plan
@@ -89,10 +89,10 @@ class PlanService:
         if not plan:
             raise ValueError(f"Plan {plan_id} not found")
         
-        ***REMOVED*** Delete existing objectives
+        # Delete existing objectives
         self.db.query(PlanObjective).filter(PlanObjective.plan_id == plan_id).delete()
         
-        ***REMOVED*** Create new objectives
+        # Create new objectives
         objectives = []
         for obj_type in objective_types:
             objective = PlanObjective(
@@ -103,15 +103,15 @@ class PlanService:
             self.db.add(objective)
             objectives.append(objective)
         
-        ***REMOVED*** Update plan
+        # Update plan
         plan.selected_objectives = objective_types
         plan.objectives_selected_at = datetime.utcnow()
         
-        ***REMOVED*** Auto-advance to ANALYSIS_READY stage
+        # Auto-advance to ANALYSIS_READY stage
         if plan.current_stage == "CREATED":
             plan.current_stage = "ANALYSIS_READY"
             plan.analysis_ready_at = datetime.utcnow()
-            ***REMOVED*** Start market_scan stage
+            # Start market_scan stage
             market_scan = self.db.query(PlanStage).filter(
                 and_(PlanStage.plan_id == plan_id, PlanStage.stage_name == "market_scan")
             ).first()
@@ -136,7 +136,7 @@ class PlanService:
             PlanStage.plan_id == plan_id
         ).order_by(PlanStage.stage_order).all()
         
-        ***REMOVED*** Determine if activation is possible
+        # Determine if activation is possible
         can_activate = (
             plan.current_stage in ["EXPOSURE_READY", "PERSONA_REVIEW"] and
             any(obj.status == "approved" for obj in plan.objectives)
@@ -171,7 +171,7 @@ class PlanService:
         if not plan:
             raise ValueError(f"Plan {plan_id} not found")
         
-        ***REMOVED*** Find objective
+        # Find objective
         objective = self.db.query(PlanObjective).filter(
             and_(
                 PlanObjective.plan_id == plan_id,
@@ -185,16 +185,16 @@ class PlanService:
         if objective.status != "approved":
             raise ValueError(f"Objective {module_type} must be approved before activation")
         
-        ***REMOVED*** Activate
+        # Activate
         objective.status = "active"
         objective.activated_at = datetime.utcnow()
         
-        ***REMOVED*** Update plan stage if needed
+        # Update plan stage if needed
         if plan.current_stage == "EXPOSURE_READY":
             plan.current_stage = "EXPOSURE_RUNNING"
             plan.exposure_running_at = datetime.utcnow()
         
-        ***REMOVED*** Update activation stage
+        # Update activation stage
         activation_stage = self.db.query(PlanStage).filter(
             and_(PlanStage.plan_id == plan_id, PlanStage.stage_name == "activation")
         ).first()

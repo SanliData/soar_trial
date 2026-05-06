@@ -1878,9 +1878,9 @@ CAPABILITY_DEFINITIONS: list[CapabilityDefinition] = [
         output_schema_summary="batching manifest JSON.",
         tags=["read", "inference", "h041"],
     ),
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** H-044 Typed context + documents + MCP projections (read-only)
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # H-044 Typed context + documents + MCP projections (read-only)
+    # ---------------------------
     CapabilityDefinition(
         capability_id="context.types",
         name="Typed context types",
@@ -2101,9 +2101,9 @@ CAPABILITY_DEFINITIONS: list[CapabilityDefinition] = [
         output_schema_summary="gateway manifest JSON.",
         tags=["read", "mcp", "gateway", "h044"],
     ),
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** H-045 Agent OS + NL control + federated retrieval + selective context (read-only)
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # H-045 Agent OS + NL control + federated retrieval + selective context (read-only)
+    # ---------------------------
     CapabilityDefinition(
         capability_id="agents.registry",
         name="Agent registry",
@@ -2604,9 +2604,9 @@ CAPABILITY_DEFINITIONS: list[CapabilityDefinition] = [
         output_schema_summary="efficiency and prefill-decode guidance JSON.",
         tags=["read", "inference", "h041"],
     ),
-    ***REMOVED*** ----------------------------
-    ***REMOVED*** H-046: System visibility (read-only)
-    ***REMOVED*** ----------------------------
+    # ----------------------------
+    # H-046: System visibility (read-only)
+    # ----------------------------
     CapabilityDefinition(
         capability_id="system.visibility.health",
         name="System visibility: health",
@@ -2767,9 +2767,9 @@ CAPABILITY_DEFINITIONS: list[CapabilityDefinition] = [
         output_schema_summary="Agent fleet visibility classification lists.",
         tags=["read", "agents", "ops"],
     ),
-    ***REMOVED*** ----------------------------
-    ***REMOVED*** H-047: Results hub (read-only)
-    ***REMOVED*** ----------------------------
+    # ----------------------------
+    # H-047: Results hub (read-only)
+    # ----------------------------
     CapabilityDefinition(
         capability_id="results.opportunities",
         name="Results hub: opportunities",

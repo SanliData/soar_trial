@@ -40,7 +40,7 @@ async def register_incident(
         from src.monitoring.models.incident import Incident
         from src.monitoring.models.incident_event import IncidentEvent
         now = datetime.now(timezone.utc)
-        ***REMOVED*** Find existing open incident for same cluster/signature
+        # Find existing open incident for same cluster/signature
         existing = db.query(Incident).filter(
             Incident.cluster_id == cluster_id,
             Incident.status.in_(["open", "acknowledged"]),

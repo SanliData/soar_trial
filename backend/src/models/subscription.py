@@ -20,53 +20,53 @@ class Subscription(Base):
     
     __tablename__ = "subscriptions"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True, index=True)
     
-    ***REMOVED*** Subscription plan (DEPRECATED - use UserAccount instead)
-    plan_type = Column(String(50), default="usage_based", nullable=False, index=True)  ***REMOVED*** Legacy: "free", "pro", "enterprise", "usage_based"
+    # Subscription plan (DEPRECATED - use UserAccount instead)
+    plan_type = Column(String(50), default="usage_based", nullable=False, index=True)   # Legacy: "free", "pro", "enterprise", "usage_based"
     
-    ***REMOVED*** Billing mode
-    billing_mode = Column(String(50), default="usage_based", nullable=False)  ***REMOVED*** "usage_based" only
+    # Billing mode
+    billing_mode = Column(String(50), default="usage_based", nullable=False)   # "usage_based" only
     
-    ***REMOVED*** Payment information
-    payment_provider = Column(String(50), nullable=True)  ***REMOVED*** "stripe", "iyzico", etc.
-    payment_customer_id = Column(String(255), nullable=True, index=True)  ***REMOVED*** Stripe/Iyzico customer ID
-    payment_subscription_id = Column(String(255), nullable=True, index=True)  ***REMOVED*** Stripe/Iyzico subscription ID
+    # Payment information
+    payment_provider = Column(String(50), nullable=True)   # "stripe", "iyzico", etc.
+    payment_customer_id = Column(String(255), nullable=True, index=True)   # Stripe/Iyzico customer ID
+    payment_subscription_id = Column(String(255), nullable=True, index=True)   # Stripe/Iyzico subscription ID
     
-    ***REMOVED*** Subscription status
-    status = Column(String(50), default="active", nullable=False, index=True)  ***REMOVED*** "active", "cancelled", "expired", "past_due"
+    # Subscription status
+    status = Column(String(50), default="active", nullable=False, index=True)   # "active", "cancelled", "expired", "past_due"
     
-    ***REMOVED*** Billing information
-    billing_cycle = Column(String(20), nullable=True)  ***REMOVED*** "monthly", "yearly"
-    price = Column(Float, nullable=True)  ***REMOVED*** Subscription price
-    currency = Column(String(10), default="USD", nullable=False)  ***REMOVED*** Currency code
+    # Billing information
+    billing_cycle = Column(String(20), nullable=True)   # "monthly", "yearly"
+    price = Column(Float, nullable=True)   # Subscription price
+    currency = Column(String(10), default="USD", nullable=False)   # Currency code
     
-    ***REMOVED*** Dates
+    # Dates
     started_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     current_period_start = Column(DateTime(timezone=True), nullable=True)
     current_period_end = Column(DateTime(timezone=True), nullable=True, index=True)
     cancelled_at = Column(DateTime(timezone=True), nullable=True)
     trial_end = Column(DateTime(timezone=True), nullable=True)
-    trial_started_at = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** When trial started
+    trial_started_at = Column(DateTime(timezone=True), nullable=True)   # When trial started
     
-    ***REMOVED*** Features (stored as JSON for flexibility)
-    features = Column(String, nullable=True)  ***REMOVED*** JSON string of enabled features
+    # Features (stored as JSON for flexibility)
+    features = Column(String, nullable=True)   # JSON string of enabled features
     
-    ***REMOVED*** Usage-based pricing base subscription
-    base_subscription_price = Column(Float, default=0.98, nullable=True)  ***REMOVED*** $0.98/month base fee for usage-based
+    # Usage-based pricing base subscription
+    base_subscription_price = Column(Float, default=0.98, nullable=True)   # $0.98/month base fee for usage-based
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="subscription", uselist=False)
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_subscription_user_id', 'user_id'),
         Index('idx_subscription_plan_type', 'plan_type'),

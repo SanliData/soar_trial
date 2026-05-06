@@ -20,10 +20,10 @@ from sqlalchemy.orm import Session
 from src.db.base import get_db
 from src.services.auth_service import get_email_from_jwt, is_admin_email
 
-***REMOVED*** Cache imports
+# Cache imports
 from src.core.cache import get_cache, set_cache, cache_key
 
-***REMOVED*** Feasibility service import
+# Feasibility service import
 from src.services.feasibility_service import get_feasibility_service
 from src.services.plan_service import get_plan_service
 
@@ -31,12 +31,12 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-***REMOVED*** Data directory
+# Data directory
 DATA_DIR = Path(__file__).parent.parent.parent.parent / "data"
 CASE_LIBRARY_DIR = Path(__file__).parent.parent.parent / "ui" / "case_library"
 DATA_DIR.mkdir(exist_ok=True)
 
-***REMOVED*** In-memory cache for case library files (TTL: 60 seconds)
+# In-memory cache for case library files (TTL: 60 seconds)
 _case_cache: Dict[str, Tuple[Dict[str, Any], float]] = {}
 CACHE_TTL = 60.0
 
@@ -46,13 +46,13 @@ def _load_case_file(case_file: Path) -> Optional[Dict[str, Any]]:
     cache_key = str(case_file)
     current_time = time.time()
     
-    ***REMOVED*** Check cache
+    # Check cache
     if cache_key in _case_cache:
         cached_data, cached_time = _case_cache[cache_key]
         if current_time - cached_time < CACHE_TTL:
             return cached_data
     
-    ***REMOVED*** Load from disk
+    # Load from disk
     try:
         case_data = json.loads(case_file.read_text(encoding="utf-8"))
         _case_cache[cache_key] = (case_data, current_time)
@@ -79,7 +79,7 @@ def _get_all_cases() -> List[Dict[str, Any]]:
     return cases
 
 
-***REMOVED*** API Key Authentication
+# API Key Authentication
 def get_api_key(request: Request) -> Optional[str]:
     """Extract API key from X-API-Key header"""
     api_key = request.headers.get("X-API-Key")
@@ -91,26 +91,26 @@ def validate_api_key(api_key: Optional[str] = Depends(get_api_key)) -> str:
     if not api_key:
         raise HTTPException(status_code=401, detail="X-API-Key header required")
     
-    ***REMOVED*** Trim received API key to handle any whitespace issues
+    # Trim received API key to handle any whitespace issues
     api_key = api_key.strip()
     
-    ***REMOVED*** Debug logging (masked for security)
+    # Debug logging (masked for security)
     masked_key = f"{api_key[:5]}***{api_key[-5:]}" if len(api_key) > 10 else "***"
     logger.info(f"API KEY RECEIVED: {masked_key} (length: {len(api_key)})")
     
-    ***REMOVED*** Load allowed keys from env or dev file
+    # Load allowed keys from env or dev file
     allowed_keys_env = os.getenv("SOARB2B_API_KEYS", "")
-    ***REMOVED*** Ensure keys are trimmed - split by comma and strip whitespace
+    # Ensure keys are trimmed - split by comma and strip whitespace
     allowed_keys = [k.strip() for k in allowed_keys_env.split(",") if k.strip()]
     
-    ***REMOVED*** Debug logging
+    # Debug logging
     logger.info(f"ALLOWED KEYS COUNT: {len(allowed_keys)}")
     if allowed_keys:
         masked_allowed = [f"{k[:5]}***{k[-5:]}" if len(k) > 10 else "***" for k in allowed_keys]
         logger.info(f"ALLOWED KEYS (masked): {masked_allowed}")
     
-    ***REMOVED*** Dev fallback - always check file even if env var had some keys
-    ***REMOVED*** This allows adding keys to file without restarting server
+    # Dev fallback - always check file even if env var had some keys
+    # This allows adding keys to file without restarting server
     dev_key_file = DATA_DIR / "dev_api_keys.txt"
     logger.info(f"Checking API key file: {dev_key_file} (exists: {dev_key_file.exists()})")
     if dev_key_file.exists():
@@ -118,18 +118,18 @@ def validate_api_key(api_key: Optional[str] = Depends(get_api_key)) -> str:
             file_content = dev_key_file.read_text(encoding="utf-8")
             file_keys = [k.strip() for k in file_content.splitlines() if k.strip()]
             logger.info(f"Read {len(file_keys)} keys from file: {[f'{k[:5]}***' if len(k) > 10 else k for k in file_keys]}")
-            ***REMOVED*** Merge env keys with file keys (deduplicate)
+            # Merge env keys with file keys (deduplicate)
             allowed_keys = list(set(allowed_keys + file_keys))
             logger.info(f"Loaded {len(file_keys)} keys from file, total allowed: {len(allowed_keys)}")
         except Exception as e:
             logger.error(f"Failed to read dev_api_keys.txt: {e}", exc_info=True)
     elif not allowed_keys:
-        ***REMOVED*** Create default dev key only if no keys from env and file doesn't exist
+        # Create default dev key only if no keys from env and file doesn't exist
         default_key = "dev-key-12345"
         dev_key_file.write_text(default_key)
         allowed_keys = [default_key]
     
-    ***REMOVED*** Debug: Log comparison details
+    # Debug: Log comparison details
     logger.info(f"Validating key (length {len(api_key)}) against {len(allowed_keys)} allowed keys")
     logger.debug(f"Received key (first 10 chars): {api_key[:10]}...")
     if allowed_keys:
@@ -156,7 +156,7 @@ def validate_api_key_or_jwt(
         try:
             return validate_api_key(api_key)
         except HTTPException:
-            pass  ***REMOVED*** fall through to JWT
+            pass   # fall through to JWT
     if authorization and authorization.strip().lower().startswith("bearer "):
         email = get_email_from_jwt(authorization)
         if email:
@@ -165,7 +165,7 @@ def validate_api_key_or_jwt(
     raise HTTPException(status_code=403, detail="Invalid API key")
 
 
-***REMOVED*** Request Models
+# Request Models
 class OnboardingRequest(BaseModel):
     target_type: str = Field(..., description="Type of businesses to target")
     geography: str = Field(..., description="Target locations")
@@ -200,7 +200,7 @@ class OnboardingPlanResponse(BaseModel):
     recommendations: Dict[str, Any]
 
 
-***REMOVED*** --- PlanSpec: single contract for Assistant / GPT integration ---
+# --- PlanSpec: single contract for Assistant / GPT integration ---
 class RegionSpec(BaseModel):
     type: str = Field(..., description="city | state | radius")
     value: str = Field(..., description="e.g. Istanbul, California, or 25")
@@ -232,7 +232,7 @@ class PlanSpec(BaseModel):
     limits: Optional[LimitsSpec] = Field(default_factory=LimitsSpec)
     flags: Optional[FlagsSpec] = Field(default_factory=FlagsSpec)
     targets: Optional[TargetsSpec] = Field(default_factory=TargetsSpec)
-    ***REMOVED*** Optional: explicit mapping to onboarding fields (if GPT provides them)
+    # Optional: explicit mapping to onboarding fields (if GPT provides them)
     target_type: Optional[str] = Field(None, description="Type of businesses (default derived from product)")
     decision_roles: Optional[str] = Field(None, description="Decision-maker roles (default: Decision makers)")
 
@@ -304,7 +304,7 @@ def _plan_spec_to_onboarding_request(spec: PlanSpec, plan_id: str) -> Onboarding
     )
 
 
-***REMOVED*** Endpoints
+# Endpoints
 @router.post("/onboarding/create-plan", response_model=OnboardingPlanResponse)
 async def create_onboarding_plan(
     request: OnboardingRequest,
@@ -320,7 +320,7 @@ async def create_onboarding_plan(
     plan_id = str(uuid.uuid4())
     created_at = datetime.utcnow().isoformat()
     
-    ***REMOVED*** Check cache first (by plan_id if exists)
+    # Check cache first (by plan_id if exists)
     plan_cache_key = cache_key("plan", plan_id=plan_id)
     cached_plan = get_cache(plan_cache_key)
     if cached_plan is not None:
@@ -332,7 +332,7 @@ async def create_onboarding_plan(
     
     logger.debug(f"Cache miss: plan:{plan_id}")
     
-    ***REMOVED*** Generate recommendations
+    # Generate recommendations
     recommendations = {
         "sequence": [
             "Target List Creation",
@@ -372,7 +372,7 @@ async def create_onboarding_plan(
     if request.company_upload_id:
         plan_data["company_upload_id"] = request.company_upload_id
     
-    ***REMOVED*** Onboarding data: always include HS/gümrük kodu (user or AI) for archive
+    # Onboarding data: always include HS/gümrük kodu (user or AI) for archive
     onboarding_data = {
         "target_type": request.target_type,
         "geography": request.geography,
@@ -399,12 +399,12 @@ async def create_onboarding_plan(
     plan_data["hs_code_source"] = onboarding_data.get("hs_code_source")
     plan_data["product_customs_description"] = onboarding_data.get("product_customs_description")
     
-    ***REMOVED*** Store plan (P0: file-based, P1: DB)
+    # Store plan (P0: file-based, P1: DB)
     plans_file = DATA_DIR / "onboarding_plans.jsonl"
     with open(plans_file, "a", encoding="utf-8") as f:
         f.write(json.dumps(plan_data, ensure_ascii=False) + "\n")
     
-    ***REMOVED*** Kullanıcı ilişkisi: request.user_id veya X-User-Id header (geçmiş arşiv için)
+    # Kullanıcı ilişkisi: request.user_id veya X-User-Id header (geçmiş arşiv için)
     created_by_user_id = request.user_id
     if created_by_user_id is None:
         try:
@@ -412,21 +412,21 @@ async def create_onboarding_plan(
             created_by_user_id = int(uid) if uid else None
         except (TypeError, ValueError):
             created_by_user_id = None
-    ***REMOVED*** Create PlanLifecycle (first-class Plan object)
+    # Create PlanLifecycle (first-class Plan object)
     try:
         plan_service = get_plan_service(db)
         plan_service.create_plan_lifecycle(plan_id, onboarding_data, created_by_user_id=created_by_user_id)
         logger.info(f"Plan lifecycle created for plan: {plan_id}")
     except Exception as e:
-        ***REMOVED*** Don't fail onboarding if lifecycle creation fails
+        # Don't fail onboarding if lifecycle creation fails
         logger.warning(f"Plan lifecycle creation skipped: {str(e)}")
     
-    ***REMOVED*** Cache plan (TTL: 1 hour = 3600 seconds)
+    # Cache plan (TTL: 1 hour = 3600 seconds)
     set_cache(plan_cache_key, plan_data, ttl=3600)
     
-    ***REMOVED*** Auto-start queries if user opted in
+    # Auto-start queries if user opted in
     if request.auto_start_queries:
-        ***REMOVED*** Admin users (e.g. isanli058@gmail.com) skip payment/quote_token requirement
+        # Admin users (e.g. isanli058@gmail.com) skip payment/quote_token requirement
         admin_email = get_email_from_jwt(authorization)
         is_admin = is_admin_email(admin_email)
         cost_confirmed = is_admin
@@ -434,7 +434,7 @@ async def create_onboarding_plan(
             logger.info(f"Admin user {admin_email!r}: skipping quote_token for plan {plan_id}")
 
         if not is_admin:
-            ***REMOVED*** HARD ENFORCEMENT: Require valid quote_token for non-admin users
+            # HARD ENFORCEMENT: Require valid quote_token for non-admin users
             if not request.quote_token:
                 logger.warning(f"Query execution blocked for plan {plan_id}: quote_token missing")
                 raise HTTPException(
@@ -446,12 +446,12 @@ async def create_onboarding_plan(
                     }
                 )
 
-            ***REMOVED*** Validate quote token
+            # Validate quote token
             try:
                 from src.core.quote_token import validate_quote_token
                 from src.core.query_limits import MAX_RESULTS_PER_QUERY
 
-                ***REMOVED*** Enforce max_results cap
+                # Enforce max_results cap
                 normalized_max_results = min(request.max_results, MAX_RESULTS_PER_QUERY)
 
                 validation_result = validate_quote_token(
@@ -492,53 +492,53 @@ async def create_onboarding_plan(
         try:
             from src.services.query_execution_service import get_query_execution_service
             query_service = get_query_execution_service(db)
-            ***REMOVED*** Start query pipeline automatically (no admin approval needed for standard queries)
-            ***REMOVED*** MAX 100 results enforced automatically
+            # Start query pipeline automatically (no admin approval needed for standard queries)
+            # MAX 100 results enforced automatically
             query_service.start_query_pipeline(
                 plan_id=plan_id,
                 target_type=request.target_type,
                 geography=request.geography,
                 decision_roles=request.decision_roles,
-                auto_approved=True,  ***REMOVED*** Standard queries (MAX 100) don't need admin approval
+                auto_approved=True,   # Standard queries (MAX 100) don't need admin approval
                 cost_confirmed=cost_confirmed,
             )
             logger.info(f"Query pipeline auto-started for plan: {plan_id} (cost_confirmed={cost_confirmed})")
         except Exception as e:
-            ***REMOVED*** Don't fail onboarding if query execution fails
+            # Don't fail onboarding if query execution fails
             logger.warning(f"Auto-start query pipeline skipped: {str(e)}")
     else:
         logger.info(f"Plan {plan_id} created as draft - awaiting admin review or manual start")
     
-    ***REMOVED*** Generate feasibility report (preview only - aggregated counts)
-    ***REMOVED*** NOTE: This generates aggregated preview data only - no personal identifiers
-    ***REMOVED*** User ID would come from authenticated session in production
-    ***REMOVED*** For now, we use a placeholder (API key-based auth)
+    # Generate feasibility report (preview only - aggregated counts)
+    # NOTE: This generates aggregated preview data only - no personal identifiers
+    # User ID would come from authenticated session in production
+    # For now, we use a placeholder (API key-based auth)
     try:
         feasibility_service = get_feasibility_service(db)
-        ***REMOVED*** TODO: Get actual user_id from authentication
-        ***REMOVED*** For now, feasibility report is generated without user association
-        ***REMOVED*** In production, extract user_id from authenticated session
+        # TODO: Get actual user_id from authentication
+        # For now, feasibility report is generated without user association
+        # In production, extract user_id from authenticated session
         logger.info(f"Feasibility report generation triggered for plan: {plan_id}")
-        ***REMOVED*** feasibility_service.generate_feasibility_report(
-        ***REMOVED***     user_id=user_id,  ***REMOVED*** From authenticated session
-        ***REMOVED***     onboarding_plan_id=plan_id,
-        ***REMOVED***     geography=request.geography,
-        ***REMOVED***     target_type=request.target_type,
-        ***REMOVED***     decision_roles=request.decision_roles,
-        ***REMOVED***     region=request.geography
-        ***REMOVED*** )
+        # feasibility_service.generate_feasibility_report(
+        # user_id=user_id,  # From authenticated session
+        # onboarding_plan_id=plan_id,
+        # geography=request.geography,
+        # target_type=request.target_type,
+        # decision_roles=request.decision_roles,
+        # region=request.geography
+        # )
     except Exception as e:
-        ***REMOVED*** Don't fail onboarding if feasibility report generation fails
+        # Don't fail onboarding if feasibility report generation fails
         logger.warning(f"Feasibility report generation skipped: {str(e)}")
     
-    ***REMOVED*** Add cache header (MISS for new plan)
+    # Add cache header (MISS for new plan)
     from fastapi.responses import JSONResponse
     response = JSONResponse(content=plan_data)
     response.headers["X-Cache"] = "MISS"
     return response
 
 
-***REMOVED*** --- Assistant / GPT orchestrator endpoints (PlanSpec → Plan → Run → Results) ---
+# --- Assistant / GPT orchestrator endpoints (PlanSpec → Plan → Run → Results) ---
 
 @router.post("/assistant/create-plan", response_model=PlanSpecCreatePlanResponse)
 async def assistant_create_plan(
@@ -678,7 +678,7 @@ async def assistant_start_run(
     geography = od.get("geography", "")
     decision_roles = od.get("decision_roles", "Decision makers")
 
-    ***REMOVED*** Admin users skip payment/quote requirement
+    # Admin users skip payment/quote requirement
     admin_email = get_email_from_jwt(authorization)
     is_admin = is_admin_email(admin_email)
     cost_confirmed = is_admin
@@ -748,7 +748,7 @@ async def get_archive(
         if ids:
             query = query.filter(PlanLifecycle.plan_id.in_(ids))
             if user_id is None:
-                pass  ***REMOVED*** filter only by plan_ids
+                pass   # filter only by plan_ids
     if user_id is None and not plan_ids:
         return {"success": True, "count": 0, "plans": []}
     plans = query.limit(limit).all()
@@ -785,18 +785,18 @@ async def get_case_library(
     filtered_cases = []
     
     for case_data in all_cases:
-        ***REMOVED*** Access level filtering
+        # Access level filtering
         case_access = case_data.get("meta", {}).get("access_level") or case_data.get("access_level")
         if case_access != access_level and access_level != "internal":
             continue
         
-        ***REMOVED*** Sector filtering
+        # Sector filtering
         if sector:
             case_sector = case_data.get("meta", {}).get("sector") or case_data.get("metadata", {}).get("sector")
             if case_sector != sector:
                 continue
         
-        ***REMOVED*** Region filtering
+        # Region filtering
         if region:
             case_region = case_data.get("meta", {}).get("region") or case_data.get("metadata", {}).get("region")
             if case_region != region:
@@ -816,10 +816,10 @@ async def get_case_by_id(
     if not CASE_LIBRARY_DIR.exists():
         raise HTTPException(status_code=404, detail="Case library not found")
     
-    ***REMOVED*** Try exact filename match first
+    # Try exact filename match first
     case_file = CASE_LIBRARY_DIR / f"{case_id}.json"
     
-    ***REMOVED*** If not found, search all files for matching case_id
+    # If not found, search all files for matching case_id
     if not case_file.exists():
         all_cases = _get_all_cases()
         for case_data in all_cases:
@@ -845,14 +845,14 @@ async def get_case_analysis(
     if not CASE_LIBRARY_DIR.exists():
         raise HTTPException(status_code=404, detail="Case library not found")
     
-    ***REMOVED*** Try exact filename match first
+    # Try exact filename match first
     case_file = CASE_LIBRARY_DIR / f"{case_id}.json"
     case_data = None
     
     if case_file.exists():
         case_data = _load_case_file(case_file)
     else:
-        ***REMOVED*** Search all files for matching case_id
+        # Search all files for matching case_id
         all_cases = _get_all_cases()
         for c in all_cases:
             meta_case_id = c.get("meta", {}).get("case_id")
@@ -864,7 +864,7 @@ async def get_case_analysis(
     if not case_data:
         raise HTTPException(status_code=404, detail=f"Case with ID '{case_id}' not found")
     
-    ***REMOVED*** Extract required fields
+    # Extract required fields
     meta = case_data.get("meta", {})
     access_level = meta.get("access_level") or case_data.get("access_level")
     analysis_result = case_data.get("analysis_result")
@@ -896,10 +896,10 @@ async def get_demo_hotels(
     Supports location-based search via location query, zip code, or coordinates.
     Cached for 5 minutes per location.
     """
-    ***REMOVED*** Generate cache key
+    # Generate cache key
     cache_key_str = cache_key("hotels", location=location, zip_code=zip_code, lat=latitude, lng=longitude)
     
-    ***REMOVED*** Try cache first
+    # Try cache first
     cached_result = get_cache(cache_key_str)
     if cached_result is not None:
         logger.debug(f"Cache hit: hotels:{cache_key_str}")
@@ -910,42 +910,42 @@ async def get_demo_hotels(
     
     logger.debug(f"Cache miss: hotels:{cache_key_str}")
     
-    ***REMOVED*** Try to get real data from Google Places API if available
+    # Try to get real data from Google Places API if available
     google_places_key = os.getenv("GOOGLE_PLACES_API_KEY") or os.getenv("GOOGLE_MAPS_API_KEY")
     
     hotels = []
     search_location = None
     search_coords = None
     
-    ***REMOVED*** Determine search location
+    # Determine search location
     if zip_code:
-        ***REMOVED*** Use zip code as search query
+        # Use zip code as search query
         search_location = zip_code
     elif location:
-        ***REMOVED*** Use provided location
+        # Use provided location
         search_location = location
     elif latitude and longitude:
-        ***REMOVED*** Use coordinates
+        # Use coordinates
         search_coords = (latitude, longitude)
         search_location = f"{latitude},{longitude}"
     
     if google_places_key:
-        ***REMOVED*** Use Google Places API for real hotel data
+        # Use Google Places API for real hotel data
         try:
-            ***REMOVED*** If coordinates provided, use nearby search; otherwise use text search
+            # If coordinates provided, use nearby search; otherwise use text search
             if search_coords:
-                ***REMOVED*** Use Nearby Search API for coordinates
+                # Use Nearby Search API for coordinates
                 url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
                 params = {
                     "location": f"{latitude},{longitude}",
-                    "radius": "5000",  ***REMOVED*** 5km radius
+                    "radius": "5000",   # 5km radius
                     "type": "lodging",
                     "key": google_places_key
                 }
             else:
-                ***REMOVED*** Use Text Search API for location/zip code
+                # Use Text Search API for location/zip code
                 if not search_location:
-                    ***REMOVED*** Default fallback (should not happen if location provided)
+                    # Default fallback (should not happen if location provided)
                     search_location = "Dallas, TX"
                 
                 url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
@@ -962,21 +962,21 @@ async def get_demo_hotels(
                 response = requests.get(url, params=params, timeout=10)
                 if response.status_code == 200:
                     data = response.json()
-                    results = data.get("results", [])[:12]  ***REMOVED*** Max 12 hotels
+                    results = data.get("results", [])[:12]   # Max 12 hotels
                     
                     for idx, place in enumerate(results):
                         hotel_name = place.get("name", "")
                         formatted_address = place.get("formatted_address", "")
                         
-                        ***REMOVED*** Extract location info from address
+                        # Extract location info from address
                         address_parts = formatted_address.split(",")
                         location_str = address_parts[0].strip() if address_parts else search_location
                         
-                        ***REMOVED*** Get coordinates if available
+                        # Get coordinates if available
                         geometry = place.get("geometry", {})
                         location_coords = geometry.get("location", {})
                         
-                        ***REMOVED*** Assign roles based on hotel index (for variety)
+                        # Assign roles based on hotel index (for variety)
                         role_combos = [
                             ["Procurement Manager", "Housekeeping Manager"],
                             ["Procurement Manager", "Operations Manager"],
@@ -993,23 +993,23 @@ async def get_demo_hotels(
                             "verified": True
                         }
                         
-                        ***REMOVED*** Add coordinates if available
+                        # Add coordinates if available
                         if location_coords:
                             hotel_data["latitude"] = location_coords.get("lat")
                             hotel_data["longitude"] = location_coords.get("lng")
                         
                         hotels.append(hotel_data)
             except Exception as e:
-                ***REMOVED*** If API fails, continue with fallback data
+                # If API fails, continue with fallback data
                 logger.error(f"Google Places API error: {e}")
                 pass
                 
         except Exception as e:
-            ***REMOVED*** Fallback to curated real hotel data if API fails
+            # Fallback to curated real hotel data if API fails
             pass
     
-    ***REMOVED*** Fallback: Use curated list only if no location specified and API failed
-    ***REMOVED*** If location was specified, return empty list rather than wrong location data
+    # Fallback: Use curated list only if no location specified and API failed
+    # If location was specified, return empty list rather than wrong location data
     if not hotels and not search_location and not search_coords:
         hotels = [
             {
@@ -1100,10 +1100,10 @@ async def get_demo_hotels(
     
     result = {"hotels": hotels}
     
-    ***REMOVED*** Cache result (TTL: 5 minutes = 300 seconds)
+    # Cache result (TTL: 5 minutes = 300 seconds)
     set_cache(cache_key_str, result, ttl=300)
     
-    ***REMOVED*** Add cache header (MISS because we just cached it)
+    # Add cache header (MISS because we just cached it)
     from fastapi.responses import JSONResponse
     response = JSONResponse(content=result)
     response.headers["X-Cache"] = "MISS"

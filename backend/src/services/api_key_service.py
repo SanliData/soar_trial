@@ -45,7 +45,7 @@ class APIKeyService:
         Returns:
             Generated API key (e.g., "sk_live_abc123def456...")
         """
-        ***REMOVED*** Generate random suffix (32 bytes = 64 hex chars)
+        # Generate random suffix (32 bytes = 64 hex chars)
         random_suffix = secrets.token_hex(32)
         return f"{prefix}_{random_suffix}"
     
@@ -61,10 +61,10 @@ class APIKeyService:
         Returns:
             APIKey object if valid, None otherwise
         """
-        ***REMOVED*** Hash the key
+        # Hash the key
         key_hash = APIKeyService.hash_key(key)
         
-        ***REMOVED*** Look up in database
+        # Look up in database
         api_key = db.query(APIKey).filter(
             and_(
                 APIKey.key_hash == key_hash,
@@ -75,12 +75,12 @@ class APIKeyService:
         if api_key is None:
             return None
         
-        ***REMOVED*** Check expiration
+        # Check expiration
         if api_key.expires_at and api_key.expires_at < datetime.utcnow():
             logger.warning(f"⚠️ API key expired: {api_key.key_prefix}***")
             return None
         
-        ***REMOVED*** Update last_used_at
+        # Update last_used_at
         api_key.last_used_at = datetime.utcnow()
         db.commit()
         
@@ -113,17 +113,17 @@ class APIKeyService:
         Returns:
             Dictionary with key and metadata
         """
-        ***REMOVED*** Generate key
+        # Generate key
         plain_key = APIKeyService.generate_key()
         key_hash = APIKeyService.hash_key(plain_key)
-        key_prefix = plain_key[:10]  ***REMOVED*** First 10 chars for identification
+        key_prefix = plain_key[:10]   # First 10 chars for identification
         
-        ***REMOVED*** Calculate expiration
+        # Calculate expiration
         expires_at = None
         if expires_in_days:
             expires_at = datetime.utcnow() + timedelta(days=expires_in_days)
         
-        ***REMOVED*** Create API key record
+        # Create API key record
         api_key = APIKey(
             key_hash=key_hash,
             key_prefix=key_prefix,
@@ -143,10 +143,10 @@ class APIKeyService:
         
         logger.info(f"✅ API key created: {key_prefix}*** (tier: {tier}, company: {company})")
         
-        ***REMOVED*** Return plain key (only shown once during creation)
+        # Return plain key (only shown once during creation)
         return {
             "id": api_key.id,
-            "key": plain_key,  ***REMOVED*** Only shown once!
+            "key": plain_key,   # Only shown once!
             "key_prefix": key_prefix,
             "tier": tier,
             "quota_per_minute": quota_per_minute,

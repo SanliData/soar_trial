@@ -24,7 +24,7 @@ class StructuredLoggingMiddleware:
         request = Request(scope, receive)
         start_time = time.time()
         
-        ***REMOVED*** Create response wrapper
+        # Create response wrapper
         response_body = b""
         status_code = 200
         
@@ -47,7 +47,7 @@ class StructuredLoggingMiddleware:
             latency_ms = int((time.time() - start_time) * 1000)
             request_id = getattr(request.state, "request_id", "unknown")
             
-            ***REMOVED*** Get API key (masked) for observability
+            # Get API key (masked) for observability
             api_key = request.headers.get("X-API-Key")
             masked_api_key = None
             if api_key:
@@ -68,10 +68,10 @@ class StructuredLoggingMiddleware:
                 "query_params": str(request.query_params) if request.query_params else None
             }
             
-            ***REMOVED*** Only log body for small requests (avoid logging large uploads)
+            # Only log body for small requests (avoid logging large uploads)
             if request.headers.get("content-length"):
                 content_length = int(request.headers.get("content-length", 0))
-                if content_length < 1024:  ***REMOVED*** Only log if < 1KB
+                if content_length < 1024:   # Only log if < 1KB
                     try:
                         body = await request.body()
                         if body:

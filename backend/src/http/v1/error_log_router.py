@@ -17,7 +17,7 @@ from src.services.error_logging_service import get_error_logging_service
 router = APIRouter(prefix="/error-logs", tags=["error-logs"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db: Session = Depends(get_db)

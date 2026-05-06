@@ -17,7 +17,7 @@ RELATIONSHIP_TYPES: tuple[str, ...] = (
     "enriched_by",
 )
 
-***REMOVED*** (source_id, relationship_type, target_id) — directed edges.
+# (source_id, relationship_type, target_id) — directed edges.
 SEMANTIC_RELATIONSHIPS: tuple[tuple[str, str, str], ...] = (
     ("workflow_governance", "depends_on", "runtime_context"),
     ("workflow_governance", "secured_by", "agent_security"),
@@ -26,7 +26,7 @@ SEMANTIC_RELATIONSHIPS: tuple[tuple[str, str, str], ...] = (
     ("reliability_governance", "depends_on", "runtime_context"),
     ("graph_intelligence", "enriched_by", "workflow_governance"),
     ("agent_security", "trusted_by", "workflow_governance"),
-    ***REMOVED*** H-045 relationships
+    # H-045 relationships
     ("agent_os", "depends_on", "workspace_protocol"),
     ("federated_retrieval", "enriched_by", "knowledge_ingestion"),
     ("selective_context_runtime", "depends_on", "inference_runtime"),

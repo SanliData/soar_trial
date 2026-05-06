@@ -11,7 +11,7 @@ from typing import Any, Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 REDIS_KEY_PREFIX = "agents:trace"
-REDIS_TTL = 86400 * 2  ***REMOVED*** 2 days
+REDIS_TTL = 86400 * 2   # 2 days
 
 
 def _redis():

@@ -18,7 +18,7 @@ MEMORY_TYPES: frozenset[str] = frozenset(
     }
 )
 
-***REMOVED*** Lifecycle / scope boundaries — documentation for orchestrators; no runtime store here.
+# Lifecycle / scope boundaries — documentation for orchestrators; no runtime store here.
 MEMORY_REGISTRY: dict[str, dict[str, Any]] = {
     "working_memory": {
         "lifecycle": "request_scoped",

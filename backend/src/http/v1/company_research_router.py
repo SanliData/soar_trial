@@ -36,10 +36,10 @@ async def get_company_intelligence(
     Conduct deep web research and AI analysis on a company.
     Returns a comprehensive Company Intelligence report.
     """
-    ***REMOVED*** Get locale from request
+    # Get locale from request
     locale = get_locale_from_request(http_request)
     
-    ***REMOVED*** Validate required fields
+    # Validate required fields
     if not request.company_name or not request.company_name.strip():
         raise HTTPException(
             status_code=422,
@@ -60,9 +60,9 @@ async def get_company_intelligence(
             error = result.get("error", "Research failed")
             step = result.get("step", "unknown")
             
-            ***REMOVED*** Check if it's a configuration error (should return 503)
+            # Check if it's a configuration error (should return 503)
             if "not configured" in error.lower() or "not available" in error.lower() or step == "web_research":
-                ***REMOVED*** Check if web research service is available
+                # Check if web research service is available
                 from src.services.web_research_service import get_web_research_service
                 web_research = get_web_research_service()
                 if not web_research.is_available():
@@ -71,7 +71,7 @@ async def get_company_intelligence(
                         detail="Research service is not configured. Please set GOOGLE_CUSTOM_SEARCH_API_KEY and GOOGLE_CUSTOM_SEARCH_ENGINE_ID environment variables."
                     )
                 
-                ***REMOVED*** Check if Gemini service is available
+                # Check if Gemini service is available
                 from src.services.gemini_analysis_service import get_gemini_analysis_service
                 gemini_analysis = get_gemini_analysis_service()
                 if not gemini_analysis.is_available():
@@ -80,7 +80,7 @@ async def get_company_intelligence(
                         detail="AI analysis service is not configured. Please configure Google Gemini API credentials."
                     )
             
-            ***REMOVED*** Other errors: return 500 with logged error
+            # Other errors: return 500 with logged error
             logger.error(f"Company research failed: {error} (step: {step})", exc_info=True)
             raise HTTPException(
                 status_code=500,
@@ -93,10 +93,10 @@ async def get_company_intelligence(
             "research_summary": result.get("research_summary")
         }
     except HTTPException:
-        ***REMOVED*** Re-raise HTTP exceptions (503, 422, etc.)
+        # Re-raise HTTP exceptions (503, 422, etc.)
         raise
     except Exception as e:
-        ***REMOVED*** Unexpected errors: log and return 500
+        # Unexpected errors: log and return 500
         logger.error(f"Unexpected error in company research: {str(e)}", exc_info=True)
         raise HTTPException(
             status_code=500,

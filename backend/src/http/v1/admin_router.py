@@ -29,33 +29,33 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
-***REMOVED*** Data directory (support_messages, onboarding_intakes, admin_replies)
+# Data directory (support_messages, onboarding_intakes, admin_replies)
 DATA_DIR = Path(__file__).resolve().parent.parent.parent.parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
 
 def _admin_emails() -> List[str]:
-    """List of emails allowed as admin (SOARB2B_ADMIN_EMAILS + isanli058@gmail.com)."""
+    """List of emails allowed as admin (SOARB2B_ADMIN_EMAILS)."""
     return get_admin_emails()
 
 
-***REMOVED*** Admin validation: X-Admin-Key OR JWT for allowed admin email
+# Admin validation: X-Admin-Key OR JWT for allowed admin email
 def validate_admin_key(
     admin_key: Optional[str] = Header(None, alias="X-Admin-Key"),
     authorization: Optional[str] = Header(None),
 ) -> str:
     """Validate admin: X-Admin-Key (SOARB2B_ADMIN_KEYS) or Bearer JWT for SOARB2B_ADMIN_EMAILS."""
-    ***REMOVED*** 1) Try API key
+    # 1) Try API key
     if admin_key and admin_key.strip():
         key = admin_key.strip()
         allowed_keys_env = os.getenv("SOARB2B_ADMIN_KEYS", "")
         allowed_keys = [k.strip() for k in allowed_keys_env.split(",") if k.strip()]
-        if not allowed_keys:
-            allowed_keys = ["admin-dev-key-12345"]
+        if not allowed_keys and os.getenv("ENV") == "production":
+            raise HTTPException(status_code=500, detail="Admin keys are not configured")
         if key in allowed_keys:
             return key
 
-    ***REMOVED*** 2) Try Bearer JWT and admin-email list
+    # 2) Try Bearer JWT and admin-email list
     admin_emails = _admin_emails()
     if authorization and authorization.strip().lower().startswith("bearer "):
         token = authorization[7:].strip()
@@ -72,31 +72,31 @@ def validate_admin_key(
     raise HTTPException(status_code=401, detail="X-Admin-Key or Bearer token (admin email) required")
 
 
-***REMOVED*** Request Models
+# Request Models
 class AdminInterventionRequest(BaseModel):
     """Admin intervention parameters"""
-    ***REMOVED*** Persona scope adjustments
+    # Persona scope adjustments
     persona_scope_adjustment: Optional[str] = Field(None, description="Expand or restrict persona scope")
     role_strictness: Optional[str] = Field(None, description="Strict, moderate, or flexible role matching")
     
-    ***REMOVED*** Channel priority
+    # Channel priority
     channel_priority: Optional[Dict[str, int]] = Field(None, description="Channel priority order (email=1, linkedin=2, etc.)")
     
-    ***REMOVED*** Exposure radius
+    # Exposure radius
     exposure_radius_km: Optional[float] = Field(None, description="Exposure radius in kilometers")
     
-    ***REMOVED*** Compliance flags
+    # Compliance flags
     compliance_flags: Optional[Dict[str, Any]] = Field(None, description="Compliance flags (GDPR, CCPA, etc.)")
     
-    ***REMOVED*** Partner selection
+    # Partner selection
     partner_id: Optional[str] = Field(None, description="Partner ID for managed exposure")
     
-    ***REMOVED*** Admin note (visible to user as "Custom strategy applied")
+    # Admin note (visible to user as "Custom strategy applied")
     admin_note: Optional[str] = Field(None, description="Note visible to user (e.g., 'Custom strategy applied')")
     
-    ***REMOVED*** Stage advancement (admin can manually advance stages)
+    # Stage advancement (admin can manually advance stages)
     advance_stage: Optional[str] = Field(None, description="Advance to stage (ANALYSIS_READY, PERSONA_REVIEW, etc.)")
-    ***REMOVED*** Firmaya özel sorgu algoritması (company-specific query algorithm)
+    # Firmaya özel sorgu algoritması (company-specific query algorithm)
     company_algorithm_params: Optional[Dict[str, Any]] = Field(None, description="Company-specific algorithm params (JSON)")
 
 
@@ -117,7 +117,7 @@ class AdminActionRequest(BaseModel):
     action: Optional[str] = Field(None, description="approve | save_draft")
 
 
-***REMOVED*** Endpoints
+# Endpoints
 @router.post("/plan/{plan_id}/intervene", response_model=AdminInterventionResponse)
 async def admin_intervene(
     plan_id: str,
@@ -138,63 +138,63 @@ async def admin_intervene(
         
         interventions_applied = {}
         
-        ***REMOVED*** Apply persona scope adjustment
+        # Apply persona scope adjustment
         if intervention.persona_scope_adjustment:
             if not plan.admin_adjustments:
                 plan.admin_adjustments = {}
             plan.admin_adjustments["persona_scope"] = intervention.persona_scope_adjustment
             interventions_applied["persona_scope"] = intervention.persona_scope_adjustment
         
-        ***REMOVED*** Apply role strictness
+        # Apply role strictness
         if intervention.role_strictness:
             if not plan.admin_adjustments:
                 plan.admin_adjustments = {}
             plan.admin_adjustments["role_strictness"] = intervention.role_strictness
             interventions_applied["role_strictness"] = intervention.role_strictness
         
-        ***REMOVED*** Apply channel priority
+        # Apply channel priority
         if intervention.channel_priority:
             if not plan.admin_adjustments:
                 plan.admin_adjustments = {}
             plan.admin_adjustments["channel_priority"] = intervention.channel_priority
             interventions_applied["channel_priority"] = intervention.channel_priority
         
-        ***REMOVED*** Apply exposure radius
+        # Apply exposure radius
         if intervention.exposure_radius_km is not None:
             if not plan.admin_adjustments:
                 plan.admin_adjustments = {}
             plan.admin_adjustments["exposure_radius_km"] = intervention.exposure_radius_km
             interventions_applied["exposure_radius_km"] = intervention.exposure_radius_km
         
-        ***REMOVED*** Apply compliance flags
+        # Apply compliance flags
         if intervention.compliance_flags:
             if not plan.admin_adjustments:
                 plan.admin_adjustments = {}
             plan.admin_adjustments["compliance_flags"] = intervention.compliance_flags
             interventions_applied["compliance_flags"] = intervention.compliance_flags
         
-        ***REMOVED*** Apply partner selection
+        # Apply partner selection
         if intervention.partner_id:
             if not plan.admin_adjustments:
                 plan.admin_adjustments = {}
             plan.admin_adjustments["partner_id"] = intervention.partner_id
             interventions_applied["partner_id"] = intervention.partner_id
         
-        ***REMOVED*** Add admin note (visible to user)
+        # Add admin note (visible to user)
         if intervention.admin_note:
             plan.admin_note = intervention.admin_note
         
-        ***REMOVED*** Firmaya özel sorgu algoritması
+        # Firmaya özel sorgu algoritması
         if intervention.company_algorithm_params is not None:
             if not plan.admin_adjustments:
                 plan.admin_adjustments = {}
             plan.admin_adjustments["company_algorithm_params"] = intervention.company_algorithm_params
             interventions_applied["company_algorithm_params"] = intervention.company_algorithm_params
         
-        ***REMOVED*** Mark as intervened
+        # Mark as intervened
         plan.admin_intervened = True
         
-        ***REMOVED*** Advance stage if requested
+        # Advance stage if requested
         if intervention.advance_stage:
             plan.current_stage = intervention.advance_stage
             if intervention.advance_stage == "ANALYSIS_READY" and not plan.analysis_ready_at:
@@ -240,7 +240,7 @@ async def get_plan_details(
         if not plan:
             raise HTTPException(status_code=404, detail=f"Plan {plan_id} not found")
         
-        ***REMOVED*** Get all objectives
+        # Get all objectives
         objectives = [
             {
                 "type": obj.objective_type,
@@ -252,7 +252,7 @@ async def get_plan_details(
             for obj in plan.objectives
         ]
         
-        ***REMOVED*** Get all stages
+        # Get all stages
         stages = [
             {
                 "name": stage.stage_name,
@@ -371,12 +371,12 @@ async def override_query_cap(
         plan_id = override_request.get("plan_id")
         new_cap = override_request.get("new_cap", ADMIN_MAX_RESULTS_OVERRIDE)
         
-        ***REMOVED*** Enforce admin override limit
+        # Enforce admin override limit
         new_cap = min(new_cap, ADMIN_MAX_RESULTS_OVERRIDE)
-        new_cap = max(new_cap, MAX_RESULTS_PER_QUERY)  ***REMOVED*** Cannot go below default
+        new_cap = max(new_cap, MAX_RESULTS_PER_QUERY)   # Cannot go below default
         
-        ***REMOVED*** TODO: Store override in plan or admin config
-        ***REMOVED*** For now, return the override limit
+        # TODO: Store override in plan or admin config
+        # For now, return the override limit
         
         return {
             "success": True,
@@ -405,7 +405,7 @@ def _plan_status_badge(current_stage: str, status: str) -> str:
     return "Pending Review"
 
 
-***REMOVED*** --- Admin: Plan list (strategist queue: short_id, product, region, goal, status badge) ---
+# --- Admin: Plan list (strategist queue: short_id, product, region, goal, status badge) ---
 @router.get("/plans")
 async def admin_list_plans(
     limit: int = 100,
@@ -463,7 +463,7 @@ async def admin_list_plans(
         raise HTTPException(status_code=500, detail="Failed to list plans")
 
 
-***REMOVED*** --- Admin: Upload visibility (who uploaded what, abuse suspicion) ---
+# --- Admin: Upload visibility (who uploaded what, abuse suspicion) ---
 @router.get("/uploads")
 async def admin_list_uploads(
     limit: int = 100,
@@ -515,7 +515,7 @@ def _append_jsonl(path: Path, record: Dict[str, Any]) -> None:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 
-***REMOVED*** --- Admin: Tüm kullanıcı hesapları (gerçek veritabanı: users tablosu) ---
+# --- Admin: Tüm kullanıcı hesapları (gerçek veritabanı: users tablosu) ---
 @router.get("/users")
 async def admin_list_users(
     limit: int = 200,
@@ -524,7 +524,7 @@ async def admin_list_users(
 ):
     """Admin: Tüm kullanıcı hesaplarını listele. Veri kaynağı: veritabanı (users tablosu)."""
     try:
-        ***REMOVED*** Gerçek tablo sayısı (doğrulama için)
+        # Gerçek tablo sayısı (doğrulama için)
         total_in_db = db.query(User).count()
         users = db.query(User).order_by(User.created_at.desc()).limit(limit).all()
         db_type = "postgresql" if IS_POSTGRESQL else ("sqlite" if IS_SQLITE else "database")
@@ -551,7 +551,7 @@ async def admin_list_users(
         raise HTTPException(status_code=500, detail="Failed to list users")
 
 
-***REMOVED*** --- Admin: Mesaj kutusu (iletişim formundan gelen mesajlar + yanıt) ---
+# --- Admin: Mesaj kutusu (iletişim formundan gelen mesajlar + yanıt) ---
 @router.get("/support-messages")
 async def admin_list_support_messages(
     limit: int = 100,
@@ -594,7 +594,7 @@ async def admin_reply_to_message(
     return {"success": True, "message_id": message_id, "replied_at": record["replied_at"]}
 
 
-***REMOVED*** --- Admin: İletişim kutusundan gelen talepler (onboarding intakes) ---
+# --- Admin: İletişim kutusundan gelen talepler (onboarding intakes) ---
 @router.get("/contact-intakes")
 async def admin_list_contact_intakes(
     limit: int = 100,
@@ -606,7 +606,7 @@ async def admin_list_contact_intakes(
     return {"success": True, "count": len(records), "intakes": records}
 
 
-***REMOVED*** --- Admin: Sorgu talebini onayla (onaylarsa sorgu direkt başlasın) ---
+# --- Admin: Sorgu talebini onayla (onaylarsa sorgu direkt başlasın) ---
 @router.post("/plan/{plan_id}/approve")
 async def admin_approve_plan(
     plan_id: str,
@@ -645,7 +645,7 @@ async def admin_approve_plan(
         raise HTTPException(status_code=500, detail="Failed to approve plan")
 
 
-***REMOVED*** --- Admin: Replay endpoint (Acontext observability) ---
+# --- Admin: Replay endpoint (Acontext observability) ---
 @router.get("/replay/{trace_id}")
 async def admin_replay(
     trace_id: str,
@@ -664,7 +664,7 @@ async def admin_replay(
         request_tenant_id = tenant_id or extract_tenant_from_context()
         events = await get_events_for_replay(trace_id=trace_id, tenant_id=request_tenant_id)
 
-        ***REMOVED*** Build ordered timeline
+        # Build ordered timeline
         timeline = []
         gate_decisions = []
         tool_calls = []
@@ -683,7 +683,7 @@ async def admin_replay(
                     elif p.get("event_type") == "TOOL_CALL" or "tool_name" in p:
                         tool_calls.append(entry)
                     elif p.get("event_type") == "AGENT_METRIC":
-                        pass  ***REMOVED*** included in timeline
+                        pass   # included in timeline
             elif ev_type == "ARTIFACT":
                 artifacts.append(entry)
 
@@ -702,7 +702,7 @@ async def admin_replay(
         raise HTTPException(status_code=500, detail=f"Replay failed: {str(e)}")
 
 
-***REMOVED*** --- Admin: Sorgu talebi için öneri (kullanıcıya erişir - admin_note) ---
+# --- Admin: Sorgu talebi için öneri (kullanıcıya erişir - admin_note) ---
 class SuggestRequest(BaseModel):
     suggestion: str = Field(..., description="Kullanıcıya gösterilecek öneri metni")
 

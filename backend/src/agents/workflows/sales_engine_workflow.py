@@ -39,12 +39,12 @@ async def run_sales_engine_workflow(
     companies = []
 
     try:
-        ***REMOVED*** 0. Learning: get targeting recommendations (roles, company_size) from past campaigns
+        # 0. Learning: get targeting recommendations (roles, company_size) from past campaigns
         targeting = await get_targeting_recommendations(industry=industry, location=location, roles=target_roles)
         effective_roles = targeting.get("recommended_roles") or target_roles
         effective_company_size = company_size or targeting.get("recommended_company_size")
 
-        ***REMOVED*** 1. company_discovery
+        # 1. company_discovery
         step_start = time.perf_counter()
         step1 = await run_company_discovery(
             industry=industry,
@@ -59,7 +59,7 @@ async def run_sales_engine_workflow(
             upsert_run(agent_run_id, "sales_engine", "completed", output_payload={"companies_found": 0, "leads_generated": 0, "emails_generated": 0, "contacts_identified": 0, "campaign_created": False})
             return {"companies_found": 0, "leads_generated": 0, "emails_generated": 0, "contacts_identified": 0, "campaign_created": False, "agent_run_id": agent_run_id, "status": "completed"}
 
-        ***REMOVED*** 2. company_analysis
+        # 2. company_analysis
         step_start = time.perf_counter()
         step2 = await run_company_analysis(companies)
         companies = step2.get("companies", [])
@@ -70,7 +70,7 @@ async def run_sales_engine_workflow(
             latency_ms=step2.get("latency_ms") or int((time.perf_counter() - step_start) * 1000),
         )
 
-        ***REMOVED*** 3. persona_detection (use learning-recommended roles)
+        # 3. persona_detection (use learning-recommended roles)
         step_start = time.perf_counter()
         step3 = await run_persona_detection(companies, effective_roles)
         companies = step3.get("companies", [])
@@ -81,13 +81,13 @@ async def run_sales_engine_workflow(
             latency_ms=step3.get("latency_ms") or int((time.perf_counter() - step_start) * 1000),
         )
 
-        ***REMOVED*** 4. contact_enrichment
+        # 4. contact_enrichment
         step_start = time.perf_counter()
         step4 = await run_contact_enrichment(companies)
         companies = step4.get("companies", [])
         log_step(agent_run_id, "contact_enrichment", latency_ms=step4.get("latency_ms"))
 
-        ***REMOVED*** 5. email_generation (outreach subject + body; use learning email strategy)
+        # 5. email_generation (outreach subject + body; use learning email strategy)
         email_strategy = await get_email_strategy(campaign_goal=campaign_goal, industry=industry)
         step_start = time.perf_counter()
         step5 = await run_outreach_email_generation(companies, campaign_goal, email_strategy=email_strategy)
@@ -99,13 +99,13 @@ async def run_sales_engine_workflow(
             latency_ms=step5.get("latency_ms") or int((time.perf_counter() - step_start) * 1000),
         )
 
-        ***REMOVED*** 6. outreach_queue
+        # 6. outreach_queue
         step_start = time.perf_counter()
         step6 = await run_outreach_queue(companies, campaign_goal, agent_run_id)
         companies = step6.get("companies", [])
         log_step(agent_run_id, "outreach_queue", latency_ms=step6.get("latency_ms"))
 
-        ***REMOVED*** 7. campaign_creation (intel graph + automation queue)
+        # 7. campaign_creation (intel graph + automation queue)
         step_start = time.perf_counter()
         step7 = await run_campaign_creation(companies, campaign_goal, agent_run_id)
         companies = step7.get("companies", companies)

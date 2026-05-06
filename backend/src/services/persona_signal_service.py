@@ -19,9 +19,9 @@ class PersonaSignalService:
     def __init__(self, db: Session):
         self.db = db
     
-    ***REMOVED*** ========================================================================
-    ***REMOVED*** SIGNAL WEIGHTING
-    ***REMOVED*** ========================================================================
+    # ========================================================================
+    # SIGNAL WEIGHTING
+    # ========================================================================
     
     def get_signal_weight(
         self,
@@ -35,7 +35,7 @@ class PersonaSignalService:
         2. Global weight (user-level)
         3. Default weight (1.0) if none found
         """
-        ***REMOVED*** Try persona-specific first
+        # Try persona-specific first
         if persona_id:
             weight = self.db.query(PersonaSignalWeight).filter(
                 and_(
@@ -49,7 +49,7 @@ class PersonaSignalService:
             if weight:
                 return weight
         
-        ***REMOVED*** Fall back to global weight
+        # Fall back to global weight
         global_weight = self.db.query(PersonaSignalWeight).filter(
             and_(
                 PersonaSignalWeight.user_id == user_id,
@@ -86,10 +86,10 @@ class PersonaSignalService:
         )
         
         if persona_id is not None:
-            ***REMOVED*** Get persona-specific weights
+            # Get persona-specific weights
             query = query.filter(PersonaSignalWeight.persona_id == persona_id)
         else:
-            ***REMOVED*** Get global weights only
+            # Get global weights only
             query = query.filter(PersonaSignalWeight.persona_id == None)
         
         return query.all()
@@ -112,11 +112,11 @@ class PersonaSignalService:
             persona_id: Persona ID (None for global weight)
             description: Optional description
         """
-        ***REMOVED*** Validate weight range
+        # Validate weight range
         if weight < 0.0 or weight > 10.0:
             raise ValueError("Weight must be between 0.0 and 10.0")
         
-        ***REMOVED*** Check if persona exists (if persona_id provided)
+        # Check if persona exists (if persona_id provided)
         if persona_id:
             persona = self.db.query(Persona).filter(Persona.id == persona_id).first()
             if not persona:
@@ -124,7 +124,7 @@ class PersonaSignalService:
             if persona.user_id != user_id:
                 raise ValueError("Persona does not belong to user")
         
-        ***REMOVED*** Find existing weight
+        # Find existing weight
         existing = self.db.query(PersonaSignalWeight).filter(
             and_(
                 PersonaSignalWeight.user_id == user_id,
@@ -134,7 +134,7 @@ class PersonaSignalService:
         ).first()
         
         if existing:
-            ***REMOVED*** Update existing
+            # Update existing
             existing.weight = weight
             existing.description = description
             existing.is_active = True
@@ -142,7 +142,7 @@ class PersonaSignalService:
             self.db.refresh(existing)
             return existing
         else:
-            ***REMOVED*** Create new
+            # Create new
             new_weight = PersonaSignalWeight(
                 user_id=user_id,
                 persona_id=persona_id,
@@ -176,9 +176,9 @@ class PersonaSignalService:
         self.db.commit()
         return True
     
-    ***REMOVED*** ========================================================================
-    ***REMOVED*** SIGNAL EXCLUSION
-    ***REMOVED*** ========================================================================
+    # ========================================================================
+    # SIGNAL EXCLUSION
+    # ========================================================================
     
     def is_signal_excluded(
         self,
@@ -191,7 +191,7 @@ class PersonaSignalService:
         Check if a signal value is excluded.
         Checks both persona-specific and global exclusions.
         """
-        ***REMOVED*** Check persona-specific exclusion first
+        # Check persona-specific exclusion first
         if persona_id:
             exclusion = self.db.query(PersonaSignalExclusion).filter(
                 and_(
@@ -206,7 +206,7 @@ class PersonaSignalService:
             if exclusion:
                 return True
         
-        ***REMOVED*** Check global exclusion
+        # Check global exclusion
         global_exclusion = self.db.query(PersonaSignalExclusion).filter(
             and_(
                 PersonaSignalExclusion.user_id == user_id,
@@ -231,10 +231,10 @@ class PersonaSignalService:
         )
         
         if persona_id is not None:
-            ***REMOVED*** Get persona-specific exclusions
+            # Get persona-specific exclusions
             query = query.filter(PersonaSignalExclusion.persona_id == persona_id)
         else:
-            ***REMOVED*** Get global exclusions only
+            # Get global exclusions only
             query = query.filter(PersonaSignalExclusion.persona_id == None)
         
         return query.all()
@@ -257,7 +257,7 @@ class PersonaSignalService:
             persona_id: Persona ID (None for global exclusion)
             exclusion_reason: Optional reason
         """
-        ***REMOVED*** Check if persona exists (if persona_id provided)
+        # Check if persona exists (if persona_id provided)
         if persona_id:
             persona = self.db.query(Persona).filter(Persona.id == persona_id).first()
             if not persona:
@@ -265,7 +265,7 @@ class PersonaSignalService:
             if persona.user_id != user_id:
                 raise ValueError("Persona does not belong to user")
         
-        ***REMOVED*** Check if exclusion already exists
+        # Check if exclusion already exists
         existing = self.db.query(PersonaSignalExclusion).filter(
             and_(
                 PersonaSignalExclusion.user_id == user_id,
@@ -276,14 +276,14 @@ class PersonaSignalService:
         ).first()
         
         if existing:
-            ***REMOVED*** Reactivate if deactivated
+            # Reactivate if deactivated
             existing.is_active = True
             existing.exclusion_reason = exclusion_reason
             self.db.commit()
             self.db.refresh(existing)
             return existing
         else:
-            ***REMOVED*** Create new
+            # Create new
             new_exclusion = PersonaSignalExclusion(
                 user_id=user_id,
                 persona_id=persona_id,

@@ -53,12 +53,12 @@ class ResultService:
         if not plan:
             raise ValueError(f"Plan {plan_id} not found")
         
-        ***REMOVED*** TODO: Calculate actual counts from data
-        ***REMOVED*** For now, mock but enforce limits
-        estimated_businesses = 1284  ***REMOVED*** Mock - replace with actual query count
-        estimated_personas = 500  ***REMOVED*** Mock
+        # TODO: Calculate actual counts from data
+        # For now, mock but enforce limits
+        estimated_businesses = 1284   # Mock - replace with actual query count
+        estimated_personas = 500   # Mock
         
-        ***REMOVED*** Check if region is too large (warning trigger)
+        # Check if region is too large (warning trigger)
         region = plan.onboarding_data.get("geography", "N/A")
         is_large_region = should_show_capped_warning(estimated_businesses, MAX_RESULTS_PER_QUERY)
         
@@ -66,10 +66,10 @@ class ResultService:
             "plan_id": plan_id,
             "target_region": region,
             "businesses_found": estimated_businesses,
-            "businesses_available_sample": min(estimated_businesses, MAX_RESULTS_PER_QUERY),  ***REMOVED*** Capped to 100
-            "relevant_departments": 3,  ***REMOVED*** Mock
+            "businesses_available_sample": min(estimated_businesses, MAX_RESULTS_PER_QUERY),   # Capped to 100
+            "relevant_departments": 3,   # Mock
             "target_personas": estimated_personas,
-            "personas_available_sample": min(estimated_personas, MAX_RESULTS_PER_QUERY),  ***REMOVED*** Capped to 100
+            "personas_available_sample": min(estimated_personas, MAX_RESULTS_PER_QUERY),   # Capped to 100
             "reachability": {
                 "corporate_emails": 48,
                 "linkedin_profiles": 77,
@@ -77,7 +77,7 @@ class ResultService:
                 "location_targetable_audience": True
             },
             "status": "preview",
-            "requires_refinement": is_large_region,  ***REMOVED*** True if region > 100 businesses
+            "requires_refinement": is_large_region,   # True if region > 100 businesses
             "warning_message": f"This region contains more than {MAX_RESULTS_PER_QUERY} eligible businesses. Please refine your criteria or continue with a capped sample." if is_large_region else None,
             "note": "This is a preview. Full results will be available after confirmation. Maximum 100 results per query."
         }
@@ -88,7 +88,7 @@ class ResultService:
         """Get all results for a plan (Results Hub)"""
         plan_result = self.get_result_hub(plan_id)
         if not plan_result:
-            ***REMOVED*** Return empty state instead of raising error - Results Hub not created yet
+            # Return empty state instead of raising error - Results Hub not created yet
             return {
                 "plan_id": plan_id,
                 "status": "pending",
@@ -128,7 +128,7 @@ class ResultService:
         """Create async export job"""
         plan_result = self.get_result_hub(plan_id)
         if not plan_result:
-            ***REMOVED*** Auto-create Results Hub if it doesn't exist
+            # Auto-create Results Hub if it doesn't exist
             plan_result = self.create_result_hub(plan_id)
         
         export_id = str(uuid.uuid4())
@@ -144,8 +144,8 @@ class ResultService:
         self.db.commit()
         self.db.refresh(export_job)
         
-        ***REMOVED*** TODO: Queue async export generation
-        ***REMOVED*** For now, mark as processing
+        # TODO: Queue async export generation
+        # For now, mark as processing
         export_job.status = "processing"
         self.db.commit()
         
@@ -181,7 +181,7 @@ class ResultService:
         if not rows:
             raise ValueError("No cached results available for export")
         
-        ***REMOVED*** Deduplicate rows by company/address/role combo to avoid duplicate exports
+        # Deduplicate rows by company/address/role combo to avoid duplicate exports
         deduped_rows: List[Dict[str, Any]] = []
         seen_keys = set()
         for row in rows:
@@ -227,7 +227,7 @@ class ResultService:
                     records = [item for item in candidate if isinstance(item, dict)]
                     break
             else:
-                ***REMOVED*** Treat dict itself as single record
+                # Treat dict itself as single record
                 records = [data]
         else:
             return []
@@ -261,7 +261,7 @@ class ResultService:
                     if joined:
                         return joined
                 elif isinstance(value, dict):
-                    ***REMOVED*** try common nested keys
+                    # try common nested keys
                     for nested_key in ("value", "name", "label", "text"):
                         nested_val = value.get(nested_key)
                         if nested_val:

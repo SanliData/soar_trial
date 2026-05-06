@@ -8,13 +8,13 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-***REMOVED*** Trust anchors are deterministic; tuned for commercial-intelligence governance (foundation).
+# Trust anchors are deterministic; tuned for commercial-intelligence governance (foundation).
 APPROVED_SOURCE_METADATA: dict[str, Mapping[str, Any]] = {
     "uploaded_documents": {"registry_trust": 0.55, "tier": "internal_controlled"},
     "public_procurement_feed": {"registry_trust": 0.88, "tier": "official_feed"},
     "approved_public_registry": {"registry_trust": 0.78, "tier": "public_registry"},
     "verified_partner_dataset": {"registry_trust": 0.72, "tier": "partner_verified"},
-    ***REMOVED*** H-044 document intelligence source types (metadata only; lineage required)
+    # H-044 document intelligence source types (metadata only; lineage required)
     "ocr_document": {"registry_trust": 0.6, "tier": "document_intelligence"},
     "bid_pdf": {"registry_trust": 0.66, "tier": "document_intelligence"},
     "scanned_form": {"registry_trust": 0.58, "tier": "document_intelligence"},

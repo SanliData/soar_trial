@@ -17,20 +17,20 @@ class HTTPSRedirectMiddleware(BaseHTTPMiddleware):
     """
     
     async def dispatch(self, request: Request, call_next):
-        ***REMOVED*** Check if HTTPS redirect is enabled
+        # Check if HTTPS redirect is enabled
         force_https = os.getenv("FINDEROS_FORCE_HTTPS", "false").lower() == "true"
         
         if force_https:
-            ***REMOVED*** Check if request is HTTP
+            # Check if request is HTTP
             if request.url.scheme == "http":
-                ***REMOVED*** Build HTTPS URL
+                # Build HTTPS URL
                 https_url = request.url.replace(scheme="https")
                 return RedirectResponse(
                     url=str(https_url),
                     status_code=status.HTTP_301_MOVED_PERMANENTLY
                 )
         
-        ***REMOVED*** Continue with normal request
+        # Continue with normal request
         response = await call_next(request)
         return response
 

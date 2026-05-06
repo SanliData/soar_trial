@@ -145,7 +145,7 @@ def generate_widget_html(body: GenerativeUiRenderRequest) -> str:
 def generate_render_response(body: GenerativeUiRenderRequest) -> GenerativeUiRenderResponse:
     """Public entry: validated structured input -> sanitized HTML snippet + flags."""
     html = generate_widget_html(body)
-    ***REMOVED*** Hard guarantees for consumers (embedding in sandboxed iframe)
+    # Hard guarantees for consumers (embedding in sandboxed iframe)
     return GenerativeUiRenderResponse(
         widget_type=body.widget_type,
         html=html,

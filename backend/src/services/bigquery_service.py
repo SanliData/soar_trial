@@ -49,7 +49,7 @@ class BigQueryService:
             return False
         
         try:
-            ***REMOVED*** Create dataset if it doesn't exist
+            # Create dataset if it doesn't exist
             dataset_ref = self.client.dataset(self.dataset_id)
             try:
                 self.client.get_dataset(dataset_ref)
@@ -59,7 +59,7 @@ class BigQueryService:
                 dataset.description = "FinderOS Discovery Records Analytics"
                 self.client.create_dataset(dataset)
             
-            ***REMOVED*** Create table if it doesn't exist
+            # Create table if it doesn't exist
             table_ref = dataset_ref.table(self.table_id)
             try:
                 self.client.get_table(table_ref)
@@ -113,7 +113,7 @@ class BigQueryService:
             }
         
         try:
-            ***REMOVED*** Prepare row data
+            # Prepare row data
             row = {
                 "record_id": record.get("id") or record.get("record_id") or f"rec_{datetime.utcnow().timestamp()}",
                 "company_name": record.get("name") or record.get("company_name", ""),
@@ -132,7 +132,7 @@ class BigQueryService:
                 "updated_at": datetime.utcnow().isoformat(),
             }
             
-            ***REMOVED*** Insert row
+            # Insert row
             table_ref = self.client.dataset(self.dataset_id).table(self.table_id)
             errors = self.client.insert_rows_json(table_ref, [row])
             
@@ -203,7 +203,7 @@ class BigQueryService:
                     "error": "No records to export"
                 }
             
-            ***REMOVED*** Batch insert
+            # Batch insert
             table_ref = self.client.dataset(self.dataset_id).table(self.table_id)
             errors = self.client.insert_rows_json(table_ref, rows)
             
@@ -228,7 +228,7 @@ class BigQueryService:
             }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _bigquery_service_instance = None
 
 

@@ -64,24 +64,24 @@ async def create_acquisition_job(
     Returns job_id that can be used to check status and download results.
     Admin users (e.g. isanli058@gmail.com via Bearer JWT) get cap override (up to 1000 results).
     """
-    ***REMOVED*** TODO: Check if user has permission for this plan_id
-    ***REMOVED*** For now, allowing any authenticated user
+    # TODO: Check if user has permission for this plan_id
+    # For now, allowing any authenticated user
     
     service = get_acquisition_service()
     
-    ***REMOVED*** Admin (e.g. isanli058@gmail.com via Google login JWT) gets cap override
+    # Admin (e.g. isanli058@gmail.com via Google login JWT) gets cap override
     is_admin = _is_admin_from_bearer(authorization)
     
     try:
-        ***REMOVED*** Create job
+        # Create job
         job = service.create_job(request, db, is_admin=is_admin)
         
-        ***REMOVED*** Optionally start job execution in background (for local dev)
-        ***REMOVED*** In production, use Cloud Run Job trigger
-        run_async = True  ***REMOVED*** Can be controlled via env var or request param
+        # Optionally start job execution in background (for local dev)
+        # In production, use Cloud Run Job trigger
+        run_async = True   # Can be controlled via env var or request param
         
         if run_async:
-            ***REMOVED*** Background task for local dev (with warning)
+            # Background task for local dev (with warning)
             import warnings
             warnings.warn(
                 "Using background task for acquisition job execution. "
@@ -92,7 +92,7 @@ async def create_acquisition_job(
             background_tasks.add_task(
                 _execute_job_async,
                 job.job_id,
-                str(db.bind.url)  ***REMOVED*** Pass connection string, not session
+                str(db.bind.url)   # Pass connection string, not session
             )
         
         return {
@@ -162,7 +162,7 @@ async def get_acquisition_job_status(
     if not job:
         raise HTTPException(status_code=404, detail=f"Job not found: {job_id}")
     
-    ***REMOVED*** Parse geography if available
+    # Parse geography if available
     geography = None
     if job.geography:
         try:
@@ -207,45 +207,45 @@ async def export_acquisition_job_csv(
             detail=f"Job is not ready for export. Status: {job.status}"
         )
     
-    ***REMOVED*** Get results
+    # Get results
     results = service.get_job_results(job, db)
     
-    ***REMOVED*** Generate CSV
+    # Generate CSV
     output = StringIO()
     writer = csv.writer(output)
     
-    ***REMOVED*** Write header
+    # Write header
     writer.writerow([
         "Type", "Name", "Email", "Phone", "Website", "Address", "Industry",
         "Job Title", "Department", "Seniority", "Company Name"
     ])
     
-    ***REMOVED*** Write businesses
+    # Write businesses
     for business in results.businesses:
         writer.writerow([
             "business",
             business.name,
-            "",  ***REMOVED*** email
+            "",   # email
             business.phone or "",
             business.website or "",
             business.address or "",
             business.industry or "",
-            "",  ***REMOVED*** job_title
-            "",  ***REMOVED*** department
-            "",  ***REMOVED*** seniority
-            ""   ***REMOVED*** company_name
+            "",   # job_title
+            "",   # department
+            "",   # seniority
+            ""    # company_name
         ])
     
-    ***REMOVED*** Write contacts
+    # Write contacts
     for contact in results.contacts:
         writer.writerow([
             "contact",
             contact.name or "",
             contact.email or "",
             contact.phone or "",
-            "",  ***REMOVED*** website
-            "",  ***REMOVED*** address
-            "",  ***REMOVED*** industry
+            "",   # website
+            "",   # address
+            "",   # industry
             contact.job_title or "",
             contact.department or "",
             contact.seniority or "",
@@ -254,7 +254,7 @@ async def export_acquisition_job_csv(
     
     output.seek(0)
     
-    ***REMOVED*** Generate filename
+    # Generate filename
     filename = f"acquisition_job_{job_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
     
     return StreamingResponse(
@@ -287,10 +287,10 @@ async def export_acquisition_job_json(
             detail=f"Job is not ready for export. Status: {job.status}"
         )
     
-    ***REMOVED*** Get results
+    # Get results
     results = service.get_job_results(job, db)
     
-    ***REMOVED*** Build export data
+    # Build export data
     export_data = {
         "job_id": job.job_id,
         "plan_id": job.plan_id,
@@ -302,7 +302,7 @@ async def export_acquisition_job_json(
         "exported_at": datetime.utcnow().isoformat()
     }
     
-    ***REMOVED*** Generate filename
+    # Generate filename
     filename = f"acquisition_job_{job_id}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     
     return StreamingResponse(
@@ -322,7 +322,7 @@ async def _execute_job_async(job_id: str, db_url: str):
     from sqlalchemy import create_engine
     from sqlalchemy.orm import sessionmaker
     
-    ***REMOVED*** Create new session for background task
+    # Create new session for background task
     engine = create_engine(db_url)
     SessionLocal = sessionmaker(bind=engine)
     db = SessionLocal()

@@ -18,7 +18,7 @@ from src.services.google_ads_service import get_google_ads_service
 router = APIRouter(prefix="/campaigns", tags=["campaigns"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db = Depends(get_db)
@@ -33,17 +33,17 @@ class CampaignTarget(BaseModel):
     company_ids: Optional[List[str]] = None
     personnel_ids: Optional[List[str]] = None
     location_ids: Optional[List[str]] = None
-    location_polygons: Optional[List[Dict[str, Any]]] = None  ***REMOVED*** Polygon coordinates
-    filters: Optional[Dict[str, Any]] = None  ***REMOVED*** Additional filters
+    location_polygons: Optional[List[Dict[str, Any]]] = None   # Polygon coordinates
+    filters: Optional[Dict[str, Any]] = None   # Additional filters
 
 
 class CampaignCreate(BaseModel):
     name: str
-    ad_content_type: str  ***REMOVED*** "text", "image", "link"
-    ad_content: str  ***REMOVED*** Text, image URL, or link URL
-    ad_type: str  ***REMOVED*** "location-based", "social", "email", "sms"
+    ad_content_type: str   # "text", "image", "link"
+    ad_content: str   # Text, image URL, or link URL
+    ad_type: str   # "location-based", "social", "email", "sms"
     target: CampaignTarget
-    schedule: Optional[Dict[str, Any]] = None  ***REMOVED*** Scheduling options
+    schedule: Optional[Dict[str, Any]] = None   # Scheduling options
     budget: Optional[float] = None
     max_impressions: Optional[int] = None
 
@@ -80,7 +80,7 @@ async def create_campaign(campaign: CampaignCreate):
     """
     campaign_id = str(uuid.uuid4())
     
-    ***REMOVED*** Calculate target counts
+    # Calculate target counts
     companies_count = len(campaign.target.company_ids) if campaign.target.company_ids else 0
     personnel_count = len(campaign.target.personnel_ids) if campaign.target.personnel_ids else 0
     locations_count = 0
@@ -145,7 +145,7 @@ async def get_campaign_stats(
     Otherwise returns database-stored campaign stats.
     Used for Step 9 (Ad Display) dashboard.
     """
-    ***REMOVED*** If Google Ads IDs provided, fetch real performance data
+    # If Google Ads IDs provided, fetch real performance data
     if customer_id and google_ads_campaign_id:
         ads_service = get_google_ads_service()
         performance = ads_service.get_campaign_performance(
@@ -180,11 +180,11 @@ async def get_campaign_stats(
                 "source": "google_ads_api"
             }
         else:
-            ***REMOVED*** Fallback to database stats if API fails
+            # Fallback to database stats if API fails
             pass
     
-    ***REMOVED*** Get from database (mock for now, should query Campaign model)
-    ***REMOVED*** In production, query Campaign model with campaign_id and user_id
+    # Get from database (mock for now, should query Campaign model)
+    # In production, query Campaign model with campaign_id and user_id
     return {
         "success": True,
         "campaign_id": campaign_id,
@@ -209,7 +209,7 @@ async def list_campaigns():
     """
     List all campaigns.
     """
-    ***REMOVED*** Mock list - in production, get from database
+    # Mock list - in production, get from database
     return {
         "campaigns": [
             {

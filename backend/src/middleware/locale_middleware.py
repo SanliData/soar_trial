@@ -20,13 +20,13 @@ class LocaleMiddleware(BaseHTTPMiddleware):
     DEFAULT_LANGUAGE = 'en'
     
     async def dispatch(self, request: Request, call_next):
-        ***REMOVED*** Extract Accept-Language header
+        # Extract Accept-Language header
         accept_language = request.headers.get('Accept-Language', '')
         
-        ***REMOVED*** Parse locale (e.g., "tr-TR,tr;q=0.9,en;q=0.8" -> "tr")
+        # Parse locale (e.g., "tr-TR,tr;q=0.9,en;q=0.8" -> "tr")
         locale = self._parse_locale(accept_language)
         
-        ***REMOVED*** Store in request state for use in services
+        # Store in request state for use in services
         request.state.locale = locale
         
         response = await call_next(request)
@@ -45,8 +45,8 @@ class LocaleMiddleware(BaseHTTPMiddleware):
         if not accept_language:
             return self.DEFAULT_LANGUAGE
         
-        ***REMOVED*** Parse language preferences (simple implementation)
-        ***REMOVED*** Format: "lang1,lang2;q=0.9,lang3;q=0.8"
+        # Parse language preferences (simple implementation)
+        # Format: "lang1,lang2;q=0.9,lang3;q=0.8"
         languages = []
         for part in accept_language.split(','):
             part = part.strip()
@@ -57,15 +57,15 @@ class LocaleMiddleware(BaseHTTPMiddleware):
                 lang = part
                 q_value = 1.0
             
-            ***REMOVED*** Extract base language (e.g., "tr-TR" -> "tr")
+            # Extract base language (e.g., "tr-TR" -> "tr")
             base_lang = lang.split('-')[0].lower()
             if base_lang in self.SUPPORTED_LANGUAGES:
                 languages.append((base_lang, q_value))
         
-        ***REMOVED*** Sort by quality value (highest first)
+        # Sort by quality value (highest first)
         languages.sort(key=lambda x: x[1], reverse=True)
         
-        ***REMOVED*** Return first supported language
+        # Return first supported language
         if languages:
             return languages[0][0]
         

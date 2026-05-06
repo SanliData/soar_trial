@@ -32,7 +32,7 @@ def build_runtime_hints(bundle: dict[str, Any]) -> list[str]:
 
     hints.append("use structured JSON outputs for orchestration stability")
 
-    ***REMOVED*** Dedupe preserving order
+    # Dedupe preserving order
     seen: set[str] = set()
     out: list[str] = []
     for h in hints:

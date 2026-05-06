@@ -20,7 +20,7 @@ from src.services.usage_based_pricing_service import get_usage_based_pricing_ser
 router = APIRouter(prefix="/subscriptions", tags=["subscriptions"])
 
 
-***REMOVED*** Helper function to get current user (optional: from Authorization Bearer token)
+# Helper function to get current user (optional: from Authorization Bearer token)
 def get_current_user_from_header(
     authorization: Optional[str] = Header(None, alias="Authorization"),
     db: Session = Depends(get_db)
@@ -35,10 +35,10 @@ def get_current_user_from_header(
 
 
 class SubscriptionCreate(BaseModel):
-    plan_type: str  ***REMOVED*** "free", "pro", "enterprise"
-    billing_cycle: str = "monthly"  ***REMOVED*** "monthly", "yearly"
-    payment_provider: str = "stripe"  ***REMOVED*** "stripe", "iyzico"
-    payment_token: Optional[str] = None  ***REMOVED*** Payment token from payment provider
+    plan_type: str   # "free", "pro", "enterprise"
+    billing_cycle: str = "monthly"   # "monthly", "yearly"
+    payment_provider: str = "stripe"   # "stripe", "iyzico"
+    payment_token: Optional[str] = None   # Payment token from payment provider
 
 
 @router.get("/plans")
@@ -76,7 +76,7 @@ async def get_current_subscription(
         if not user:
             raise HTTPException(status_code=401, detail="Authentication required")
 
-        ***REMOVED*** Admin users: no payment/subscription required (app works without payment setup)
+        # Admin users: no payment/subscription required (app works without payment setup)
         if is_admin_email(getattr(user, "email", None)):
             return {
                 "success": True,
@@ -94,7 +94,7 @@ async def get_current_subscription(
                 },
             }
 
-        ***REMOVED*** Get user account (usage-based)
+        # Get user account (usage-based)
         account = db.query(UserAccount).filter(UserAccount.user_id == user.id).first()
 
         if account:
@@ -103,13 +103,13 @@ async def get_current_subscription(
                 "account": account.to_dict(),
                 "pricing_model": "usage_based",
                 "subscription": {
-                    "plan_type": "usage_based",  ***REMOVED*** Legacy compatibility
+                    "plan_type": "usage_based",   # Legacy compatibility
                     "status": account.account_status,
                     "billing_mode": "usage_based"
                 }
             }
         else:
-            ***REMOVED*** Default inactive account
+            # Default inactive account
             return {
                 "success": True,
                 "account": {
@@ -146,7 +146,7 @@ async def create_subscription(
         if not user:
             raise HTTPException(status_code=401, detail="Authentication required")
         
-        ***REMOVED*** Payment APIs are disabled - only free plan is available
+        # Payment APIs are disabled - only free plan is available
         if subscription_data.plan_type != "free":
             raise HTTPException(
                 status_code=503,
@@ -156,10 +156,10 @@ async def create_subscription(
         payment_service = get_payment_service(db)
         result = payment_service.create_subscription(
             user_id=user.id,
-            plan_type="free",  ***REMOVED*** Force free plan
-            billing_cycle="monthly",  ***REMOVED*** Ignored for free plan
-            payment_provider="none",  ***REMOVED*** No payment provider
-            payment_token=None  ***REMOVED*** No payment token
+            plan_type="free",   # Force free plan
+            billing_cycle="monthly",   # Ignored for free plan
+            payment_provider="none",   # No payment provider
+            payment_token=None   # No payment token
         )
         
         if not result.get("success"):
@@ -228,7 +228,7 @@ async def calculate_query_cost(
     try:
         from src.core.query_limits import MAX_RESULTS_PER_QUERY
         
-        ***REMOVED*** Enforce max_results cap
+        # Enforce max_results cap
         if max_results > MAX_RESULTS_PER_QUERY:
             raise HTTPException(
                 status_code=400,
@@ -284,7 +284,7 @@ async def get_pricing_model(db: Session = Depends(get_db)):
 @router.get("/pricing/estimate")
 async def estimate_monthly_cost(
     estimated_queries: int,
-    avg_optional_modules: Optional[str] = None,  ***REMOVED*** Comma-separated list
+    avg_optional_modules: Optional[str] = None,   # Comma-separated list
     db: Session = Depends(get_db)
 ):
     """

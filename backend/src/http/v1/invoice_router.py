@@ -17,7 +17,7 @@ from src.services.auth_service import get_current_user_dependency, get_current_u
 router = APIRouter(prefix="/invoices", tags=["invoices"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db: Session = Depends(get_db)

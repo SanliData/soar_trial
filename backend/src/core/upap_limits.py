@@ -11,7 +11,7 @@ No silent fallback; fail fast on violation; emit reason, limit, trace_id, timest
 import re
 from typing import Tuple, List, Dict, Any, Optional
 
-***REMOVED*** UPAP-mandatory constants (non-negotiable)
+# UPAP-mandatory constants (non-negotiable)
 COMPANY_SIZE_MAX = 50
 COMPANY_LIMIT = 100
 
@@ -27,15 +27,15 @@ def _parse_company_size_max(raw: Optional[str]) -> Optional[int]:
     s = str(raw).strip()
     if not s:
         return None
-    ***REMOVED*** Range patterns: 1-10, 11-50, 51-200, 1001-5000
+    # Range patterns: 1-10, 11-50, 51-200, 1001-5000
     range_match = re.match(r"(\d+)\s*-\s*(\d+)", s)
     if range_match:
         low, high = int(range_match.group(1)), int(range_match.group(2))
         return max(low, high)
-    ***REMOVED*** Single number
+    # Single number
     if s.isdigit():
         return int(s)
-    ***REMOVED*** Fallback: take last number found (e.g. "50 employees")
+    # Fallback: take last number found (e.g. "50 employees")
     nums = re.findall(r"\d+", s)
     if nums:
         return max(int(n) for n in nums)
@@ -50,7 +50,7 @@ def passes_company_size_max(company_size_raw: Optional[str]) -> bool:
     """
     max_val = _parse_company_size_max(company_size_raw)
     if max_val is None:
-        return True  ***REMOVED*** Unknown size: allow (conservative for inclusion)
+        return True   # Unknown size: allow (conservative for inclusion)
     return max_val <= COMPANY_SIZE_MAX
 
 
@@ -88,7 +88,7 @@ def filter_rows_by_upap(
         evidence["rows_after"] = 0
         return [], evidence
 
-    ***REMOVED*** 1) Filter by company_size <= 50
+    # 1) Filter by company_size <= 50
     allowed = []
     rejected_size_count = 0
     for row in rows:
@@ -99,7 +99,7 @@ def filter_rows_by_upap(
             rejected_size_count += 1
 
     evidence["rejected_size_count"] = rejected_size_count
-    ***REMOVED*** 2) Cap at company_limit
+    # 2) Cap at company_limit
     capped = allowed[:COMPANY_LIMIT]
     evidence["rows_after"] = len(capped)
 

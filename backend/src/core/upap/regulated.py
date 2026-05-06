@@ -23,13 +23,13 @@ class GateResult:
     blocked_count: int = 0
 
 
-***REMOVED*** Industries/domains considered regulated (pharma, healthcare, finance, etc.)
+# Industries/domains considered regulated (pharma, healthcare, finance, etc.)
 REGULATED_KEYWORDS = [
     "pharma", "pharmaceutical", "healthcare", "medical", "clinical",
     "finance", "banking", "insurance", "legal", "defense",
     "regulated", "compliance", "gdpr", "hipaa", "fda",
 ]
-REGULATED_HS_PREFIXES = ["30", "29", "28", "30", "25"]  ***REMOVED*** HS chapters often used for pharma/chemicals
+REGULATED_HS_PREFIXES = ["30", "29", "28", "30", "25"]   # HS chapters often used for pharma/chemicals
 
 
 def is_regulated_domain(query_params: Dict[str, Any]) -> bool:
@@ -70,15 +70,15 @@ def _looks_like_real_company_name(name: Optional[str]) -> bool:
     s = name.strip()
     if len(s) < 2:
         return False
-    ***REMOVED*** Placeholders / test data
+    # Placeholders / test data
     if re.match(r"^(Company\s+[A-Z]|Test\s+Co|Mock\s+|Sample\s+|N/A|—|-$)", s, re.I):
         return False
-    if re.match(r"^[A-Za-z]+\s*\d+$", s):  ***REMOVED*** "Company1", "Biz123"
+    if re.match(r"^[A-Za-z]+\s*\d+$", s):   # "Company1", "Biz123"
         return False
-    ***REMOVED*** Likely real: has space, or Inc/LLC/GmbH, or mixed words
+    # Likely real: has space, or Inc/LLC/GmbH, or mixed words
     if " " in s or re.search(r"\b(Inc|LLC|Ltd|GmbH|Corp|Co\.)\b", s, re.I):
         return True
-    ***REMOVED*** Single word but long and mixed case
+    # Single word but long and mixed case
     if len(s) > 4 and s[1:].lower() != s[1:]:
         return True
     return True
@@ -112,7 +112,7 @@ def require_simulation_mode(
             blocked_count=0,
         )
 
-    ***REMOVED*** Regulated: simulation_mode must be True
+    # Regulated: simulation_mode must be True
     if sim is not True:
         return GateResult(
             passed=False,
@@ -123,7 +123,7 @@ def require_simulation_mode(
             blocked_count=0,
         )
 
-    ***REMOVED*** Regulated + simulation required: block real company names
+    # Regulated + simulation required: block real company names
     if leads:
         allowed = []
         for lead in leads:

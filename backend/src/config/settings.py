@@ -55,13 +55,13 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    ***REMOVED*** --- Required for all environments (with defaults for dev) ---
+    # --- Required for all environments (with defaults for dev) ---
     ENV: str = "development"
     DATABASE_URL: str = "sqlite:///./finderos.db"
     JWT_SECRET: Optional[str] = None
     SOARB2B_API_KEYS: str = ""
 
-    ***REMOVED*** --- Optional / feature flags ---
+    # --- Optional / feature flags ---
     FINDEROS_VERSION: str = "0.1.0"
     FINDEROS_CORS_ORIGINS: str = ""
     FINDEROS_HOST: str = "0.0.0.0"
@@ -80,8 +80,8 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: Optional[str] = None
     STRIPE_SECRET_KEY: Optional[str] = None
     STRIPE_WEBHOOK_SECRET: Optional[str] = None
-    ENABLE_DOCS: bool = True
-    ***REMOVED*** --- Cloud Run / generic PaaS (optional; DigitalOcean uses FINDEROS_PORT only) ---
+    ENABLE_DOCS: bool = False
+    # --- Cloud Run / generic PaaS (optional; DigitalOcean uses FINDEROS_PORT only) ---
     K_SERVICE: Optional[str] = None
     SKIP_PORT_CHECK: bool = False
     FINDEROS_USE_HTTPS: bool = False
@@ -110,7 +110,7 @@ class Settings(BaseSettings):
         if isinstance(v, bool):
             return v
         if v is None or (isinstance(v, str) and not v.strip()):
-            return True
+            return False
         return str(v).strip().lower() in ("1", "true", "yes", "on")
 
     def validate_production_required(self) -> None:
@@ -139,6 +139,8 @@ class Settings(BaseSettings):
             errors.append("ENV=production requires GOOGLE_CLIENT_ID for Sign in with Google.")
         if not self.GOOGLE_CLIENT_SECRET or not self.GOOGLE_CLIENT_SECRET.strip():
             errors.append("ENV=production requires GOOGLE_CLIENT_SECRET for Sign in with Google.")
+        if not self.SOARB2B_ADMIN_KEYS.strip() and not self.SOARB2B_ADMIN_EMAILS.strip():
+            errors.append("ENV=production requires SOARB2B_ADMIN_KEYS and/or SOARB2B_ADMIN_EMAILS for admin routes.")
         if errors:
             raise ValueError("Production env validation failed: " + "; ".join(errors))
 

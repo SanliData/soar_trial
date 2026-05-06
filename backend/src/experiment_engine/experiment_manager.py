@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 EXPERIMENT_TYPES = ("email_template", "subject_line", "persona_targeting", "message_tone")
 REDIS_KEY_PREFIX = "experiment_engine:experiments"
 REDIS_KEY_INDEX = "experiment_engine:experiment_index"
-REDIS_TTL = 86400 * 30  ***REMOVED*** 30 days
+REDIS_TTL = 86400 * 30   # 30 days
 
 
 def _redis():

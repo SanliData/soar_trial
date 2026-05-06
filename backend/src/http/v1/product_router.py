@@ -26,7 +26,7 @@ class ProductCreate(BaseModel):
     name: str
     description: Optional[str] = None
     category: Optional[str] = None
-    identification_type: str  ***REMOVED*** "name", "barcode", "qrcode", "giftcode"
+    identification_type: str   # "name", "barcode", "qrcode", "giftcode"
     code: Optional[str] = None
 
 
@@ -42,7 +42,7 @@ class ProductResponse(BaseModel):
 
 class BarcodeReadResponse(BaseModel):
     success: bool
-    code_type: Optional[str] = None  ***REMOVED*** "barcode", "qrcode"
+    code_type: Optional[str] = None   # "barcode", "qrcode"
     data: Optional[str] = None
     error: Optional[str] = None
 
@@ -77,15 +77,15 @@ async def read_barcode(file: UploadFile = File(...)):
         )
     
     try:
-        ***REMOVED*** Read image file
+        # Read image file
         contents = await file.read()
         image = Image.open(BytesIO(contents))
         
-        ***REMOVED*** Convert to RGB if necessary
+        # Convert to RGB if necessary
         if image.mode != 'RGB':
             image = image.convert('RGB')
         
-        ***REMOVED*** Read barcodes/QR codes
+        # Read barcodes/QR codes
         barcodes = pyzbar.decode(image)
         
         if not barcodes:
@@ -94,7 +94,7 @@ async def read_barcode(file: UploadFile = File(...)):
                 error="No barcode or QR code found in image"
             )
         
-        ***REMOVED*** Get first barcode/QR code
+        # Get first barcode/QR code
         barcode = barcodes[0]
         code_type = "qrcode" if barcode.type == "QRCODE" else "barcode"
         data = barcode.data.decode('utf-8')
@@ -139,15 +139,15 @@ async def search_by_image(file: UploadFile = File(...)):
     Uses OCR and AI analysis to identify the product.
     """
     try:
-        ***REMOVED*** Read image file
+        # Read image file
         contents = await file.read()
         image = Image.open(BytesIO(contents))
         
-        ***REMOVED*** Convert to RGB if necessary
+        # Convert to RGB if necessary
         if image.mode != 'RGB':
             image = image.convert('RGB')
         
-        ***REMOVED*** Try to read barcode/QR code first
+        # Try to read barcode/QR code first
         barcodes = []
         if BARCODE_AVAILABLE:
             try:
@@ -158,7 +158,7 @@ async def search_by_image(file: UploadFile = File(...)):
         detected_text = ""
         product_matches = []
         
-        ***REMOVED*** If barcode found, use it for search
+        # If barcode found, use it for search
         if barcodes:
             barcode = barcodes[0]
             code_data = barcode.data.decode('utf-8')
@@ -170,7 +170,7 @@ async def search_by_image(file: UploadFile = File(...)):
                 "confidence": 0.95
             })
         
-        ***REMOVED*** AI Analysis (mock for now - can be enhanced with actual AI)
+        # AI Analysis (mock for now - can be enhanced with actual AI)
         ai_analysis = {
             "detected_objects": ["product", "packaging"],
             "estimated_category": "unknown",
@@ -182,8 +182,8 @@ async def search_by_image(file: UploadFile = File(...)):
             ]
         }
         
-        ***REMOVED*** Try to extract text from image (basic OCR simulation)
-        ***REMOVED*** In production, use actual OCR service
+        # Try to extract text from image (basic OCR simulation)
+        # In production, use actual OCR service
         detected_text += " | Image uploaded for analysis"
         
         return ImageSearchResponse(
@@ -215,10 +215,10 @@ async def analyze_image_vision(file: UploadFile = File(...)):
         )
     
     try:
-        ***REMOVED*** Read image file
+        # Read image file
         contents = await file.read()
         
-        ***REMOVED*** Analyze image with Vision API
+        # Analyze image with Vision API
         analysis = vision_service.analyze_product_image(contents)
         
         if not analysis.get("success"):

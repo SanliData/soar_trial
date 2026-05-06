@@ -68,7 +68,7 @@ def _emit_acontext_gate(
             payload=payload,
             lead_id=None,
         )
-    except Exception:  ***REMOVED*** noqa: BLE001 - best-effort, do not break gates
+    except Exception:   # noqa: BLE001 - best-effort, do not break gates
         pass
 
 
@@ -107,7 +107,7 @@ def run_upap_gates(
     }
     current_leads = list(leads)
 
-    ***REMOVED*** ----- A) Regulated / Simulation gate -----
+    # ----- A) Regulated / Simulation gate -----
     regulated = is_regulated_domain(query_params)
     simulation_mode = query_params.get("simulation_mode")
     if simulation_mode is not None and not isinstance(simulation_mode, bool):
@@ -149,7 +149,7 @@ def run_upap_gates(
     )
     _emit_acontext_gate(trace_id, run_id, query_id, "regulated_simulation", "PASS", reg_result.reason, limits, ts, None)
 
-    ***REMOVED*** ----- C) Decision maker resolution (enrich each lead) -----
+    # ----- C) Decision maker resolution (enrich each lead) -----
     keyword_intent = (query_params.get("product_service") or query_params.get("keyword_intent") or "").strip()
     geo_confidence = 0.5
     if query_params.get("geography") or query_params.get("address"):
@@ -168,7 +168,7 @@ def run_upap_gates(
         lead["decision_maker_confidence"] = persona["decision_maker_confidence"]
         lead["is_decision_maker"] = persona["is_decision_maker"]
 
-    ***REMOVED*** Check no lead missing role/confidence or invalid role/channel
+    # Check no lead missing role/confidence or invalid role/channel
     missing_role = [
         i for i, L in enumerate(current_leads)
         if not L.get("decision_maker_role")
@@ -208,7 +208,7 @@ def run_upap_gates(
     )
     _emit_acontext_gate(trace_id, run_id, query_id, "decision_maker", "PASS", "ok", limits, ts, None)
 
-    ***REMOVED*** ----- D) Cross-channel recommendation (enrich each lead) -----
+    # ----- D) Cross-channel recommendation (enrich each lead) -----
     for lead in current_leads:
         role_score = lead.get("decision_confidence_score") or 0.5
         rec = recommend(keyword_intent=keyword_intent, geo_confidence=geo_confidence, role_score=role_score)
@@ -256,7 +256,7 @@ def run_upap_gates(
     )
     _emit_acontext_gate(trace_id, run_id, query_id, "cross_channel", "PASS", "ok", limits, ts, None)
 
-    ***REMOVED*** ----- B) Hard filters via enforce (EXPORT only); then verification gate -----
+    # ----- B) Hard filters via enforce (EXPORT only); then verification gate -----
     if stage == "EXPORT":
         current_leads, dropped_leads, drop_histogram, audit_info = enforce(
             current_leads, trace_id, run_id, query_id, query_params, "EXPORT",
@@ -283,7 +283,7 @@ def run_upap_gates(
             _emit_acontext_gate(trace_id, run_id, query_id, "hard_filters", "FAIL", evidence["reason"], limits, ts, evidence)
             return (current_leads, evidence, "FAIL")
 
-        ***REMOVED*** Verification gate: min_ready_leads
+        # Verification gate: min_ready_leads
         v_status, v_report, v_path = run_verification_gate(
             query_id, run_id, current_leads, drop_histogram, query_params,
             totals_scanned=audit_info.get("totals_scanned", len(leads)),
@@ -319,7 +319,7 @@ def run_upap_gates(
     if stage != "EXPORT":
         evidence["rows_after"] = len(current_leads)
 
-    ***REMOVED*** ----- E) Write evidence file (EXPORT only) before success -----
+    # ----- E) Write evidence file (EXPORT only) before success -----
     if stage == "EXPORT":
         write_upap_evidence(query_id, run_id, evidence, evidence_dir or EVIDENCE_BASE_DIR)
 

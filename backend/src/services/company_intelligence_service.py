@@ -39,7 +39,7 @@ class CompanyIntelligenceService:
         Returns:
             Complete Company Intelligence report
         """
-        ***REMOVED*** Step 1: Conduct web research
+        # Step 1: Conduct web research
         research_result = self.web_research.deep_research_company(
             company_name=company_name,
             industry=industry
@@ -62,7 +62,7 @@ class CompanyIntelligenceService:
                 "step": "web_research"
             }
         
-        ***REMOVED*** Step 2: Analyze with Gemini AI
+        # Step 2: Analyze with Gemini AI
         additional_context = {}
         if industry:
             additional_context["industry"] = industry
@@ -81,10 +81,10 @@ class CompanyIntelligenceService:
                 "success": False,
                 "error": analysis_result.get("error", "AI analysis failed"),
                 "step": "ai_analysis",
-                "research_data": research_data  ***REMOVED*** Return research data even if analysis fails
+                "research_data": research_data   # Return research data even if analysis fails
             }
         
-        ***REMOVED*** Step 3: Combine results
+        # Step 3: Combine results
         report = analysis_result.get("report", {})
         report["research_sources"] = research_data.get("searches", [])
         report["metadata"]["analysis_date"] = datetime.utcnow().isoformat()
@@ -148,7 +148,7 @@ class CompanyIntelligenceService:
         return results
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _company_intelligence_service_instance = None
 
 

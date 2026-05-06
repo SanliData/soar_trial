@@ -10,7 +10,7 @@ from typing import Any, Dict, List
 
 EVAL_EPOCH = "2026-01-01T00:00:00Z"
 
-***REMOVED*** Bounded in-memory registry (foundation only).
+# Bounded in-memory registry (foundation only).
 _SESSIONS: Dict[str, Dict[str, Any]] = {}
 _ORDER: List[str] = []
 _MAX_SESSIONS = 50

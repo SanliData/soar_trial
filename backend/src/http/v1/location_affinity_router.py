@@ -18,9 +18,9 @@ from src.models.persona import Persona
 router = APIRouter(prefix="/personas", tags=["location-affinity"])
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** REQUEST/RESPONSE MODELS
-***REMOVED*** ============================================================================
+# ============================================================================
+# REQUEST/RESPONSE MODELS
+# ============================================================================
 
 class LocationAffinityRequest(BaseModel):
     latitude: float = Field(..., description="Center latitude")
@@ -57,9 +57,9 @@ class LocationAffinityScoreResponse(BaseModel):
     signal_match: Optional[bool] = None
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** LOCATION AFFINITY ENDPOINTS
-***REMOVED*** ============================================================================
+# ============================================================================
+# LOCATION AFFINITY ENDPOINTS
+# ============================================================================
 
 @router.post("/{persona_id}/location-affinity", response_model=LocationAffinityResponse)
 async def set_persona_location_affinity(
@@ -81,7 +81,7 @@ async def set_persona_location_affinity(
     if not user:
         raise HTTPException(status_code=401, detail="Authentication required")
     
-    ***REMOVED*** Verify persona belongs to user
+    # Verify persona belongs to user
     persona = db.query(Persona).filter(
         Persona.id == persona_id,
         Persona.user_id == user.id
@@ -90,7 +90,7 @@ async def set_persona_location_affinity(
     if not persona:
         raise HTTPException(status_code=404, detail="Persona not found")
     
-    ***REMOVED*** Validate polygon format if provided
+    # Validate polygon format if provided
     if request.polygon:
         if not isinstance(request.polygon, dict):
             raise HTTPException(status_code=400, detail="Polygon must be a GeoJSON object")
@@ -199,7 +199,7 @@ async def calculate_location_affinity_score(
             target_signals=request.target_signals
         )
         
-        ***REMOVED*** Calculate distance
+        # Calculate distance
         persona_lat = persona.work_location.get("latitude")
         persona_lng = persona.work_location.get("longitude")
         distance_km = None
@@ -210,7 +210,7 @@ async def calculate_location_affinity_score(
                 request.target_latitude, request.target_longitude
             )
         
-        ***REMOVED*** Check signal match
+        # Check signal match
         signal_match = None
         if persona.location_signals and request.target_signals:
             matching = set(persona.location_signals) & set(request.target_signals)
@@ -246,7 +246,7 @@ async def remove_persona_location_affinity(
     if not persona:
         raise HTTPException(status_code=404, detail="Persona not found")
     
-    ***REMOVED*** Clear location affinity fields (keep work_location for backward compatibility)
+    # Clear location affinity fields (keep work_location for backward compatibility)
     persona.location_affinity_score = None
     persona.location_signals = None
     persona.location_radius_meters = None

@@ -19,31 +19,31 @@ class PlanLifecycle(Base):
     
     __tablename__ = "plan_lifecycles"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Plan identification (from onboarding)
+    # Plan identification (from onboarding)
     plan_id = Column(String(255), nullable=False, unique=True, index=True)
     
-    ***REMOVED*** User who created the plan (optional; for "my archive" filtering)
+    # User who created the plan (optional; for "my archive" filtering)
     created_by_user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     
-    ***REMOVED*** Original onboarding data (read-only for admin)
-    onboarding_data = Column(JSON, nullable=False)  ***REMOVED*** Full onboarding request
+    # Original onboarding data (read-only for admin)
+    onboarding_data = Column(JSON, nullable=False)   # Full onboarding request
     
-    ***REMOVED*** UPAP flags (can also be set via onboarding_data)
-    simulation_mode = Column(Boolean, default=False, nullable=True)  ***REMOVED*** true => tag external claims as SIMULATED / NOT VERIFIED
-    regulated_domain = Column(Boolean, default=False, nullable=True)  ***REMOVED*** true => Module 5 default off, export disclaimer
+    # UPAP flags (can also be set via onboarding_data)
+    simulation_mode = Column(Boolean, default=False, nullable=True)   # true => tag external claims as SIMULATED / NOT VERIFIED
+    regulated_domain = Column(Boolean, default=False, nullable=True)   # true => Module 5 default off, export disclaimer
     
-    ***REMOVED*** Current stage (lifecycle state)
+    # Current stage (lifecycle state)
     current_stage = Column(
         String(50), 
         default="CREATED", 
         nullable=False, 
         index=True
-    )  ***REMOVED*** CREATED, ANALYSIS_READY, PERSONA_REVIEW, EXPOSURE_READY, EXPOSURE_RUNNING, SOFT_CONVERSION, DIRECT_OUTREACH, COMPLETED
+    )   # CREATED, ANALYSIS_READY, PERSONA_REVIEW, EXPOSURE_READY, EXPOSURE_RUNNING, SOFT_CONVERSION, DIRECT_OUTREACH, COMPLETED
     
-    ***REMOVED*** Stage timestamps
+    # Stage timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     analysis_ready_at = Column(DateTime(timezone=True), nullable=True)
     persona_review_at = Column(DateTime(timezone=True), nullable=True)
@@ -53,26 +53,26 @@ class PlanLifecycle(Base):
     direct_outreach_at = Column(DateTime(timezone=True), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Admin intervention flags
+    # Admin intervention flags
     admin_intervened = Column(Boolean, default=False, nullable=False)
-    admin_note = Column(Text, nullable=True)  ***REMOVED*** "Custom strategy applied"
-    admin_adjustments = Column(JSON, nullable=True)  ***REMOVED*** Persona boundaries, role strictness, exposure radius, channel mix
+    admin_note = Column(Text, nullable=True)   # "Custom strategy applied"
+    admin_adjustments = Column(JSON, nullable=True)   # Persona boundaries, role strictness, exposure radius, channel mix
     
-    ***REMOVED*** User selections (objectives)
-    selected_objectives = Column(JSON, nullable=True)  ***REMOVED*** List of objective types user selected
+    # User selections (objectives)
+    selected_objectives = Column(JSON, nullable=True)   # List of objective types user selected
     objectives_selected_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Activation status (explicit approval required)
-    modules_activated = Column(JSON, nullable=True)  ***REMOVED*** List of activated module IDs
+    # Activation status (explicit approval required)
+    modules_activated = Column(JSON, nullable=True)   # List of activated module IDs
     activation_approved_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="active", nullable=False, index=True)  ***REMOVED*** active, paused, completed, cancelled
+    # Status
+    status = Column(String(50), default="active", nullable=False, index=True)   # active, paused, completed, cancelled
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Indexes
+    # Indexes
     __table_args__ = (
         Index('idx_plan_lifecycle_plan_id', 'plan_id'),
         Index('idx_plan_lifecycle_stage', 'current_stage'),
@@ -89,46 +89,46 @@ class PlanStage(Base):
     
     __tablename__ = "plan_stages"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to PlanLifecycle
+    # Foreign key to PlanLifecycle
     plan_id = Column(String(255), ForeignKey("plan_lifecycles.plan_id"), nullable=False, index=True)
     
-    ***REMOVED*** Stage identification
-    stage_name = Column(String(100), nullable=False, index=True)  ***REMOVED*** market_scan, persona_mapping, reachability_assessment, etc.
-    stage_order = Column(Integer, nullable=False)  ***REMOVED*** Order in timeline (1, 2, 3, ...)
+    # Stage identification
+    stage_name = Column(String(100), nullable=False, index=True)   # market_scan, persona_mapping, reachability_assessment, etc.
+    stage_order = Column(Integer, nullable=False)   # Order in timeline (1, 2, 3, ...)
     
-    ***REMOVED*** Stage status
+    # Stage status
     status = Column(
         String(50), 
         default="pending", 
         nullable=False, 
         index=True
-    )  ***REMOVED*** pending, in_progress, completed, paused, skipped
+    )   # pending, in_progress, completed, paused, skipped
     
-    ***REMOVED*** Plain-language description (user-visible, no algorithms)
-    description = Column(Text, nullable=True)  ***REMOVED*** Plain language explanation
+    # Plain-language description (user-visible, no algorithms)
+    description = Column(Text, nullable=True)   # Plain language explanation
     
-    ***REMOVED*** Estimated time (in days)
+    # Estimated time (in days)
     estimated_days_min = Column(Integer, nullable=True)
     estimated_days_max = Column(Integer, nullable=True)
     
-    ***REMOVED*** Actual timing
+    # Actual timing
     started_at = Column(DateTime(timezone=True), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Admin note (if intervention occurred)
-    admin_note = Column(Text, nullable=True)  ***REMOVED*** "Custom strategy applied"
+    # Admin note (if intervention occurred)
+    admin_note = Column(Text, nullable=True)   # "Custom strategy applied"
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship
+    # Relationship
     plan = relationship("PlanLifecycle", backref="stages")
     
-    ***REMOVED*** Indexes
+    # Indexes
     __table_args__ = (
         Index('idx_plan_stage_plan_id', 'plan_id'),
         Index('idx_plan_stage_name', 'stage_name'),

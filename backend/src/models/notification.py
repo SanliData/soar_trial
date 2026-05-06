@@ -19,37 +19,37 @@ class Notification(Base):
     
     __tablename__ = "notifications"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     
-    ***REMOVED*** Notification information
+    # Notification information
     title = Column(String(255), nullable=False)
     message = Column(Text, nullable=False)
-    notification_type = Column(String(50), nullable=False)  ***REMOVED*** "appointment", "lead", "campaign", "system"
+    notification_type = Column(String(50), nullable=False)   # "appointment", "lead", "campaign", "system"
     
-    ***REMOVED*** Notification channels
+    # Notification channels
     browser_notification_sent = Column(Boolean, default=False, nullable=False)
     email_notification_sent = Column(Boolean, default=False, nullable=False)
     
-    ***REMOVED*** Status
+    # Status
     is_read = Column(Boolean, default=False, nullable=False, index=True)
     is_archived = Column(Boolean, default=False, nullable=False, index=True)
     
-    ***REMOVED*** Additional data
-    notification_metadata = Column(JSON, nullable=True)  ***REMOVED*** Related entity IDs, links, etc.
-    action_url = Column(String(512), nullable=True)  ***REMOVED*** URL to navigate when clicked
+    # Additional data
+    notification_metadata = Column(JSON, nullable=True)   # Related entity IDs, links, etc.
+    action_url = Column(String(512), nullable=True)   # URL to navigate when clicked
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     read_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="notifications")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_notification_user_id', 'user_id'),
         Index('idx_notification_type', 'notification_type'),

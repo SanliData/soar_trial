@@ -57,7 +57,7 @@ class CalendarService:
             return None
         
         try:
-            ***REMOVED*** Option 1: Service Account (for server-to-server)
+            # Option 1: Service Account (for server-to-server)
             service_account_file = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE")
             if service_account_file and os.path.exists(service_account_file):
                 credentials = service_account.Credentials.from_service_account_file(
@@ -67,8 +67,8 @@ class CalendarService:
                 logger.info("Using service account credentials")
                 return credentials
             
-            ***REMOVED*** Option 2: OAuth2 (for user-specific access)
-            ***REMOVED*** In production, store refresh tokens per user
+            # Option 2: OAuth2 (for user-specific access)
+            # In production, store refresh tokens per user
             refresh_token = os.getenv("GOOGLE_CALENDAR_REFRESH_TOKEN")
             if refresh_token and self.client_id and self.client_secret:
                 credentials = Credentials(
@@ -80,7 +80,7 @@ class CalendarService:
                     scopes=self.scopes
                 )
                 
-                ***REMOVED*** Refresh token if needed
+                # Refresh token if needed
                 if credentials.expired:
                     credentials.refresh(Request())
                 
@@ -151,7 +151,7 @@ class CalendarService:
                     "error": "Failed to get calendar service"
                 }
             
-            ***REMOVED*** Query for existing events in the time range
+            # Query for existing events in the time range
             events_result = service.events().list(
                 calendarId=calendar_id,
                 timeMin=start_time.isoformat() + 'Z',
@@ -162,7 +162,7 @@ class CalendarService:
             
             events = events_result.get('items', [])
             
-            ***REMOVED*** Check if there are any conflicting events
+            # Check if there are any conflicting events
             is_available = len(events) == 0
             
             return {
@@ -231,11 +231,11 @@ class CalendarService:
                     "error": "Failed to get calendar service"
                 }
             
-            ***REMOVED*** Set date boundaries
+            # Set date boundaries
             start_of_day = date.replace(hour=start_hour, minute=0, second=0, microsecond=0)
             end_of_day = date.replace(hour=end_hour, minute=0, second=0, microsecond=0)
             
-            ***REMOVED*** Get all events for the day
+            # Get all events for the day
             events_result = service.events().list(
                 calendarId=calendar_id,
                 timeMin=start_of_day.isoformat() + 'Z',
@@ -246,7 +246,7 @@ class CalendarService:
             
             events = events_result.get('items', [])
             
-            ***REMOVED*** Generate potential slots (every 30 minutes)
+            # Generate potential slots (every 30 minutes)
             slot_duration = timedelta(minutes=duration_minutes)
             slot_interval = timedelta(minutes=30)
             current_time = start_of_day
@@ -255,7 +255,7 @@ class CalendarService:
             while current_time + slot_duration <= end_of_day:
                 slot_end = current_time + slot_duration
                 
-                ***REMOVED*** Check if this slot conflicts with any event
+                # Check if this slot conflicts with any event
                 is_available = True
                 for event in events:
                     event_start_str = event.get('start', {}).get('dateTime', event.get('start', {}).get('date'))
@@ -265,7 +265,7 @@ class CalendarService:
                         event_start = datetime.fromisoformat(event_start_str.replace('Z', '+00:00'))
                         event_end = datetime.fromisoformat(event_end_str.replace('Z', '+00:00'))
                         
-                        ***REMOVED*** Check for overlap
+                        # Check for overlap
                         if not (slot_end <= event_start or current_time >= event_end):
                             is_available = False
                             break
@@ -346,18 +346,18 @@ class CalendarService:
                     "error": "Failed to get calendar service"
                 }
             
-            ***REMOVED*** Calculate end time
+            # Calculate end time
             end_time = start_time + timedelta(minutes=duration_minutes)
             
-            ***REMOVED*** Set default title
+            # Set default title
             if not title:
                 title = f"Meeting with {lead_name}"
             
-            ***REMOVED*** Set default description
+            # Set default description
             if not description:
                 description = f"Follow-up meeting with {lead_name} ({lead_email})"
             
-            ***REMOVED*** Build event
+            # Build event
             event = {
                 'summary': title,
                 'description': description,
@@ -371,18 +371,18 @@ class CalendarService:
                 },
                 'attendees': [
                     {'email': lead_email, 'displayName': lead_name},
-                    {'email': user_email}  ***REMOVED*** Calendar owner
+                    {'email': user_email}   # Calendar owner
                 ],
                 'reminders': {
                     'useDefault': False,
                     'overrides': [
-                        {'method': 'email', 'minutes': 24 * 60},  ***REMOVED*** 1 day before
-                        {'method': 'popup', 'minutes': 15},  ***REMOVED*** 15 minutes before
+                        {'method': 'email', 'minutes': 24 * 60},   # 1 day before
+                        {'method': 'popup', 'minutes': 15},   # 15 minutes before
                     ],
                 },
             }
             
-            ***REMOVED*** Add Google Meet link if requested
+            # Add Google Meet link if requested
             if create_google_meet:
                 event['conferenceData'] = {
                     'createRequest': {
@@ -393,26 +393,26 @@ class CalendarService:
                     }
                 }
             
-            ***REMOVED*** Add location if provided
+            # Add location if provided
             if location:
                 event['location'] = location
             elif create_google_meet:
-                event['location'] = 'Google Meet'  ***REMOVED*** Will be updated with actual link
+                event['location'] = 'Google Meet'   # Will be updated with actual link
             
-            ***REMOVED*** Create event
+            # Create event
             created_event = service.events().insert(
                 calendarId=calendar_id,
                 body=event,
                 conferenceDataVersion=1 if create_google_meet else 0,
-                sendUpdates='all'  ***REMOVED*** Send invitations to all attendees
+                sendUpdates='all'   # Send invitations to all attendees
             ).execute()
             
-            ***REMOVED*** Extract Google Meet link if created
+            # Extract Google Meet link if created
             meet_link = None
             if create_google_meet and 'conferenceData' in created_event:
                 meet_link = created_event['conferenceData'].get('entryPoints', [{}])[0].get('uri')
                 if not meet_link:
-                    ***REMOVED*** Fallback: check hangoutLink
+                    # Fallback: check hangoutLink
                     meet_link = created_event.get('hangoutLink')
             
             logger.info(f"Calendar event created: {created_event.get('id')} for {lead_email}")
@@ -491,13 +491,13 @@ class CalendarService:
                     "error": "Failed to get calendar service"
                 }
             
-            ***REMOVED*** Get existing event
+            # Get existing event
             event = service.events().get(
                 calendarId=calendar_id,
                 eventId=event_id
             ).execute()
             
-            ***REMOVED*** Update fields
+            # Update fields
             if start_time:
                 event['start']['dateTime'] = start_time.isoformat()
                 if duration_minutes:
@@ -510,7 +510,7 @@ class CalendarService:
             if description:
                 event['description'] = description
             
-            ***REMOVED*** Update event
+            # Update event
             updated_event = service.events().update(
                 calendarId=calendar_id,
                 eventId=event_id,
@@ -598,7 +598,7 @@ class CalendarService:
             }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _calendar_service = None
 
 

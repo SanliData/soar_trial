@@ -15,28 +15,28 @@ _POLICY_DOMAINS: dict[str, dict[str, Any]] = {
     "graph_mutation_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "external_execution_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "export_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
-    ***REMOVED*** H-044 recognizers (detection + interception only; no execution)
+    # H-044 recognizers (detection + interception only; no execution)
     "guardrail_context_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "tool_context_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "mcp_projection_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "document_derived_content_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
-    ***REMOVED*** H-045 recognizers (detection + interception only; no autonomous enforcement)
+    # H-045 recognizers (detection + interception only; no autonomous enforcement)
     "nl_command_risk_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "agent_dispatch_risk_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "connector_execution_risk_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "retrieval_expansion_risk_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
-    ***REMOVED*** H-048 recognizers (detection + interception only; no execution)
+    # H-048 recognizers (detection + interception only; no execution)
     "generated_ui_action_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "tool_event_stream_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "approval_bypass_attempt_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "unsafe_event_propagation_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
-    ***REMOVED*** H-049 recognizers (detection + governance only)
+    # H-049 recognizers (detection + governance only)
     "identity_scope_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "shadow_agent_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "unauthorized_mcp_endpoint_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "suspicious_capability_escalation_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "runtime_attribution_gap_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
-    ***REMOVED*** H-050 recognizers (detection + governance only; no autonomous deployment)
+    # H-050 recognizers (detection + governance only; no autonomous deployment)
     "unsafe_public_deployment_profile_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "cache_breaking_tool_schema_mutation_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},
     "model_switch_during_governed_session_policy": {"enforcement_surface": "proxy_gateway", "context_only_allowed": False},

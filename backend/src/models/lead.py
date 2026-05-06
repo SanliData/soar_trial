@@ -20,46 +20,46 @@ class Lead(Base):
     
     __tablename__ = "leads"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     campaign_id = Column(Integer, ForeignKey("campaigns.id"), nullable=True, index=True)
     google_ads_campaign_id = Column(String(255), nullable=True, index=True)
     
-    ***REMOVED*** Contact information (from Lead Form)
+    # Contact information (from Lead Form)
     full_name = Column(String(255), nullable=False)
     email = Column(String(255), nullable=False, index=True)
     phone = Column(String(50), nullable=True)
     
-    ***REMOVED*** Lead Form data (stored as JSON for flexibility)
-    form_data = Column(JSON, nullable=True)  ***REMOVED*** All form fields from Google Ads
+    # Lead Form data (stored as JSON for flexibility)
+    form_data = Column(JSON, nullable=True)   # All form fields from Google Ads
     
-    ***REMOVED*** Source information
+    # Source information
     source = Column(String(100), default="google_ads_lead_form", nullable=False)
     google_ads_lead_id = Column(String(255), nullable=True, unique=True, index=True)
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="new", nullable=False)  ***REMOVED*** "new", "contacted", "qualified", "converted", "appointment_scheduled", "lost"
+    # Status
+    status = Column(String(50), default="new", nullable=False)   # "new", "contacted", "qualified", "converted", "appointment_scheduled", "lost"
     
-    ***REMOVED*** Conversion to appointment
+    # Conversion to appointment
     appointment_id = Column(Integer, ForeignKey("appointments.id"), nullable=True, index=True)
     converted_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Notes
+    # Notes
     notes = Column(Text, nullable=True)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="leads")
     campaign = relationship("Campaign", backref="leads")
     appointment = relationship("Appointment", backref="lead", foreign_keys=[appointment_id])
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_lead_user_id', 'user_id'),
         Index('idx_lead_campaign_id', 'campaign_id'),

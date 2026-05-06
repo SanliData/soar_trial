@@ -71,7 +71,7 @@ def issue_identity(
 
 def export_identity_registry(*, limit: int = 50) -> dict[str, Any]:
     if not _REGISTRY:
-        ***REMOVED*** Deterministic sample issuance for foundation.
+        # Deterministic sample issuance for foundation.
         issue_identity(
             identity_id="id-001",
             agent_id="agent_procurement_reviewer",

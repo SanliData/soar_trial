@@ -14,7 +14,7 @@ from src.config.settings import get_int_env
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Redis connection (lazy initialization)
+# Redis connection (lazy initialization)
 _redis_client = None
 
 
@@ -28,13 +28,13 @@ def get_redis_client():
     try:
         import redis
         
-        ***REMOVED*** Redis connection URL from environment
+        # Redis connection URL from environment
         redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
         redis_password = os.getenv("REDIS_PASSWORD", None)
         
-        ***REMOVED*** Parse Redis URL
+        # Parse Redis URL
         if redis_url.startswith("redis://") or redis_url.startswith("rediss://"):
-            ***REMOVED*** Use Redis URL format
+            # Use Redis URL format
             _redis_client = redis.from_url(
                 redis_url,
                 password=redis_password,
@@ -45,7 +45,7 @@ def get_redis_client():
                 health_check_interval=30
             )
         else:
-            ***REMOVED*** Fallback: direct connection
+            # Fallback: direct connection
             redis_host = os.getenv("REDIS_HOST") or "localhost"
             redis_port = get_int_env("REDIS_PORT", 6379)
             redis_db = get_int_env("REDIS_DB", 0)
@@ -62,7 +62,7 @@ def get_redis_client():
                 health_check_interval=30
             )
         
-        ***REMOVED*** Test connection
+        # Test connection
         _redis_client.ping()
         logger.info("Redis connection established")
         
@@ -97,13 +97,13 @@ def get_cache(key: str, default: Optional[Any] = None) -> Optional[Any]:
             logger.debug(f"CACHE MISS: {key}")
             return default
         
-        ***REMOVED*** Try to parse as JSON
+        # Try to parse as JSON
         try:
             parsed_value = json.loads(value)
             logger.debug(f"CACHE HIT: {key}")
             return parsed_value
         except (json.JSONDecodeError, TypeError):
-            ***REMOVED*** Return as-is if not JSON
+            # Return as-is if not JSON
             logger.debug(f"CACHE HIT: {key} (non-JSON)")
             return value
             
@@ -129,13 +129,13 @@ def set_cache(key: str, value: Any, ttl: int = 300) -> bool:
         if redis_client is None:
             return False
         
-        ***REMOVED*** Serialize value
+        # Serialize value
         if isinstance(value, (dict, list)):
             serialized = json.dumps(value, ensure_ascii=False)
         else:
             serialized = str(value)
         
-        ***REMOVED*** Set with TTL
+        # Set with TTL
         result = redis_client.setex(key, ttl, serialized)
         
         if result:
@@ -189,11 +189,11 @@ def cache_key(prefix: str, *args, **kwargs) -> str:
     """
     parts = [prefix]
     
-    ***REMOVED*** Add positional args
+    # Add positional args
     if args:
         parts.extend(str(arg) for arg in args)
     
-    ***REMOVED*** Add keyword args (sorted for consistency)
+    # Add keyword args (sorted for consistency)
     if kwargs:
         sorted_kwargs = sorted(kwargs.items())
         for k, v in sorted_kwargs:
@@ -209,7 +209,7 @@ def cached(ttl: int = 300, key_prefix: Optional[str] = None):
     Usage:
         @cached(ttl=600, key_prefix="hotels")
         async def get_hotels(country: str):
-            ***REMOVED*** Function logic
+            # Function logic
             return hotels
     
     Args:
@@ -219,21 +219,21 @@ def cached(ttl: int = 300, key_prefix: Optional[str] = None):
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
-            ***REMOVED*** Generate cache key
+            # Generate cache key
             prefix = key_prefix or f"{func.__module__}.{func.__name__}"
             cache_key_str = cache_key(prefix, *args, **kwargs)
             
-            ***REMOVED*** Try cache
+            # Try cache
             cached_value = get_cache(cache_key_str)
             if cached_value is not None:
                 logger.debug(f"Cache hit: {cache_key_str}")
                 return cached_value
             
-            ***REMOVED*** Cache miss - call function
+            # Cache miss - call function
             logger.debug(f"Cache miss: {cache_key_str}")
             result = await func(*args, **kwargs)
             
-            ***REMOVED*** Store in cache
+            # Store in cache
             set_cache(cache_key_str, result, ttl)
             
             return result

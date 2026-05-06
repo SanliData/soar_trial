@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from src.db.base import get_db
 from src.services.plan_service import get_plan_service
 
-***REMOVED*** Import validate_api_key from b2b_api_router (no circular import since plan_router is included separately in app.py)
+# Import validate_api_key from b2b_api_router (no circular import since plan_router is included separately in app.py)
 from src.http.v1.b2b_api_router import validate_api_key
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["plan"])
 
 
-***REMOVED*** Request Models
+# Request Models
 class PlanObjectivesRequest(BaseModel):
     plan_id: str = Field(..., description="Plan ID from onboarding")
     objectives: List[str] = Field(..., description="List of objective types selected by user")
@@ -57,7 +57,7 @@ class ObjectivesResponse(BaseModel):
     saved_at: str
 
 
-***REMOVED*** Endpoints
+# Endpoints
 @router.post("/plan/objectives", response_model=ObjectivesResponse)
 async def save_plan_objectives(
     request: PlanObjectivesRequest,
@@ -71,13 +71,13 @@ async def save_plan_objectives(
     try:
         plan_service = get_plan_service(db)
         
-        ***REMOVED*** Validate plan exists
+        # Validate plan exists
         plan = plan_service.get_plan(request.plan_id)
         if not plan:
-            ***REMOVED*** Create plan lifecycle if onboarding created plan but lifecycle doesn't exist
-            ***REMOVED*** This handles backward compatibility
+            # Create plan lifecycle if onboarding created plan but lifecycle doesn't exist
+            # This handles backward compatibility
             logger.warning(f"Plan {request.plan_id} lifecycle not found, creating from onboarding")
-            ***REMOVED*** Try to load from onboarding_plans.jsonl
+            # Try to load from onboarding_plans.jsonl
             from pathlib import Path
             import json
             plans_file = Path(__file__).parent.parent.parent.parent / "data" / "onboarding_plans.jsonl"
@@ -95,7 +95,7 @@ async def save_plan_objectives(
             
             plan = plan_service.create_plan_lifecycle(request.plan_id, onboarding_data)
         
-        ***REMOVED*** Save objectives
+        # Save objectives
         objectives = plan_service.save_objectives(request.plan_id, request.objectives)
         
         return ObjectivesResponse(

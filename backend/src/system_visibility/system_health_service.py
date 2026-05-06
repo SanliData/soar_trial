@@ -39,7 +39,7 @@ def export_system_health() -> dict[str, Any]:
     caps = load_capabilities()
     shadow = export_shadow_agent_detection()
 
-    ***REMOVED*** Deterministic placeholder: verification coverage is based on presence of verify scripts.
+    # Deterministic placeholder: verification coverage is based on presence of verify scripts.
     verification_coverage = {
         "h044": True,
         "h045": True,

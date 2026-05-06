@@ -22,9 +22,9 @@ from src.growth_activation import (
 router = APIRouter(prefix="/growth", tags=["growth-activation"])
 
 
-***REMOVED*** -----------------------------
-***REMOVED*** Request / Response Models
-***REMOVED*** -----------------------------
+# -----------------------------
+# Request / Response Models
+# -----------------------------
 
 class SupplierInput(BaseModel):
     supplier_id: str
@@ -55,9 +55,9 @@ class ActivationResponse(BaseModel):
     supplier_id: str
 
 
-***REMOVED*** -----------------------------
-***REMOVED*** Endpoint
-***REMOVED*** -----------------------------
+# -----------------------------
+# Endpoint
+# -----------------------------
 
 @router.post("/evaluate", response_model=ActivationResponse)
 def evaluate_activation(payload: ActivationRequest):

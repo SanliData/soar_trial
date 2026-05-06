@@ -31,7 +31,7 @@ def export_shadow_agent_detection() -> dict[str, Any]:
     points = len(unmanaged)
     out = {
         "unmanaged_agents": sorted(unmanaged),
-        "unknown_runtime_identities": [],  ***REMOVED*** foundation: registry-only, no external ingest
+        "unknown_runtime_identities": [],   # foundation: registry-only, no external ingest
         "unauthorized_mcp_projections": [],
         "orphaned_workflows": [],
         "suspicious_capability_escalation": [],

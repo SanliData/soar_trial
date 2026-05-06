@@ -120,15 +120,15 @@ class EnrichmentService:
         """
         settings = self.get_or_create_settings(user_id)
         
-        ***REMOVED*** Check consent
+        # Check consent
         if settings.require_explicit_consent and not settings.consent_given:
             return False, "Explicit consent required but not given"
         
-        ***REMOVED*** Check opt-in
+        # Check opt-in
         if not settings.enable_email_enrichment:
             return False, "Email enrichment not enabled by user"
         
-        ***REMOVED*** Check confidence threshold
+        # Check confidence threshold
         if confidence < settings.email_confidence_threshold:
             return False, f"Confidence {confidence} below threshold {settings.email_confidence_threshold}"
         
@@ -147,15 +147,15 @@ class EnrichmentService:
         """
         settings = self.get_or_create_settings(user_id)
         
-        ***REMOVED*** Check consent
+        # Check consent
         if settings.require_explicit_consent and not settings.consent_given:
             return False, "Explicit consent required but not given"
         
-        ***REMOVED*** Check opt-in
+        # Check opt-in
         if not settings.enable_phone_enrichment:
             return False, "Phone enrichment not enabled by user"
         
-        ***REMOVED*** Check confidence threshold
+        # Check confidence threshold
         if confidence < settings.phone_confidence_threshold:
             return False, f"Confidence {confidence} below threshold {settings.phone_confidence_threshold}"
         

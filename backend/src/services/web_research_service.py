@@ -53,30 +53,30 @@ class WebResearchService:
             }
         
         try:
-            ***REMOVED*** Build search query
+            # Build search query
             query_terms = [company_name]
             if additional_terms:
                 query_terms.extend(additional_terms)
             query = " ".join(query_terms)
             
-            ***REMOVED*** Prepare search parameters
+            # Prepare search parameters
             params = {
                 "key": self.api_key,
                 "cx": self.search_engine_id,
                 "q": query,
-                "num": min(max_results, 10)  ***REMOVED*** Google API max is 10 per request
+                "num": min(max_results, 10)   # Google API max is 10 per request
             }
             
             all_results = []
             raw_text_parts = []
             
-            ***REMOVED*** Make API request
+            # Make API request
             response = requests.get(self.base_url, params=params, timeout=30)
             response.raise_for_status()
             
             data = response.json()
             
-            ***REMOVED*** Extract results
+            # Extract results
             if "items" in data:
                 for item in data["items"]:
                     result = {
@@ -88,7 +88,7 @@ class WebResearchService:
                     all_results.append(result)
                     raw_text_parts.append(f"{result['title']}\n{result['snippet']}")
             
-            ***REMOVED*** Combine all text
+            # Combine all text
             raw_text = "\n\n".join(raw_text_parts)
             
             return {
@@ -130,7 +130,7 @@ class WebResearchService:
             "searches": []
         }
         
-        ***REMOVED*** Multiple search queries for comprehensive research
+        # Multiple search queries for comprehensive research
         search_queries = [
             {"terms": ["about", "company"], "purpose": "general_info"},
             {"terms": ["technology", "stack", "tools"], "purpose": "technology"},
@@ -156,7 +156,7 @@ class WebResearchService:
                 })
                 all_raw_text.append(result.get("raw_text", ""))
         
-        ***REMOVED*** Combine all research text
+        # Combine all research text
         research_data["combined_raw_text"] = "\n\n---\n\n".join(all_raw_text)
         research_data["total_searches"] = len(research_data["searches"])
         
@@ -166,7 +166,7 @@ class WebResearchService:
         }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _web_research_service_instance = None
 
 

@@ -19,41 +19,41 @@ class UsageBillingEvent(Base):
     
     __tablename__ = "usage_billing_events"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     
-    ***REMOVED*** Event type (verified_company, decision_maker_match, persona_enrichment, etc.)
+    # Event type (verified_company, decision_maker_match, persona_enrichment, etc.)
     event_type = Column(String(100), nullable=False, index=True)
     
-    ***REMOVED*** Billing period (YYYY-MM format)
-    billing_period = Column(String(7), nullable=False, index=True)  ***REMOVED*** e.g., "2025-01"
+    # Billing period (YYYY-MM format)
+    billing_period = Column(String(7), nullable=False, index=True)   # e.g., "2025-01"
     
-    ***REMOVED*** Pricing information
-    unit_price = Column(Float, nullable=False)  ***REMOVED*** Price per unit
-    quantity = Column(Integer, default=1, nullable=False)  ***REMOVED*** Quantity (usually 1)
-    total_cost = Column(Float, nullable=False)  ***REMOVED*** unit_price * quantity
+    # Pricing information
+    unit_price = Column(Float, nullable=False)   # Price per unit
+    quantity = Column(Integer, default=1, nullable=False)   # Quantity (usually 1)
+    total_cost = Column(Float, nullable=False)   # unit_price * quantity
     
-    ***REMOVED*** Currency
+    # Currency
     currency = Column(String(10), default="USD", nullable=False)
     
-    ***REMOVED*** Metadata
-    event_metadata = Column("metadata", JSON, nullable=True)  ***REMOVED*** Additional event data (company_id, persona_id, etc.)
+    # Metadata
+    event_metadata = Column("metadata", JSON, nullable=True)   # Additional event data (company_id, persona_id, etc.)
     
-    ***REMOVED*** Related entity IDs (optional)
+    # Related entity IDs (optional)
     company_id = Column(Integer, nullable=True, index=True)
     persona_id = Column(Integer, nullable=True, index=True)
     campaign_id = Column(Integer, nullable=True, index=True)
     
-    ***REMOVED*** Timestamp
+    # Timestamp
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="usage_billing_events")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_usage_billing_user_period', 'user_id', 'billing_period'),
         Index('idx_usage_billing_event_type', 'event_type'),

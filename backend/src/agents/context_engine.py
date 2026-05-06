@@ -1,6 +1,6 @@
-***REMOVED*** Context Engine: build enriched context from user request for Agent Reasoning
-***REMOVED*** Flow: User Request -> Context Engine -> Agent Reasoning -> Skill Execution -> Tool Results -> Updated Context -> LLM Response
-***REMOVED*** Phase 2: execution_trace layer for skill calls, tool outputs, decision steps (stored in Redis)
+# Context Engine: build enriched context from user request for Agent Reasoning
+# Flow: User Request -> Context Engine -> Agent Reasoning -> Skill Execution -> Tool Results -> Updated Context -> LLM Response
+# Phase 2: execution_trace layer for skill calls, tool outputs, decision steps (stored in Redis)
 import logging
 from typing import Any, Dict, List, Optional
 
@@ -21,7 +21,7 @@ def build_context_from_request(
         "entities": _extract_entities(user_request),
         "session_id": session_id,
         "history": history or [],
-        "execution_trace": None,  ***REMOVED*** Set by agent_pipeline when trace_id is created
+        "execution_trace": None,   # Set by agent_pipeline when trace_id is created
     }
     if available_skills is not None:
         context["available_skills"] = available_skills

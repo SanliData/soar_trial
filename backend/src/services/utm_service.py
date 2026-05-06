@@ -53,21 +53,21 @@ class UTMService:
             "utm_content": f"campaign_{campaign_id}"
         }
         
-        ***REMOVED*** Add region if provided
+        # Add region if provided
         if region:
             utm_params["utm_term"] = region.replace(" ", "_").lower()
         
-        ***REMOVED*** Add custom parameters
+        # Add custom parameters
         if company_pool_id:
             utm_params["utm_company_pool"] = str(company_pool_id)
         
         if personnel_pool_id:
             utm_params["utm_personnel_pool"] = str(personnel_pool_id)
         
-        ***REMOVED*** Add timestamp for tracking
+        # Add timestamp for tracking
         utm_params["utm_timestamp"] = datetime.utcnow().strftime("%Y%m%d%H%M%S")
         
-        ***REMOVED*** Add additional custom parameters
+        # Add additional custom parameters
         if additional_params:
             utm_params.update(additional_params)
         
@@ -88,20 +88,20 @@ class UTMService:
         Returns:
             URL with UTM parameters appended
         """
-        ***REMOVED*** Parse existing URL
+        # Parse existing URL
         parsed = urllib.parse.urlparse(base_url)
         
-        ***REMOVED*** Parse existing query parameters
+        # Parse existing query parameters
         existing_params = urllib.parse.parse_qs(parsed.query)
         
-        ***REMOVED*** Add UTM parameters
+        # Add UTM parameters
         for key, value in utm_params.items():
             existing_params[key] = [value]
         
-        ***REMOVED*** Rebuild query string
+        # Rebuild query string
         new_query = urllib.parse.urlencode(existing_params, doseq=True)
         
-        ***REMOVED*** Reconstruct URL
+        # Reconstruct URL
         new_parsed = parsed._replace(query=new_query)
         return urllib.parse.urlunparse(new_parsed)
     
@@ -130,7 +130,7 @@ class UTMService:
         }
 
 
-***REMOVED*** Global instance
+# Global instance
 _utm_service_instance = None
 
 

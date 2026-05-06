@@ -21,32 +21,32 @@ class PlanResult(Base):
     
     __tablename__ = "plan_results"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to PlanLifecycle
+    # Foreign key to PlanLifecycle
     plan_id = Column(String(255), ForeignKey("plan_lifecycles.plan_id"), nullable=False, unique=True, index=True)
     
-    ***REMOVED*** Result status
-    status = Column(String(50), default="pending", nullable=False, index=True)  ***REMOVED*** pending, processing, ready, completed
+    # Result status
+    status = Column(String(50), default="pending", nullable=False, index=True)   # pending, processing, ready, completed
     
-    ***REMOVED*** UPAP verification (set after export verification gate)
-    verification_status = Column(String(50), nullable=True, index=True)  ***REMOVED*** PASS, FAIL, null
-    verification_report_path = Column(String(512), nullable=True)  ***REMOVED*** path to export_verification_{plan_id}_{run_id}.json
+    # UPAP verification (set after export verification gate)
+    verification_status = Column(String(50), nullable=True, index=True)   # PASS, FAIL, null
+    verification_report_path = Column(String(512), nullable=True)   # path to export_verification_{plan_id}_{run_id}.json
     
-    ***REMOVED*** Overall result summary
-    summary = Column(JSON, nullable=True)  ***REMOVED*** High-level stats (businesses, personas, reachability counts)
+    # Overall result summary
+    summary = Column(JSON, nullable=True)   # High-level stats (businesses, personas, reachability counts)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Relationships
+    # Relationships
     plan = relationship("PlanLifecycle", backref="result", uselist=False)
     modules = relationship("ResultModule", back_populates="plan_result", cascade="all, delete-orphan")
     
-    ***REMOVED*** Indexes
+    # Indexes
     __table_args__ = (
         Index('idx_plan_result_plan_id', 'plan_id'),
         Index('idx_plan_result_status', 'status'),
@@ -61,36 +61,36 @@ class ResultModule(Base):
     
     __tablename__ = "result_modules"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to PlanResult
+    # Foreign key to PlanResult
     plan_result_id = Column(Integer, ForeignKey("plan_results.id"), nullable=False, index=True)
     
-    ***REMOVED*** Module type
-    module_type = Column(String(100), nullable=False, index=True)  ***REMOVED*** business_discovery, persona_summary, reachability_report, precision_exposure, soft_conversion, outreach_outcomes
+    # Module type
+    module_type = Column(String(100), nullable=False, index=True)   # business_discovery, persona_summary, reachability_report, precision_exposure, soft_conversion, outreach_outcomes
     
-    ***REMOVED*** Module status
-    status = Column(String(50), default="pending", nullable=False, index=True)  ***REMOVED*** pending, processing, ready, failed
+    # Module status
+    status = Column(String(50), default="pending", nullable=False, index=True)   # pending, processing, ready, failed
     
-    ***REMOVED*** Preview data (non-sensitive, aggregated)
-    preview_data = Column(JSON, nullable=True)  ***REMOVED*** Aggregated counts, ratios (no PII)
+    # Preview data (non-sensitive, aggregated)
+    preview_data = Column(JSON, nullable=True)   # Aggregated counts, ratios (no PII)
     
-    ***REMOVED*** Result data (full, accessible only after purchase/approval)
-    result_data = Column(JSON, nullable=True)  ***REMOVED*** Full results (can be large)
+    # Result data (full, accessible only after purchase/approval)
+    result_data = Column(JSON, nullable=True)   # Full results (can be large)
     
-    ***REMOVED*** File references (if exported)
-    export_file_path = Column(String(512), nullable=True)  ***REMOVED*** Path to exported file
+    # File references (if exported)
+    export_file_path = Column(String(512), nullable=True)   # Path to exported file
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     ready_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Relationship
+    # Relationship
     plan_result = relationship("PlanResult", back_populates="modules")
     
-    ***REMOVED*** Indexes
+    # Indexes
     __table_args__ = (
         Index('idx_result_module_result_id', 'plan_result_id'),
         Index('idx_result_module_type', 'module_type'),

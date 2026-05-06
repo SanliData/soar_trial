@@ -47,7 +47,7 @@ async def run_lead_generation_workflow(
     context = await run_pipeline(LEAD_PIPELINE, initial_context, workflow_id=workflow_id)
     companies = context.get("companies", [])
     contacts_count = sum(len(c.get("contacts", [])) for c in companies)
-    emails_count = contacts_count  ***REMOVED*** one email per contact
+    emails_count = contacts_count   # one email per contact
     return {
         "companies_found": len(companies),
         "contacts_identified": contacts_count,

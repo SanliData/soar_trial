@@ -67,6 +67,6 @@ def extract_tenant_from_context(
         return f"tenant:{created_by_user_id}"
     plan_or_query = plan_id or query_id
     if plan_or_query:
-        ***REMOVED*** Use first 12 chars of plan_id as workspace-scoped tenant for isolation
+        # Use first 12 chars of plan_id as workspace-scoped tenant for isolation
         return f"plan:{plan_or_query[:24]}"
     return "default"

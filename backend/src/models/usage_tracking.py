@@ -19,23 +19,23 @@ class UsageTracking(Base):
     
     __tablename__ = "usage_tracking"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     
-    ***REMOVED*** Usage period (YYYY-MM format)
-    period = Column(String(7), nullable=False, index=True)  ***REMOVED*** e.g., "2024-01"
+    # Usage period (YYYY-MM format)
+    period = Column(String(7), nullable=False, index=True)   # e.g., "2024-01"
     
-    ***REMOVED*** Usage counters
+    # Usage counters
     companies_count = Column(Integer, default=0, nullable=False)
     personas_count = Column(Integer, default=0, nullable=False)
     campaigns_count = Column(Integer, default=0, nullable=False)
     appointments_count = Column(Integer, default=0, nullable=False)
     leads_count = Column(Integer, default=0, nullable=False)
     
-    ***REMOVED*** Usage-based billing counters
+    # Usage-based billing counters
     verified_company_count = Column(Integer, default=0, nullable=False)
     decision_maker_match_count = Column(Integer, default=0, nullable=False)
     persona_enrichment_count = Column(Integer, default=0, nullable=False)
@@ -43,17 +43,17 @@ class UsageTracking(Base):
     outreach_attempt_count = Column(Integer, default=0, nullable=False)
     booked_meeting_count = Column(Integer, default=0, nullable=False)
     
-    ***REMOVED*** Usage cost (cumulative for period)
-    usage_cost = Column(Float, default=0.0, nullable=False)  ***REMOVED*** Total usage cost for period
+    # Usage cost (cumulative for period)
+    usage_cost = Column(Float, default=0.0, nullable=False)   # Total usage cost for period
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="usage_tracking")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_usage_user_period', 'user_id', 'period', unique=True),
         Index('idx_usage_period', 'period'),

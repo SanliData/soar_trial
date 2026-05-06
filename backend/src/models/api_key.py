@@ -18,42 +18,42 @@ class APIKey(Base):
     
     __tablename__ = "api_keys"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** API key (hashed for storage)
+    # API key (hashed for storage)
     key_hash = Column(String(255), nullable=False, unique=True, index=True)
     
-    ***REMOVED*** Key metadata (for display)
-    key_prefix = Column(String(10), nullable=False)  ***REMOVED*** First 5 chars for identification
+    # Key metadata (for display)
+    key_prefix = Column(String(10), nullable=False)   # First 5 chars for identification
     
-    ***REMOVED*** Company/Organization
+    # Company/Organization
     company = Column(String(255), nullable=True, index=True)
     company_id = Column(Integer, nullable=True, index=True)
     
-    ***REMOVED*** Tier-based rate limiting
-    tier = Column(String(50), default="standard", nullable=False, index=True)  ***REMOVED*** "free", "standard", "premium", "enterprise"
+    # Tier-based rate limiting
+    tier = Column(String(50), default="standard", nullable=False, index=True)   # "free", "standard", "premium", "enterprise"
     
-    ***REMOVED*** Quota settings
-    quota_per_minute = Column(Integer, default=100, nullable=False)  ***REMOVED*** Requests per minute
-    quota_per_day = Column(Integer, default=10000, nullable=False)  ***REMOVED*** Requests per day
-    quota_per_month = Column(Integer, default=300000, nullable=False)  ***REMOVED*** Requests per month
+    # Quota settings
+    quota_per_minute = Column(Integer, default=100, nullable=False)   # Requests per minute
+    quota_per_day = Column(Integer, default=10000, nullable=False)   # Requests per day
+    quota_per_month = Column(Integer, default=300000, nullable=False)   # Requests per month
     
-    ***REMOVED*** Status
+    # Status
     is_active = Column(Boolean, default=True, nullable=False, index=True)
     
-    ***REMOVED*** Expiration
+    # Expiration
     expires_at = Column(DateTime(timezone=True), nullable=True, index=True)
     
-    ***REMOVED*** Additional metadata (renamed from 'metadata' to avoid SQLAlchemy reserved name conflict)
-    key_metadata = Column("metadata", Text, nullable=True)  ***REMOVED*** JSON string for additional data
+    # Additional metadata (renamed from 'metadata' to avoid SQLAlchemy reserved name conflict)
+    key_metadata = Column("metadata", Text, nullable=True)   # JSON string for additional data
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     last_used_at = Column(DateTime(timezone=True), nullable=True, index=True)
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_api_key_hash', 'key_hash'),
         Index('idx_api_key_company', 'company_id'),

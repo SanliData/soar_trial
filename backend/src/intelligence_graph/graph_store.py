@@ -12,7 +12,7 @@ from src.intelligence_graph.models.edge import Edge, EdgeType
 logger = logging.getLogger(__name__)
 
 STORE_KEY = "intelligence_graph:semantic"
-STORE_TTL = 3600 * 24  ***REMOVED*** 24h
+STORE_TTL = 3600 * 24   # 24h
 
 
 def _get_redis():

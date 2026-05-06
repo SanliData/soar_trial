@@ -39,12 +39,12 @@ class GeminiAnalysisService:
         if GEMINI_AVAILABLE:
             try:
                 if GEMINI_MODE == "genai" and self.api_key:
-                    ***REMOVED*** Use Generative AI SDK (API key)
+                    # Use Generative AI SDK (API key)
                     genai.configure(api_key=self.api_key)
                     self.model = GenerativeModel("gemini-pro")
                     self.mode = "genai"
                 elif self.project_id:
-                    ***REMOVED*** Use Vertex AI (project-based)
+                    # Use Vertex AI (project-based)
                     vertexai.init(project=self.project_id, location=self.location)
                     self.model = GenerativeModel("gemini-pro")
                     self.mode = "vertex"
@@ -89,7 +89,7 @@ class GeminiAnalysisService:
             }
         
         try:
-            ***REMOVED*** Language mapping for Gemini prompts
+            # Language mapping for Gemini prompts
             language_map = {
                 "tr": "Turkish",
                 "en": "English",
@@ -98,7 +98,7 @@ class GeminiAnalysisService:
             }
             language = language_map.get(locale, "English")
             
-            ***REMOVED*** Create prompt for company analysis
+            # Create prompt for company analysis
             prompt = f"""
 Analyze the following research data about the company "{company_name}" and create a comprehensive Company Intelligence report.
 
@@ -118,7 +118,7 @@ Please provide a structured analysis in JSON format with the following fields:
 Respond ONLY with valid JSON, no additional text. All text content should be in {language}.
 """
             
-            ***REMOVED*** Generate response
+            # Generate response
             if self.mode == "genai":
                 response = self.model.generate_content(prompt)
                 analysis_text = response.text
@@ -126,7 +126,7 @@ Respond ONLY with valid JSON, no additional text. All text content should be in 
                 response = self.model.generate_content(prompt)
                 analysis_text = response.text
             else:
-                ***REMOVED*** Fallback: return structured mock data if API not available
+                # Fallback: return structured mock data if API not available
                 return {
                     "success": True,
                     "company_intelligence": {
@@ -144,20 +144,20 @@ Respond ONLY with valid JSON, no additional text. All text content should be in 
                     "raw_analysis": "API not configured"
                 }
             
-            ***REMOVED*** Parse JSON response
-            ***REMOVED*** Try to extract JSON from response (in case there's extra text)
+            # Parse JSON response
+            # Try to extract JSON from response (in case there's extra text)
             try:
-                ***REMOVED*** Find JSON object in response
+                # Find JSON object in response
                 start_idx = analysis_text.find("{")
                 end_idx = analysis_text.rfind("}") + 1
                 if start_idx >= 0 and end_idx > start_idx:
                     json_text = analysis_text[start_idx:end_idx]
                     company_intelligence = json.loads(json_text)
                 else:
-                    ***REMOVED*** Fallback: try parsing entire response
+                    # Fallback: try parsing entire response
                     company_intelligence = json.loads(analysis_text)
             except json.JSONDecodeError:
-                ***REMOVED*** If JSON parsing fails, create structured response from text
+                # If JSON parsing fails, create structured response from text
                 company_intelligence = {
                     "business_activity": "Analysis in progress",
                     "employee_count": "unknown",
@@ -197,13 +197,13 @@ Respond ONLY with valid JSON, no additional text. All text content should be in 
         Returns:
             Complete Company Intelligence report
         """
-        ***REMOVED*** Analyze research text
+        # Analyze research text
         analysis = self.analyze_company_research(company_name, raw_research_text, locale=locale)
         
         if not analysis.get("success"):
             return analysis
         
-        ***REMOVED*** Build comprehensive report
+        # Build comprehensive report
         intelligence = analysis.get("company_intelligence", {})
         
         report = {
@@ -217,13 +217,13 @@ Respond ONLY with valid JSON, no additional text. All text content should be in 
                 "summary": intelligence.get("summary", "")
             },
             "metadata": {
-                "analysis_date": None,  ***REMOVED*** Can be set by caller
+                "analysis_date": None,   # Can be set by caller
                 "source": "Google Custom Search + Gemini AI",
                 "confidence": "high" if intelligence.get("key_insights") else "medium"
             }
         }
         
-        ***REMOVED*** Add additional context if provided
+        # Add additional context if provided
         if additional_context:
             report["metadata"].update(additional_context)
         
@@ -263,7 +263,7 @@ Respond ONLY with valid JSON, no additional text. All text content should be in 
             }
         
         try:
-            ***REMOVED*** Language mapping for Gemini prompts
+            # Language mapping for Gemini prompts
             language_map = {
                 "tr": "Turkish",
                 "en": "English",
@@ -272,7 +272,7 @@ Respond ONLY with valid JSON, no additional text. All text content should be in 
             }
             language = language_map.get(locale, "English")
             
-            ***REMOVED*** Create prompt for ad copy generation
+            # Create prompt for ad copy generation
             category_text = f"Category: {product_category}" if product_category else ""
             
             prompt = f"""
@@ -313,7 +313,7 @@ Respond ONLY with valid JSON in this format:
 }}
 """
             
-            ***REMOVED*** Generate response
+            # Generate response
             if self.mode == "genai":
                 response = self.model.generate_content(prompt)
                 response_text = response.text
@@ -321,7 +321,7 @@ Respond ONLY with valid JSON in this format:
                 response = self.model.generate_content(prompt)
                 response_text = response.text
             else:
-                ***REMOVED*** Fallback: return mock ad variations
+                # Fallback: return mock ad variations
                 return {
                     "success": True,
                     "ad_variations": [
@@ -334,9 +334,9 @@ Respond ONLY with valid JSON in this format:
                     ] * num_variations
                 }
             
-            ***REMOVED*** Parse JSON response
+            # Parse JSON response
             try:
-                ***REMOVED*** Find JSON object in response
+                # Find JSON object in response
                 start_idx = response_text.find("{")
                 end_idx = response_text.rfind("}") + 1
                 if start_idx >= 0 and end_idx > start_idx:
@@ -344,11 +344,11 @@ Respond ONLY with valid JSON in this format:
                     result = json.loads(json_text)
                     ad_variations = result.get("ad_variations", [])
                 else:
-                    ***REMOVED*** Fallback: try parsing entire response
+                    # Fallback: try parsing entire response
                     result = json.loads(response_text)
                     ad_variations = result.get("ad_variations", [])
             except json.JSONDecodeError:
-                ***REMOVED*** If JSON parsing fails, create structured response from text
+                # If JSON parsing fails, create structured response from text
                 ad_variations = [
                     {
                         "headline_1": f"{product_name[:28]}",
@@ -358,7 +358,7 @@ Respond ONLY with valid JSON in this format:
                     }
                 ] * num_variations
             
-            ***REMOVED*** Validate and truncate to character limits
+            # Validate and truncate to character limits
             for variation in ad_variations:
                 variation["headline_1"] = variation.get("headline_1", "")[:30]
                 variation["headline_2"] = variation.get("headline_2", "")[:30]
@@ -433,7 +433,7 @@ Use 4 or 6 digit HS code. If uncertain, use the closest chapter (2 digits) plus 
         return fallback
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _gemini_analysis_service_instance = None
 
 

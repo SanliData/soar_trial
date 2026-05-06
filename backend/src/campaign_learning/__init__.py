@@ -1,4 +1,4 @@
-***REMOVED*** Campaign outcome learning loop: collect outcomes, industry/persona performance, persist to PostgreSQL
+# Campaign outcome learning loop: collect outcomes, industry/persona performance, persist to PostgreSQL
 from src.campaign_learning.campaign_metrics_collector import collect_campaign_metrics
 from src.campaign_learning.reply_rate_analyzer import compute_reply_rates
 from src.campaign_learning.industry_performance_model import get_industry_rates, refresh_industry_performance

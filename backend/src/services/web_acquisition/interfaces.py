@@ -51,9 +51,9 @@ class ContactAcquired(BaseModel):
     phone: Optional[str] = None
     job_title: Optional[str] = None
     department: Optional[str] = None
-    seniority: Optional[str] = None  ***REMOVED*** "C-Level", "Director", "Manager", etc.
+    seniority: Optional[str] = None   # "C-Level", "Director", "Manager", etc.
     company_name: Optional[str] = None
-    metadata: Optional[Dict[str, Any]] = None  ***REMOVED*** role, department, seniority, buying_committee only
+    metadata: Optional[Dict[str, Any]] = None   # role, department, seniority, buying_committee only
 
 
 class EvidenceSourceInfo(BaseModel):
@@ -62,7 +62,7 @@ class EvidenceSourceInfo(BaseModel):
     """
     domain: str
     url: Optional[str] = None
-    source_type: str  ***REMOVED*** "government", "municipality", "chamber", "company_website", "public_directory"
+    source_type: str   # "government", "municipality", "chamber", "company_website", "public_directory"
     businesses_found: int = 0
     contacts_found: int = 0
 

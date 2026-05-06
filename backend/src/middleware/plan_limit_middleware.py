@@ -31,7 +31,7 @@ def check_plan_limit(usage_type: str):
         authorization: str = None,
         db: Session = Depends(get_db)
     ):
-        ***REMOVED*** Get current user
+        # Get current user
         if not authorization:
             raise HTTPException(status_code=401, detail="Authentication required")
         
@@ -43,11 +43,11 @@ def check_plan_limit(usage_type: str):
         if not user:
             raise HTTPException(status_code=401, detail="Authentication required")
 
-        ***REMOVED*** Admin users (e.g. isanli058@gmail.com) bypass plan/payment limits
+        # Admin users (e.g. isanli058@gmail.com) bypass plan/payment limits
         if is_admin_email(getattr(user, "email", None)):
             return user
 
-        ***REMOVED*** Check plan limit
+        # Check plan limit
         usage_service = get_usage_tracking_service(db)
         limit_check = usage_service.check_limit(user.id, usage_type)
         
@@ -68,7 +68,7 @@ def check_plan_limit(usage_type: str):
     return limit_checker
 
 
-***REMOVED*** Convenience functions for common usage types
+# Convenience functions for common usage types
 def check_companies_limit():
     """Check companies limit."""
     return check_plan_limit("companies")

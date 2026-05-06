@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session
 router = APIRouter(prefix="/sniper-b2b", tags=["sniper-b2b"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db: Session = Depends(get_db)
@@ -45,7 +45,7 @@ class SniperCampaignRequest(BaseModel):
 class MarkWonRequest(BaseModel):
     """Request model for marking company as won."""
     company_id: int
-    conversion_type: str  ***REMOVED*** "lead_form", "appointment", "sale"
+    conversion_type: str   # "lead_form", "appointment", "sale"
 
 
 @router.post("/execute-cycle", response_model=None)
@@ -105,17 +105,17 @@ async def create_sniper_campaign(
     try:
         locale = get_locale_from_request(http_request)
         
-        ***REMOVED*** Get producer data (would be from database or cache)
-        ***REMOVED*** For now, this is a placeholder - producer data should be stored after execute-cycle
+        # Get producer data (would be from database or cache)
+        # For now, this is a placeholder - producer data should be stored after execute-cycle
         
         sniper_service = get_sniper_b2b_service()
         
-        ***REMOVED*** This would get producer from database
+        # This would get producer from database
         producer = {
             "id": request.producer_id,
             "sniper_ready": True,
             "coordinates": {
-                "latitude": 0.0,  ***REMOVED*** Would be from database
+                "latitude": 0.0,   # Would be from database
                 "longitude": 0.0
             }
         }
@@ -168,15 +168,15 @@ async def mark_company_won(
                 detail="Company not found"
             )
         
-        ***REMOVED*** Update company status
+        # Update company status
         company.status = "won"
         company.cycle_status = "won"
         
-        ***REMOVED*** Update metadata
+        # Update metadata
         if not company.company_metadata:
             company.company_metadata = {}
         
-        company.company_metadata["won_date"] = None  ***REMOVED*** Would be datetime.utcnow().isoformat()
+        company.company_metadata["won_date"] = None   # Would be datetime.utcnow().isoformat()
         company.company_metadata["conversion_type"] = request.conversion_type
         
         db.commit()

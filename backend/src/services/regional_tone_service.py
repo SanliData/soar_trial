@@ -21,7 +21,7 @@ class RegionalTone(Enum):
     POLITE = "polite"
 
 
-***REMOVED*** Regional tone mappings
+# Regional tone mappings
 REGIONAL_TONE_MAP = {
     "en-US": {
         "default_tone": RegionalTone.PROFESSIONAL,
@@ -86,19 +86,19 @@ class RegionalToneService:
         Returns:
             Dictionary with tone configuration
         """
-        ***REMOVED*** Try exact match first
+        # Try exact match first
         if locale in REGIONAL_TONE_MAP:
             return REGIONAL_TONE_MAP[locale]
         
-        ***REMOVED*** Try language match (e.g., "en" for "en-AU")
+        # Try language match (e.g., "en" for "en-AU")
         language = locale.split("-")[0] if "-" in locale else locale
         
-        ***REMOVED*** Find first match with same language
+        # Find first match with same language
         for key, value in REGIONAL_TONE_MAP.items():
             if key.startswith(language + "-"):
                 return value
         
-        ***REMOVED*** Default to English US if no match
+        # Default to English US if no match
         return REGIONAL_TONE_MAP["en-US"]
     
     @staticmethod

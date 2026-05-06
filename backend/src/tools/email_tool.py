@@ -25,5 +25,5 @@ def run(input: Dict[str, Any]) -> Dict[str, Any]:
         template_id = input.get("template_id", "")
         variables = input.get("variables", {})
         return {"rendered_subject": variables.get("subject", "Re: Introduction"), "rendered_body": variables.get("body", "")}
-    ***REMOVED*** generate: placeholder
+    # generate: placeholder
     return {"subject": input.get("subject", "Re: Introduction"), "body": input.get("body", "")}

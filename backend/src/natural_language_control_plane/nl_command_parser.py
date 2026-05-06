@@ -56,7 +56,7 @@ def parse_nl_command(raw_command: str) -> dict[str, Any]:
         workflow_scope = "graph_investigation"
         target_agent_type = "graph_investigation_agent"
 
-    ***REMOVED*** High-risk trigger phrases (metadata only)
+    # High-risk trigger phrases (metadata only)
     high_risk_markers = ("submit", "export", "delete", "rewrite graph", "deploy", "production", "escalate")
     if any(m in lowered for m in high_risk_markers):
         risk_level = "high"

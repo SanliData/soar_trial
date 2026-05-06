@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Known app structure for SOARB2B (real paths under backend/src/)
+# Known app structure for SOARB2B (real paths under backend/src/)
 PREFIX = "backend/src/"
 MODULE_TO_PATH = {
     "lead_generation_workflow": "workflows/lead_generation_workflow.py",
@@ -48,7 +48,7 @@ MODULE_TO_PATH = {
     "graph_builder": "intelligence_graph/graph_builder.py",
     "intelligence_graph": "intelligence_graph/graph_query_engine.py",
 }
-***REMOVED*** Real FastAPI route prefixes (for affected_endpoint context)
+# Real FastAPI route prefixes (for affected_endpoint context)
 ENDPOINT_TO_ROUTE = {
     "/agents/lead-generation": "agents_router",
     "/agents/sales-engine/run": "agents_router",

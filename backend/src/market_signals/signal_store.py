@@ -4,7 +4,7 @@ from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 SIGNALS_KEY = "market_signals:list"
-SIGNAL_TTL = 3600 * 24 * 7  ***REMOVED*** 7 days
+SIGNAL_TTL = 3600 * 24 * 7   # 7 days
 
 
 def _redis():

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-***REMOVED*** (trace_category, trace_code) → structured evaluation artifacts.
+# (trace_category, trace_code) → structured evaluation artifacts.
 _TRACE_EVAL_RULES: dict[tuple[str, str], dict[str, Any]] = {
     ("hallucinated_outputs", "contractor_fit"): {
         "evaluation_heuristic": "require_two_independent_sources",

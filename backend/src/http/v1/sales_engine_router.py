@@ -16,14 +16,14 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/sales", tags=["sales-engine"])
 
 
-***REMOVED*** ---------- Example request ----------
-***REMOVED*** POST /sales/run-lead-workflow
-***REMOVED*** {
-***REMOVED***   "industry": "fiber infrastructure",
-***REMOVED***   "location": "Texas",
-***REMOVED***   "target_roles": ["CEO","CTO","Procurement Director"],
-***REMOVED***   "campaign_goal": "introduce subcontracting services"
-***REMOVED*** }
+# ---------- Example request ----------
+# POST /sales/run-lead-workflow
+# {
+# "industry": "fiber infrastructure",
+# "location": "Texas",
+# "target_roles": ["CEO","CTO","Procurement Director"],
+# "campaign_goal": "introduce subcontracting services"
+# }
 
 
 class RunLeadWorkflowRequest(BaseModel):
@@ -35,12 +35,12 @@ class RunLeadWorkflowRequest(BaseModel):
     company_size: Optional[str] = None
 
 
-***REMOVED*** ---------- Example response ----------
-***REMOVED*** {
-***REMOVED***   "companies_found": 40,
-***REMOVED***   "contacts_identified": 120,
-***REMOVED***   "emails_generated": 120
-***REMOVED*** }
+# ---------- Example response ----------
+# {
+# "companies_found": 40,
+# "contacts_identified": 120,
+# "emails_generated": 120
+# }
 
 
 class RunLeadWorkflowResponse(BaseModel):

@@ -12,7 +12,7 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException, Request, Depends
 from pydantic import BaseModel, Field
 
-***REMOVED*** OpenAI import
+# OpenAI import
 try:
     import openai
     OPENAI_AVAILABLE = True
@@ -24,26 +24,26 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
 
-***REMOVED*** Rate limiting: 10 messages per minute per IP
+# Rate limiting: 10 messages per minute per IP
 from collections import defaultdict
 from time import time
 
 _rate_limit_store = defaultdict(list)
-RATE_LIMIT_WINDOW = 60  ***REMOVED*** 60 seconds
-RATE_LIMIT_MAX = 10  ***REMOVED*** 10 messages per window
+RATE_LIMIT_WINDOW = 60   # 60 seconds
+RATE_LIMIT_MAX = 10   # 10 messages per window
 
 
 def check_rate_limit(client_ip: str) -> bool:
     """Check if client IP is within rate limit"""
     now = time()
-    ***REMOVED*** Clean old entries
+    # Clean old entries
     _rate_limit_store[client_ip] = [
         ts for ts in _rate_limit_store[client_ip] if now - ts < RATE_LIMIT_WINDOW
     ]
-    ***REMOVED*** Check limit
+    # Check limit
     if len(_rate_limit_store[client_ip]) >= RATE_LIMIT_MAX:
         return False
-    ***REMOVED*** Add current request
+    # Add current request
     _rate_limit_store[client_ip].append(now)
     return True
 
@@ -61,7 +61,7 @@ class ChatMessageResponse(BaseModel):
 
 def get_client_ip(request: Request) -> str:
     """Get client IP address"""
-    ***REMOVED*** Check for forwarded headers (Cloud Run, load balancers)
+    # Check for forwarded headers (Cloud Run, load balancers)
     forwarded_for = request.headers.get("X-Forwarded-For")
     if forwarded_for:
         return forwarded_for.split(",")[0].strip()
@@ -85,7 +85,7 @@ async def chat(
     Public AI chat endpoint.
     No authentication required, but rate limited.
     """
-    ***REMOVED*** Rate limiting
+    # Rate limiting
     client_ip = get_client_ip(http_request)
     if not check_rate_limit(client_ip):
         raise HTTPException(
@@ -93,7 +93,7 @@ async def chat(
             detail="Rate limit exceeded. Please wait a moment before sending another message."
         )
     
-    ***REMOVED*** Validate message length
+    # Validate message length
     message = request_data.message.strip()
     if not message or len(message) > 2000:
         raise HTTPException(
@@ -101,7 +101,7 @@ async def chat(
             detail="Message must be between 1 and 2000 characters."
         )
     
-    ***REMOVED*** Check OpenAI availability
+    # Check OpenAI availability
     if not OPENAI_AVAILABLE:
         raise HTTPException(
             status_code=503,
@@ -116,7 +116,7 @@ async def chat(
             detail="Chat service is not configured."
         )
     
-    ***REMOVED*** Initialize OpenAI client
+    # Initialize OpenAI client
     try:
         client = openai.OpenAI(api_key=api_key)
     except Exception as e:
@@ -126,7 +126,7 @@ async def chat(
             detail="Chat service initialization failed."
         )
     
-    ***REMOVED*** System prompt
+    # System prompt
     system_prompt = """You are SOAR B2B Assistant, a helpful AI assistant for B2B growth, sales, SaaS, marketing, and automation.
 
 Your role:
@@ -138,11 +138,11 @@ Your role:
 
 Keep responses concise, professional, and actionable. Focus on practical B2B advice."""
     
-    ***REMOVED*** Generate conversation ID if not provided
+    # Generate conversation ID if not provided
     conversation_id = request_data.conversation_id or f"conv_{int(datetime.utcnow().timestamp())}"
     
     try:
-        ***REMOVED*** Call OpenAI API
+        # Call OpenAI API
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[

@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/appointments", tags=["appointments"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db: Session = Depends(get_db)
@@ -87,15 +87,15 @@ async def get_appointments(
         if status:
             query = query.filter(Appointment.status == status)
         
-        ***REMOVED*** Get upcoming appointments first
+        # Get upcoming appointments first
         appointments = query.order_by(Appointment.scheduled_at.asc()).all()
         
-        ***REMOVED*** Get lead information for each appointment
+        # Get lead information for each appointment
         appointments_data = []
         for appointment in appointments:
             appointment_dict = appointment.to_dict()
             
-            ***REMOVED*** Get lead information if exists
+            # Get lead information if exists
             if appointment.campaign_id:
                 lead = db.query(Lead).filter(
                     Lead.appointment_id == appointment.id
@@ -142,13 +142,13 @@ async def get_available_slots(
         if not user.email:
             raise HTTPException(status_code=400, detail="User email not found")
         
-        ***REMOVED*** Parse date
+        # Parse date
         try:
             date_obj = datetime.strptime(date, "%Y-%m-%d")
         except ValueError:
             raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
         
-        ***REMOVED*** Get calendar service
+        # Get calendar service
         calendar_service = get_calendar_service()
         
         result = calendar_service.find_available_slots(
@@ -197,17 +197,17 @@ async def cancel_appointment(
         if not appointment:
             raise HTTPException(status_code=404, detail="Appointment not found")
         
-        ***REMOVED*** Delete Google Calendar event if exists
+        # Delete Google Calendar event if exists
         if user.email and appointment.meeting_url:
             try:
                 calendar_service = get_calendar_service()
-                ***REMOVED*** Extract event ID from meeting URL or store it separately
-                ***REMOVED*** For now, we'll update appointment status
+                # Extract event ID from meeting URL or store it separately
+                # For now, we'll update appointment status
                 pass
             except Exception as e:
                 logger.warning(f"Failed to delete calendar event: {str(e)}")
         
-        ***REMOVED*** Update appointment status
+        # Update appointment status
         appointment.status = "cancelled"
         db.commit()
         
@@ -247,23 +247,23 @@ async def reschedule_appointment(
         if not appointment:
             raise HTTPException(status_code=404, detail="Appointment not found")
         
-        ***REMOVED*** Parse new date and time
+        # Parse new date and time
         try:
             new_datetime = datetime.strptime(f"{new_date} {new_time}", "%Y-%m-%d %H:%M")
         except ValueError:
             raise HTTPException(status_code=400, detail="Invalid date/time format")
         
-        ***REMOVED*** Update Google Calendar event if exists
+        # Update Google Calendar event if exists
         if user.email:
             try:
                 calendar_service = get_calendar_service()
-                ***REMOVED*** Update calendar event (would need to store event_id)
-                ***REMOVED*** For now, we'll just update the appointment
+                # Update calendar event (would need to store event_id)
+                # For now, we'll just update the appointment
                 pass
             except Exception as e:
                 logger.warning(f"Failed to update calendar event: {str(e)}")
         
-        ***REMOVED*** Update appointment
+        # Update appointment
         appointment.scheduled_at = new_datetime
         appointment.status = "scheduled"
         db.commit()
@@ -305,7 +305,7 @@ async def get_appointment(
         
         appointment_dict = appointment.to_dict()
         
-        ***REMOVED*** Get lead information if exists
+        # Get lead information if exists
         if appointment.campaign_id:
             lead = db.query(Lead).filter(
                 Lead.appointment_id == appointment.id

@@ -6,7 +6,7 @@ ENCODING: UTF-8 WITHOUT BOM
 
 from __future__ import annotations
 
-***REMOVED*** Beyond this age, content is treated as stale for policy and ranking (foundation defaults).
+# Beyond this age, content is treated as stale for policy and ranking (foundation defaults).
 STALE_THRESHOLD_DAYS = 180
 STALE_CONFIDENCE_FLOOR = 0.15
 
@@ -20,7 +20,7 @@ def freshness_confidence_score(freshness_days: int) -> float:
         return 1.0
     if freshness_days >= 730:
         return STALE_CONFIDENCE_FLOOR
-    ***REMOVED*** Gentle decay: ~0.75 at 180d
+    # Gentle decay: ~0.75 at 180d
     step = (1.0 - STALE_CONFIDENCE_FLOOR) / 730.0
     return round(max(STALE_CONFIDENCE_FLOOR, 1.0 - freshness_days * step), 4)
 

@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 LEARNING_CACHE_PREFIX = "learning:"
-LEARNING_CACHE_TTL = 3600 * 24  ***REMOVED*** 24h for recommendations cache
+LEARNING_CACHE_TTL = 3600 * 24   # 24h for recommendations cache
 
 
 def _get_db():

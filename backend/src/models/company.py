@@ -19,40 +19,40 @@ class Company(Base):
     
     __tablename__ = "companies"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     
-    ***REMOVED*** Company information
+    # Company information
     name = Column(String(255), nullable=False)
     address = Column(Text, nullable=True)
     website = Column(String(512), nullable=True)
     phone = Column(String(50), nullable=True)
     email = Column(String(255), nullable=True)
     
-    ***REMOVED*** Business information
+    # Business information
     industry = Column(String(255), nullable=True)
     employee_count = Column(String(100), nullable=True)
     revenue = Column(String(100), nullable=True)
     
-    ***REMOVED*** Additional data
-    company_metadata = Column(JSON, nullable=True)  ***REMOVED*** Additional company data
-    location_data = Column(JSON, nullable=True)  ***REMOVED*** Location/coordinates
+    # Additional data
+    company_metadata = Column(JSON, nullable=True)   # Additional company data
+    location_data = Column(JSON, nullable=True)   # Location/coordinates
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="active", nullable=False)  ***REMOVED*** "active", "inactive", "archived", "won"
-    cycle_status = Column(String(50), nullable=True)  ***REMOVED*** "pending", "targeted", "contacted", "converted", "won"
+    # Status
+    status = Column(String(50), default="active", nullable=False)   # "active", "inactive", "archived", "won"
+    cycle_status = Column(String(50), nullable=True)   # "pending", "targeted", "contacted", "converted", "won"
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="companies")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_company_user_id', 'user_id'),
         Index('idx_company_name', 'name'),

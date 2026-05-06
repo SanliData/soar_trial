@@ -37,7 +37,7 @@ def build_pairwise_summary(
     loser_breakdown: dict[str, Any],
 ) -> list[str]:
     lines: list[str] = []
-    ***REMOVED*** Compare raw dimension values stored at top level of breakdown
+    # Compare raw dimension values stored at top level of breakdown
     w_top = {k: winner_breakdown.get(k) for k in _DIM_LABELS}
     l_top = {k: loser_breakdown.get(k) for k in _DIM_LABELS}
     for key in _DIM_LABELS:

@@ -21,12 +21,12 @@ from src.config.settings import get_int_env, get_float_env, get_bool_env
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** In-memory store (use Redis in production for multi-instance)
+# In-memory store (use Redis in production for multi-instance)
 _ip_timestamps: Dict[str, list] = defaultdict(list)
 _fingerprint_timestamps: Dict[str, list] = defaultdict(list)
 _ip_form_submits: Dict[str, list] = defaultdict(list)
 
-***REMOVED*** Config from env (safe parsing to prevent empty-string crash)
+# Config from env (safe parsing to prevent empty-string crash)
 BOT_DEFENSE_ENABLED = get_bool_env("BOT_DEFENSE_ENABLED", True)
 BOT_FORM_SUBMIT_WINDOW = get_int_env("BOT_FORM_SUBMIT_WINDOW_SEC", 60)
 BOT_FORM_SUBMIT_MAX = get_int_env("BOT_FORM_SUBMIT_MAX", 10)
@@ -93,17 +93,17 @@ def compute_bot_risk(
     now = time.time()
     ua = headers.get("user-agent") or headers.get("User-Agent")
 
-    ***REMOVED*** 1) Headless / automation User-Agent
+    # 1) Headless / automation User-Agent
     if _is_headless_or_automation(ua):
         risk += 0.4
 
-    ***REMOVED*** 2) Same IP burst (many requests in short window)
+    # 2) Same IP burst (many requests in short window)
     _ip_timestamps[client_ip][:] = [t for t in _ip_timestamps[client_ip] if now - t < BOT_SAME_IP_BURST_WINDOW]
     _ip_timestamps[client_ip].append(now)
     if len(_ip_timestamps[client_ip]) > BOT_SAME_IP_BURST_MAX:
         risk += 0.35
 
-    ***REMOVED*** 3) Same fingerprint serial attempts
+    # 3) Same fingerprint serial attempts
     fp = _fingerprint_from_headers(headers, body_hash)
     if fp:
         _fingerprint_timestamps[fp][:] = [t for t in _fingerprint_timestamps[fp] if now - t < BOT_FORM_SUBMIT_WINDOW]
@@ -111,7 +111,7 @@ def compute_bot_risk(
         if len(_fingerprint_timestamps[fp]) > BOT_FORM_SUBMIT_MAX:
             risk += 0.35
 
-    ***REMOVED*** 4) Very fast form submit (POST to sensitive paths in quick succession)
+    # 4) Very fast form submit (POST to sensitive paths in quick succession)
     if method == "POST" and _is_form_path(path):
         _ip_form_submits[client_ip][:] = [t for t in _ip_form_submits[client_ip] if now - t < BOT_FORM_SUBMIT_WINDOW]
         _ip_form_submits[client_ip].append(now)
@@ -142,7 +142,7 @@ def get_silent_delay_ms(risk: float) -> int:
     """Delay in ms for silent throttle (capped)."""
     if risk <= 0.3:
         return 0
-    ***REMOVED*** Scale delay with risk, cap at BOT_SILENT_DELAY_MAX_MS
+    # Scale delay with risk, cap at BOT_SILENT_DELAY_MAX_MS
     delay = int(risk * BOT_SILENT_DELAY_MAX_MS)
     return min(delay, BOT_SILENT_DELAY_MAX_MS)
 

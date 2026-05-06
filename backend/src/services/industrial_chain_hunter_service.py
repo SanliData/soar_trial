@@ -24,7 +24,7 @@ class IndustrialChainHunterService:
     Finds manufacturers by analyzing raw materials (X) -> end products (Y) -> producers.
     """
     
-    ***REMOVED*** Keywords that indicate manufacturing/production
+    # Keywords that indicate manufacturing/production
     PRODUCER_KEYWORDS = [
         "factory", "manufacturing", "producer", "production", "bakery", "workshop",
         "facility", "plant", "mill", "manufacturer", "maker", "artisan", "craft",
@@ -33,7 +33,7 @@ class IndustrialChainHunterService:
         "fabrika", "imalat", "üretici", "fırın", "atölye", "tesis"
     ]
     
-    ***REMOVED*** Keywords that indicate reseller/retailer
+    # Keywords that indicate reseller/retailer
     RESELLER_KEYWORDS = [
         "distributor", "wholesaler", "retailer", "reseller", "supplier",
         "importer", "exporter", "trader", "dealer", "store", "shop",
@@ -67,7 +67,7 @@ class IndustrialChainHunterService:
             }
         
         try:
-            ***REMOVED*** Language mapping
+            # Language mapping
             language_map = {
                 "tr": "Turkish",
                 "en": "English",
@@ -105,7 +105,7 @@ Format your response as JSON:
 Respond ONLY with valid JSON, no additional text. All text must be in {language}.
 """
             
-            ***REMOVED*** Get AI analysis
+            # Get AI analysis
             if hasattr(self.gemini_service, 'model') and self.gemini_service.model:
                 if self.gemini_service.mode == "genai":
                     response = self.gemini_service.model.generate_content(prompt)
@@ -121,7 +121,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
                     "error": "Gemini model not initialized"
                 }
             
-            ***REMOVED*** Parse JSON response
+            # Parse JSON response
             import json
             try:
                 start_idx = analysis_text.find("{")
@@ -171,12 +171,12 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             Dictionary with list of potential producers
         """
         try:
-            ***REMOVED*** Search for businesses selling this product
+            # Search for businesses selling this product
             search_query = f"{product_name} manufacturer producer factory"
             if industry:
                 search_query += f" {industry}"
             
-            ***REMOVED*** Use web research service to find businesses
+            # Use web research service to find businesses
             research_result = self.web_research.deep_research_company(
                 company_name=search_query,
                 industry=industry
@@ -188,7 +188,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
                     "error": "Web research failed"
                 }
             
-            ***REMOVED*** Extract URLs from research
+            # Extract URLs from research
             research_data = research_result.get("research_data", {})
             searches = research_data.get("searches", [])
             
@@ -196,7 +196,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             
             for search in searches:
                 results = search.get("results", [])
-                for result in results[:10]:  ***REMOVED*** Limit to top 10 per search
+                for result in results[:10]:   # Limit to top 10 per search
                     url = result.get("url", "")
                     title = result.get("title", "")
                     snippet = result.get("snippet", "")
@@ -204,7 +204,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
                     if not url:
                         continue
                     
-                    ***REMOVED*** Analyze if this is a producer
+                    # Analyze if this is a producer
                     producer_analysis = self._analyze_producer_status(
                         url=url,
                         title=title,
@@ -213,13 +213,13 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
                     )
                     
                     if producer_analysis.get("is_producer", False):
-                        ***REMOVED*** Try to extract address from page
+                        # Try to extract address from page
                         address = self._extract_address_from_page(url)
                         
                         potential_producers.append({
                             "name": producer_analysis.get("company_name", title),
                             "url": url,
-                            "address": address,  ***REMOVED*** Physical address if found
+                            "address": address,   # Physical address if found
                             "confidence": producer_analysis.get("confidence", 0.5),
                             "reasoning": producer_analysis.get("reasoning", ""),
                             "keywords_found": producer_analysis.get("keywords_found", []),
@@ -261,15 +261,15 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             Dictionary with producer status analysis
         """
         try:
-            ***REMOVED*** Combine all text for analysis
+            # Combine all text for analysis
             combined_text = f"{title} {snippet}".lower()
             
-            ***REMOVED*** Try to fetch page content for deeper analysis
+            # Try to fetch page content for deeper analysis
             page_content = self._fetch_page_content(url)
             if page_content:
                 combined_text += " " + page_content.lower()
             
-            ***REMOVED*** Count producer keywords
+            # Count producer keywords
             producer_score = 0
             keywords_found = []
             
@@ -278,19 +278,19 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
                     producer_score += 1
                     keywords_found.append(keyword)
             
-            ***REMOVED*** Count reseller keywords
+            # Count reseller keywords
             reseller_score = 0
             for keyword in self.RESELLER_KEYWORDS:
                 if keyword.lower() in combined_text:
                     reseller_score += 1
             
-            ***REMOVED*** Determine if producer
+            # Determine if producer
             is_producer = producer_score > reseller_score and producer_score >= 2
             
-            ***REMOVED*** Calculate confidence
+            # Calculate confidence
             confidence = min(1.0, producer_score / 5.0) if is_producer else 0.0
             
-            ***REMOVED*** Generate reasoning
+            # Generate reasoning
             reasoning_parts = []
             if keywords_found:
                 reasoning_parts.append(f"Found producer keywords: {', '.join(keywords_found[:3])}")
@@ -303,7 +303,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             
             reasoning = ". ".join(reasoning_parts)
             
-            ***REMOVED*** Extract company name from title or URL
+            # Extract company name from title or URL
             company_name = title.split(" - ")[0].split(" | ")[0]
             if len(company_name) > 100:
                 company_name = company_name[:100]
@@ -348,7 +348,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             
             soup = BeautifulSoup(response.content, 'html.parser')
             
-            ***REMOVED*** Remove script and style
+            # Remove script and style
             for script in soup(["script", "style"]):
                 script.decompose()
             
@@ -378,26 +378,26 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             if not page_content:
                 return None
             
-            ***REMOVED*** Look for common address patterns
-            ***REMOVED*** Turkish addresses
+            # Look for common address patterns
+            # Turkish addresses
             address_patterns = [
                 r'(?:Adres|Address|Adresi)[:\s]+([A-ZÇĞİÖŞÜ][^,\n]{10,100})',
                 r'([A-ZÇĞİÖŞÜ][^,\n]{5,50}\s+(?:Sokak|Cadde|Mahalle|Mahallesi|Bulvar|Boulevard)[^,\n]{0,50})',
-                r'([0-9]{5}\s+[A-ZÇĞİÖŞÜ][^,\n]{5,50})',  ***REMOVED*** ZIP code pattern
+                r'([0-9]{5}\s+[A-ZÇĞİÖŞÜ][^,\n]{5,50})',   # ZIP code pattern
             ]
             
-            ***REMOVED*** English addresses
+            # English addresses
             address_patterns.extend([
                 r'(?:Address|Location)[:\s]+([A-Z][^,\n]{10,100})',
                 r'([0-9]+\s+[A-Z][^,\n]{5,50}\s+(?:Street|Avenue|Road|Boulevard)[^,\n]{0,50})',
-                r'([A-Z][^,\n]{5,50},\s*[A-Z]{2}\s+[0-9]{5})',  ***REMOVED*** US address pattern
+                r'([A-Z][^,\n]{5,50},\s*[A-Z]{2}\s+[0-9]{5})',   # US address pattern
             ])
             
             for pattern in address_patterns:
                 match = re.search(pattern, page_content, re.IGNORECASE)
                 if match:
                     address = match.group(1).strip()
-                    if len(address) > 10:  ***REMOVED*** Minimum address length
+                    if len(address) > 10:   # Minimum address length
                         return address
             
             return None
@@ -424,7 +424,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             Complete analysis with all found producers
         """
         try:
-            ***REMOVED*** Step 1: Analyze raw material to products
+            # Step 1: Analyze raw material to products
             products_analysis = self.analyze_raw_material_to_products(
                 raw_material=raw_material,
                 locale=locale
@@ -435,10 +435,10 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             
             end_products = products_analysis.get("end_products", [])
             
-            ***REMOVED*** Step 2: For each product, find producers
+            # Step 2: For each product, find producers
             all_producers = []
             
-            for product in end_products[:5]:  ***REMOVED*** Limit to top 5 products
+            for product in end_products[:5]:   # Limit to top 5 products
                 product_name = product.get("name", "")
                 industry = product.get("industry", "")
                 
@@ -453,13 +453,13 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
                 
                 if producers_result.get("success"):
                     producers = producers_result.get("producers", [])
-                    ***REMOVED*** Filter by confidence
+                    # Filter by confidence
                     filtered_producers = [
                         p for p in producers
                         if p.get("confidence", 0) >= min_confidence
                     ]
                     
-                    ***REMOVED*** Add product context to each producer
+                    # Add product context to each producer
                     for producer in filtered_producers:
                         producer["source_product"] = product_name
                         producer["source_industry"] = industry
@@ -467,7 +467,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
                     
                     all_producers.extend(filtered_producers)
             
-            ***REMOVED*** Remove duplicates (by URL)
+            # Remove duplicates (by URL)
             seen_urls = set()
             unique_producers = []
             for producer in all_producers:
@@ -482,7 +482,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
                 "end_products": end_products,
                 "producers": unique_producers,
                 "total_producers": len(unique_producers),
-                "analysis_date": None  ***REMOVED*** Can be set by caller
+                "analysis_date": None   # Can be set by caller
             }
         
         except Exception as e:
@@ -493,7 +493,7 @@ Respond ONLY with valid JSON, no additional text. All text must be in {language}
             }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _industrial_chain_hunter_service_instance = None
 
 

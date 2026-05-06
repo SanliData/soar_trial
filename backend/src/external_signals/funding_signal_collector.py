@@ -30,7 +30,7 @@ def collect_funding_signals(
     """
     signals: List[Dict[str, Any]] = []
     try:
-        ***REMOVED*** Placeholder: integrate with Crunchbase/API or DB of funding rounds
+        # Placeholder: integrate with Crunchbase/API or DB of funding rounds
         sig = {
             "type": SIGNAL_TYPE_FUNDING_EVENT,
             "source": "funding",

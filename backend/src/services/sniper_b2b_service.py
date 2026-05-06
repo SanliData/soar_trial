@@ -47,7 +47,7 @@ class SniperB2BService:
             Complete cycle result with all generated data
         """
         try:
-            ***REMOVED*** Phase 1-2: X to Y Mapping and Producer Extraction
+            # Phase 1-2: X to Y Mapping and Producer Extraction
             logger.info(f"Phase 1-2: Hunting manufacturers for {raw_material}")
             hunt_result = self.chain_hunter.hunt_manufacturers(
                 raw_material=raw_material,
@@ -70,12 +70,12 @@ class SniperB2BService:
                     "phase": "hunt"
                 }
             
-            ***REMOVED*** Phase 3: Geocode addresses and create 10m radius targets
+            # Phase 3: Geocode addresses and create 10m radius targets
             logger.info(f"Phase 3: Geocoding {len(producers)} producers")
             geocoded_producers = []
             
-            for producer in producers[:10]:  ***REMOVED*** Limit to top 10 for performance
-                ***REMOVED*** Extract address from producer data
+            for producer in producers[:10]:   # Limit to top 10 for performance
+                # Extract address from producer data
                 address = producer.get("address") or self._extract_address_from_producer(producer)
                 
                 if address:
@@ -98,7 +98,7 @@ class SniperB2BService:
                 
                 geocoded_producers.append(producer)
             
-            ***REMOVED*** Phase 4: Generate Personas and Ad Copies
+            # Phase 4: Generate Personas and Ad Copies
             logger.info("Phase 4: Generating personas and ad copies")
             enriched_producers = []
             
@@ -107,7 +107,7 @@ class SniperB2BService:
                     enriched_producers.append(producer)
                     continue
                 
-                ***REMOVED*** Generate personas
+                # Generate personas
                 personas_result = self._generate_personas_for_company(
                     company_name=producer.get("name", ""),
                     industry=producer.get("industry", ""),
@@ -116,7 +116,7 @@ class SniperB2BService:
                 
                 producer["personas"] = personas_result.get("personas", [])
                 
-                ***REMOVED*** Generate ad copies for each persona
+                # Generate ad copies for each persona
                 ad_copies = []
                 for persona in producer["personas"]:
                     ad_copy_result = self._generate_persona_ad_copy(
@@ -159,12 +159,12 @@ class SniperB2BService:
         Extract physical address from producer data.
         Tries multiple sources: URL content, metadata, etc.
         """
-        ***REMOVED*** Try to get address from producer metadata
+        # Try to get address from producer metadata
         if producer.get("address"):
             return producer["address"]
         
-        ***REMOVED*** Try to extract from URL (would need web scraping)
-        ***REMOVED*** For now, return None - address should be added during producer discovery
+        # Try to extract from URL (would need web scraping)
+        # For now, return None - address should be added during producer discovery
         return None
     
     def _generate_personas_for_company(
@@ -185,7 +185,7 @@ class SniperB2BService:
             Dictionary with generated personas
         """
         if not self.gemini.is_available():
-            ***REMOVED*** Fallback personas
+            # Fallback personas
             return {
                 "success": True,
                 "personas": [
@@ -294,7 +294,7 @@ Respond ONLY with valid JSON. All text in {language}.
             except json.JSONDecodeError:
                 pass
             
-            ***REMOVED*** Fallback
+            # Fallback
             return {
                 "success": True,
                 "personas": [
@@ -470,14 +470,14 @@ Respond ONLY with valid JSON. All text in {language}.
                 "error": "Missing coordinates"
             }
         
-        ***REMOVED*** Use Google Ads service to create campaign with 10m radius location targeting
-        ***REMOVED*** Prepare product info and ad data (would come from Step 1 and Step 8)
+        # Use Google Ads service to create campaign with 10m radius location targeting
+        # Prepare product info and ad data (would come from Step 1 and Step 8)
         product_info = {
             "name": raw_material,
             "description": f"Raw material for {producer.get('source_product', 'production')}"
         }
         
-        ***REMOVED*** Get ad copy from producer's generated ad copies
+        # Get ad copy from producer's generated ad copies
         ad_copies = producer.get("ad_copies", [])
         if ad_copies:
             ad_data = {
@@ -493,14 +493,14 @@ Respond ONLY with valid JSON. All text in {language}.
                 "ad_content": f"Optimize {raw_material} for {producer.get('source_product', 'production')}"
             }
         
-        ***REMOVED*** Create campaign with 10m radius targeting
+        # Create campaign with 10m radius targeting
         campaign_result = self.google_ads.create_search_campaign_with_ads(
             customer_id=customer_id,
             user_id=user_id,
             campaign_name=f"Sniper: {producer.get('name', 'Producer')} - {raw_material}",
             product_info=product_info,
             ad_data=ad_data,
-            budget_amount_micros=10000000,  ***REMOVED*** $10/day
+            budget_amount_micros=10000000,   # $10/day
             conversion_strategy="appointment",
             locale=locale,
             target_coordinates={
@@ -527,7 +527,7 @@ Respond ONLY with valid JSON. All text in {language}.
             }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _sniper_b2b_service_instance = None
 
 

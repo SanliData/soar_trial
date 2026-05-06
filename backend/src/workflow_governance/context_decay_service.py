@@ -10,7 +10,7 @@ from typing import Any
 
 TRUNCATION_MARKER = "[WORKFLOW_CONTEXT_TRUNCATED]"
 
-***REMOVED*** rot_score 0.0 = healthy, 1.0 = severe (deterministic blend)
+# rot_score 0.0 = healthy, 1.0 = severe (deterministic blend)
 def detect_context_rot(
     token_estimate: int,
     turn_count: int,
@@ -18,7 +18,7 @@ def detect_context_rot(
 ) -> dict[str, Any]:
     t = max(0, int(token_estimate))
     n = max(0, int(turn_count))
-    ***REMOVED*** Normalized pressure: more tokens and more turns increase rot.
+    # Normalized pressure: more tokens and more turns increase rot.
     token_component = min(1.0, t / 120_000.0)
     turn_component = min(1.0, n / 80.0)
     rot = round((0.6 * token_component + 0.4 * turn_component) * 100) / 100.0

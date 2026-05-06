@@ -6,17 +6,17 @@ ENCODING: UTF-8 WITHOUT BOM
 
 from typing import Any, Dict
 
-***REMOVED*** Hard filters (ENFORCED at discovery, enrichment, export)
+# Hard filters (ENFORCED at discovery, enrichment, export)
 COMPANY_LIMIT_DEFAULT = 100
 COMPANY_SIZE_MAX_DEFAULT = 50
 MIN_READY_LEADS_DEFAULT = 5
 
-***REMOVED*** Decision maker: only claim "decision_maker" when confidence >= threshold
+# Decision maker: only claim "decision_maker" when confidence >= threshold
 DECISION_MAKER_CONFIDENCE_THRESHOLD = 0.65
 
-***REMOVED*** Region filters: optional allow/deny list (empty = no region filter)
-REGION_FILTER_ALLOW_LIST: list = []   ***REMOVED*** e.g. ["US", "DE"]
-REGION_FILTER_DENY_LIST: list = []    ***REMOVED*** e.g. []
+# Region filters: optional allow/deny list (empty = no region filter)
+REGION_FILTER_ALLOW_LIST: list = []    # e.g. ["US", "DE"]
+REGION_FILTER_DENY_LIST: list = []     # e.g. []
 
 
 def get_limits_from_plan(plan_params: Dict[str, Any]) -> Dict[str, Any]:

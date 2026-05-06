@@ -22,14 +22,14 @@ class ParsedIntent(BaseModel):
     limit: int = Field(default=50, ge=1, le=500)
 
 
-***REMOVED*** Allowed table names for analytics (whitelist)
+# Allowed table names for analytics (whitelist)
 ALLOWED_TABLES = frozenset({
     "intel_companies", "intel_contacts", "intel_campaigns",
     "companies", "campaigns", "leads", "industry_performance",
     "email_performance", "campaign_history", "users",
 })
 
-***REMOVED*** Map keywords to table names
+# Map keywords to table names
 TABLE_HINTS = {
     "industry": ["intel_companies", "industry_performance"],
     "industries": ["intel_companies", "industry_performance"],
@@ -47,7 +47,7 @@ TABLE_HINTS = {
     "rate": ["email_performance", "industry_performance"],
 }
 
-***REMOVED*** Map keywords to group_by concept (column chosen in planner from allowed columns)
+# Map keywords to group_by concept (column chosen in planner from allowed columns)
 GROUP_HINTS = {
     "industry": "industry",
     "industries": "industry",
@@ -56,7 +56,7 @@ GROUP_HINTS = {
     "company": "company",
 }
 
-***REMOVED*** Time expressions
+# Time expressions
 TIME_HINTS = {
     "last quarter": "last_quarter",
     "last month": "last_month",

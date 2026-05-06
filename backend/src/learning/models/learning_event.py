@@ -17,7 +17,7 @@ class LearningEvent(Base):
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     learning_run_id = Column(String(64), nullable=False, index=True)
     campaign_id = Column(String(64), nullable=True, index=True)
-    event_type = Column(String(64), nullable=False, index=True)  ***REMOVED*** e.g. analyze_campaign, get_recommendations
+    event_type = Column(String(64), nullable=False, index=True)   # e.g. analyze_campaign, get_recommendations
     analysis_time_ms = Column(Integer, nullable=True)
     insight_results = Column(JSON, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)

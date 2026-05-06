@@ -16,11 +16,11 @@ class Incident(Base):
     incident_id = Column(String(64), nullable=False, unique=True, index=True)
     title = Column(String(512), nullable=False)
     root_cause = Column(Text, nullable=True)
-    severity = Column(String(8), nullable=False, index=True)  ***REMOVED*** S1, S2, S3, S4
-    status = Column(String(32), nullable=False, default="open", index=True)  ***REMOVED*** open, acknowledged, resolved
+    severity = Column(String(8), nullable=False, index=True)   # S1, S2, S3, S4
+    status = Column(String(32), nullable=False, default="open", index=True)   # open, acknowledged, resolved
     first_seen_at = Column(DateTime(timezone=True), nullable=False, index=True)
     last_seen_at = Column(DateTime(timezone=True), nullable=False, index=True)
-    affected_components = Column(JSON, nullable=True)  ***REMOVED*** list of strings
+    affected_components = Column(JSON, nullable=True)   # list of strings
     occurrence_count = Column(Integer, nullable=False, default=1)
     summary = Column(Text, nullable=True)
     error_type = Column(String(128), nullable=True, index=True)

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-***REMOVED*** Weights sum to 1.0 — documented in manifest (no hidden tuning).
+# Weights sum to 1.0 — documented in manifest (no hidden tuning).
 _WEIGHTS: dict[str, float] = {
     "token_efficiency": 0.22,
     "latency_efficiency": 0.18,

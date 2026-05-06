@@ -22,7 +22,7 @@ def export_embedding_health(
     low_r = max(0.0, min(1.0, float(low_confidence_ratio)))
     inv_r = max(0.0, min(1.0, float(invalid_source_ratio)))
     age = max(0.0, float(max_age_hours))
-    age_pressure = min(1.0, age / 720.0)  ***REMOVED*** 30d horizon
+    age_pressure = min(1.0, age / 720.0)   # 30d horizon
     health = round(
         1.0 - (0.25 * stale_r + 0.25 * miss_r + 0.2 * low_r + 0.15 * inv_r + 0.15 * age_pressure),
         4,

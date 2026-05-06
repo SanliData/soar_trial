@@ -14,7 +14,7 @@ from src.intelligence_graph.relationship_extractor import extract_foreign_keys
 logger = logging.getLogger(__name__)
 
 GRAPH_CACHE_KEY = "intelligence_graph:schema"
-GRAPH_CACHE_TTL = 3600 * 24  ***REMOVED*** 24h
+GRAPH_CACHE_TTL = 3600 * 24   # 24h
 
 
 def _get_redis():

@@ -18,29 +18,29 @@ class User(Base):
     
     __tablename__ = "users"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Email - unique and indexed for fast lookups
+    # Email - unique and indexed for fast lookups
     email = Column(String(255), unique=True, nullable=False, index=True)
     
-    ***REMOVED*** Full name
+    # Full name
     full_name = Column(String(255), nullable=True)
     
-    ***REMOVED*** Google OAuth2 ID - unique, nullable (for non-Google users in future)
+    # Google OAuth2 ID - unique, nullable (for non-Google users in future)
     google_id = Column(String(255), unique=True, nullable=True, index=True)
     
-    ***REMOVED*** Profile picture URL from Google
+    # Profile picture URL from Google
     profile_picture = Column(String(512), nullable=True)
     
-    ***REMOVED*** Active status - for soft delete/account deactivation
+    # Active status - for soft delete/account deactivation
     is_active = Column(Boolean, default=True, nullable=False)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_user_email', 'email'),
         Index('idx_user_google_id', 'google_id'),

@@ -6,27 +6,27 @@ ENCODING: UTF-8 WITHOUT BOM
 All pricing values are defined here. UI and API must read from this module.
 """
 
-***REMOVED*** Base Costs (USD)
-ACCOUNT_ACTIVATION_FEE = 0.98  ***REMOVED*** Monthly recurring
-QUERY_EXECUTION_COST = 1.99    ***REMOVED*** Per query (max 100 businesses)
+# Base Costs (USD)
+ACCOUNT_ACTIVATION_FEE = 0.98   # Monthly recurring
+QUERY_EXECUTION_COST = 1.99     # Per query (max 100 businesses)
 
-***REMOVED*** Optional Modules (Per Query, USD)
+# Optional Modules (Per Query, USD)
 OPTIONAL_MODULES = {
     "persona_deepening": 0.49,
-    "visit_route": 0.99,        ***REMOVED*** Max 20 stops
-    "export": 0.49,             ***REMOVED*** CSV/PDF/CRM
+    "visit_route": 0.99,         # Max 20 stops
+    "export": 0.49,              # CSV/PDF/CRM
     "outreach_preparation": 0.99
 }
 
-***REMOVED*** Query Limits
-MAX_RESULTS_PER_QUERY = 100    ***REMOVED*** Hard limit for standard users
-MAX_VISIT_STOPS = 20           ***REMOVED*** Max stops in visit route
+# Query Limits
+MAX_RESULTS_PER_QUERY = 100     # Hard limit for standard users
+MAX_VISIT_STOPS = 20            # Max stops in visit route
 
-***REMOVED*** Quote Token Configuration
-QUOTE_TOKEN_EXPIRY_MINUTES = 15  ***REMOVED*** Quote tokens expire after 15 minutes
-QUOTE_SECRET_ENV_VAR = "QUOTE_SECRET"  ***REMOVED*** Environment variable for quote signing secret
+# Quote Token Configuration
+QUOTE_TOKEN_EXPIRY_MINUTES = 15   # Quote tokens expire after 15 minutes
+QUOTE_SECRET_ENV_VAR = "QUOTE_SECRET"   # Environment variable for quote signing secret
 
-***REMOVED*** Pricing Model Dictionary (for API responses)
+# Pricing Model Dictionary (for API responses)
 PRICING_MODEL = {
     "account_activation": {
         "fee": ACCOUNT_ACTIVATION_FEE,

@@ -10,7 +10,7 @@ from typing import Any
 
 GOVERNANCE_EPOCH = "2025-05-01T00:00:00Z"
 
-***REMOVED*** Static registry — no runtime mutation API.
+# Static registry — no runtime mutation API.
 MUTATION_PROPOSALS: dict[str, dict[str, Any]] = {
     "mut-wf-opt-001": {
         "proposal_id": "mut-wf-opt-001",

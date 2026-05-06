@@ -12,7 +12,7 @@ from src.hardware_aware_runtime.hardware_validation_service import reject_fake_b
 
 
 def _cost_row(kind: str, compute_index: float, throughput_index: float, memory_pressure: float) -> dict[str, Any]:
-    ***REMOVED*** Explainable deterministic formula (relative, not dollars).
+    # Explainable deterministic formula (relative, not dollars).
     token_per_cost = round(throughput_index / max(0.1, compute_index), 4)
     return {
         "hardware_kind": kind,

@@ -20,9 +20,9 @@ from src.services.gpt_companion_service import GPTCompanionService
 router = APIRouter(prefix="/gpt-companion", tags=["gpt-companion"])
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** REQUEST/RESPONSE MODELS
-***REMOVED*** ============================================================================
+# ============================================================================
+# REQUEST/RESPONSE MODELS
+# ============================================================================
 
 class GuideRequest(BaseModel):
     query: str = Field(..., description="User question or request for guidance")
@@ -49,9 +49,9 @@ class GPTCompanionResponse(BaseModel):
     execution_note: Optional[str] = None
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** GPT COMPANION ENDPOINTS
-***REMOVED*** ============================================================================
+# ============================================================================
+# GPT COMPANION ENDPOINTS
+# ============================================================================
 
 @router.post("/guide", response_model=GPTCompanionResponse)
 async def get_guidance(
@@ -98,7 +98,7 @@ async def explain_target(
     if request.target_type not in ["company", "persona"]:
         raise HTTPException(status_code=400, detail="target_type must be 'company' or 'persona'")
     
-    ***REMOVED*** Get trace data from explainer service
+    # Get trace data from explainer service
     from src.services.explainer_service import ExplainerService
     explainer_service = ExplainerService(db)
     
@@ -110,7 +110,7 @@ async def explain_target(
             persona_id=request.persona_id
         )
         
-        ***REMOVED*** Convert trace to dict for GPT
+        # Convert trace to dict for GPT
         trace_dict = {
             "target_id": trace.target_id,
             "target_type": trace.target_type,

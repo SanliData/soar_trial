@@ -14,7 +14,7 @@ from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Patterns for PII detection
+# Patterns for PII detection
 _EMAIL_PATTERN = re.compile(
     r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
     re.IGNORECASE,
@@ -23,7 +23,7 @@ _PHONE_PATTERN = re.compile(
     r"(?:\+?[\d\s\-()]{10,20}|\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b)",
 )
 
-***REMOVED*** Common PII keys to redact recursively
+# Common PII keys to redact recursively
 _PII_KEYS = frozenset({
     "email", "emails", "e_mail", "e-mail",
     "phone", "phones", "phone_number", "phoneNumber", "mobile", "fax",

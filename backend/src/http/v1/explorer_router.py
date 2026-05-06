@@ -15,28 +15,28 @@ from pydantic import BaseModel, Field
 router = APIRouter(prefix="/explorer", tags=["explorer"])
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** DATA MODELS
-***REMOVED*** ============================================================================
+# ============================================================================
+# DATA MODELS
+# ============================================================================
 
 class LocationInfo(BaseModel):
     """Public location information (no PII)"""
     city: Optional[str] = None
     region: Optional[str] = None
     country: Optional[str] = None
-    coordinates: Optional[Dict[str, float]] = None  ***REMOVED*** {lat, lng} - approximate only
+    coordinates: Optional[Dict[str, float]] = None   # {lat, lng} - approximate only
 
 
 class PersonaArchetype(BaseModel):
     """Persona archetype (public role information, no PII)"""
     archetype_id: str
-    role: str  ***REMOVED*** "Procurement Manager"
+    role: str   # "Procurement Manager"
     department: str
-    seniority_level: str  ***REMOVED*** "C-Level", "Director", "Manager", "Senior"
-    decision_authority: str  ***REMOVED*** "high", "medium", "low"
+    seniority_level: str   # "C-Level", "Director", "Manager", "Senior"
+    decision_authority: str   # "high", "medium", "low"
     common_industries: List[str]
     common_locations: List[str]
-    typical_signals: List[str]  ***REMOVED*** Signal types that match this archetype
+    typical_signals: List[str]   # Signal types that match this archetype
 
 
 class ExplorerCompany(BaseModel):
@@ -45,10 +45,10 @@ class ExplorerCompany(BaseModel):
     name: str
     industry: str
     location: LocationInfo
-    employee_range: Optional[str] = None  ***REMOVED*** "1-10", "11-50", "51-200", etc.
+    employee_range: Optional[str] = None   # "1-10", "11-50", "51-200", etc.
     website: Optional[str] = None
     persona_archetypes: List[PersonaArchetype]
-    location_affinity_signals: List[str]  ***REMOVED*** "urban", "coastal", "industrial", etc.
+    location_affinity_signals: List[str]   # "urban", "coastal", "industrial", etc.
 
 
 class MarketInfo(BaseModel):
@@ -58,15 +58,15 @@ class MarketInfo(BaseModel):
     industry: str
     category: Optional[str] = None
     description: Optional[str] = None
-    company_count: Optional[int] = None  ***REMOVED*** Estimated
+    company_count: Optional[int] = None   # Estimated
     common_persona_archetypes: List[PersonaArchetype]
-    geographic_distribution: Dict[str, int]  ***REMOVED*** country -> count
+    geographic_distribution: Dict[str, int]   # country -> count
     location_signals: List[str]
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** EXPLORER ENDPOINTS (Public - No Authentication)
-***REMOVED*** ============================================================================
+# ============================================================================
+# EXPLORER ENDPOINTS (Public - No Authentication)
+# ============================================================================
 
 @router.get("/markets", response_model=List[MarketInfo])
 async def discover_markets(
@@ -80,10 +80,10 @@ async def discover_markets(
     
     This is a public endpoint - no authentication required.
     """
-    ***REMOVED*** TODO: Implement market discovery logic
-    ***REMOVED*** For now, return sample data structure
+    # TODO: Implement market discovery logic
+    # For now, return sample data structure
     
-    ***REMOVED*** Sample markets (will be replaced with real data source)
+    # Sample markets (will be replaced with real data source)
     markets = [
         {
             "market_id": "hospitality-hotels",
@@ -91,7 +91,7 @@ async def discover_markets(
             "industry": "Hospitality",
             "category": "Hotels",
             "description": "Hotels, resorts, and hospitality businesses",
-            "company_count": None,  ***REMOVED*** Will be calculated from data
+            "company_count": None,   # Will be calculated from data
             "common_persona_archetypes": [
                 {
                     "archetype_id": "procurement-manager-hotel",
@@ -115,14 +115,14 @@ async def discover_markets(
                 }
             ],
             "geographic_distribution": {
-                "Turkey": 0,  ***REMOVED*** Will be calculated
+                "Turkey": 0,   # Will be calculated
                 "Global": 0
             },
             "location_signals": ["urban", "coastal", "tourist-destination"]
         }
     ]
     
-    ***REMOVED*** Apply filters
+    # Apply filters
     filtered = markets
     if industry:
         filtered = [m for m in filtered if m["industry"].lower() == industry.lower()]
@@ -135,7 +135,7 @@ async def discover_markets(
 @router.get("/markets/{market_id}", response_model=MarketInfo)
 async def get_market_details(market_id: str):
     """Get detailed information about a specific market"""
-    ***REMOVED*** TODO: Implement market details retrieval
+    # TODO: Implement market details retrieval
     raise HTTPException(status_code=501, detail="Market details endpoint not yet implemented")
 
 
@@ -149,8 +149,8 @@ async def get_market_companies(
     Get companies in a specific market.
     Returns public company information only (no PII, no contact data).
     """
-    ***REMOVED*** TODO: Implement company retrieval from market
-    ***REMOVED*** This should query the company database but return only public fields
+    # TODO: Implement company retrieval from market
+    # This should query the company database but return only public fields
     raise HTTPException(status_code=501, detail="Market companies endpoint not yet implemented")
 
 
@@ -160,7 +160,7 @@ async def get_market_persona_archetypes(market_id: str):
     Get common persona archetypes in a specific market.
     Returns role/decision-maker archetypes without any personal information.
     """
-    ***REMOVED*** TODO: Implement persona archetype aggregation for market
+    # TODO: Implement persona archetype aggregation for market
     raise HTTPException(status_code=501, detail="Market persona archetypes endpoint not yet implemented")
 
 
@@ -179,8 +179,8 @@ async def discover_companies(
     
     This is a public endpoint - no authentication required.
     """
-    ***REMOVED*** TODO: Implement company discovery from database
-    ***REMOVED*** Should query companies table but return only public fields
+    # TODO: Implement company discovery from database
+    # Should query companies table but return only public fields
     raise HTTPException(status_code=501, detail="Company discovery endpoint not yet implemented")
 
 
@@ -190,7 +190,7 @@ async def get_company_profile(company_id: str):
     Get public profile of a specific company.
     Returns public information only (no PII, no contact data).
     """
-    ***REMOVED*** TODO: Implement company profile retrieval
+    # TODO: Implement company profile retrieval
     raise HTTPException(status_code=501, detail="Company profile endpoint not yet implemented")
 
 
@@ -200,7 +200,7 @@ async def get_company_persona_archetypes(company_id: str):
     Get persona archetypes associated with a company.
     Returns role/decision-maker information only (no PII).
     """
-    ***REMOVED*** TODO: Implement persona archetype retrieval for company
+    # TODO: Implement persona archetype retrieval for company
     raise HTTPException(status_code=501, detail="Company persona archetypes endpoint not yet implemented")
 
 
@@ -218,13 +218,13 @@ async def discover_persona_archetypes(
     
     This is a public endpoint - no authentication required.
     """
-    ***REMOVED*** TODO: Implement persona archetype discovery
-    ***REMOVED*** Should aggregate from personas table but return only archetype data (no PII)
+    # TODO: Implement persona archetype discovery
+    # Should aggregate from personas table but return only archetype data (no PII)
     raise HTTPException(status_code=501, detail="Persona archetype discovery endpoint not yet implemented")
 
 
 @router.get("/persona-archetypes/{archetype_id}", response_model=PersonaArchetype)
 async def get_persona_archetype_details(archetype_id: str):
     """Get detailed information about a specific persona archetype"""
-    ***REMOVED*** TODO: Implement persona archetype details retrieval
+    # TODO: Implement persona archetype details retrieval
     raise HTTPException(status_code=501, detail="Persona archetype details endpoint not yet implemented")

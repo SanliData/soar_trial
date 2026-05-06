@@ -19,7 +19,7 @@ def load_capabilities() -> list[CapabilityDefinition]:
     """
     Validate registry once per process then return deterministic sorted view.
     """
-    global _sorted_cache  ***REMOVED*** noqa: PLW0603 process-level memo for hot exporter path
+    global _sorted_cache   # noqa: PLW0603 process-level memo for hot exporter path
     if _sorted_cache is None:
         validate_capability_definitions(list(CAPABILITY_DEFINITIONS))
         _sorted_cache = sorted(CAPABILITY_DEFINITIONS, key=lambda c: c.capability_id)
@@ -27,5 +27,5 @@ def load_capabilities() -> list[CapabilityDefinition]:
 
 
 def invalidate_capability_cache_for_tests() -> None:
-    global _sorted_cache  ***REMOVED*** noqa: PLW0603
+    global _sorted_cache   # noqa: PLW0603
     _sorted_cache = None

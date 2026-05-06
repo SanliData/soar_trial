@@ -16,7 +16,7 @@ def export_mcp_gateway_manifest() -> dict[str, Any]:
     return {
         "gateway_mode": "projection_only",
         "gateways": export_gateways_manifest(),
-        ***REMOVED*** H-049: endpoint governance metadata (no execution)
+        # H-049: endpoint governance metadata (no execution)
         "endpoint_governance": export_mcp_endpoint_governance(),
         "policy_scoped_tools_only": True,
         "unrestricted_mcp_execution": False,

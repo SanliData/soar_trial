@@ -31,9 +31,9 @@ from src.services.upload_service import (
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(tags=["public"])  ***REMOVED*** Prefix app.py'de tanımlı: /api/v1/public
+router = APIRouter(tags=["public"])   # Prefix app.py'de tanımlı: /api/v1/public
 
-***REMOVED*** Data directory
+# Data directory
 DATA_DIR = Path(__file__).parent.parent.parent.parent / "data"
 DATA_DIR.mkdir(exist_ok=True)
 
@@ -52,7 +52,7 @@ def _check_captcha_if_required(request: Request, x_captcha_token: Optional[str] 
     return None
 
 
-***REMOVED*** Request Models
+# Request Models
 class OnboardingIntakeRequest(BaseModel):
     """Public onboarding intake request (limited fields, no sensitive data)"""
     industry: str = Field(..., description="Industry or business type")
@@ -69,7 +69,7 @@ class OnboardingIntakeResponse(BaseModel):
     message: str
 
 
-***REMOVED*** --- Upload: LinkedIn Profile (user-provided only, no scraping) ---
+# --- Upload: LinkedIn Profile (user-provided only, no scraping) ---
 class LinkedInProfileUploadRequest(BaseModel):
     """LinkedIn profile input: URL, PDF base64, or plain text."""
     linkedin_url: Optional[str] = Field(None, description="LinkedIn profile URL (e.g. linkedin.com/in/name)")
@@ -89,7 +89,7 @@ class LinkedInProfileUploadResponse(BaseModel):
     message: str = "User-provided data accepted. SOAR does not scrape or access private data."
 
 
-***REMOVED*** --- Upload: Company Target ---
+# --- Upload: Company Target ---
 class CompanyTargetUploadRequest(BaseModel):
     """Company target input: name, domain, Google Maps URL, or CSV rows."""
     company_name: Optional[str] = Field(None, description="Company name")
@@ -107,7 +107,7 @@ class CompanyTargetUploadResponse(BaseModel):
     message: str = "Company targets received. Preview ready; confirm to start discovery."
 
 
-***REMOVED*** --- Şirket e-postası ile kayıt (sign up) — önce kullanıcı oluşturulmalı ---
+# --- Şirket e-postası ile kayıt (sign up) — önce kullanıcı oluşturulmalı ---
 class CorporateSignupRequest(BaseModel):
     """Sign up with company email (creates user account; then use login link to sign in)."""
     email: EmailStr = Field(..., description="Company email address")
@@ -121,7 +121,7 @@ class CorporateSignupResponse(BaseModel):
     message_tr: Optional[str] = None
 
 
-***REMOVED*** --- Şirket e-postası ile giriş talebi (zaten hesabı olanlar) ---
+# --- Şirket e-postası ile giriş talebi (zaten hesabı olanlar) ---
 class CorporateLoginRequest(BaseModel):
     """Request login link for company email (link sent by support)."""
     email: EmailStr = Field(..., description="Company email address")
@@ -134,7 +134,7 @@ class CorporateLoginResponse(BaseModel):
     message_tr: Optional[str] = None
 
 
-***REMOVED*** --- Reklam monetizasyon: sayfa slotları merkezi config ---
+# --- Reklam monetizasyon: sayfa slotları merkezi config ---
 def get_ad_config() -> Dict[str, Any]:
     """Reklam aç/kapa ve slot ID'leri (env ile). ADS_ENABLED=1, ADSENSE_CLIENT_ID=ca-pub-xxx, slot ID'ler opsiyonel."""
     enabled = (os.getenv("ADS_ENABLED", "").strip().lower() in ("1", "true", "yes"))
@@ -161,7 +161,7 @@ def ad_config():
     return get_ad_config()
 
 
-***REMOVED*** --- Address / place validation (country–city, geocode by name) ---
+# --- Address / place validation (country–city, geocode by name) ---
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 NOMINATIM_USER_AGENT = "SOARB2B-Onboarding/1.0 (contact@soarb2b.com)"
 
@@ -232,7 +232,7 @@ async def validate_address(
     }
 
 
-***REMOVED*** Endpoints
+# Endpoints
 @router.post("/onboarding-intake", response_model=OnboardingIntakeResponse)
 async def create_onboarding_intake(
     request: OnboardingIntakeRequest,
@@ -248,14 +248,14 @@ async def create_onboarding_intake(
     intake_id = str(uuid.uuid4())
     created_at = datetime.utcnow().isoformat()
     
-    ***REMOVED*** Get locale from request (uses Accept-Language header)
+    # Get locale from request (uses Accept-Language header)
     locale = get_locale_from_request(http_request)
-    language = locale  ***REMOVED*** Keep for backward compatibility in stored data
+    language = locale   # Keep for backward compatibility in stored data
     
-    ***REMOVED*** Get referrer URL
+    # Get referrer URL
     referrer_url = http_request.headers.get("Referer") or http_request.headers.get("Referrer") or ""
     
-    ***REMOVED*** Arşiv: her kayıtta HS/gümrük kodu olsun (kullanıcı girmezse AI ile)
+    # Arşiv: her kayıtta HS/gümrük kodu olsun (kullanıcı girmezse AI ile)
     intake_data = {
         "intake_id": intake_id,
         "status": "pending_intake",
@@ -286,7 +286,7 @@ async def create_onboarding_intake(
         intake_data["hs_code_source"] = enriched.get("hs_code_source", "ai")
         intake_data["product_customs_description"] = enriched.get("product_customs_description")
     
-    ***REMOVED*** Store to JSONL file (P0: file-based storage)
+    # Store to JSONL file (P0: file-based storage)
     intakes_file = DATA_DIR / "onboarding_intakes.jsonl"
     try:
         with open(intakes_file, "a", encoding="utf-8") as f:
@@ -298,7 +298,7 @@ async def create_onboarding_intake(
             detail="Failed to process intake request"
         )
     
-    ***REMOVED*** Log intake
+    # Log intake
     logger.info(
         json.dumps({
             "event": "onboarding_intake_created",
@@ -311,7 +311,7 @@ async def create_onboarding_intake(
         }, ensure_ascii=False)
     )
     
-    ***REMOVED*** Get language-aware message
+    # Get language-aware message
     response_message = get_onboarding_received_message(locale)
     
     return OnboardingIntakeResponse(
@@ -321,7 +321,7 @@ async def create_onboarding_intake(
     )
 
 
-***REMOVED*** --- Upload endpoints (bot defense + optional CAPTCHA) ---
+# --- Upload endpoints (bot defense + optional CAPTCHA) ---
 @router.post("/upload/linkedin-profile", response_model=LinkedInProfileUploadResponse)
 async def upload_linkedin_profile(
     body: LinkedInProfileUploadRequest,

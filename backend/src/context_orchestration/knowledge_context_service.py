@@ -40,7 +40,7 @@ def build_knowledge_context(
         "token_estimate": max(0, int(len(summary or "") / 4)),
         "isolation_required": bool(isolation_required),
         "compression_allowed": True,
-        ***REMOVED*** Deterministic epoch required for governed foundation + repeatable tests.
+        # Deterministic epoch required for governed foundation + repeatable tests.
         "created_at": "2026-01-01T00:00:00Z",
         "tags": list(tags or ["knowledge"]),
     }

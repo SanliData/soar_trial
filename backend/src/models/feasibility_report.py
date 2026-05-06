@@ -20,47 +20,47 @@ class FeasibilityReport(Base):
     
     __tablename__ = "feasibility_reports"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User (and optionally onboarding plan)
+    # Foreign key to User (and optionally onboarding plan)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    onboarding_plan_id = Column(String(255), nullable=True, index=True)  ***REMOVED*** UUID from onboarding
+    onboarding_plan_id = Column(String(255), nullable=True, index=True)   # UUID from onboarding
     
-    ***REMOVED*** Geographic filters (context only)
-    geography = Column(String(255), nullable=True)  ***REMOVED*** "USA", "Turkey", etc.
-    region = Column(Text, nullable=True)  ***REMOVED*** Geographic region description
+    # Geographic filters (context only)
+    geography = Column(String(255), nullable=True)   # "USA", "Turkey", etc.
+    region = Column(Text, nullable=True)   # Geographic region description
     
-    ***REMOVED*** Target type filters
-    target_type = Column(String(100), nullable=True)  ***REMOVED*** "B2B", "B2C", etc.
-    decision_roles = Column(String(500), nullable=True)  ***REMOVED*** "CEO, CTO" (roles, not names)
+    # Target type filters
+    target_type = Column(String(100), nullable=True)   # "B2B", "B2C", etc.
+    decision_roles = Column(String(500), nullable=True)   # "CEO, CTO" (roles, not names)
     
-    ***REMOVED*** Aggregated counts (NO PERSONAL DATA)
-    total_businesses = Column(Integer, default=0, nullable=False)  ***REMOVED*** Total businesses in region
-    target_department_size = Column(String(100), nullable=True)  ***REMOVED*** "50-200 employees"
+    # Aggregated counts (NO PERSONAL DATA)
+    total_businesses = Column(Integer, default=0, nullable=False)   # Total businesses in region
+    target_department_size = Column(String(100), nullable=True)   # "50-200 employees"
     
-    ***REMOVED*** Contact availability counts
-    corporate_email_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Count of businesses with corporate emails
-    phone_contact_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Count with phone availability
-    linkedin_profile_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Count with LinkedIn profiles (corporate)
-    ad_only_reachable_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Count reachable only via ads
+    # Contact availability counts
+    corporate_email_count = Column(Integer, default=0, nullable=False)   # Count of businesses with corporate emails
+    phone_contact_count = Column(Integer, default=0, nullable=False)   # Count with phone availability
+    linkedin_profile_count = Column(Integer, default=0, nullable=False)   # Count with LinkedIn profiles (corporate)
+    ad_only_reachable_count = Column(Integer, default=0, nullable=False)   # Count reachable only via ads
     
-    ***REMOVED*** Additional aggregated metadata (anonymized)
-    industry_distribution = Column(JSON, nullable=True)  ***REMOVED*** {"Technology": 150, "Manufacturing": 200}
-    company_size_distribution = Column(JSON, nullable=True)  ***REMOVED*** {"Small": 100, "Medium": 150, "Large": 50}
+    # Additional aggregated metadata (anonymized)
+    industry_distribution = Column(JSON, nullable=True)   # {"Technology": 150, "Manufacturing": 200}
+    company_size_distribution = Column(JSON, nullable=True)   # {"Small": 100, "Medium": 150, "Large": 50}
     
-    ***REMOVED*** Access control
-    is_unlocked = Column(Integer, default=0, nullable=False)  ***REMOVED*** 0 = locked (preview), 1 = unlocked (purchased)
-    unlocked_at = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** When access was purchased
+    # Access control
+    is_unlocked = Column(Integer, default=0, nullable=False)   # 0 = locked (preview), 1 = unlocked (purchased)
+    unlocked_at = Column(DateTime(timezone=True), nullable=True)   # When access was purchased
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="feasibility_reports")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_feasibility_user_id', 'user_id'),
         Index('idx_feasibility_plan_id', 'onboarding_plan_id'),
@@ -99,7 +99,7 @@ class FeasibilityReport(Base):
             "updated_at": self.updated_at.isoformat() if self.updated_at else None
         }
         
-        ***REMOVED*** Only include unlocked timestamp if unlocked
+        # Only include unlocked timestamp if unlocked
         if self.is_unlocked and include_unlocked:
             result["unlocked_at"] = self.unlocked_at.isoformat() if self.unlocked_at else None
         

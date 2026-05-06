@@ -37,7 +37,7 @@ class FeasibilityReportResponse(BaseModel):
     target_type: Optional[str]
     decision_roles: Optional[str]
     
-    ***REMOVED*** Aggregated counts (NO PERSONAL DATA)
+    # Aggregated counts (NO PERSONAL DATA)
     total_businesses: int
     target_department_size: Optional[str]
     corporate_email_count: int
@@ -45,14 +45,14 @@ class FeasibilityReportResponse(BaseModel):
     linkedin_profile_count: int
     ad_only_reachable_count: int
     
-    ***REMOVED*** Aggregated distributions (anonymized)
+    # Aggregated distributions (anonymized)
     industry_distribution: Optional[dict]
     company_size_distribution: Optional[dict]
     
-    ***REMOVED*** Access control
+    # Access control
     is_unlocked: bool
     
-    ***REMOVED*** Metadata
+    # Metadata
     created_at: str
     updated_at: str
 

@@ -77,7 +77,7 @@ SEMANTIC_CAPABILITY_ENTITIES: dict[str, dict[str, Any]] = {
         "related_capabilities": ["workflow_governance", "graph_intelligence"],
         "created_at": GRAPH_EPOCH,
     },
-    ***REMOVED*** H-045 nodes (governed foundations)
+    # H-045 nodes (governed foundations)
     "agent_os": {
         "capability_name": "agent_os",
         "capability_type": "agent_operations",

@@ -58,7 +58,7 @@ async def optimize_email_strategy(
             max_tokens=400,
         )
         text = (resp.choices[0].message.content or "").strip()
-        ***REMOVED*** Strip markdown code block if present
+        # Strip markdown code block if present
         if text.startswith("```"):
             text = text.split("\n", 1)[-1].rsplit("```", 1)[0]
         data = json.loads(text)

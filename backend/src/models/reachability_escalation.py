@@ -21,43 +21,43 @@ class ReachabilityEscalation(Base):
     
     __tablename__ = "reachability_escalations"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     precision_exposure_id = Column(Integer, ForeignKey("precision_exposures.id"), nullable=True, index=True)
     
-    ***REMOVED*** Escalation details
-    escalation_type = Column(String(50), default="appointment", nullable=False)  ***REMOVED*** "appointment", "callback", "referral"
-    title = Column(String(255), nullable=True)  ***REMOVED*** Appointment/escalation title
-    description = Column(Text, nullable=True)  ***REMOVED*** Description/notes
+    # Escalation details
+    escalation_type = Column(String(50), default="appointment", nullable=False)   # "appointment", "callback", "referral"
+    title = Column(String(255), nullable=True)   # Appointment/escalation title
+    description = Column(Text, nullable=True)   # Description/notes
     
-    ***REMOVED*** Contact preference (optional, only if user enables)
-    contact_preference = Column(String(50), nullable=True)  ***REMOVED*** "email", "phone", "linkedin", "call_center"
+    # Contact preference (optional, only if user enables)
+    contact_preference = Column(String(50), nullable=True)   # "email", "phone", "linkedin", "call_center"
     
-    ***REMOVED*** Call center partnership (future)
-    call_center_partner_id = Column(String(255), nullable=True)  ***REMOVED*** Partner ID if using call center
-    call_center_status = Column(String(50), nullable=True)  ***REMOVED*** "pending", "assigned", "completed"
+    # Call center partnership (future)
+    call_center_partner_id = Column(String(255), nullable=True)   # Partner ID if using call center
+    call_center_status = Column(String(50), nullable=True)   # "pending", "assigned", "completed"
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="pending", nullable=False, index=True)  ***REMOVED*** "pending", "scheduled", "completed", "cancelled"
-    is_enabled = Column(Boolean, default=False, nullable=False, index=True)  ***REMOVED*** Module enabled flag
+    # Status
+    status = Column(String(50), default="pending", nullable=False, index=True)   # "pending", "scheduled", "completed", "cancelled"
+    is_enabled = Column(Boolean, default=False, nullable=False, index=True)   # Module enabled flag
     
-    ***REMOVED*** Escalation context (no personal identifiers in preview)
-    escalation_context = Column(JSON, nullable=True)  ***REMOVED*** Contextual data (roles, location, etc.)
+    # Escalation context (no personal identifiers in preview)
+    escalation_context = Column(JSON, nullable=True)   # Contextual data (roles, location, etc.)
     
-    ***REMOVED*** Timestamps
-    scheduled_at = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** Scheduled escalation time
+    # Timestamps
+    scheduled_at = Column(DateTime(timezone=True), nullable=True)   # Scheduled escalation time
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="reachability_escalations")
     precision_exposure = relationship("PrecisionExposure", backref="escalations")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_escalation_user_id', 'user_id'),
         Index('idx_escalation_exposure_id', 'precision_exposure_id'),

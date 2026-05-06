@@ -23,10 +23,10 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/learning", tags=["learning"])
 
 
-***REMOVED*** ---------- Response shapes (example) ----------
-***REMOVED*** GET /learning/insights -> top_performing_industries, best_roles, recommended_email_style
-***REMOVED*** GET /learning/recommendations -> same + targeting + email strategy
-***REMOVED*** POST /learning/analyze-campaign -> queued for background analysis
+# ---------- Response shapes (example) ----------
+# GET /learning/insights -> top_performing_industries, best_roles, recommended_email_style
+# GET /learning/recommendations -> same + targeting + email strategy
+# POST /learning/analyze-campaign -> queued for background analysis
 
 
 class AnalyzeCampaignRequest(BaseModel):

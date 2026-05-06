@@ -17,9 +17,9 @@ from src.services.enrichment_service import EnrichmentService
 router = APIRouter(prefix="/users/me/enrichment", tags=["enrichment"])
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** REQUEST/RESPONSE MODELS
-***REMOVED*** ============================================================================
+# ============================================================================
+# REQUEST/RESPONSE MODELS
+# ============================================================================
 
 class EnrichmentSettingsRequest(BaseModel):
     email_confidence_threshold: Optional[float] = Field(None, ge=0.0, le=1.0, description="Minimum confidence for email enrichment (0.0 to 1.0)")
@@ -43,9 +43,9 @@ class EnrichmentSettingsResponse(BaseModel):
     updated_at: str
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** ENRICHMENT ENDPOINTS
-***REMOVED*** ============================================================================
+# ============================================================================
+# ENRICHMENT ENDPOINTS
+# ============================================================================
 
 @router.get("/settings", response_model=EnrichmentSettingsResponse)
 async def get_enrichment_settings(

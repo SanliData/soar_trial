@@ -12,7 +12,7 @@ import json
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** backend/data (same as public_router)
+# backend/data (same as public_router)
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
 UPLOADS_FILE = DATA_DIR / "uploads.jsonl"
 
@@ -70,7 +70,7 @@ def _parse_profile_text(text: str) -> Dict[str, Any]:
     text = (text or "").strip()
     role = seniority = department = company = None
     lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
-    ***REMOVED*** Common patterns: "Title at Company", "Department · Company", "Senior X at Y"
+    # Common patterns: "Title at Company", "Department · Company", "Senior X at Y"
     seniority_keywords = ["senior", "lead", "head", "director", "vp", "ceo", "cto", "cfo", "manager", "associate", "junior", "intern"]
     for line in lines:
         line_lower = line.lower()
@@ -142,7 +142,7 @@ def validate_and_parse_company_target(
         })
     if google_maps_url:
         url = (google_maps_url or "").strip()
-        ***REMOVED*** Extract place name from URL if possible (e.g. place name in query)
+        # Extract place name from URL if possible (e.g. place name in query)
         name = None
         if "place/" in url:
             m = re.search(r"place/([^/]+)", url)
@@ -154,7 +154,7 @@ def validate_and_parse_company_target(
             "source": "google_maps",
         })
     if csv_text:
-        for line in csv_text.strip().splitlines()[1:]:  ***REMOVED*** skip header if present
+        for line in csv_text.strip().splitlines()[1:]:   # skip header if present
             parts = [p.strip() for p in line.split(",")]
             if len(parts) >= 1:
                 companies.append({

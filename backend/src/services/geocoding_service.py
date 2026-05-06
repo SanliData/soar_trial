@@ -82,9 +82,9 @@ class GeocodingService:
             location = result["geometry"]["location"]
             location_type = result["geometry"]["location_type"]
             
-            ***REMOVED*** Map Google location types to accuracy
+            # Map Google location types to accuracy
             accuracy_map = {
-                "ROOFTOP": "ROOFTOP",  ***REMOVED*** Most accurate
+                "ROOFTOP": "ROOFTOP",   # Most accurate
                 "RANGE_INTERPOLATED": "RANGE_INTERPOLATED",
                 "GEOMETRIC_CENTER": "GEOMETRIC_CENTER",
                 "APPROXIMATE": "APPROXIMATE"
@@ -103,7 +103,7 @@ class GeocodingService:
         
         except Exception as e:
             logger.error(f"Google geocoding error: {e}")
-            ***REMOVED*** Fallback to Nominatim
+            # Fallback to Nominatim
             return self._geocode_nominatim(address)
     
     def _geocode_nominatim(self, address: str) -> Dict[str, Any]:
@@ -143,7 +143,7 @@ class GeocodingService:
                 "latitude": float(result["lat"]),
                 "longitude": float(result["lon"]),
                 "formatted_address": result.get("display_name", address),
-                "accuracy": "APPROXIMATE",  ***REMOVED*** Nominatim is less precise
+                "accuracy": "APPROXIMATE",   # Nominatim is less precise
                 "location_type": "NOMINATIM",
                 "provider": "nominatim"
             }
@@ -200,7 +200,7 @@ class GeocodingService:
         }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _geocoding_service_instance = None
 
 

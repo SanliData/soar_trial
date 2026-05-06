@@ -10,7 +10,7 @@ from typing import Any
 
 EFFORT_LEVELS: tuple[str, ...] = ("low", "medium", "high", "xhigh", "max")
 
-***REMOVED*** Task kind → effort (deterministic lookup).
+# Task kind → effort (deterministic lookup).
 _TASK_EFFORT_MAP: dict[str, str] = {
     "quick_lookup": "low",
     "lookup": "low",

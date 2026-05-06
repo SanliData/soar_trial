@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["visit_route"])
 
 
-***REMOVED*** Request Models
+# Request Models
 class CreateRouteRequest(BaseModel):
     plan_result_id: int
     region: str
@@ -36,7 +36,7 @@ class GenerateStopsRequest(BaseModel):
     businesses: List[Dict[str, Any]] = Field(..., description="List of businesses with address, coordinates, persona_count")
 
 
-***REMOVED*** Response Models
+# Response Models
 class RouteResponse(BaseModel):
     route_id: int
     plan_result_id: int
@@ -48,7 +48,7 @@ class RouteResponse(BaseModel):
     created_at: str
 
 
-***REMOVED*** Endpoints
+# Endpoints
 @router.post("/route", response_model=RouteResponse)
 async def create_visit_route(
     request: CreateRouteRequest,
@@ -60,13 +60,13 @@ async def create_visit_route(
     Max 20 stops per route (hard limit).
     """
     try:
-        ***REMOVED*** Validate plan result exists
+        # Validate plan result exists
         result_service = get_result_service(db)
         plan_result = result_service.get_result_hub(request.plan_result_id)
         if not plan_result:
             raise HTTPException(status_code=404, detail=f"Plan result {request.plan_result_id} not found")
         
-        ***REMOVED*** Enforce max_stops limit
+        # Enforce max_stops limit
         max_stops = request.max_stops if request.max_stops else MAX_VISIT_STOPS_PER_ROUTE
         if max_stops > MAX_VISIT_STOPS_PER_ROUTE:
             max_stops = MAX_VISIT_STOPS_PER_ROUTE
@@ -114,10 +114,10 @@ async def generate_route_stops(
         if not route:
             raise HTTPException(status_code=404, detail=f"Route {route_id} not found")
         
-        ***REMOVED*** Generate stops (automatically limited to route.max_stops)
+        # Generate stops (automatically limited to route.max_stops)
         stops = visit_service.generate_route_stops(route_id, request.businesses)
         
-        ***REMOVED*** Refresh route to get updated data
+        # Refresh route to get updated data
         route = visit_service.get_route(route_id)
         
         return {

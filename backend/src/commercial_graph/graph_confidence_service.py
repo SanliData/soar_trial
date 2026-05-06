@@ -22,7 +22,7 @@ def _freshness_factor(freshness_days: int) -> float:
 
 def _evidence_factor(evidence_sources: list[str]) -> tuple[float, int]:
     n = len({e.strip() for e in evidence_sources if e.strip()})
-    ***REMOVED*** Diminishing returns after 3 distinct sources
+    # Diminishing returns after 3 distinct sources
     base = min(1.0, 0.35 + n * 0.22)
     return round(base, 4), n
 
@@ -45,7 +45,7 @@ def compute_relationship_confidence(
     """
     repetition_count: how many parallel evidences already recorded for same triple pattern (foundation uses 0).
     """
-    _ = relationship_type  ***REMOVED*** reserved for future typed priors
+    _ = relationship_type   # reserved for future typed priors
     auth = (source.authority_score + target.authority_score) / 2.0
     fresh = (_freshness_factor(source.freshness_days) + _freshness_factor(target.freshness_days)) / 2.0
     ev_score, n_ev = _evidence_factor(evidence_sources)

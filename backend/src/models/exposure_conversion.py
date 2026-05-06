@@ -20,37 +20,37 @@ class ExposureConversion(Base):
     
     __tablename__ = "exposure_conversions"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     precision_exposure_id = Column(Integer, ForeignKey("precision_exposures.id"), nullable=False, index=True)
     
-    ***REMOVED*** Conversion event type
-    event_type = Column(String(50), nullable=False, index=True)  ***REMOVED*** "impression", "click", "content_view"
+    # Conversion event type
+    event_type = Column(String(50), nullable=False, index=True)   # "impression", "click", "content_view"
     
-    ***REMOVED*** Event context (anonymized, contextual only)
-    event_context = Column(JSON, nullable=True)  ***REMOVED*** Contextual data: location, device, time, etc. (NO PII)
+    # Event context (anonymized, contextual only)
+    event_context = Column(JSON, nullable=True)   # Contextual data: location, device, time, etc. (NO PII)
     
-    ***REMOVED*** Aggregated metrics
-    impression_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Total impressions
-    click_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Total clicks
-    content_view_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Total content views
+    # Aggregated metrics
+    impression_count = Column(Integer, default=0, nullable=False)   # Total impressions
+    click_count = Column(Integer, default=0, nullable=False)   # Total clicks
+    content_view_count = Column(Integer, default=0, nullable=False)   # Total content views
     
-    ***REMOVED*** Interest signals (soft conversion indicators)
-    interest_score = Column(Integer, default=0, nullable=False)  ***REMOVED*** 0-100 interest score (aggregated)
+    # Interest signals (soft conversion indicators)
+    interest_score = Column(Integer, default=0, nullable=False)   # 0-100 interest score (aggregated)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
-    last_event_at = Column(DateTime(timezone=True), nullable=True)  ***REMOVED*** Last event timestamp
+    last_event_at = Column(DateTime(timezone=True), nullable=True)   # Last event timestamp
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="exposure_conversions")
     precision_exposure = relationship("PrecisionExposure", backref="conversions")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_conversion_user_id', 'user_id'),
         Index('idx_conversion_exposure_id', 'precision_exposure_id'),

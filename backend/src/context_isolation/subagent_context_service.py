@@ -32,7 +32,7 @@ def build_isolated_subagent_context(
     allowed = tuple(sorted(set(part["allowed_context_types"])))
     iso = IsolatedExecutionContext(workflow_scope=wf, subagent_id=sid, allowed_context_types=allowed)
 
-    ***REMOVED*** Filter to allowed types and same workflow by default (isolation)
+    # Filter to allowed types and same workflow by default (isolation)
     filtered = []
     for it in context_items:
         validate_context_item(it)
@@ -48,7 +48,7 @@ def build_isolated_subagent_context(
         allow_guardrail_compression=False,
     )
     if not compression_allowed:
-        ***REMOVED*** explicit: return only preserved view without compression marker
+        # explicit: return only preserved view without compression marker
         summary = summarize_context_collection(
             filtered,
             max_tokens_total=1_000_000,

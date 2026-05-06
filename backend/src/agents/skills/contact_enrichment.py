@@ -24,7 +24,7 @@ async def run_contact_enrichment(companies: List[Dict[str, Any]]) -> Dict[str, A
         for p in personas:
             name = p.get("name", "Unknown")
             role = p.get("role", "")
-            ***REMOVED*** Placeholder: real impl would call enrichment APIs (Apollo, Clearbit, etc.) with retries
+            # Placeholder: real impl would call enrichment APIs (Apollo, Clearbit, etc.) with retries
             email = None
             linkedin = None
             if website:

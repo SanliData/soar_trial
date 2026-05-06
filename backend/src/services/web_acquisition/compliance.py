@@ -10,7 +10,7 @@ from typing import List, Set, Dict, Any
 import re
 
 
-***REMOVED*** Restricted domains that should NOT be scraped by default
+# Restricted domains that should NOT be scraped by default
 RESTRICTED_DOMAINS: Set[str] = {
     "linkedin.com",
     "www.linkedin.com",
@@ -24,31 +24,31 @@ RESTRICTED_DOMAINS: Set[str] = {
     "www.instagram.com",
     "whatsapp.com",
     "telegram.org",
-    ***REMOVED*** Add other restricted platforms
+    # Add other restricted platforms
 }
 
-***REMOVED*** Official sources whitelist (for "official_only" policy)
+# Official sources whitelist (for "official_only" policy)
 OFFICIAL_SOURCES: Set[str] = {
-    ***REMOVED*** Government domains
+    # Government domains
     "gov.tr",
     "gov.uk",
     "gov.us",
     "europa.eu",
-    ***REMOVED*** Municipality domains
+    # Municipality domains
     "belediyeler.gov.tr",
-    ***REMOVED*** Chamber of commerce
+    # Chamber of commerce
     "tobb.org.tr",
     "chamber.com",
-    ***REMOVED*** Company websites are allowed (not in whitelist but checked separately)
+    # Company websites are allowed (not in whitelist but checked separately)
 }
 
-***REMOVED*** Public web directories (allowed in "public_web" policy)
+# Public web directories (allowed in "public_web" policy)
 PUBLIC_DIRECTORIES: Set[str] = {
     "google.com",
     "bing.com",
     "yellowpages.com",
     "yelp.com",
-    ***REMOVED*** Add other public directories
+    # Add other public directories
 }
 
 
@@ -73,11 +73,11 @@ class SourcesPolicy:
         """
         domain_lower = domain.lower().strip()
         
-        ***REMOVED*** Check exact match
+        # Check exact match
         if domain_lower in RESTRICTED_DOMAINS:
             return True
         
-        ***REMOVED*** Check subdomain match (e.g., "jobs.linkedin.com")
+        # Check subdomain match (e.g., "jobs.linkedin.com")
         for restricted in RESTRICTED_DOMAINS:
             if domain_lower.endswith(f".{restricted}") or domain_lower == restricted:
                 return True
@@ -97,11 +97,11 @@ class SourcesPolicy:
         """
         domain_lower = domain.lower().strip()
         
-        ***REMOVED*** Check exact match
+        # Check exact match
         if domain_lower in OFFICIAL_SOURCES:
             return True
         
-        ***REMOVED*** Check if ends with official source domain
+        # Check if ends with official source domain
         for official in OFFICIAL_SOURCES:
             if domain_lower.endswith(f".{official}") or domain_lower == official:
                 return True
@@ -123,7 +123,7 @@ class SourcesPolicy:
         if SourcesPolicy.is_restricted(domain):
             return False
         
-        ***REMOVED*** Company websites typically don't have common platform patterns
+        # Company websites typically don't have common platform patterns
         platform_patterns = [
             r"^(www\.)?(linkedin|facebook|twitter|x|instagram|whatsapp)",
             r"\.(blog|medium|substack)\.com$",
@@ -148,23 +148,23 @@ class SourcesPolicy:
         Returns:
             True if domain is allowed
         """
-        ***REMOVED*** Always block restricted domains
+        # Always block restricted domains
         if SourcesPolicy.is_restricted(domain):
             return False
         
         if policy == SourcesPolicy.OFFICIAL_ONLY:
-            ***REMOVED*** Only official sources + company websites
+            # Only official sources + company websites
             return SourcesPolicy.is_official_source(domain) or SourcesPolicy.is_company_website(domain)
         
         elif policy == SourcesPolicy.PUBLIC_WEB:
-            ***REMOVED*** Official sources + company websites + public directories
+            # Official sources + company websites + public directories
             return (
                 SourcesPolicy.is_official_source(domain) or
                 SourcesPolicy.is_company_website(domain) or
                 any(domain.lower().endswith(f".{d}") or domain.lower() == d for d in PUBLIC_DIRECTORIES)
             )
         
-        ***REMOVED*** Default: deny unknown policies
+        # Default: deny unknown policies
         return False
     
     @staticmethod
@@ -191,7 +191,7 @@ class RateLimiter:
         """Initialize rate limiter."""
         self._domain_requests: Dict[str, List[float]] = {}
         self._max_requests_per_minute = 10
-        self._cleanup_interval = 60.0  ***REMOVED*** seconds
+        self._cleanup_interval = 60.0   # seconds
     
     def is_allowed(self, domain: str) -> bool:
         """
@@ -208,22 +208,22 @@ class RateLimiter:
         domain_lower = domain.lower()
         current_time = time.time()
         
-        ***REMOVED*** Get or create request history for domain
+        # Get or create request history for domain
         if domain_lower not in self._domain_requests:
             self._domain_requests[domain_lower] = []
         
-        ***REMOVED*** Clean old requests (older than 1 minute)
+        # Clean old requests (older than 1 minute)
         self._domain_requests[domain_lower] = [
             req_time
             for req_time in self._domain_requests[domain_lower]
             if current_time - req_time < self._cleanup_interval
         ]
         
-        ***REMOVED*** Check if limit exceeded
+        # Check if limit exceeded
         if len(self._domain_requests[domain_lower]) >= self._max_requests_per_minute:
             return False
         
-        ***REMOVED*** Record this request
+        # Record this request
         self._domain_requests[domain_lower].append(current_time)
         return True
     
@@ -242,7 +242,7 @@ class RateLimiter:
             self._domain_requests.clear()
 
 
-***REMOVED*** Global rate limiter instance
+# Global rate limiter instance
 _global_rate_limiter = RateLimiter()
 
 

@@ -78,6 +78,6 @@ def build_inference_profile(task: AIRuntimeTask, input_context: str) -> AIRuntim
         prompt_compaction_applied=prompt_compaction_applied,
         latency_ms=latency_ms,
         time_to_first_token_ms=ttft,
-        status=status_literal,  ***REMOVED*** type: ignore[arg-type]
+        status=status_literal,   # type: ignore[arg-type]
         warnings=warnings,
     )

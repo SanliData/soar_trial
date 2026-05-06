@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Production stability limits
+# Production stability limits
 MAX_JOIN_DEPTH = 4
 MAX_RESULT_SIZE = 500
 QUERY_TIMEOUT_SEC = 2

@@ -52,7 +52,7 @@ def summarize_context(
             "marker": None,
         }
 
-    ***REMOVED*** deterministic char budget from token budget
+    # deterministic char budget from token budget
     max_chars = max(120, int(max_tokens * 4))
     truncated, was_truncated = _truncate_preserve_ends(original, max_chars=max_chars)
     out_text = truncated
@@ -100,7 +100,7 @@ def summarize_context_collection(
     for it in validated:
         validate_context_item(it)
 
-    ***REMOVED*** Deterministic per-type weight allocations (sum to 1.0)
+    # Deterministic per-type weight allocations (sum to 1.0)
     weights: dict[str, float] = {
         "guardrail_context": 0.22,
         "instruction_context": 0.18,
@@ -109,7 +109,7 @@ def summarize_context_collection(
         "memory_context": 0.14,
         "example_context": 0.12,
     }
-    ***REMOVED*** Ensure stable order
+    # Ensure stable order
     validated.sort(key=lambda x: (x["workflow_scope"], x["context_type"], x["context_id"]))
 
     summaries: list[dict[str, Any]] = []

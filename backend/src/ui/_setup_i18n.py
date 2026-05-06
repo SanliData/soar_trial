@@ -1,4 +1,4 @@
-***REMOVED***!/usr/bin/env python3
+# !/usr/bin/env python3
 """
 Script to setup i18n structure for SOAR B2B
 Creates TR and EN versions of HTML files with proper SEO tags and JSON loading
@@ -13,22 +13,22 @@ TR_DIR = BASE_DIR / "tr"
 EN_DIR = BASE_DIR / "en"
 
 def setup_i18n():
-    ***REMOVED*** Create directories
+    # Create directories
     TR_DIR.mkdir(exist_ok=True)
     EN_DIR.mkdir(exist_ok=True)
     
-    ***REMOVED*** Read source file
+    # Read source file
     with open(SOURCE_FILE, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    ***REMOVED*** Create TR version
+    # Create TR version
     tr_content = content.replace('<html lang="en">', '<html lang="tr">')
     tr_content = tr_content.replace(
         '<title>SOAR B2B — Turn Companies Into Booked Meetings</title>',
         '<title>SOAR B2B — Doğru Şirketleri Randevuya Dönüştürün</title>\n    <meta name="description" content="Doğrulanmış işletmelere ulaşın, gerçek karar vericilerle iletişime geçin, temasları randevuya çevirin. Üretici ve toptancılar için B2B randevu motoru.">'
     )
     
-    ***REMOVED*** Add hreflang tags to TR version (after meta description)
+    # Add hreflang tags to TR version (after meta description)
     hreflang_tags = """    <!-- SEO hreflang tags -->
     <link rel="alternate" hreflang="tr" href="https://soarb2b.com/ui/tr/soarb2b_home.html" />
     <link rel="alternate" hreflang="en" href="https://soarb2b.com/ui/en/soarb2b_home.html" />
@@ -39,7 +39,7 @@ def setup_i18n():
         f'<meta name="description" content="Doğrulanmış'
     )
     
-    ***REMOVED*** Insert hreflang after charset meta
+    # Insert hreflang after charset meta
     if '<meta name="description"' in tr_content:
         tr_content = tr_content.replace(
             '<meta name="description"',
@@ -51,7 +51,7 @@ def setup_i18n():
             hreflang_tags + '\n    <link rel="preconnect"'
         )
     
-    ***REMOVED*** Create EN version
+    # Create EN version
     en_content = content
     if '<meta name="description"' not in en_content:
         en_content = en_content.replace(
@@ -59,7 +59,7 @@ def setup_i18n():
             '<title>SOAR B2B — Turn Companies Into Booked Meetings</title>\n    <meta name="description" content="Reach verified businesses, engage real decision-makers, and convert outreach into meetings. B2B appointment engine for manufacturers and wholesalers.">'
         )
     
-    ***REMOVED*** Add hreflang to EN version
+    # Add hreflang to EN version
     if '<meta name="description"' in en_content:
         en_content = en_content.replace(
             '<meta name="description"',
@@ -71,7 +71,7 @@ def setup_i18n():
             hreflang_tags + '\n    <link rel="preconnect"'
         )
     
-    ***REMOVED*** Write files
+    # Write files
     tr_file = TR_DIR / "soarb2b_home.html"
     en_file = EN_DIR / "soarb2b_home.html"
     

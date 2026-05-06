@@ -64,7 +64,7 @@ def validate_context_item(item: dict[str, Any]) -> None:
     _require_nonempty_str(item.get("workflow_scope"), "workflow_scope")
     _require_nonempty_str(item.get("content_summary"), "content_summary")
 
-    ***REMOVED*** lineage is required for knowledge/memory
+    # lineage is required for knowledge/memory
     source_lineage = item.get("source_lineage")
     if context_type in {"knowledge_context", "memory_context"}:
         if not isinstance(source_lineage, dict) or not source_lineage:
@@ -72,13 +72,13 @@ def validate_context_item(item: dict[str, Any]) -> None:
         _require_nonempty_str(source_lineage.get("source_type"), "source_lineage.source_type")
         _require_nonempty_str(source_lineage.get("source_record_id"), "source_lineage.source_record_id")
 
-    ***REMOVED*** tool_context must reference capabilities
+    # tool_context must reference capabilities
     if context_type == "tool_context":
         caps = item.get("capability_references")
         if not isinstance(caps, list) or not caps or not all(isinstance(x, str) and x.strip() for x in caps):
             raise ValueError("tool_context requires capability_references")
 
-    ***REMOVED*** guardrails are special: never allow implicit compression
+    # guardrails are special: never allow implicit compression
     compression_allowed = _require_bool(item.get("compression_allowed"), "compression_allowed")
     if context_type == "guardrail_context" and compression_allowed is True:
         raise ValueError("guardrail_context must not be compressible by default")

@@ -60,7 +60,7 @@ def score_policy_alignment(*, signals: dict[str, Any]) -> dict[str, Any]:
 
 
 def export_policy_alignment() -> dict[str, Any]:
-    ***REMOVED*** Deterministic sample alignment view.
+    # Deterministic sample alignment view.
     return score_policy_alignment(
         signals={
             "approval_bypass_attempt": False,

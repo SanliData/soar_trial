@@ -36,16 +36,16 @@ class PaymentService:
     Supports Stripe and Iyzico payment providers.
     """
     
-    ***REMOVED*** DEPRECATED: Fixed subscription plans removed
-    ***REMOVED*** All pricing is now usage-based (pay-as-you-go)
-    ***REMOVED*** See UsageBasedPricingService for current pricing model
-    PLANS = {}  ***REMOVED*** Empty - no fixed plans
+    # DEPRECATED: Fixed subscription plans removed
+    # All pricing is now usage-based (pay-as-you-go)
+    # See UsageBasedPricingService for current pricing model
+    PLANS = {}   # Empty - no fixed plans
     
     def __init__(self, db: Session):
         """Initialize Payment Service with database session."""
         self.db = db
         
-        ***REMOVED*** Stripe configuration
+        # Stripe configuration
         self.stripe_secret_key = os.getenv("STRIPE_SECRET_KEY")
         self.stripe_publishable_key = os.getenv("STRIPE_PUBLISHABLE_KEY")
         
@@ -55,7 +55,7 @@ class PaymentService:
         else:
             self.stripe_enabled = False
         
-        ***REMOVED*** Iyzico configuration
+        # Iyzico configuration
         self.iyzico_api_key = os.getenv("IYZICO_API_KEY")
         self.iyzico_secret_key = os.getenv("IYZICO_SECRET_KEY")
         self.iyzico_base_url = os.getenv("IYZICO_BASE_URL", "https://api.iyzipay.com")
@@ -73,7 +73,7 @@ class PaymentService:
         from src.services.usage_based_pricing_service import UsageBasedPricingService
         pricing_service = UsageBasedPricingService(self.db)
         
-        ***REMOVED*** Commercial Pay-As-You-Go: Bireysel + Ajanslar (enterprise-friendly, compliant)
+        # Commercial Pay-As-You-Go: Bireysel + Ajanslar (enterprise-friendly, compliant)
         plans = {
             "free": {
                 "name": "Free Trial",
@@ -181,7 +181,7 @@ class PaymentService:
             
             plan = self.PLANS[plan_type]
             
-            ***REMOVED*** Get user
+            # Get user
             user = self.db.query(User).filter(User.id == user_id).first()
             if not user:
                 return {
@@ -189,38 +189,38 @@ class PaymentService:
                     "error": "User not found"
                 }
             
-            ***REMOVED*** Check if user already has a subscription
+            # Check if user already has a subscription
             existing_subscription = self.db.query(Subscription).filter(
                 Subscription.user_id == user_id
             ).first()
             
-            ***REMOVED*** Calculate price
+            # Calculate price
             if plan_type == "free":
                 price = 0
             else:
                 price_key = f"price_{billing_cycle}"
                 price = plan.get(price_key, plan.get("price_monthly", 0))
             
-            ***REMOVED*** Process payment if not free plan
-            ***REMOVED*** NOTE: Payment APIs (Stripe/Iyzico) are currently disabled
+            # Process payment if not free plan
+            # NOTE: Payment APIs (Stripe/Iyzico) are currently disabled
             payment_customer_id = None
             payment_subscription_id = None
             
             if plan_type != "free":
-                ***REMOVED*** Payment APIs are disabled - only free plan is available
+                # Payment APIs are disabled - only free plan is available
                 return {
                     "success": False,
                     "error": "Payment APIs (Stripe/Iyzico) are currently disabled. Only free plan is available."
                 }
             
-            ***REMOVED*** Calculate period dates
+            # Calculate period dates
             now = datetime.utcnow()
             if billing_cycle == "yearly":
                 period_end = now + timedelta(days=365)
             else:
                 period_end = now + timedelta(days=30)
             
-            ***REMOVED*** Create or update subscription
+            # Create or update subscription
             if existing_subscription:
                 subscription = existing_subscription
                 subscription.plan_type = plan_type
@@ -290,7 +290,7 @@ class PaymentService:
         Returns:
             Dictionary with Stripe subscription result
         """
-        ***REMOVED*** Payment APIs are disabled
+        # Payment APIs are disabled
         return {
             "success": False,
             "error": "Payment APIs (Stripe/Iyzico) are currently disabled."
@@ -318,7 +318,7 @@ class PaymentService:
         Returns:
             Dictionary with Iyzico subscription result
         """
-        ***REMOVED*** Payment APIs are disabled
+        # Payment APIs are disabled
         return {
             "success": False,
             "error": "Payment APIs (Stripe/Iyzico) are currently disabled."
@@ -348,17 +348,17 @@ class PaymentService:
                     "error": "Subscription not found"
                 }
             
-            ***REMOVED*** Cancel with payment provider
-            ***REMOVED*** NOTE: Payment APIs (Stripe/Iyzico) are currently disabled
-            ***REMOVED*** Stripe cancellation is disabled
+            # Cancel with payment provider
+            # NOTE: Payment APIs (Stripe/Iyzico) are currently disabled
+            # Stripe cancellation is disabled
             if subscription.payment_provider == "stripe" and subscription.payment_subscription_id:
                 logger.info(f"Skipping Stripe cancellation - Payment APIs are disabled (subscription_id: {subscription.payment_subscription_id})")
             
-            ***REMOVED*** Update subscription status
+            # Update subscription status
             subscription.status = "cancelled"
             subscription.cancelled_at = datetime.utcnow()
             
-            ***REMOVED*** Downgrade to free plan
+            # Downgrade to free plan
             subscription.plan_type = "free"
             subscription.price = 0
             subscription.payment_provider = None
@@ -402,7 +402,7 @@ class PaymentService:
             if subscription:
                 return subscription.to_dict()
             else:
-                ***REMOVED*** Return free plan by default
+                # Return free plan by default
                 return {
                     "user_id": user_id,
                     "plan_type": "free",

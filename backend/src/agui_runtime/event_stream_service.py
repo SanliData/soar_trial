@@ -32,7 +32,7 @@ def _wrap(*, workflow_id: str, base: dict[str, Any]) -> dict[str, Any]:
 
 def export_event_stream(*, workflow_id: str = "wf-demo-001") -> dict[str, Any]:
     wid = (workflow_id or "").strip() or "wf-demo-001"
-    ***REMOVED*** Deterministic foundation: do not mutate global bus; emit stable event sequences.
+    # Deterministic foundation: do not mutate global bus; emit stable event sequences.
     started = {"workflow_id": wid, "event_sequence": 1, "event_timestamp": BUS_EPOCH, "source_service": "event_stream_service", "risk_level": "low", "metadata_only": True, "deterministic": True}
     retrieval = {"workflow_id": wid, "event_sequence": 2, "event_timestamp": BUS_EPOCH, "source_service": "federated_retrieval", "risk_level": "low", "metadata_only": True, "deterministic": True}
     finished = {"workflow_id": wid, "event_sequence": 3, "event_timestamp": BUS_EPOCH, "source_service": "event_stream_service", "risk_level": "low", "metadata_only": True, "deterministic": True}

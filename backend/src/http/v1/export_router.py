@@ -20,7 +20,7 @@ from src.services.auth_service import get_current_user_dependency, get_current_u
 router = APIRouter(prefix="/export", tags=["export"])
 
 
-***REMOVED*** Helper function to create dependency with proper header injection
+# Helper function to create dependency with proper header injection
 def get_current_user_from_header(
     authorization: str = Header(None, alias="Authorization"),
     db: Session = Depends(get_db)
@@ -30,8 +30,8 @@ def get_current_user_from_header(
 
 
 class ExportRequest(BaseModel):
-    data_type: str  ***REMOVED*** "companies", "personnel", "both"
-    format: str = "csv"  ***REMOVED*** "csv" or "excel"
+    data_type: str   # "companies", "personnel", "both"
+    format: str = "csv"   # "csv" or "excel"
     filters: Optional[Dict[str, Any]] = None
 
 
@@ -44,7 +44,7 @@ async def export_companies(
     Export company data to CSV or Excel.
     Protected route - requires authentication.
     """
-    ***REMOVED*** Mock company data - in production, get from database
+    # Mock company data - in production, get from database
     companies = [
         {
             "company_id": "comp-001",
@@ -87,7 +87,7 @@ async def export_personnel(
     Export personnel data to CSV or Excel.
     Protected route - requires authentication.
     """
-    ***REMOVED*** Mock personnel data - in production, get from database
+    # Mock personnel data - in production, get from database
     personnel = [
         {
             "personnel_id": "pers-001",
@@ -132,8 +132,8 @@ async def export_combined(
     Export both company and personnel data.
     Protected route - requires authentication.
     """
-    ***REMOVED*** This would combine both datasets
-    ***REMOVED*** For now, return companies as combined export
+    # This would combine both datasets
+    # For now, return companies as combined export
     companies = [
         {
             "company_id": "comp-001",
@@ -211,7 +211,7 @@ def export_combined_csv(companies: List[Dict], personnel: List[Dict]) -> Streami
     """Export combined data to CSV"""
     output = io.StringIO()
     
-    ***REMOVED*** Write companies
+    # Write companies
     output.write("=== COMPANIES ===\n")
     writer = csv.DictWriter(output, fieldnames=[
         "company_id", "name", "address", "website", "phone", "email",
@@ -220,7 +220,7 @@ def export_combined_csv(companies: List[Dict], personnel: List[Dict]) -> Streami
     writer.writeheader()
     writer.writerows(companies)
     
-    ***REMOVED*** Write personnel
+    # Write personnel
     output.write("\n=== PERSONNEL ===\n")
     writer = csv.DictWriter(output, fieldnames=[
         "personnel_id", "name", "title", "company", "email", "phone",
@@ -247,11 +247,11 @@ def export_companies_excel(companies: List[Dict]) -> StreamingResponse:
         ws = wb.active
         ws.title = "Companies"
         
-        ***REMOVED*** Headers
+        # Headers
         headers = ["Company ID", "Name", "Address", "Website", "Phone", "Email", "Source", "Status", "Created At"]
         ws.append(headers)
         
-        ***REMOVED*** Data
+        # Data
         for company in companies:
             ws.append([
                 company.get("company_id", ""),
@@ -275,7 +275,7 @@ def export_companies_excel(companies: List[Dict]) -> StreamingResponse:
             headers={"Content-Disposition": f"attachment; filename=companies_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.xlsx"}
         )
     except ImportError:
-        ***REMOVED*** Fallback to CSV if openpyxl not available
+        # Fallback to CSV if openpyxl not available
         return export_companies_csv(companies)
 
 
@@ -289,11 +289,11 @@ def export_personnel_excel(personnel: List[Dict]) -> StreamingResponse:
         ws = wb.active
         ws.title = "Personnel"
         
-        ***REMOVED*** Headers
+        # Headers
         headers = ["Personnel ID", "Name", "Title", "Company", "Email", "Phone", "LinkedIn", "Department", "Source", "Created At"]
         ws.append(headers)
         
-        ***REMOVED*** Data
+        # Data
         for person in personnel:
             ws.append([
                 person.get("personnel_id", ""),
@@ -318,7 +318,7 @@ def export_personnel_excel(personnel: List[Dict]) -> StreamingResponse:
             headers={"Content-Disposition": f"attachment; filename=personnel_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.xlsx"}
         )
     except ImportError:
-        ***REMOVED*** Fallback to CSV if openpyxl not available
+        # Fallback to CSV if openpyxl not available
         return export_personnel_csv(personnel)
 
 
@@ -330,7 +330,7 @@ def export_combined_excel(companies: List[Dict], personnel: List[Dict]) -> Strea
         
         wb = Workbook()
         
-        ***REMOVED*** Companies sheet
+        # Companies sheet
         ws_companies = wb.active
         ws_companies.title = "Companies"
         headers = ["Company ID", "Name", "Address", "Website", "Phone", "Email", "Source", "Status", "Created At"]
@@ -348,7 +348,7 @@ def export_combined_excel(companies: List[Dict], personnel: List[Dict]) -> Strea
                 company.get("created_at", "")
             ])
         
-        ***REMOVED*** Personnel sheet
+        # Personnel sheet
         ws_personnel = wb.create_sheet("Personnel")
         headers = ["Personnel ID", "Name", "Title", "Company", "Email", "Phone", "LinkedIn", "Department", "Source", "Created At"]
         ws_personnel.append(headers)
@@ -376,7 +376,7 @@ def export_combined_excel(companies: List[Dict], personnel: List[Dict]) -> Strea
             headers={"Content-Disposition": f"attachment; filename=combined_export_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.xlsx"}
         )
     except ImportError:
-        ***REMOVED*** Fallback to CSV if openpyxl not available
+        # Fallback to CSV if openpyxl not available
         return export_combined_csv(companies, personnel)
 
 

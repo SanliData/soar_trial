@@ -57,7 +57,7 @@ def rank_opportunities(
             signals=opp.signals,
             score_breakdown=breakdown,
         ))
-        ***REMOVED*** Anomaly: score > 0.95 with fewer than 1 signal (logged for monitoring/log_ingestor)
+        # Anomaly: score > 0.95 with fewer than 1 signal (logged for monitoring/log_ingestor)
         if score_val > 0.95 and len(signals_list) < 1:
             logger.warning(
                 "opportunity_scoring_anomaly: score=%.2f signals_count=%s company=%s company_id=%s",

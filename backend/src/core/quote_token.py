@@ -30,7 +30,7 @@ def _get_quote_secret() -> str:
     """
     quote_secret = os.getenv(QUOTE_SECRET_ENV_VAR)
     if not quote_secret:
-        ***REMOVED*** Fallback to JWT_SECRET
+        # Fallback to JWT_SECRET
         quote_secret = os.getenv("JWT_SECRET")
     if not quote_secret:
         raise ValueError("QUOTE_SECRET or JWT_SECRET must be set for quote token generation")
@@ -57,10 +57,10 @@ def _create_request_fingerprint(
     Returns:
         Canonical fingerprint string
     """
-    ***REMOVED*** Normalize max_results to enforce cap
+    # Normalize max_results to enforce cap
     normalized_max_results = min(max_results, MAX_RESULTS_PER_QUERY)
     
-    ***REMOVED*** Create canonical string (sorted for consistency)
+    # Create canonical string (sorted for consistency)
     fingerprint_data = {
         "persona_deepening": bool(include_persona_deepening),
         "visit_route": bool(include_visit_route),
@@ -69,7 +69,7 @@ def _create_request_fingerprint(
         "max_results": normalized_max_results
     }
     
-    ***REMOVED*** Sort keys for consistent fingerprint
+    # Sort keys for consistent fingerprint
     canonical = json.dumps(fingerprint_data, sort_keys=True, separators=(',', ':'))
     return hashlib.sha256(canonical.encode('utf-8')).hexdigest()
 
@@ -96,10 +96,10 @@ def generate_quote_token(
     Returns:
         Dictionary containing quote_token, expires_at, and request_fingerprint
     """
-    ***REMOVED*** Enforce max_results cap
+    # Enforce max_results cap
     normalized_max_results = min(max_results, MAX_RESULTS_PER_QUERY)
     
-    ***REMOVED*** Create request fingerprint
+    # Create request fingerprint
     request_fingerprint = _create_request_fingerprint(
         include_persona_deepening=include_persona_deepening,
         include_visit_route=include_visit_route,
@@ -108,10 +108,10 @@ def generate_quote_token(
         max_results=normalized_max_results
     )
     
-    ***REMOVED*** Calculate expiration
+    # Calculate expiration
     expires_at = datetime.utcnow() + timedelta(minutes=QUOTE_TOKEN_EXPIRY_MINUTES)
     
-    ***REMOVED*** Create payload
+    # Create payload
     payload = {
         "total_cost": float(total_cost),
         "persona_deepening": bool(include_persona_deepening),
@@ -124,11 +124,11 @@ def generate_quote_token(
         "issued_at": datetime.utcnow().isoformat()
     }
     
-    ***REMOVED*** Encode payload
+    # Encode payload
     payload_json = json.dumps(payload, sort_keys=True, separators=(',', ':'))
     payload_b64 = base64.urlsafe_b64encode(payload_json.encode('utf-8')).decode('utf-8')
     
-    ***REMOVED*** Sign with HMAC
+    # Sign with HMAC
     secret = _get_quote_secret()
     signature = hmac.new(
         secret.encode('utf-8'),
@@ -136,7 +136,7 @@ def generate_quote_token(
         hashlib.sha256
     ).hexdigest()
     
-    ***REMOVED*** Create token: payload.signature
+    # Create token: payload.signature
     quote_token = f"{payload_b64}.{signature}"
     
     return {
@@ -185,7 +185,7 @@ def validate_quote_token(
         }
     
     try:
-        ***REMOVED*** Split token into payload and signature
+        # Split token into payload and signature
         if '.' not in quote_token:
             return {
                 "valid": False,
@@ -196,7 +196,7 @@ def validate_quote_token(
         
         payload_b64, signature = quote_token.rsplit('.', 1)
         
-        ***REMOVED*** Verify signature
+        # Verify signature
         secret = _get_quote_secret()
         expected_signature = hmac.new(
             secret.encode('utf-8'),
@@ -212,11 +212,11 @@ def validate_quote_token(
                 "payload": None
             }
         
-        ***REMOVED*** Decode payload
+        # Decode payload
         payload_json = base64.urlsafe_b64decode(payload_b64.encode('utf-8')).decode('utf-8')
         payload = json.loads(payload_json)
         
-        ***REMOVED*** Check expiration
+        # Check expiration
         expires_at_str = payload['expires_at']
         if expires_at_str.endswith('Z'):
             expires_at = datetime.fromisoformat(expires_at_str.replace('Z', '+00:00'))
@@ -232,7 +232,7 @@ def validate_quote_token(
                 "payload": payload
             }
         
-        ***REMOVED*** Validate request fingerprint
+        # Validate request fingerprint
         normalized_max_results = min(max_results, MAX_RESULTS_PER_QUERY)
         expected_fingerprint = _create_request_fingerprint(
             include_persona_deepening=include_persona_deepening,
@@ -250,7 +250,7 @@ def validate_quote_token(
                 "payload": payload
             }
         
-        ***REMOVED*** Validate max_results (enforce cap)
+        # Validate max_results (enforce cap)
         if max_results > MAX_RESULTS_PER_QUERY:
             return {
                 "valid": False,
@@ -259,7 +259,7 @@ def validate_quote_token(
                 "payload": payload
             }
         
-        ***REMOVED*** All validations passed
+        # All validations passed
         return {
             "valid": True,
             "error": None,

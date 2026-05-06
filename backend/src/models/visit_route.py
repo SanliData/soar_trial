@@ -22,48 +22,48 @@ class VisitRoute(Base):
     
     __tablename__ = "visit_routes"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to PlanResult
+    # Foreign key to PlanResult
     plan_result_id = Column(Integer, ForeignKey("plan_results.id"), nullable=False, index=True)
     
-    ***REMOVED*** Route information
-    route_name = Column(String(255), nullable=True)  ***REMOVED*** User-provided route name
-    region = Column(String(255), nullable=False)  ***REMOVED*** Geographic region
+    # Route information
+    route_name = Column(String(255), nullable=True)   # User-provided route name
+    region = Column(String(255), nullable=False)   # Geographic region
     
-    ***REMOVED*** Route status
-    status = Column(String(50), default="pending", nullable=False, index=True)  ***REMOVED*** pending, optimized, ready, completed
+    # Route status
+    status = Column(String(50), default="pending", nullable=False, index=True)   # pending, optimized, ready, completed
     
-    ***REMOVED*** Optimization parameters
-    max_stops = Column(Integer, default=20, nullable=False)  ***REMOVED*** Hard limit: 20 stops per route
-    optimization_priority = Column(String(50), default="geographic", nullable=False)  ***REMOVED*** geographic, persona_density, mixed
+    # Optimization parameters
+    max_stops = Column(Integer, default=20, nullable=False)   # Hard limit: 20 stops per route
+    optimization_priority = Column(String(50), default="geographic", nullable=False)   # geographic, persona_density, mixed
     
-    ***REMOVED*** Route data (stops)
-    stops = Column(JSON, nullable=True)  ***REMOVED*** List of stops with address, time window, priority
+    # Route data (stops)
+    stops = Column(JSON, nullable=True)   # List of stops with address, time window, priority
     
-    ***REMOVED*** Geographic data
+    # Geographic data
     total_distance_km = Column(Float, nullable=True)
     estimated_duration_hours = Column(Float, nullable=True)
     
-    ***REMOVED*** Google Maps compatibility
-    google_maps_url = Column(String(1024), nullable=True)  ***REMOVED*** Generated Google Maps route URL
-    google_maps_embed_url = Column(String(1024), nullable=True)  ***REMOVED*** Embed URL for iframe
+    # Google Maps compatibility
+    google_maps_url = Column(String(1024), nullable=True)   # Generated Google Maps route URL
+    google_maps_embed_url = Column(String(1024), nullable=True)   # Embed URL for iframe
     
-    ***REMOVED*** Export files
+    # Export files
     csv_file_path = Column(String(512), nullable=True)
     pdf_file_path = Column(String(512), nullable=True)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     optimized_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Relationships
+    # Relationships
     plan_result = relationship("PlanResult", backref="visit_routes")
     stops_list = relationship("VisitStop", back_populates="route", cascade="all, delete-orphan")
     
-    ***REMOVED*** Indexes
+    # Indexes
     __table_args__ = (
         Index('idx_visit_route_result_id', 'plan_result_id'),
         Index('idx_visit_route_status', 'status'),
@@ -77,39 +77,39 @@ class VisitStop(Base):
     
     __tablename__ = "visit_stops"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to VisitRoute
+    # Foreign key to VisitRoute
     route_id = Column(Integer, ForeignKey("visit_routes.id"), nullable=False, index=True)
     
-    ***REMOVED*** Stop information
-    stop_order = Column(Integer, nullable=False)  ***REMOVED*** Order in route (1, 2, 3, ...)
+    # Stop information
+    stop_order = Column(Integer, nullable=False)   # Order in route (1, 2, 3, ...)
     business_name = Column(String(255), nullable=False)
     address = Column(Text, nullable=False)
     
-    ***REMOVED*** Location coordinates
+    # Location coordinates
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     
-    ***REMOVED*** Time window
-    suggested_time_window = Column(String(100), nullable=True)  ***REMOVED*** e.g., "10:00-11:30"
-    suggested_date = Column(String(50), nullable=True)  ***REMOVED*** Optional: suggested date
+    # Time window
+    suggested_time_window = Column(String(100), nullable=True)   # e.g., "10:00-11:30"
+    suggested_date = Column(String(50), nullable=True)   # Optional: suggested date
     
-    ***REMOVED*** Priority and scoring
-    priority_score = Column(Float, nullable=True)  ***REMOVED*** 0.0 - 1.0, based on persona density and relevance
-    persona_count = Column(Integer, default=0, nullable=False)  ***REMOVED*** Number of target personas at this location
+    # Priority and scoring
+    priority_score = Column(Float, nullable=True)   # 0.0 - 1.0, based on persona density and relevance
+    persona_count = Column(Integer, default=0, nullable=False)   # Number of target personas at this location
     
-    ***REMOVED*** Additional metadata (renamed from 'metadata' to avoid SQLAlchemy reserved name conflict)
-    meta_data = Column("metadata", JSON, nullable=True)  ***REMOVED*** Additional business info, notes, etc.
+    # Additional metadata (renamed from 'metadata' to avoid SQLAlchemy reserved name conflict)
+    meta_data = Column("metadata", JSON, nullable=True)   # Additional business info, notes, etc.
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     
-    ***REMOVED*** Relationship
+    # Relationship
     route = relationship("VisitRoute", back_populates="stops_list")
     
-    ***REMOVED*** Indexes
+    # Indexes
     __table_args__ = (
         Index('idx_visit_stop_route_id', 'route_id'),
         Index('idx_visit_stop_order', 'route_id', 'stop_order'),

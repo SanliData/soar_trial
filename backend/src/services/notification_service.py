@@ -30,7 +30,7 @@ class NotificationService:
         """Initialize Notification Service with database session."""
         self.db = db
         
-        ***REMOVED*** Email configuration
+        # Email configuration
         self.smtp_host = os.getenv("SMTP_HOST") or "smtp.gmail.com"
         self.smtp_port = get_int_env("SMTP_PORT", 587)
         self.smtp_user = os.getenv("SMTP_USER")
@@ -38,7 +38,7 @@ class NotificationService:
         self.smtp_from_email = os.getenv("SMTP_FROM_EMAIL", self.smtp_user)
         self.smtp_from_name = os.getenv("SMTP_FROM_NAME", "FinderOS")
         
-        ***REMOVED*** Check if email is configured
+        # Check if email is configured
         self.email_enabled = bool(self.smtp_user and self.smtp_password)
     
     def create_notification(
@@ -69,7 +69,7 @@ class NotificationService:
             Dictionary with notification creation result
         """
         try:
-            ***REMOVED*** Create notification record
+            # Create notification record
             notification = Notification(
                 user_id=user_id,
                 title=title,
@@ -78,20 +78,20 @@ class NotificationService:
                 metadata=metadata or {},
                 action_url=action_url,
                 browser_notification_sent=send_browser,
-                email_notification_sent=False  ***REMOVED*** Will be updated after sending
+                email_notification_sent=False   # Will be updated after sending
             )
             
             self.db.add(notification)
             self.db.commit()
             self.db.refresh(notification)
             
-            ***REMOVED*** Send browser notification (if enabled)
+            # Send browser notification (if enabled)
             if send_browser:
-                ***REMOVED*** Browser notifications are handled by frontend
-                ***REMOVED*** We just mark it as sent
+                # Browser notifications are handled by frontend
+                # We just mark it as sent
                 pass
             
-            ***REMOVED*** Send email notification (if enabled)
+            # Send email notification (if enabled)
             if send_email and self.email_enabled:
                 user = self.db.query(User).filter(User.id == user_id).first()
                 if user and user.email:
@@ -163,9 +163,9 @@ class NotificationService:
                 "scheduled_at": scheduled_at.isoformat(),
                 "meet_link": meet_link
             },
-            action_url=f"/ui/finder_os_dashboard.html***REMOVED***tab-11",
+            action_url=f"/ui/finder_os_dashboard.html#tab-11",
             send_browser=True,
-            send_email=True  ***REMOVED*** Send email for important notifications
+            send_email=True   # Send email for important notifications
         )
     
     def notify_new_lead(
@@ -200,7 +200,7 @@ class NotificationService:
                 "lead_name": lead_name,
                 "lead_email": lead_email
             },
-            action_url=f"/ui/finder_os_dashboard.html***REMOVED***tab-11",
+            action_url=f"/ui/finder_os_dashboard.html#tab-11",
             send_browser=True,
             send_email=True
         )
@@ -239,9 +239,9 @@ class NotificationService:
                 "campaign_name": campaign_name,
                 "status": status
             },
-            action_url=f"/ui/finder_os_dashboard.html***REMOVED***tab-9",
+            action_url=f"/ui/finder_os_dashboard.html#tab-9",
             send_browser=True,
-            send_email=False  ***REMOVED*** Don't send email for campaign updates
+            send_email=False   # Don't send email for campaign updates
         )
     
     def _send_email_notification(
@@ -270,22 +270,22 @@ class NotificationService:
             return False
         
         try:
-            ***REMOVED*** Create email
+            # Create email
             msg = MIMEMultipart('alternative')
             msg['Subject'] = title
             msg['From'] = f"{self.smtp_from_name} <{self.smtp_from_email}>"
             msg['To'] = to_email
             
-            ***REMOVED*** Create HTML email body
+            # Create HTML email body
             html_body = f"""
             <html>
-                <body style="font-family: Arial, sans-serif; line-height: 1.6; color: ***REMOVED***333;">
+                <body style="font-family: Arial, sans-serif; line-height: 1.6; color:  #333;">
                     <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-                        <h2 style="color: ***REMOVED***667eea;">{title}</h2>
+                        <h2 style="color:  #667eea;">{title}</h2>
                         <p>{message.replace(chr(10), '<br>')}</p>
-                        {f'<p><a href="{action_url}" style="background: ***REMOVED***667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">View Details</a></p>' if action_url else ''}
-                        <hr style="border: none; border-top: 1px solid ***REMOVED***e5e7eb; margin: 20px 0;">
-                        <p style="color: ***REMOVED***6b7280; font-size: 12px;">This is an automated notification from FinderOS.</p>
+                        {f'<p><a href="{action_url}" style="background:  #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">View Details</a></p>' if action_url else ''}
+                        <hr style="border: none; border-top: 1px solid  #e5e7eb; margin: 20px 0;">
+                        <p style="color:  #6b7280; font-size: 12px;">This is an automated notification from FinderOS.</p>
                     </div>
                 </body>
             </html>
@@ -293,7 +293,7 @@ class NotificationService:
             
             msg.attach(MIMEText(html_body, 'html'))
             
-            ***REMOVED*** Send email
+            # Send email
             with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                 server.starttls()
                 server.login(self.smtp_user, self.smtp_password)

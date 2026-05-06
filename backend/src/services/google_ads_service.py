@@ -72,7 +72,7 @@ class GoogleAdsService:
         self.manager_customer_id = os.getenv("GOOGLE_ADS_MANAGER_CUSTOMER_ID")
         self.login_customer_id = os.getenv("GOOGLE_ADS_LOGIN_CUSTOMER_ID")
         
-        ***REMOVED*** Validate required credentials
+        # Validate required credentials
         if not all([self.developer_token, self.client_id, self.client_secret, self.refresh_token]):
             logger.warning("Google Ads credentials not fully configured. Some features may not work.")
             self.client = None
@@ -89,8 +89,8 @@ class GoogleAdsService:
             return None
         
         try:
-            ***REMOVED*** Create client using environment variables or explicit config
-            ***REMOVED*** Google Ads client reads from GOOGLE_ADS_CONFIGURATION_FILE_PATH or uses explicit dict
+            # Create client using environment variables or explicit config
+            # Google Ads client reads from GOOGLE_ADS_CONFIGURATION_FILE_PATH or uses explicit dict
             config = {
                 "developer_token": self.developer_token,
                 "client_id": self.client_id,
@@ -99,7 +99,7 @@ class GoogleAdsService:
                 "use_proto_plus": True
             }
             
-            ***REMOVED*** Add manager customer ID if provided
+            # Add manager customer ID if provided
             if self.manager_customer_id:
                 config["login_customer_id"] = self.manager_customer_id
             
@@ -130,7 +130,7 @@ class GoogleAdsService:
             return None
         
         try:
-            ***REMOVED*** Return the service for the specific customer
+            # Return the service for the specific customer
             return self.client.get_service("GoogleAdsService")
         except Exception as e:
             logger.error(f"Failed to get customer client for {customer_id}: {str(e)}")
@@ -143,13 +143,13 @@ class GoogleAdsService:
         campaign_name: str,
         product_info: Dict[str, Any],
         ad_data: Dict[str, Any],
-        budget_amount_micros: int = 10000000,  ***REMOVED*** $10 per day default
+        budget_amount_micros: int = 10000000,   # $10 per day default
         user_list_id: Optional[str] = None,
-        conversion_strategy: str = "appointment",  ***REMOVED*** "appointment" or "direct_traffic"
+        conversion_strategy: str = "appointment",   # "appointment" or "direct_traffic"
         sales_site_url: Optional[str] = None,
         utm_parameters: Optional[Dict[str, str]] = None,
         locale: str = "en",
-        target_coordinates: Optional[Dict[str, float]] = None  ***REMOVED*** {"latitude": float, "longitude": float} for 10m radius
+        target_coordinates: Optional[Dict[str, float]] = None   # {"latitude": float, "longitude": float} for 10m radius
     ) -> Dict[str, Any]:
         """
         Create a Google Ads Search Campaign with ads generated from Step 1 product info.
@@ -180,17 +180,17 @@ class GoogleAdsService:
             }
         
         try:
-            ***REMOVED*** Import Gemini service for ad copy generation
+            # Import Gemini service for ad copy generation
             from src.services.gemini_analysis_service import get_gemini_analysis_service
             
-            ***REMOVED*** Store target coordinates for location targeting
+            # Store target coordinates for location targeting
             if target_coordinates:
                 self._target_coordinates = target_coordinates
             
-            ***REMOVED*** Remove dashes from customer ID
+            # Remove dashes from customer ID
             customer_id_clean = customer_id.replace("-", "")
             
-            ***REMOVED*** Step 1: Generate ad copy using Gemini API (locale-aware)
+            # Step 1: Generate ad copy using Gemini API (locale-aware)
             gemini_service = get_gemini_analysis_service()
             ad_copy_result = gemini_service.generate_ad_copy(
                 product_name=product_info.get("name", ""),
@@ -202,7 +202,7 @@ class GoogleAdsService:
             
             if not ad_copy_result.get("success"):
                 logger.warning(f"Failed to generate ad copy with Gemini: {ad_copy_result.get('error')}")
-                ***REMOVED*** Fallback: use ad_data from Step 8-9
+                # Fallback: use ad_data from Step 8-9
                 ad_variations = [
                     {
                         "headline_1": product_info.get("name", "Product")[:30],
@@ -216,21 +216,21 @@ class GoogleAdsService:
             
             logger.info(f"Generated {len(ad_variations)} ad variations")
             
-            ***REMOVED*** Step 2: Create Campaign
+            # Step 2: Create Campaign
             campaign_service = self.client.get_service("CampaignService")
             campaign_operation = self.client.get_type("CampaignOperation")
             
             campaign = campaign_operation.create
             campaign.name = campaign_name
             campaign.advertising_channel_type = AdvertisingChannelTypeEnum.AdvertisingChannelType.SEARCH
-            campaign.status = CampaignStatusEnum.CampaignStatus.PAUSED  ***REMOVED*** Start paused, activate later
-            campaign.campaign_budget = f"customers/{customer_id_clean}/campaignBudgets/0"  ***REMOVED*** Will create budget first
+            campaign.status = CampaignStatusEnum.CampaignStatus.PAUSED   # Start paused, activate later
+            campaign.campaign_budget = f"customers/{customer_id_clean}/campaignBudgets/0"   # Will create budget first
             
-            ***REMOVED*** Set targeting (Customer Match if provided)
+            # Set targeting (Customer Match if provided)
             if user_list_id:
                 campaign.targeting.customer_match.user_list = f"customers/{customer_id_clean}/customerUserLists/{user_list_id}"
             
-            ***REMOVED*** Create budget first
+            # Create budget first
             budget_service = self.client.get_service("CampaignBudgetService")
             budget_operation = self.client.get_type("CampaignBudgetOperation")
             
@@ -246,7 +246,7 @@ class GoogleAdsService:
             budget_resource_name = budget_response.results[0].resource_name
             campaign.campaign_budget = budget_resource_name
             
-            ***REMOVED*** Create campaign
+            # Create campaign
             campaign_response = campaign_service.mutate_campaigns(
                 customer_id=customer_id_clean,
                 operations=[campaign_operation]
@@ -256,9 +256,9 @@ class GoogleAdsService:
             
             logger.info(f"Campaign created: {campaign_id}")
             
-            ***REMOVED*** Step 2.5: Add location targeting (if coordinates provided)
-            ***REMOVED*** Note: For 10m radius targeting, we use proximity targeting
-            ***REMOVED*** Google Ads API supports proximity targeting via CampaignCriterion
+            # Step 2.5: Add location targeting (if coordinates provided)
+            # Note: For 10m radius targeting, we use proximity targeting
+            # Google Ads API supports proximity targeting via CampaignCriterion
             if hasattr(self, '_target_coordinates') and self._target_coordinates:
                 try:
                     if GOOGLE_ADS_AVAILABLE:
@@ -273,13 +273,13 @@ class GoogleAdsService:
                         criterion = criterion_operation.create
                         criterion.campaign = campaign_resource_name
                         
-                        ***REMOVED*** Create proximity targeting (10m radius)
+                        # Create proximity targeting (10m radius)
                         proximity = ProximityInfo()
                         geo_point = GeoPointInfo()
                         geo_point.latitude_in_micro_degrees = int(self._target_coordinates["latitude"] * 1000000)
                         geo_point.longitude_in_micro_degrees = int(self._target_coordinates["longitude"] * 1000000)
                         proximity.geo_point = geo_point
-                        proximity.radius = 10  ***REMOVED*** 10 meters
+                        proximity.radius = 10   # 10 meters
                         proximity.radius_units = ProximityRadiusUnitsEnum.ProximityRadiusUnits.METERS
                         
                         criterion.proximity = proximity
@@ -291,12 +291,12 @@ class GoogleAdsService:
                         
                         logger.info(f"Location targeting added: 10m radius at ({self._target_coordinates['latitude']}, {self._target_coordinates['longitude']})")
                     
-                    ***REMOVED*** Clear target coordinates
+                    # Clear target coordinates
                     self._target_coordinates = None
                 except Exception as e:
                     logger.warning(f"Could not add location targeting: {e}. Campaign created without location targeting.")
             
-            ***REMOVED*** Step 3: Create Ad Group
+            # Step 3: Create Ad Group
             ad_group_service = self.client.get_service("AdGroupService")
             ad_group_operation = self.client.get_type("AdGroupOperation")
             
@@ -304,7 +304,7 @@ class GoogleAdsService:
             ad_group.name = f"{campaign_name} Ad Group"
             ad_group.campaign = campaign_resource_name
             ad_group.type_ = AdGroupTypeEnum.AdGroupType.SEARCH_STANDARD
-            ad_group.cpc_bid_micros = 1000000  ***REMOVED*** $1 CPC default
+            ad_group.cpc_bid_micros = 1000000   # $1 CPC default
             
             ad_group_response = ad_group_service.mutate_ad_groups(
                 customer_id=customer_id_clean,
@@ -315,7 +315,7 @@ class GoogleAdsService:
             
             logger.info(f"Ad Group created: {ad_group_id}")
             
-            ***REMOVED*** Step 4: Create Ads (3 variations)
+            # Step 4: Create Ads (3 variations)
             ad_group_ad_service = self.client.get_service("AdGroupAdService")
             created_ads = []
             
@@ -324,13 +324,13 @@ class GoogleAdsService:
                 
                 ad_group_ad = ad_group_ad_operation.create
                 ad_group_ad.ad_group = ad_group_resource_name
-                ad_group_ad.status = AdGroupAdStatusEnum.AdGroupAdStatus.PAUSED  ***REMOVED*** Start paused
+                ad_group_ad.status = AdGroupAdStatusEnum.AdGroupAdStatus.PAUSED   # Start paused
                 
-                ***REMOVED*** Create text ad
+                # Create text ad
                 ad = ad_group_ad.ad
                 ad.type_ = self.client.enums.AdTypeEnum.AdType.RESPONSIVE_SEARCH_AD
                 
-                ***REMOVED*** Set headlines and description
+                # Set headlines and description
                 ad.responsive_search_ad.headlines.extend([
                     self.client.get_type("AdTextAsset")(text=variation.get("headline_1", "")[:30]),
                     self.client.get_type("AdTextAsset")(text=variation.get("headline_2", "")[:30]),
@@ -340,15 +340,15 @@ class GoogleAdsService:
                     self.client.get_type("AdTextAsset")(text=variation.get("description", "")[:90])
                 ])
                 
-                ***REMOVED*** Set final URL based on conversion strategy
+                # Set final URL based on conversion strategy
                 final_url = None
                 
                 if conversion_strategy == "direct_traffic" and sales_site_url:
-                    ***REMOVED*** Direct Traffic: Use sales site URL with UTM parameters
+                    # Direct Traffic: Use sales site URL with UTM parameters
                     from src.services.utm_service import get_utm_service
                     utm_service = get_utm_service()
                     
-                    ***REMOVED*** Generate UTM parameters if not provided
+                    # Generate UTM parameters if not provided
                     if not utm_parameters:
                         utm_parameters = utm_service.generate_utm_parameters(
                             campaign_id=int(campaign_id),
@@ -358,21 +358,21 @@ class GoogleAdsService:
                             personnel_pool_id=ad_data.get("personnel_pool_id")
                         )
                     
-                    ***REMOVED*** Build tracked URL
+                    # Build tracked URL
                     final_url = utm_service.build_tracked_url(sales_site_url, utm_parameters)
                     logger.info(f"Direct Traffic: Using tracked URL with UTM parameters")
                 elif conversion_strategy == "appointment":
-                    ***REMOVED*** Appointment: Use Lead Form Extension (will be created separately)
-                    ***REMOVED*** For now, use a placeholder that will be replaced by Lead Form Extension
+                    # Appointment: Use Lead Form Extension (will be created separately)
+                    # For now, use a placeholder that will be replaced by Lead Form Extension
                     final_url = ad_data.get("ad_link") or "https://example.com/appointment"
                     logger.info(f"Appointment: Using Lead Form Extension URL")
                 else:
-                    ***REMOVED*** Fallback: use ad_link from Step 8-9
+                    # Fallback: use ad_link from Step 8-9
                     final_url = ad_data.get("ad_link") or "https://example.com"
                 
                 ad.final_urls.append(final_url)
                 
-                ***REMOVED*** Create ad
+                # Create ad
                 ad_response = ad_group_ad_service.mutate_ad_group_ads(
                     customer_id=customer_id_clean,
                     operations=[ad_group_ad_operation]
@@ -402,7 +402,7 @@ class GoogleAdsService:
                 "ad_variations_count": len(created_ads),
                 "user_id": user_id,
                 "campaign_name": campaign_name,
-                "status": "paused"  ***REMOVED*** Campaign starts paused
+                "status": "paused"   # Campaign starts paused
             }
             
         except GoogleAdsException as e:
@@ -412,7 +412,7 @@ class GoogleAdsService:
             error_msg = f"Google Ads API error: {'; '.join(error_messages)}"
             logger.error(f"Google Ads API error creating campaign: {error_msg}")
             
-            ***REMOVED*** Log error to database
+            # Log error to database
             try:
                 from src.services.error_logging_service import get_error_logging_service
                 from src.db.base import SessionLocal
@@ -439,7 +439,7 @@ class GoogleAdsService:
         except Exception as e:
             logger.error(f"Error creating Search Campaign: {str(e)}")
             
-            ***REMOVED*** Log error to database
+            # Log error to database
             try:
                 from src.services.error_logging_service import get_error_logging_service
                 from src.db.base import SessionLocal
@@ -484,7 +484,7 @@ class GoogleAdsService:
         Returns:
             Dictionary with campaign creation result
         """
-        ***REMOVED*** Delegate to new method if product_info and ad_data are provided
+        # Delegate to new method if product_info and ad_data are provided
         if "product_info" in campaign_config and "ad_data" in campaign_config:
             return self.create_search_campaign_with_ads(
                 customer_id=customer_id,
@@ -496,7 +496,7 @@ class GoogleAdsService:
                 user_list_id=campaign_config.get("user_list_id")
             )
         
-        ***REMOVED*** Fallback to basic implementation
+        # Fallback to basic implementation
         if not self.is_available():
             return {
                 "success": False,
@@ -545,14 +545,14 @@ class GoogleAdsService:
         Returns:
             Base64-encoded SHA-256 hash
         """
-        ***REMOVED*** Normalize email: lowercase and trim whitespace
+        # Normalize email: lowercase and trim whitespace
         normalized_email = email.lower().strip()
         
-        ***REMOVED*** Hash with SHA-256
+        # Hash with SHA-256
         hash_object = hashlib.sha256(normalized_email.encode('utf-8'))
         hash_hex = hash_object.hexdigest()
         
-        ***REMOVED*** Convert to base64 (Google Ads requires base64)
+        # Convert to base64 (Google Ads requires base64)
         hash_bytes = bytes.fromhex(hash_hex)
         hash_base64 = base64.b64encode(hash_bytes).decode('utf-8')
         
@@ -588,28 +588,28 @@ class GoogleAdsService:
             }
         
         try:
-            ***REMOVED*** Remove dashes from customer ID
+            # Remove dashes from customer ID
             customer_id_clean = customer_id.replace("-", "")
             
-            ***REMOVED*** Get services
+            # Get services
             customer_service = self.client.get_service("CustomerUserListService")
             customer_operation = self.client.get_type("CustomerUserListOperation")
             
-            ***REMOVED*** Create user list
+            # Create user list
             user_list = customer_operation.create
             user_list.name = list_name
             user_list.description = description or f"Customer Match list: {list_name}"
             user_list.membership_status = UserListMembershipStatusEnum.UserListMembershipStatus.OPEN
-            user_list.membership_life_span = 365  ***REMOVED*** Days
+            user_list.membership_life_span = 365   # Days
             
-            ***REMOVED*** Set membership type to CUSTOMER_MATCH
+            # Set membership type to CUSTOMER_MATCH
             user_list.type = UserListTypeEnum.UserListType.CUSTOMER_MATCH
             
-            ***REMOVED*** Create operation
+            # Create operation
             operation = customer_operation
             operation.create.CopyFrom(user_list)
             
-            ***REMOVED*** Execute mutation
+            # Execute mutation
             response = customer_service.mutate_customer_user_lists(
                 customer_id=customer_id_clean,
                 operations=[operation]
@@ -692,10 +692,10 @@ class GoogleAdsService:
             }
         
         try:
-            ***REMOVED*** Remove dashes from customer ID
+            # Remove dashes from customer ID
             customer_id_clean = customer_id.replace("-", "")
             
-            ***REMOVED*** Step 1: Create user list if not provided
+            # Step 1: Create user list if not provided
             if not user_list_id:
                 list_result = self.create_user_list(
                     customer_id=customer_id,
@@ -711,13 +711,13 @@ class GoogleAdsService:
             else:
                 user_list_resource_name = f"customers/{customer_id_clean}/customerUserLists/{user_list_id}"
             
-            ***REMOVED*** Step 2: Hash email addresses
+            # Step 2: Hash email addresses
             logger.info(f"Hashing {len(email_list)} email addresses...")
             hashed_emails = []
             valid_emails = []
             
             for email in email_list:
-                if email and "@" in email:  ***REMOVED*** Basic email validation
+                if email and "@" in email:   # Basic email validation
                     hashed_email = self._hash_email(email)
                     hashed_emails.append(hashed_email)
                     valid_emails.append(email)
@@ -730,18 +730,18 @@ class GoogleAdsService:
             
             logger.info(f"Valid emails: {len(valid_emails)}/{len(email_list)}")
             
-            ***REMOVED*** Step 3: Create OfflineUserDataJob
+            # Step 3: Create OfflineUserDataJob
             offline_user_data_service = self.client.get_service("OfflineUserDataJobService")
             offline_user_data_job = self.client.get_type("OfflineUserDataJob")
             
-            ***REMOVED*** Set job type to CUSTOMER_MATCH_USER_LIST
+            # Set job type to CUSTOMER_MATCH_USER_LIST
             offline_user_data_job.type = OfflineUserDataJobTypeEnum.OfflineUserDataJobType.CUSTOMER_MATCH_USER_LIST
             
-            ***REMOVED*** Create operation
+            # Create operation
             operation = self.client.get_type("OfflineUserDataJobOperation")
             operation.create.CopyFrom(offline_user_data_job)
             
-            ***REMOVED*** Create the job
+            # Create the job
             response = offline_user_data_service.create_offline_user_data_job(
                 customer_id=customer_id_clean,
                 job=offline_user_data_job
@@ -752,17 +752,17 @@ class GoogleAdsService:
             
             logger.info(f"OfflineUserDataJob created: {job_id}")
             
-            ***REMOVED*** Step 4: Add user data to the job
+            # Step 4: Add user data to the job
             user_data_operation = self.client.get_type("OfflineUserDataJobOperation")
             
-            ***REMOVED*** Create user identifiers
+            # Create user identifiers
             user_identifiers = []
             for hashed_email in hashed_emails:
                 user_identifier = self.client.get_type("UserIdentifier")
                 user_identifier.hashed_email = hashed_email
                 user_identifiers.append(user_identifier)
             
-            ***REMOVED*** Create offline user data
+            # Create offline user data
             offline_user_data = self.client.get_type("OfflineUserData")
             offline_user_data.user_identifiers.extend(user_identifiers)
             offline_user_data.user_list.CopyFrom(
@@ -770,10 +770,10 @@ class GoogleAdsService:
             )
             offline_user_data.user_list.customer_user_list = user_list_resource_name
             
-            ***REMOVED*** Add to operation
+            # Add to operation
             user_data_operation.create.user_data.CopyFrom(offline_user_data)
             
-            ***REMOVED*** Add operations (batch in chunks of 1000)
+            # Add operations (batch in chunks of 1000)
             chunk_size = 1000
             for i in range(0, len(user_identifiers), chunk_size):
                 chunk = user_identifiers[i:i + chunk_size]
@@ -788,7 +788,7 @@ class GoogleAdsService:
                 operation_chunk = self.client.get_type("OfflineUserDataJobOperation")
                 operation_chunk.create.user_data.CopyFrom(offline_user_data_chunk)
                 
-                ***REMOVED*** Add user data to job
+                # Add user data to job
                 offline_user_data_service.add_offline_user_data_job_operations(
                     resource_name=job_resource_name,
                     operations=[operation_chunk]
@@ -796,7 +796,7 @@ class GoogleAdsService:
             
             logger.info(f"Added {len(user_identifiers)} user identifiers to job {job_id}")
             
-            ***REMOVED*** Step 5: Run the job
+            # Step 5: Run the job
             offline_user_data_service.run_offline_user_data_job(
                 resource_name=job_resource_name
             )
@@ -862,11 +862,11 @@ class GoogleAdsService:
             }
         
         try:
-            ***REMOVED*** Import here to avoid circular dependencies
+            # Import here to avoid circular dependencies
             from src.models.persona import Persona
             from src.db.base import SessionLocal
             
-            ***REMOVED*** Get database session
+            # Get database session
             if db_session is None:
                 db = SessionLocal()
                 should_close = True
@@ -875,14 +875,14 @@ class GoogleAdsService:
                 should_close = False
             
             try:
-                ***REMOVED*** Query personas with email addresses
+                # Query personas with email addresses
                 query = db.query(Persona).filter(
                     Persona.user_id == user_id,
                     Persona.email.isnot(None),
                     Persona.email != ""
                 )
                 
-                ***REMOVED*** Filter by specific persona IDs if provided
+                # Filter by specific persona IDs if provided
                 if persona_ids:
                     query = query.filter(Persona.id.in_(persona_ids))
                 
@@ -894,12 +894,12 @@ class GoogleAdsService:
                         "error": "No personas with email addresses found"
                     }
                 
-                ***REMOVED*** Extract email addresses
+                # Extract email addresses
                 email_list = [persona.email for persona in personas if persona.email]
                 
                 logger.info(f"Found {len(email_list)} personas with emails for user {user_id}")
                 
-                ***REMOVED*** Upload to Google Ads
+                # Upload to Google Ads
                 result = self.upload_customer_match_audience(
                     customer_id=customer_id,
                     audience_name=audience_name,
@@ -907,7 +907,7 @@ class GoogleAdsService:
                     description=f"Personas from FinderOS Step 7 (User ID: {user_id})"
                 )
                 
-                ***REMOVED*** Add persona information to result
+                # Add persona information to result
                 if result.get("success"):
                     result["persona_count"] = len(personas)
                     result["persona_ids"] = [p.id for p in personas]
@@ -949,8 +949,8 @@ class GoogleAdsService:
             }
         
         try:
-            ***REMOVED*** TODO: Implement Dynamic Search Ad creation
-            ***REMOVED*** This will be implemented in subsequent steps
+            # TODO: Implement Dynamic Search Ad creation
+            # This will be implemented in subsequent steps
             
             logger.info(f"Dynamic Search Ad creation requested for product: {product_info.get('name', 'Unknown')}")
             
@@ -993,8 +993,8 @@ class GoogleAdsService:
             }
         
         try:
-            ***REMOVED*** TODO: Implement Lead Form Extension creation
-            ***REMOVED*** This will be implemented in subsequent steps
+            # TODO: Implement Lead Form Extension creation
+            # This will be implemented in subsequent steps
             
             logger.info(f"Lead Form Extension creation requested for campaign {campaign_id}")
             
@@ -1047,19 +1047,19 @@ class GoogleAdsService:
         try:
             from datetime import datetime, timedelta
             
-            ***REMOVED*** Remove dashes from customer ID
+            # Remove dashes from customer ID
             customer_id_clean = customer_id.replace("-", "")
             
-            ***REMOVED*** Set default date range (last 30 days)
+            # Set default date range (last 30 days)
             if not end_date:
                 end_date = datetime.now().strftime("%Y-%m-%d")
             if not start_date:
                 start_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
             
-            ***REMOVED*** Get GoogleAdsService
+            # Get GoogleAdsService
             google_ads_service = self.client.get_service("GoogleAdsService")
             
-            ***REMOVED*** Build GAQL query
+            # Build GAQL query
             query = f"""
                 SELECT
                     campaign.id,
@@ -1084,10 +1084,10 @@ class GoogleAdsService:
                     AND segments.date <= '{end_date}'
             """
             
-            ***REMOVED*** Execute query
+            # Execute query
             response = google_ads_service.search(customer_id=customer_id_clean, query=query)
             
-            ***REMOVED*** Aggregate metrics across all rows
+            # Aggregate metrics across all rows
             total_impressions = 0
             total_clicks = 0
             total_cost_micros = 0
@@ -1117,17 +1117,17 @@ class GoogleAdsService:
                 total_all_conversions += row.metrics.all_conversions
                 total_all_conversions_value += row.metrics.all_conversions_value
             
-            ***REMOVED*** Calculate derived metrics
+            # Calculate derived metrics
             cost_dollars = total_cost_micros / 1_000_000 if total_cost_micros > 0 else 0
             ctr = (total_clicks / total_impressions * 100) if total_impressions > 0 else 0
             avg_cpc = (total_cost_micros / total_clicks / 1_000_000) if total_clicks > 0 else 0
             cost_per_conversion = (total_cost_micros / total_conversions / 1_000_000) if total_conversions > 0 else 0
             conversion_rate = (total_conversions / total_clicks * 100) if total_clicks > 0 else 0
             
-            ***REMOVED*** Daily breakdown (if multiple rows)
+            # Daily breakdown (if multiple rows)
             daily_metrics = []
             if rows_processed > 1:
-                ***REMOVED*** Re-query for daily breakdown
+                # Re-query for daily breakdown
                 daily_query = f"""
                     SELECT
                         segments.date,
@@ -1222,7 +1222,7 @@ class GoogleAdsService:
             }
         
         try:
-            ***REMOVED*** Use performance query to get status
+            # Use performance query to get status
             performance = self.get_campaign_performance(customer_id, campaign_id)
             if performance.get("success"):
                 return {
@@ -1242,7 +1242,7 @@ class GoogleAdsService:
             }
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _google_ads_service = None
 
 

@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 router = APIRouter(prefix="/sales-page-audit", tags=["sales-page-audit"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db: Session = Depends(get_db)
@@ -58,7 +58,7 @@ async def audit_sales_page(
     Uses Gemini AI to analyze the page for US market optimization (LPO).
     """
     try:
-        ***REMOVED*** Get locale from request
+        # Get locale from request
         locale = get_locale_from_request(http_request)
         
         audit_service = get_sales_page_audit_service()

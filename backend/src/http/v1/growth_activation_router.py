@@ -13,7 +13,7 @@ from .growth_activation_endpoints import router as growth_activation_endpoints_r
 
 router = APIRouter(prefix="/growth-activation", tags=["growth-activation"])
 
-***REMOVED*** Include endpoints router
+# Include endpoints router
 router.include_router(growth_activation_endpoints_router)
 
 

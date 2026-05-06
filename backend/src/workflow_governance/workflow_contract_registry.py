@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-***REMOVED*** Fixed creation timestamp for deterministic exports (foundation contracts are versioned, not "now").
+# Fixed creation timestamp for deterministic exports (foundation contracts are versioned, not "now").
 CONTRACT_EPOCH = "2025-05-01T00:00:00Z"
 
 WORKFLOW_CONTRACTS: dict[str, dict[str, Any]] = {

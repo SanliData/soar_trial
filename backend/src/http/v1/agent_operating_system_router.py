@@ -48,7 +48,7 @@ async def get_agent_fleet() -> Dict[str, Any]:
 
 @router.get("/system/agents/permissions")
 async def get_agent_permissions() -> Dict[str, Any]:
-    ***REMOVED*** deterministic sample gate evaluation (no real principal context)
+    # deterministic sample gate evaluation (no real principal context)
     sample = evaluate_agent_permission_gate(
         agent_id="procurement_agent",
         requested_capability_id="context.types",

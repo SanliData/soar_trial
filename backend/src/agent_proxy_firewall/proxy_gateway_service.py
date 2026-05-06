@@ -37,7 +37,7 @@ PROXY_GATEWAYS: dict[str, dict[str, Any]] = {
             "unauthorized_mcp_endpoint_policy",
             "suspicious_capability_escalation_policy",
             "runtime_attribution_gap_policy",
-            ***REMOVED*** H-050 cache + deployment governance recognizers
+            # H-050 cache + deployment governance recognizers
             "unsafe_public_deployment_profile_policy",
             "cache_breaking_tool_schema_mutation_policy",
             "model_switch_during_governed_session_policy",

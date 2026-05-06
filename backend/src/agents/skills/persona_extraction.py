@@ -29,7 +29,7 @@ async def run_persona_extraction(
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key or not _OPENAI_AVAILABLE:
         logger.warning("persona_extraction: OPENAI_API_KEY not configured, returning placeholder personas")
-        ***REMOVED*** Graceful fallback: generic personas per company
+        # Graceful fallback: generic personas per company
         out = []
         for c in companies:
             out.append({
@@ -59,7 +59,7 @@ async def run_persona_extraction(
         if usage:
             logger.info("agent skill: persona_extraction openai usage prompt_tokens=%s completion_tokens=%s",
                        getattr(usage, "prompt_tokens", 0), getattr(usage, "completion_tokens", 0))
-        ***REMOVED*** Strip possible markdown code block
+        # Strip possible markdown code block
         if "```" in text:
             text = text.split("```")[1].replace("json", "").strip()
         data = json.loads(text)
@@ -67,7 +67,7 @@ async def run_persona_extraction(
         return data
     except Exception as e:
         logger.exception("persona_extraction failed: %s", e)
-        ***REMOVED*** Graceful fallback
+        # Graceful fallback
         out = []
         for c in companies:
             out.append({

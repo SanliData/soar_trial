@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-***REMOVED*** Prevent uncontrolled context expansion via oversized POST bodies.
+# Prevent uncontrolled context expansion via oversized POST bodies.
 MAX_LARGE_TEXT_CHARS = 256_000
 MAX_ESTIMATED_CHARS_FIELD = 10_000_000
 

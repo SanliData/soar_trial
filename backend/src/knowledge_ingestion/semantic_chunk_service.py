@@ -44,7 +44,7 @@ def create_semantic_chunks(
                 size += add_len
         if buf:
             chunks.append("\n".join(buf))
-    ***REMOVED*** Drop trivial fragments when merging is possible later
+    # Drop trivial fragments when merging is possible later
     return [c for c in chunks if len(c) >= min_paragraph_chars or len(chunks) == 1]
 
 

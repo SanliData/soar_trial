@@ -1,4 +1,4 @@
-***REMOVED*** reply_rate_analyzer: compute reply/open rates from campaign metrics
+# reply_rate_analyzer: compute reply/open rates from campaign metrics
 import logging
 from typing import Any, Dict, List
 

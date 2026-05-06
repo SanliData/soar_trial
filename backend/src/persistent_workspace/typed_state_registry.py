@@ -14,13 +14,13 @@ STATE_TYPES: tuple[str, ...] = (
     "onboarding_state",
     "graph_state",
     "evaluation_state",
-    ***REMOVED*** H-048 additions
+    # H-048 additions
     "conversation_session_state",
     "workflow_event_stream_state",
     "approval_lineage_state",
 )
 
-***REMOVED*** Canonical field shapes per type (manifest documentation; not DB DDL).
+# Canonical field shapes per type (manifest documentation; not DB DDL).
 STATE_FIELD_SHAPES: dict[str, list[dict[str, Any]]] = {
     "workflow_state": [
         {"name": "workflow_id", "value_type": "string", "required": True},

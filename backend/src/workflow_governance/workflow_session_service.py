@@ -50,7 +50,7 @@ def summarize_session(session_id: str) -> dict[str, Any]:
         turn_count=int(s.get("turn_count") or 0),
         workflow_name=str(s.get("workflow_name") or ""),
     )
-    ***REMOVED*** Deterministic summary fields derived only from stored session state.
+    # Deterministic summary fields derived only from stored session state.
     out = {
         "session_id": s["session_id"],
         "workflow_name": s["workflow_name"],

@@ -17,9 +17,9 @@ from src.services.persona_signal_service import PersonaSignalService
 router = APIRouter(prefix="/personas", tags=["persona-signals"])
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** DEPENDENCIES
-***REMOVED*** ============================================================================
+# ============================================================================
+# DEPENDENCIES
+# ============================================================================
 
 def get_current_user_from_header(
     authorization: Optional[str] = None,
@@ -31,9 +31,9 @@ def get_current_user_from_header(
     return None
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** REQUEST/RESPONSE MODELS
-***REMOVED*** ============================================================================
+# ============================================================================
+# REQUEST/RESPONSE MODELS
+# ============================================================================
 
 class SignalWeightRequest(BaseModel):
     signal_type: str = Field(..., description="Signal type (e.g., 'location', 'industry', 'job_title')")
@@ -76,9 +76,9 @@ class SignalConfigResponse(BaseModel):
     exclusions: List[Dict[str, Any]]
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** SIGNAL WEIGHT ENDPOINTS
-***REMOVED*** ============================================================================
+# ============================================================================
+# SIGNAL WEIGHT ENDPOINTS
+# ============================================================================
 
 @router.post("/{persona_id}/signal-weights", response_model=SignalWeightResponse)
 async def set_persona_signal_weight(
@@ -129,7 +129,7 @@ async def set_global_signal_weight(
             user_id=user.id,
             signal_type=request.signal_type,
             weight=request.weight,
-            persona_id=None,  ***REMOVED*** Global weight
+            persona_id=None,   # Global weight
             description=request.description
         )
         return SignalWeightResponse(**weight.to_dict())
@@ -218,9 +218,9 @@ async def delete_persona_signal_weight(
     return {"success": True, "message": "Signal weight deleted"}
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** SIGNAL EXCLUSION ENDPOINTS
-***REMOVED*** ============================================================================
+# ============================================================================
+# SIGNAL EXCLUSION ENDPOINTS
+# ============================================================================
 
 @router.post("/{persona_id}/signal-exclusions", response_model=SignalExclusionResponse)
 async def add_persona_signal_exclusion(
@@ -271,7 +271,7 @@ async def add_global_signal_exclusion(
             user_id=user.id,
             signal_type=request.signal_type,
             signal_value=request.signal_value,
-            persona_id=None,  ***REMOVED*** Global exclusion
+            persona_id=None,   # Global exclusion
             exclusion_reason=request.exclusion_reason
         )
         return SignalExclusionResponse(**exclusion.to_dict())
@@ -330,9 +330,9 @@ async def remove_persona_signal_exclusion(
     return {"success": True, "message": "Signal exclusion removed"}
 
 
-***REMOVED*** ============================================================================
-***REMOVED*** CONFIGURATION ENDPOINTS
-***REMOVED*** ============================================================================
+# ============================================================================
+# CONFIGURATION ENDPOINTS
+# ============================================================================
 
 @router.get("/{persona_id}/signal-config", response_model=SignalConfigResponse)
 async def get_persona_signal_config(

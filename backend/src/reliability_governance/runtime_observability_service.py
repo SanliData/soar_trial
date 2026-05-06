@@ -14,7 +14,7 @@ _MAX_TRACE_EVENTS = 200
 _lock = threading.Lock()
 _trace_events: list[dict[str, Any]] = []
 
-***REMOVED*** Canonical example traces (always included in export for explainability).
+# Canonical example traces (always included in export for explainability).
 _CANONICAL_EXAMPLES: tuple[dict[str, Any], ...] = (
     {
         "trace_id": "rel_ex_retrieval_degradation",

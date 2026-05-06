@@ -19,7 +19,7 @@ from src.services.ad_spend_comparison_service import AdSpendComparisonService
 router = APIRouter(prefix="/usage-billing", tags=["usage-billing"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db: Session = Depends(get_db)
@@ -30,7 +30,7 @@ def get_current_user_from_header(
     return None
 
 
-***REMOVED*** Dependency injection
+# Dependency injection
 def get_usage_billing_service(db: Session = Depends(get_db)) -> UsageBillingService:
     """Get usage billing service instance"""
     return UsageBillingService(db)
@@ -46,7 +46,7 @@ def get_ad_spend_comparison_service(db: Session = Depends(get_db)) -> AdSpendCom
     return AdSpendComparisonService(db)
 
 
-***REMOVED*** Request models
+# Request models
 class RecordUsageEventRequest(BaseModel):
     event_type: str
     quantity: int = 1
@@ -62,7 +62,7 @@ class AdSpendComparisonRequest(BaseModel):
     region: str = "US"
 
 
-***REMOVED*** Endpoints
+# Endpoints
 @router.get("/pricing")
 async def get_pricing_info(
     billing_service: UsageBillingService = Depends(get_usage_billing_service)

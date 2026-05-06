@@ -18,49 +18,49 @@ class Invoice(Base):
     
     __tablename__ = "invoices"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     
-    ***REMOVED*** Foreign key to Subscription
+    # Foreign key to Subscription
     subscription_id = Column(Integer, ForeignKey("subscriptions.id"), nullable=True, index=True)
     
-    ***REMOVED*** Invoice information
+    # Invoice information
     invoice_number = Column(String(100), nullable=False, unique=True, index=True)
-    payment_provider = Column(String(50), nullable=False)  ***REMOVED*** "stripe", "iyzico"
-    payment_provider_invoice_id = Column(String(255), nullable=True, index=True)  ***REMOVED*** Stripe invoice ID
+    payment_provider = Column(String(50), nullable=False)   # "stripe", "iyzico"
+    payment_provider_invoice_id = Column(String(255), nullable=True, index=True)   # Stripe invoice ID
     
-    ***REMOVED*** Amount information
+    # Amount information
     amount = Column(Float, nullable=False)
     currency = Column(String(10), default="USD", nullable=False)
     tax_amount = Column(Float, default=0.0, nullable=False)
     total_amount = Column(Float, nullable=False)
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="pending", nullable=False, index=True)  ***REMOVED*** "pending", "paid", "failed", "refunded"
+    # Status
+    status = Column(String(50), default="pending", nullable=False, index=True)   # "pending", "paid", "failed", "refunded"
     
-    ***REMOVED*** Payment information
+    # Payment information
     paid_at = Column(DateTime(timezone=True), nullable=True)
-    payment_method = Column(String(50), nullable=True)  ***REMOVED*** "card", "bank_transfer", etc.
+    payment_method = Column(String(50), nullable=True)   # "card", "bank_transfer", etc.
     
-    ***REMOVED*** Billing period
+    # Billing period
     period_start = Column(DateTime(timezone=True), nullable=True)
     period_end = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Additional data
-    invoice_metadata = Column(JSON, nullable=True)  ***REMOVED*** Additional invoice data
+    # Additional data
+    invoice_metadata = Column(JSON, nullable=True)   # Additional invoice data
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="invoices")
     subscription = relationship("Subscription", backref="invoices")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_invoice_user_id', 'user_id'),
         Index('idx_invoice_subscription_id', 'subscription_id'),

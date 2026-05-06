@@ -21,18 +21,18 @@ class UsageBillingService:
     Service for managing usage-based billing (AWS-style pay-as-you-go).
     """
     
-    ***REMOVED*** Pricing per operation (in USD)
+    # Pricing per operation (in USD)
     PRICING = {
-        "verified_company": 0.05,  ***REMOVED*** $0.05 per verified company
-        "decision_maker_match": 0.10,  ***REMOVED*** $0.10 per decision maker match
-        "persona_enrichment": 0.15,  ***REMOVED*** $0.15 per persona enrichment
-        "location_exposure": 0.02,  ***REMOVED*** $0.02 per location exposure
-        "outreach_attempt": 0.25,  ***REMOVED*** $0.25 per outreach attempt
-        "booked_meeting": 2.00,  ***REMOVED*** $2.00 per booked meeting (success-based)
+        "verified_company": 0.05,   # $0.05 per verified company
+        "decision_maker_match": 0.10,   # $0.10 per decision maker match
+        "persona_enrichment": 0.15,   # $0.15 per persona enrichment
+        "location_exposure": 0.02,   # $0.02 per location exposure
+        "outreach_attempt": 0.25,   # $0.25 per outreach attempt
+        "booked_meeting": 2.00,   # $2.00 per booked meeting (success-based)
     }
     
-    ***REMOVED*** Base subscription fee
-    BASE_SUBSCRIPTION_PRICE = 0.98  ***REMOVED*** $0.98/month
+    # Base subscription fee
+    BASE_SUBSCRIPTION_PRICE = 0.98   # $0.98/month
     
     def __init__(self, db: Session):
         """Initialize Usage Billing Service with database session."""
@@ -84,7 +84,7 @@ class UsageBillingService:
             total_cost = unit_price * quantity
             billing_period = self.get_current_billing_period()
             
-            ***REMOVED*** Create usage event
+            # Create usage event
             event = UsageBillingEvent(
                 user_id=user_id,
                 event_type=event_type,
@@ -140,7 +140,7 @@ class UsageBillingService:
             if billing_period is None:
                 billing_period = self.get_current_billing_period()
             
-            ***REMOVED*** Get all events for period
+            # Get all events for period
             events = self.db.query(UsageBillingEvent).filter(
                 and_(
                     UsageBillingEvent.user_id == user_id,
@@ -148,7 +148,7 @@ class UsageBillingService:
                 )
             ).all()
             
-            ***REMOVED*** Calculate totals by event type
+            # Calculate totals by event type
             totals_by_type = {}
             total_cost = 0.0
             
@@ -163,7 +163,7 @@ class UsageBillingService:
                 totals_by_type[event_type]["cost"] += event.total_cost
                 total_cost += event.total_cost
             
-            ***REMOVED*** Add base subscription
+            # Add base subscription
             base_cost = self.BASE_SUBSCRIPTION_PRICE
             grand_total = base_cost + total_cost
             

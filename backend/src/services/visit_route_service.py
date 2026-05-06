@@ -40,7 +40,7 @@ class VisitRouteService:
         if max_stops is None:
             max_stops = MAX_VISIT_STOPS_PER_ROUTE
         else:
-            ***REMOVED*** Enforce hard limit
+            # Enforce hard limit
             max_stops = min(max_stops, MAX_VISIT_STOPS_PER_ROUTE)
         
         route = VisitRoute(
@@ -68,10 +68,10 @@ class VisitRouteService:
         if not route:
             raise ValueError(f"Route {route_id} not found")
         
-        ***REMOVED*** Limit businesses to max_stops
+        # Limit businesses to max_stops
         selected_businesses = businesses[:route.max_stops]
         
-        ***REMOVED*** Create stops
+        # Create stops
         stops = []
         for idx, business in enumerate(selected_businesses, start=1):
             stop = VisitStop(
@@ -88,7 +88,7 @@ class VisitRouteService:
             self.db.add(stop)
             stops.append(stop)
         
-        ***REMOVED*** Update route status
+        # Update route status
         route.status = "optimized"
         route.optimized_at = datetime.utcnow()
         route.stops = [
@@ -103,7 +103,7 @@ class VisitRouteService:
             for stop in stops
         ]
         
-        ***REMOVED*** Generate Google Maps URL
+        # Generate Google Maps URL
         route.google_maps_url = self._generate_google_maps_url(stops)
         
         self.db.commit()
@@ -118,19 +118,19 @@ class VisitRouteService:
         if not stops:
             return ""
         
-        ***REMOVED*** Extract coordinates
+        # Extract coordinates
         waypoints = []
         for stop in stops:
             if stop.latitude and stop.longitude:
                 waypoints.append(f"{stop.latitude},{stop.longitude}")
         
         if len(waypoints) < 2:
-            ***REMOVED*** If less than 2 waypoints, just show first location
+            # If less than 2 waypoints, just show first location
             if waypoints:
                 return f"https://www.google.com/maps/search/?api=1&query={waypoints[0]}"
             return ""
         
-        ***REMOVED*** Create route URL with waypoints
+        # Create route URL with waypoints
         origin = waypoints[0]
         destination = waypoints[-1]
         waypoint_str = "|".join(waypoints[1:-1]) if len(waypoints) > 2 else ""

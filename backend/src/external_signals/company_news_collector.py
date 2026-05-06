@@ -31,7 +31,7 @@ def collect_company_news_signals(
     """
     signals: List[Dict[str, Any]] = []
     try:
-        ***REMOVED*** Placeholder: integrate with news API or RSS
+        # Placeholder: integrate with news API or RSS
         for sig_type in (SIGNAL_TYPE_TECHNOLOGY_ADOPTION, SIGNAL_TYPE_COMPANY_EXPANSION):
             sig = {
                 "type": sig_type,

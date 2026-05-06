@@ -11,7 +11,7 @@ from src.monitoring.monitoring_agent import run_monitoring_agent
 
 logger = logging.getLogger(__name__)
 
-INTERVAL_SECONDS = 60 * 5  ***REMOVED*** 5 minutes
+INTERVAL_SECONDS = 60 * 5   # 5 minutes
 _task: Optional[asyncio.Task] = None
 
 

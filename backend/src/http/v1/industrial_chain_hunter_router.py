@@ -26,7 +26,7 @@ class RawMaterialSearchRequest(BaseModel):
 
 class ProducerAddRequest(BaseModel):
     """Request model for adding producers to Company Pool."""
-    producer_ids: List[int]  ***REMOVED*** IDs from hunt results
+    producer_ids: List[int]   # IDs from hunt results
     user_id: int
 
 
@@ -47,7 +47,7 @@ async def hunt_manufacturers(
     4. Return verified manufacturers
     """
     try:
-        ***REMOVED*** Get locale from request
+        # Get locale from request
         locale = get_locale_from_request(http_request)
         
         hunter_service = get_industrial_chain_hunter_service()
@@ -96,9 +96,9 @@ async def add_producers_to_pool(
         if not user:
             raise HTTPException(status_code=401, detail="Authentication required")
         
-        ***REMOVED*** This endpoint would receive producer data from frontend
-        ***REMOVED*** and create DiscoveryRecord entries in the database
-        ***REMOVED*** For now, return success (implementation depends on DiscoveryRecord structure)
+        # This endpoint would receive producer data from frontend
+        # and create DiscoveryRecord entries in the database
+        # For now, return success (implementation depends on DiscoveryRecord structure)
         
         return {
             "success": True,

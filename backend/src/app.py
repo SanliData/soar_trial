@@ -6,7 +6,7 @@ ENCODING: UTF-8 WITHOUT BOM
 from dotenv import load_dotenv
 from pathlib import Path
 
-***REMOVED*** Load .env from backend/ before any os.getenv (override=True so .env wins over existing env vars)
+# Load .env from backend/ before any os.getenv (override=True so .env wins over existing env vars)
 _backend_dir = Path(__file__).resolve().parent.parent
 load_dotenv(_backend_dir / ".env", override=True)
 
@@ -18,7 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, RedirectResponse, Response
 from fastapi.exceptions import RequestValidationError
 
-***REMOVED*** Fail-fast: validate required env for production (raises ValueError if invalid)
+# Fail-fast: validate required env for production (raises ValueError if invalid)
 from src.config.settings import get_settings
 get_settings()
 
@@ -104,12 +104,12 @@ logger = logging.getLogger(__name__)
 
 def create_app() -> FastAPI:
     settings = get_settings()
-    ***REMOVED*** Ensure log directory exists (PM2 uses ./logs when cwd=backend)
+    # Ensure log directory exists (PM2 uses ./logs when cwd=backend)
     try:
         (_backend_dir / "logs").mkdir(parents=True, exist_ok=True)
     except Exception:
         pass
-    ***REMOVED*** Production: do not expose docs by default
+    # Production: do not expose docs by default
     docs_url = "/docs" if settings.ENABLE_DOCS else None
     redoc_url = "/redoc" if settings.ENABLE_DOCS else None
     openapi_url = "/openapi.json" if settings.ENABLE_DOCS else None
@@ -124,15 +124,15 @@ def create_app() -> FastAPI:
         redoc_url=redoc_url,
         openapi_url=openapi_url,
     )
-    ***REMOVED*** Log level: INFO in production
+    # Log level: INFO in production
     if settings.ENV == "production":
         logging.getLogger().setLevel(logging.INFO)
         for _n in ("uvicorn", "uvicorn.error", "src"):
             logging.getLogger(_n).setLevel(logging.INFO)
 
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** Middleware
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # Middleware
+    # ---------------------------
     app.add_middleware(RequestIDMiddleware)
     app.add_middleware(SecurityHeadersMiddleware)
     app.add_middleware(StaticFilesCacheMiddleware)
@@ -145,7 +145,7 @@ def create_app() -> FastAPI:
         _origins = [o.strip() for o in _cors_origins.split(",") if o.strip()]
         if not _origins:
             raise ValueError("FINDEROS_CORS_ORIGINS must be set in production (validation should have caught this).")
-        ***REMOVED*** Ensure soarb2b.com origins for Google OAuth / frontend
+        # Ensure soarb2b.com origins for Google OAuth / frontend
         for origin in ("https://soarb2b.com", "https://www.soarb2b.com"):
             if origin not in _origins:
                 _origins.append(origin)
@@ -162,9 +162,9 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** Root – redirect to UI home
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # Root – redirect to UI home
+    # ---------------------------
     @app.get("/", include_in_schema=False)
     async def root():
         return RedirectResponse(url="/ui/tr/soarb2b_home.html")
@@ -173,9 +173,9 @@ def create_app() -> FastAPI:
     async def favicon():
         return Response(status_code=204)
 
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** Health (API / monitoring)
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # Health (API / monitoring)
+    # ---------------------------
     @app.get("/health", include_in_schema=False)
     async def health():
         return {
@@ -184,9 +184,9 @@ def create_app() -> FastAPI:
             "version": settings.FINDEROS_VERSION or "1.0.0",
         }
 
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** Legacy Redirects (UI)
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # Legacy Redirects (UI)
+    # ---------------------------
     @app.get("/ui/soarb2b_home.html")
     async def redirect_home():
         return RedirectResponse("/ui/tr/soarb2b_home.html", status_code=301)
@@ -240,9 +240,9 @@ def create_app() -> FastAPI:
             logger.warning("Readyz DB check failed: %s", e)
             raise HTTPException(status_code=503, detail="Database not ready")
 
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** Routers
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # Routers
+    # ---------------------------
     app.include_router(v1_router)
     app.include_router(semantic_capability_router, prefix="/api/v1")
     app.include_router(semantic_capability_graph_router, prefix="/api/v1")
@@ -312,9 +312,9 @@ def create_app() -> FastAPI:
     app.include_router(monitoring_router)
     app.include_router(export_results_router)
 
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** Static Mount
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # Static Mount
+    # ---------------------------
     src_dir = os.path.abspath(os.path.dirname(__file__))
     ui_dir = os.path.join(src_dir, "ui")
 
@@ -324,9 +324,9 @@ def create_app() -> FastAPI:
     else:
         logger.warning("UI directory not found: %s", ui_dir)
 
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** Global Exception Handler (no stack trace in production)
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # Global Exception Handler (no stack trace in production)
+    # ---------------------------
     @app.exception_handler(Exception)
     async def global_exception_handler(request: Request, exc: Exception):
         logger.error("Unhandled error", exc_info=True)
@@ -348,15 +348,15 @@ def create_app() -> FastAPI:
             content={"detail": detail}
         )
 
-    ***REMOVED*** ---------------------------
-    ***REMOVED*** Startup: config log + REDIS_REQUIRED check
-    ***REMOVED*** ---------------------------
+    # ---------------------------
+    # Startup: config log + REDIS_REQUIRED check
+    # ---------------------------
     @app.on_event("startup")
     async def startup_config_and_redis():
         s = get_settings()
-        ***REMOVED*** Build intelligence graph (schema -> nodes/edges) for NL analytics; cache in memory/Redis
+        # Build intelligence graph (schema -> nodes/edges) for NL analytics; cache in memory/Redis
         try:
-            import src.models  ***REMOVED*** ensure all tables registered with Base.metadata
+            import src.models   # ensure all tables registered with Base.metadata
             from src.db.base import init_db
             init_db()
             logger.info("database tables initialized")
@@ -369,7 +369,7 @@ def create_app() -> FastAPI:
             logger.info("intelligence graph rebuild enqueued; background worker started")
         except Exception as e:
             logger.debug("intelligence graph enqueue at startup skipped: %s", e)
-        ***REMOVED*** Log env verification (masked secrets)
+        # Log env verification (masked secrets)
         cid = (s.GOOGLE_CLIENT_ID or "").strip()
         if cid:
             masked = cid[:8] + "..." + cid[-4:] if len(cid) > 12 else "***"
@@ -388,7 +388,7 @@ def create_app() -> FastAPI:
             r.ping()
         except Exception as e:
             raise RuntimeError(f"REDIS_REQUIRED=true but Redis check failed: {e}") from e
-        ***REMOVED*** Optional: start monitoring agent scheduler (every 5 min when MONITORING_AGENT_ENABLED=true)
+        # Optional: start monitoring agent scheduler (every 5 min when MONITORING_AGENT_ENABLED=true)
         try:
             from src.monitoring.scheduler import start_scheduler
             start_scheduler()

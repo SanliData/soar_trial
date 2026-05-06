@@ -30,8 +30,8 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 
-***REMOVED*** OAuth state: signed with HMAC so we can verify on callback without server-side store
-STATE_TTL_SEC = 600  ***REMOVED*** 10 minutes
+# OAuth state: signed with HMAC so we can verify on callback without server-side store
+STATE_TTL_SEC = 600   # 10 minutes
 
 
 def _oauth_log(event: str, **kwargs: object) -> None:
@@ -91,7 +91,7 @@ def _verify_signed_state(state: str) -> bool:
     except Exception:
         return False
 
-***REMOVED*** Google OAuth: frontend sends id_token to POST /v1/auth/google. No server-side redirect/callback endpoint.
+# Google OAuth: frontend sends id_token to POST /v1/auth/google. No server-side redirect/callback endpoint.
 LINKEDIN_AUTH_URL = "https://www.linkedin.com/oauth/v2/authorization"
 LINKEDIN_TOKEN_URL = "https://www.linkedin.com/oauth/v2/accessToken"
 LINKEDIN_USERINFO_URL = "https://api.linkedin.com/v2/userinfo"
@@ -133,7 +133,7 @@ async def authenticate_google(
     """
     _oauth_log("google_login_started")
     try:
-        ***REMOVED*** Ensure database tables exist (lazy initialization)
+        # Ensure database tables exist (lazy initialization)
         try:
             from src.db.base import Base, engine
             Base.metadata.create_all(bind=engine, checkfirst=True)
@@ -150,7 +150,7 @@ async def authenticate_google(
             )
         
         _oauth_log("google_id_token_received")
-        ***REMOVED*** Step 1: Verify Google token (audience == GOOGLE_CLIENT_ID enforced in auth_service)
+        # Step 1: Verify Google token (audience == GOOGLE_CLIENT_ID enforced in auth_service)
         verify_result = auth_service.verify_google_token(request.id_token)
         
         if not verify_result.get("success"):
@@ -173,19 +173,19 @@ async def authenticate_google(
                 error="Email not found in Google token"
             )
         
-        ***REMOVED*** Step 2: Find or create user
+        # Step 2: Find or create user
         user = None
         
         try:
-            ***REMOVED*** Try to find by google_id first
+            # Try to find by google_id first
             if google_id:
                 user = db.query(User).filter(User.google_id == google_id).first()
             
-            ***REMOVED*** If not found, try by email
+            # If not found, try by email
             if not user:
                 user = db.query(User).filter(User.email == email).first()
             
-            ***REMOVED*** Create new user if doesn't exist
+            # Create new user if doesn't exist
             if not user:
                 try:
                     user = User(
@@ -203,7 +203,7 @@ async def authenticate_google(
                 except IntegrityError as e:
                     db.rollback()
                     logger.info(f"User already exists (IntegrityError), fetching: {email}")
-                    ***REMOVED*** User might have been created by another request, try to fetch again
+                    # User might have been created by another request, try to fetch again
                     if google_id:
                         user = db.query(User).filter(User.google_id == google_id).first()
                     if not user:
@@ -216,7 +216,7 @@ async def authenticate_google(
                             error="Database error: Failed to create or retrieve user"
                         )
             else:
-                ***REMOVED*** Update existing user with latest Google info
+                # Update existing user with latest Google info
                 updated = False
                 if google_id and not user.google_id:
                     user.google_id = google_id
@@ -249,7 +249,7 @@ async def authenticate_google(
                     error="Failed to create or retrieve user"
                 )
             
-            ***REMOVED*** Step 3: Generate JWT token
+            # Step 3: Generate JWT token
             jwt_result = auth_service.create_auth_response(
                 user_id=user.id,
                 user_info={
@@ -345,7 +345,7 @@ async def get_current_user(
             detail="Authentication service is not configured"
         )
     
-    ***REMOVED*** Verify token
+    # Verify token
     verify_result = auth_service.verify_jwt_token(token)
     
     if not verify_result.get("success"):
@@ -363,7 +363,7 @@ async def get_current_user(
             detail="Invalid token payload"
         )
     
-    ***REMOVED*** Get user from database
+    # Get user from database
     user = db.query(User).filter(User.id == user_id).first()
     
     if not user:

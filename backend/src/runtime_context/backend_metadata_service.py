@@ -12,7 +12,7 @@ from typing import Any
 from src.config.settings import get_settings
 from src.semantic_capabilities.capability_loader import load_capabilities
 
-***REMOVED*** Curated module tags — visibility only, not live filesystem walk.
+# Curated module tags — visibility only, not live filesystem walk.
 _ACTIVE_MODULES: tuple[str, ...] = (
     "semantic_capabilities",
     "commercial_graph",

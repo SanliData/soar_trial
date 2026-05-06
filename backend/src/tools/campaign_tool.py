@@ -23,5 +23,5 @@ def run(input: Dict[str, Any]) -> Dict[str, Any]:
         return {"campaign_id": campaign_id, "status": "scheduled", "queued": True}
     if action == "pause":
         return {"campaign_id": campaign_id, "status": "paused"}
-    ***REMOVED*** status
+    # status
     return {"campaign_id": campaign_id, "status": "active", "emails_sent": 0, "emails_opened": 0}

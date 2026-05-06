@@ -77,14 +77,14 @@ async def export_to_sheets(request: ExportToSheetsRequest):
         if not result.get("success"):
             error = result.get("error", "Export failed")
             
-            ***REMOVED*** Check for permission errors (403)
+            # Check for permission errors (403)
             if "permission" in error.lower() or "403" in error or "forbidden" in error.lower():
                 raise HTTPException(
                     status_code=403,
                     detail="Permission denied. Please check Google Sheets API credentials and permissions."
                 )
             
-            ***REMOVED*** Other errors: log and return 500
+            # Other errors: log and return 500
             logger.error(f"Google Sheets export failed: {error}", exc_info=True)
             raise HTTPException(
                 status_code=500,
@@ -99,10 +99,10 @@ async def export_to_sheets(request: ExportToSheetsRequest):
             "rows_written": result.get("rows_written", 0)
         }
     except HTTPException:
-        ***REMOVED*** Re-raise HTTP exceptions (503, 403, etc.)
+        # Re-raise HTTP exceptions (503, 403, etc.)
         raise
     except Exception as e:
-        ***REMOVED*** Unexpected errors: log and return 500
+        # Unexpected errors: log and return 500
         logger.error(f"Unexpected error in Google Sheets export: {str(e)}", exc_info=True)
         raise HTTPException(
             status_code=500,

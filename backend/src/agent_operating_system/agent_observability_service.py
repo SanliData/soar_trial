@@ -22,11 +22,11 @@ def export_agent_observability_manifest() -> dict[str, Any]:
             "audit_traces_required": True,
             "autonomous_mutation": False,
             "unrestricted_nl_execution": False,
-            ***REMOVED*** H-048 projections (observability only)
+            # H-048 projections (observability only)
             "event_streaming_supported": True,
             "approval_streaming_supported": True,
             "conversational_evaluation_supported": True,
-            ***REMOVED*** H-049 projections (identity governed)
+            # H-049 projections (identity governed)
             "identity_governed": True,
             "cryptographic_identity_metadata_supported": True,
             "identity_attribution_auditable": True,

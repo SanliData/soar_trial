@@ -37,12 +37,12 @@ _CANONICAL_TELEMETRY: dict[str, Any] = {
     "retrieval_ratio": 0.21,
     "long_context_telemetry_hook_schema": "h043_inference_bridge_v1",
     "adaptive_context_load_signal": "importance_weighted_partition_first",
-    ***REMOVED*** H-044 typed context telemetry hooks (deterministic only)
+    # H-044 typed context telemetry hooks (deterministic only)
     "context_token_cost": 0,
     "compression_savings": 0,
     "duplicate_context_waste": 0,
     "prefill_pressure_from_context": 0.0,
-    ***REMOVED*** H-045 signals (deterministic metadata only)
+    # H-045 signals (deterministic metadata only)
     "selective_context_token_savings": 0,
     "retrieval_expansion_pressure": 0.0,
     "federated_retrieval_cost_metadata": {"connector_count": 0, "stale_connector_count": 0},
@@ -57,7 +57,7 @@ def export_runtime_telemetry_manifest() -> dict[str, Any]:
     sample["compression_savings"] = int(ctx.get("compression_savings") or 0)
     sample["duplicate_context_waste"] = int(ctx.get("duplicate_context_waste") or 0)
     sample["prefill_pressure_from_context"] = float(ctx.get("prefill_pressure_from_context") or 0.0)
-    ***REMOVED*** H-045 derived sample metrics
+    # H-045 derived sample metrics
     fleet = export_agent_fleet_status()
     retrieval = export_retrieval_observability()
     expansion = decide_selective_expansion(
@@ -80,7 +80,7 @@ def export_runtime_telemetry_manifest() -> dict[str, Any]:
         "high_risk_agents": int(fleet["high_risk_agents"]),
         "paused_agents": int(fleet["paused_agents"]),
     }
-    ***REMOVED*** H-050 cache governance telemetry (deterministic, explainable)
+    # H-050 cache governance telemetry (deterministic, explainable)
     cache_eff = export_cache_efficiency()["cache_efficiency"]
     sample["cache_efficiency_ratio"] = float(cache_eff["cache_efficiency_ratio"])
     sample["cache_read_input_tokens"] = int(cache_eff["cache_read_input_tokens"])
@@ -89,7 +89,7 @@ def export_runtime_telemetry_manifest() -> dict[str, Any]:
     sample["cache_breakpoint_validity"] = export_cache_breakpoints(session_id="sess-demo-001")["breakpoints"][0]["cache_valid"]
     sample["static_prefix_stability"] = export_static_prefix_registry()["static_prefix_stable"]
     sample["cache_safe_compression_telemetry"] = export_cache_safe_compression(session_id="sess-demo-001")
-    ***REMOVED*** H-049 hardware-aware + clustering telemetry (metadata only)
+    # H-049 hardware-aware + clustering telemetry (metadata only)
     sample["hardware_routing_hint"] = route_workload(workload="orchestration")
     sample["hardware_cost_intelligence"] = export_hardware_costs()
     sample["adaptive_clustering_telemetry"] = {"utility": export_cluster_utility(), "deterministic": True}

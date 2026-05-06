@@ -17,7 +17,7 @@ from src.services.notification_service import get_notification_service
 router = APIRouter(prefix="/notifications", tags=["notifications"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db: Session = Depends(get_db)
@@ -55,7 +55,7 @@ async def get_notifications(
             limit=100
         )
         
-        ***REMOVED*** Count unread notifications
+        # Count unread notifications
         unread_notifications = notification_service.get_user_notifications(
             user_id=user.id,
             unread_only=True,

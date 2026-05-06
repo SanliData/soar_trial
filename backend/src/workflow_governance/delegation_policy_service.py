@@ -11,7 +11,7 @@ from typing import Any
 from src.workflow_governance.workflow_contract_registry import WORKFLOW_CONTRACTS
 
 MAX_DELEGATION_DEPTH: int = 2
-MAX_SUBAGENTS_PER_WORKFLOW: int = 4  ***REMOVED*** aligned with agent harness foundation cap
+MAX_SUBAGENTS_PER_WORKFLOW: int = 4   # aligned with agent harness foundation cap
 
 
 def validate_delegation(

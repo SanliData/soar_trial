@@ -10,7 +10,7 @@ from typing import Any, Mapping
 
 from src.intelligence_widgets.widget_contracts import ALLOWED_VISUALIZATION_TYPES
 
-***REMOVED*** widget_type -> allowed visualization_type values (deterministic allow-list).
+# widget_type -> allowed visualization_type values (deterministic allow-list).
 WIDGET_VISUALIZATION_ALLOWLIST: dict[str, frozenset[str]] = {
     "opportunity_cluster_map": frozenset({"map", "card"}),
     "market_signal_chart": frozenset({"chart", "card"}),

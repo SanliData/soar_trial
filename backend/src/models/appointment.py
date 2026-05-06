@@ -19,49 +19,49 @@ class Appointment(Base):
     
     __tablename__ = "appointments"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     persona_id = Column(Integer, ForeignKey("personas.id"), nullable=True, index=True)
     company_id = Column(Integer, ForeignKey("companies.id"), nullable=True, index=True)
     campaign_id = Column(Integer, ForeignKey("campaigns.id"), nullable=True, index=True)
     
-    ***REMOVED*** Appointment information
+    # Appointment information
     title = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
     
-    ***REMOVED*** Scheduling
+    # Scheduling
     scheduled_at = Column(DateTime(timezone=True), nullable=False)
     duration_minutes = Column(Integer, default=30, nullable=False)
     
-    ***REMOVED*** Location
-    location = Column(String(512), nullable=True)  ***REMOVED*** Physical location or "virtual"
-    meeting_url = Column(String(512), nullable=True)  ***REMOVED*** For virtual meetings
+    # Location
+    location = Column(String(512), nullable=True)   # Physical location or "virtual"
+    meeting_url = Column(String(512), nullable=True)   # For virtual meetings
     
-    ***REMOVED*** Contact information
+    # Contact information
     contact_name = Column(String(255), nullable=True)
     contact_email = Column(String(255), nullable=True)
     contact_phone = Column(String(50), nullable=True)
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="scheduled", nullable=False)  ***REMOVED*** "scheduled", "confirmed", "completed", "cancelled", "no_show"
+    # Status
+    status = Column(String(50), default="scheduled", nullable=False)   # "scheduled", "confirmed", "completed", "cancelled", "no_show"
     
-    ***REMOVED*** Notes
+    # Notes
     notes = Column(Text, nullable=True)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="appointments")
     persona = relationship("Persona", backref="appointments")
     company = relationship("Company", backref="appointments")
     campaign = relationship("Campaign", backref="appointments")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_appointment_user_id', 'user_id'),
         Index('idx_appointment_persona_id', 'persona_id'),

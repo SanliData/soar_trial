@@ -32,7 +32,7 @@ class BotDefenseMiddleware(BaseHTTPMiddleware):
         client_ip = request.client.host if request.client else "unknown"
         method = request.method
         headers = dict(request.headers) if request.headers else {}
-        ***REMOVED*** Do not read body here (would consume stream); use headers-only for fingerprint
+        # Do not read body here (would consume stream); use headers-only for fingerprint
         risk, require_captcha = compute_bot_risk(client_ip, path, method, headers, body_hash=None)
         request.state.bot_risk_score = risk
         request.state.require_captcha = require_captcha

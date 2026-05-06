@@ -17,7 +17,7 @@ from src.services.usage_tracking_service import get_usage_tracking_service
 router = APIRouter(prefix="/usage", tags=["usage"])
 
 
-***REMOVED*** Helper function to get current user
+# Helper function to get current user
 def get_current_user_from_header(
     authorization: str = Depends(lambda: None),
     db: Session = Depends(get_db)

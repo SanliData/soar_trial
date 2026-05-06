@@ -18,14 +18,14 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/ai-sales", tags=["ai-sales"])
 
 
-***REMOVED*** ---------- Example request ----------
-***REMOVED*** POST /ai-sales/run-agent
-***REMOVED*** {
-***REMOVED***   "industry": "fiber infrastructure",
-***REMOVED***   "location": "Texas",
-***REMOVED***   "target_roles": ["CEO", "CTO", "Procurement Director"],
-***REMOVED***   "campaign_goal": "introduce subcontracting services"
-***REMOVED*** }
+# ---------- Example request ----------
+# POST /ai-sales/run-agent
+# {
+# "industry": "fiber infrastructure",
+# "location": "Texas",
+# "target_roles": ["CEO", "CTO", "Procurement Director"],
+# "campaign_goal": "introduce subcontracting services"
+# }
 
 
 class RunAgentRequest(BaseModel):
@@ -37,14 +37,14 @@ class RunAgentRequest(BaseModel):
     company_size: Optional[str] = Field(None, description="Optional company size filter")
 
 
-***REMOVED*** ---------- Example output (full result when workflow completes; from GET /agents/runs/{id} or when polling) ----------
-***REMOVED*** {
-***REMOVED***   "companies_found": 45,
-***REMOVED***   "contacts_identified": 132,
-***REMOVED***   "emails_generated": 132,
-***REMOVED***   "campaign_created": true,
-***REMOVED***   "agent_run_id": "run_12345"
-***REMOVED*** }
+# ---------- Example output (full result when workflow completes; from GET /agents/runs/{id} or when polling) ----------
+# {
+# "companies_found": 45,
+# "contacts_identified": 132,
+# "emails_generated": 132,
+# "campaign_created": true,
+# "agent_run_id": "run_12345"
+# }
 
 
 class RunAgentResponse(BaseModel):

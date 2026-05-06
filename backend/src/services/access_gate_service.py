@@ -45,7 +45,7 @@ class AccessGateService:
             Dictionary with unlock result
         """
         try:
-            ***REMOVED*** Get or create access gate
+            # Get or create access gate
             access_gate = self.db.query(AccessGate).filter(
                 and_(
                     AccessGate.user_id == user_id,
@@ -54,7 +54,7 @@ class AccessGateService:
             ).first()
             
             if not access_gate:
-                ***REMOVED*** Create new access gate
+                # Create new access gate
                 access_gate = AccessGate(
                     user_id=user_id,
                     feasibility_report_id=feasibility_report_id,
@@ -65,7 +65,7 @@ class AccessGateService:
                 )
                 self.db.add(access_gate)
             
-            ***REMOVED*** Unlock access gate
+            # Unlock access gate
             access_gate.is_unlocked = True
             access_gate.purchase_id = purchase_id
             access_gate.purchase_timestamp = datetime.utcnow()
@@ -122,10 +122,10 @@ class AccessGateService:
                     "message": f"Module '{module_type}' requires purchase"
                 }
             
-            ***REMOVED*** Check if unlocked
+            # Check if unlocked
             has_access = access_gate.is_unlocked
             
-            ***REMOVED*** Check usage limit if set
+            # Check usage limit if set
             usage_exceeded = False
             if access_gate.usage_limit and access_gate.access_count >= access_gate.usage_limit:
                 usage_exceeded = True

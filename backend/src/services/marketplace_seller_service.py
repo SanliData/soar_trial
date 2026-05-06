@@ -41,16 +41,16 @@ class MarketplaceSellerService:
         Returns:
             List of discovered sellers
         """
-        ***REMOVED*** TODO: Implement actual marketplace API integration
-        ***REMOVED*** For now, return empty list (structure ready for implementation)
+        # TODO: Implement actual marketplace API integration
+        # For now, return empty list (structure ready for implementation)
         
-        ***REMOVED*** This would call:
-        ***REMOVED*** - Amazon Seller API
-        ***REMOVED*** - eBay Seller API
-        ***REMOVED*** - Etsy Shop API
-        ***REMOVED*** - AliExpress Store API
-        ***REMOVED*** - Trendyol Seller API (Turkish)
-        ***REMOVED*** - Hepsiburada Seller API (Turkish)
+        # This would call:
+        # - Amazon Seller API
+        # - eBay Seller API
+        # - Etsy Shop API
+        # - AliExpress Store API
+        # - Trendyol Seller API (Turkish)
+        # - Hepsiburada Seller API (Turkish)
         
         return []
     
@@ -64,7 +64,7 @@ class MarketplaceSellerService:
         seller_metadata: Optional[Dict[str, Any]] = None
     ) -> MarketplaceSeller:
         """Create a new marketplace seller record"""
-        ***REMOVED*** Check if seller already exists
+        # Check if seller already exists
         existing = self.db.query(MarketplaceSeller).filter(
             and_(
                 MarketplaceSeller.marketplace == marketplace,
@@ -115,16 +115,16 @@ class MarketplaceSellerService:
         if not seller:
             raise ValueError(f"Seller with ID {seller_id} not found")
         
-        ***REMOVED*** TODO: Implement business entity inference
-        ***REMOVED*** This would use:
-        ***REMOVED*** - Google Search API / Web scraping for business registration
-        ***REMOVED*** - Public business registries (US: SEC, UK: Companies House, TR: MERSIS, etc.)
-        ***REMOVED*** - Website analysis (WHOIS, domain info)
-        ***REMOVED*** - Social media profile analysis
+        # TODO: Implement business entity inference
+        # This would use:
+        # - Google Search API / Web scraping for business registration
+        # - Public business registries (US: SEC, UK: Companies House, TR: MERSIS, etc.)
+        # - Website analysis (WHOIS, domain info)
+        # - Social media profile analysis
         
-        ***REMOVED*** For now, set placeholder values
-        seller.business_name = seller.seller_name  ***REMOVED*** Fallback to seller name
-        seller.location_inference_confidence = 0.5  ***REMOVED*** Default medium confidence
+        # For now, set placeholder values
+        seller.business_name = seller.seller_name   # Fallback to seller name
+        seller.location_inference_confidence = 0.5   # Default medium confidence
         
         self.db.commit()
         self.db.refresh(seller)
@@ -153,14 +153,14 @@ class MarketplaceSellerService:
         if not seller:
             raise ValueError(f"Seller with ID {seller_id} not found")
         
-        ***REMOVED*** TODO: Implement owner inference
-        ***REMOVED*** This would use:
-        ***REMOVED*** - Business registration databases (owner names)
-        ***REMOVED*** - Website "About" page scraping
-        ***REMOVED*** - LinkedIn company page → owner profiles
-        ***REMOVED*** - Social media account analysis
+        # TODO: Implement owner inference
+        # This would use:
+        # - Business registration databases (owner names)
+        # - Website "About" page scraping
+        # - LinkedIn company page → owner profiles
+        # - Social media account analysis
         
-        ***REMOVED*** For now, set placeholder
+        # For now, set placeholder
         seller.owner_inference = {
             "confidence": 0.5,
             "sources": []
@@ -184,8 +184,8 @@ class MarketplaceSellerService:
             raise ValueError(f"Seller with ID {seller_id} not found")
         
         if seller.business_address:
-            ***REMOVED*** Use location affinity service to extract signals
-            ***REMOVED*** Need coordinates for full signal extraction
+            # Use location affinity service to extract signals
+            # Need coordinates for full signal extraction
             if seller.business_location:
                 lat = seller.business_location.get("latitude")
                 lng = seller.business_location.get("longitude")
@@ -197,9 +197,9 @@ class MarketplaceSellerService:
                         address=seller.business_address
                     )
                     seller.location_signals = signals
-                    seller.location_inference_confidence = 0.8  ***REMOVED*** Higher confidence with coordinates
+                    seller.location_inference_confidence = 0.8   # Higher confidence with coordinates
                 else:
-                    ***REMOVED*** Basic signal extraction from address only
+                    # Basic signal extraction from address only
                     address_lower = seller.business_address.lower()
                     signals = []
                     if any(kw in address_lower for kw in ["istanbul", "ankara", "izmir"]):
@@ -207,7 +207,7 @@ class MarketplaceSellerService:
                     seller.location_signals = signals
                     seller.location_inference_confidence = 0.5
             else:
-                ***REMOVED*** Address only - lower confidence
+                # Address only - lower confidence
                 seller.location_signals = []
                 seller.location_inference_confidence = 0.3
         

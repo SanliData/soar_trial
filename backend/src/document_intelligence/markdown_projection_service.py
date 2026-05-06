@@ -34,11 +34,11 @@ def project_placeholder_markdown(extraction: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("missing lineage")
 
     md = (
-        f"***REMOVED*** Document {did}\n\n"
-        "***REMOVED******REMOVED*** Placeholder Extraction\n\n"
+        f"# Document {did}\n\n"
+        "## Placeholder Extraction\n\n"
         "- This foundation build does not run OCR models.\n"
         "- Layout and form structures are represented as deterministic placeholders.\n\n"
-        "***REMOVED******REMOVED*** Lineage\n\n"
+        "## Lineage\n\n"
         f"- source_type: `{source_type}`\n"
         f"- source_record_id: `{source_record_id}`\n"
     )

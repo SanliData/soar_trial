@@ -25,36 +25,36 @@ class PersonaSignalWeight(Base):
     
     __tablename__ = "persona_signal_weights"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign keys
+    # Foreign keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    persona_id = Column(Integer, ForeignKey("personas.id"), nullable=True, index=True)  ***REMOVED*** None = global weight
+    persona_id = Column(Integer, ForeignKey("personas.id"), nullable=True, index=True)   # None = global weight
     
-    ***REMOVED*** Signal configuration
-    signal_type = Column(String(100), nullable=False)  ***REMOVED*** "location", "industry", "job_title", "department", etc.
-    weight = Column(Float, default=1.0, nullable=False)  ***REMOVED*** 0.0 to 10.0
+    # Signal configuration
+    signal_type = Column(String(100), nullable=False)   # "location", "industry", "job_title", "department", etc.
+    weight = Column(Float, default=1.0, nullable=False)   # 0.0 to 10.0
     
-    ***REMOVED*** Metadata
-    description = Column(Text, nullable=True)  ***REMOVED*** Optional description of why this weight was set
+    # Metadata
+    description = Column(Text, nullable=True)   # Optional description of why this weight was set
     is_active = Column(Boolean, default=True, nullable=False)
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     
-    ***REMOVED*** Relationships
+    # Relationships
     user = relationship("User", backref="persona_signal_weights")
     persona = relationship("Persona", backref="signal_weights")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_signal_weight_user_id', 'user_id'),
         Index('idx_signal_weight_persona_id', 'persona_id'),
         Index('idx_signal_weight_type', 'signal_type'),
-        Index('idx_signal_weight_user_type', 'user_id', 'signal_type'),  ***REMOVED*** For global weight lookups
-        Index('idx_signal_weight_persona_type', 'persona_id', 'signal_type'),  ***REMOVED*** For persona-specific lookups
+        Index('idx_signal_weight_user_type', 'user_id', 'signal_type'),   # For global weight lookups
+        Index('idx_signal_weight_persona_type', 'persona_id', 'signal_type'),   # For persona-specific lookups
     )
     
     def __repr__(self):

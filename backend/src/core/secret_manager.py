@@ -10,7 +10,7 @@ from typing import Optional
 
 logger = logging.getLogger(__name__)
 
-***REMOVED*** Try to import Secret Manager client
+# Try to import Secret Manager client
 try:
     from google.cloud import secretmanager
     SECRET_MANAGER_AVAILABLE = True
@@ -42,15 +42,15 @@ class SecretManager:
         self.project_id = project_id or os.getenv("GOOGLE_CLOUD_PROJECT_ID")
         self.client = None
         
-        ***REMOVED*** Initialize Secret Manager client if available and in production
+        # Initialize Secret Manager client if available and in production
         if SECRET_MANAGER_AVAILABLE and self.project_id:
             try:
-                ***REMOVED*** Check if we're in a GCP environment (Cloud Run, GCE, etc.)
-                ***REMOVED*** Cloud Run sets K_SERVICE, GCE sets GCE_METADATA_HOST
+                # Check if we're in a GCP environment (Cloud Run, GCE, etc.)
+                # Cloud Run sets K_SERVICE, GCE sets GCE_METADATA_HOST
                 is_gcp_env = (
-                    os.getenv("K_SERVICE") is not None or  ***REMOVED*** Cloud Run
-                    os.getenv("GCE_METADATA_HOST") is not None or  ***REMOVED*** GCE
-                    os.getenv("GOOGLE_CLOUD_PROJECT") is not None  ***REMOVED*** Any GCP service
+                    os.getenv("K_SERVICE") is not None or   # Cloud Run
+                    os.getenv("GCE_METADATA_HOST") is not None or   # GCE
+                    os.getenv("GOOGLE_CLOUD_PROJECT") is not None   # Any GCP service
                 )
                 
                 if is_gcp_env:
@@ -78,7 +78,7 @@ class SecretManager:
         Returns:
             Secret value as string, or default/None if not found
         """
-        ***REMOVED*** Try Secret Manager first (production)
+        # Try Secret Manager first (production)
         if self.client and self.project_id:
             try:
                 secret_path = f"projects/{self.project_id}/secrets/{secret_name}/versions/latest"
@@ -92,7 +92,7 @@ class SecretManager:
                     "Falling back to environment variable."
                 )
         
-        ***REMOVED*** Fallback to environment variable (development/local)
+        # Fallback to environment variable (development/local)
         env_value = os.getenv(secret_name, default)
         if env_value:
             logger.debug(f"Retrieved secret '{secret_name}' from environment variable")
@@ -106,7 +106,7 @@ class SecretManager:
         return self.client is not None and self.project_id is not None
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _secret_manager_instance = None
 
 

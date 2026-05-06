@@ -7,12 +7,12 @@ Every query MAX 100 results.
 Applies separately to businesses, personas, contacts.
 """
 
-***REMOVED*** Global query limits (non-negotiable)
+# Global query limits (non-negotiable)
 MAX_RESULTS_PER_QUERY = 100
 MAX_VISIT_STOPS_PER_ROUTE = 20
 
-***REMOVED*** Admin override capability (requires admin key)
-ADMIN_MAX_RESULTS_OVERRIDE = 1000  ***REMOVED*** Admin can request up to 1000 (still capped)
+# Admin override capability (requires admin key)
+ADMIN_MAX_RESULTS_OVERRIDE = 1000   # Admin can request up to 1000 (still capped)
 
 
 def enforce_query_limit(count: int, is_admin: bool = False) -> int:
@@ -31,20 +31,20 @@ def validate_query_params(limit: int = None, offset: int = 0, is_admin: bool = F
     """
     max_results = ADMIN_MAX_RESULTS_OVERRIDE if is_admin else MAX_RESULTS_PER_QUERY
     
-    ***REMOVED*** If limit not provided, default to max
+    # If limit not provided, default to max
     if limit is None:
         limit = max_results
     else:
-        ***REMOVED*** Enforce cap even if user requests more
+        # Enforce cap even if user requests more
         limit = min(limit, max_results)
     
-    ***REMOVED*** Ensure offset is non-negative
+    # Ensure offset is non-negative
     offset = max(0, offset)
     
     return {
         "limit": limit,
         "offset": offset,
-        "capped": limit == max_results  ***REMOVED*** True if limit was capped
+        "capped": limit == max_results   # True if limit was capped
     }
 
 

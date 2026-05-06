@@ -16,7 +16,7 @@ from src.learning.feedback_collector import collect_campaign_feedback
 logger = logging.getLogger(__name__)
 
 LEARNING_CACHE_PREFIX = "learning:"
-LEARNING_CACHE_TTL = 3600 * 24  ***REMOVED*** 24h
+LEARNING_CACHE_TTL = 3600 * 24   # 24h
 
 
 def _get_redis():
@@ -153,7 +153,7 @@ async def run_learning_loop_for_campaign(campaign_id: str) -> Dict[str, Any]:
             return {"queued": True, "campaign_id": campaign_id}
         except Exception as e:
             logger.warning("run_learning_loop_for_campaign queue failed: %s", e)
-    ***REMOVED*** Sync fallback: just run analysis
+    # Sync fallback: just run analysis
     t0 = time.perf_counter()
     insights = await analyze_campaign_success(limit=50)
     analysis_time_ms = int((time.perf_counter() - t0) * 1000)
@@ -161,7 +161,7 @@ async def run_learning_loop_for_campaign(campaign_id: str) -> Dict[str, Any]:
     return {"queued": False, "campaign_id": campaign_id, "insights": insights}
 
 
-***REMOVED*** Extensibility: placeholders for future models
+# Extensibility: placeholders for future models
 async def get_lead_scoring_model(contact: Dict[str, Any], campaign_context: Dict[str, Any]) -> float:
     """Placeholder for lead_scoring_model. Returns 0.0–1.0 score."""
     return 0.5

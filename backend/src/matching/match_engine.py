@@ -14,7 +14,7 @@ from src.matching.match_result import MatchResult
 
 
 def _distance_meters(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
-    ***REMOVED*** Haversine formula (deterministic)
+    # Haversine formula (deterministic)
     r = 6371000
     dlat = radians(lat2 - lat1)
     dlon = radians(lon2 - lon1)

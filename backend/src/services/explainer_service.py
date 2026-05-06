@@ -48,7 +48,7 @@ class ExplainerService:
         Returns:
             TargetTrace: Generated trace with full explanation
         """
-        ***REMOVED*** Get target data
+        # Get target data
         if target_type == "company":
             target = self.db.query(Company).filter(Company.id == int(target_id)).first()
             if not target or target.user_id != user_id:
@@ -60,7 +60,7 @@ class ExplainerService:
         else:
             raise ValueError(f"Invalid target_type: {target_type}")
         
-        ***REMOVED*** Get persona if provided (for matching perspective)
+        # Get persona if provided (for matching perspective)
         persona = None
         if persona_id:
             persona = self.db.query(Persona).filter(
@@ -70,34 +70,34 @@ class ExplainerService:
             if not persona:
                 raise ValueError(f"Persona with ID {persona_id} not found")
         
-        ***REMOVED*** Generate signals used
+        # Generate signals used
         signals_used = self._extract_signals_used(target, target_type, persona)
         
-        ***REMOVED*** Get signal weights
+        # Get signal weights
         signal_weights = self._get_signal_weights(user_id, persona_id)
         
-        ***REMOVED*** Get signal exclusions
+        # Get signal exclusions
         signal_exclusions = self._get_signal_exclusions(user_id, persona_id, signals_used)
         
-        ***REMOVED*** Calculate location affinity
+        # Calculate location affinity
         location_affinity_score, location_affinity_details = self._calculate_location_affinity(
             target, target_type, persona
         )
         
-        ***REMOVED*** Calculate overall score
+        # Calculate overall score
         overall_score = self._calculate_overall_score(
             signals_used,
             signal_weights,
             location_affinity_score
         )
         
-        ***REMOVED*** Calculate confidence levels
+        # Calculate confidence levels
         confidence_level, confidence_breakdown = self._calculate_confidence(
             signals_used,
             location_affinity_details
         )
         
-        ***REMOVED*** Create or update trace
+        # Create or update trace
         existing_trace = self.db.query(TargetTrace).filter(
             TargetTrace.user_id == user_id,
             TargetTrace.target_id == target_id,
@@ -106,7 +106,7 @@ class ExplainerService:
         ).first()
         
         if existing_trace:
-            ***REMOVED*** Update existing trace
+            # Update existing trace
             existing_trace.overall_score = overall_score
             existing_trace.signals_used = signals_used
             existing_trace.signal_weights = signal_weights
@@ -119,7 +119,7 @@ class ExplainerService:
             self.db.refresh(existing_trace)
             return existing_trace
         else:
-            ***REMOVED*** Create new trace
+            # Create new trace
             new_trace = TargetTrace(
                 user_id=user_id,
                 target_id=target_id,
@@ -149,13 +149,13 @@ class ExplainerService:
         signals = []
         
         if target_type == "company":
-            ***REMOVED*** Company signals
+            # Company signals
             if hasattr(target, 'industry') and target.industry:
                 signals.append({
                     "signal_type": "industry",
                     "signal_value": target.industry,
-                    "weight": 1.0,  ***REMOVED*** Will be updated with actual weight
-                    "contribution": 0.0,  ***REMOVED*** Will be calculated
+                    "weight": 1.0,   # Will be updated with actual weight
+                    "contribution": 0.0,   # Will be calculated
                     "confidence": "high"
                 })
             
@@ -173,7 +173,7 @@ class ExplainerService:
                         })
         
         elif target_type == "persona":
-            ***REMOVED*** Persona signals
+            # Persona signals
             if hasattr(target, 'job_title') and target.job_title:
                 signals.append({
                     "signal_type": "job_title",
@@ -215,7 +215,7 @@ class ExplainerService:
         """Get effective signal weights"""
         weights = {}
         
-        ***REMOVED*** Get all weights (persona-specific or global)
+        # Get all weights (persona-specific or global)
         all_weights = self.signal_service.get_all_weights(user_id, persona_id=persona_id)
         
         for weight_obj in all_weights:
@@ -232,15 +232,15 @@ class ExplainerService:
         """Get signal exclusions and check if they apply"""
         exclusions = []
         
-        ***REMOVED*** Get all exclusions
+        # Get all exclusions
         all_exclusions = self.signal_service.get_all_exclusions(user_id, persona_id=persona_id)
         
-        ***REMOVED*** Check each signal against exclusions
+        # Check each signal against exclusions
         for signal in signals_used:
             signal_type = signal["signal_type"]
             signal_value = signal["signal_value"]
             
-            ***REMOVED*** Check if this signal value is excluded
+            # Check if this signal value is excluded
             is_excluded = self.signal_service.is_signal_excluded(
                 user_id, signal_type, signal_value, persona_id
             )
@@ -269,7 +269,7 @@ class ExplainerService:
         if persona_lat is None or persona_lng is None:
             return None, None
         
-        ***REMOVED*** Get target location
+        # Get target location
         target_lat = None
         target_lng = None
         target_signals = None
@@ -292,7 +292,7 @@ class ExplainerService:
         if target_lat is None or target_lng is None:
             return None, None
         
-        ***REMOVED*** Calculate affinity score
+        # Calculate affinity score
         score = self.location_service.calculate_location_affinity_score(
             persona_lat=persona_lat,
             persona_lng=persona_lng,
@@ -304,12 +304,12 @@ class ExplainerService:
             target_signals=target_signals
         )
         
-        ***REMOVED*** Calculate distance
+        # Calculate distance
         distance_km = self.location_service._haversine_distance(
             persona_lat, persona_lng, target_lat, target_lng
         )
         
-        ***REMOVED*** Check if within radius/polygon
+        # Check if within radius/polygon
         within_radius = False
         within_polygon = False
         
@@ -321,7 +321,7 @@ class ExplainerService:
                 target_lat, target_lng, persona.location_polygon
             )
         
-        ***REMOVED*** Check signal match
+        # Check signal match
         signal_match = False
         matching_signals = []
         if persona.location_signals and target_signals:
@@ -349,7 +349,7 @@ class ExplainerService:
         if not signals_used:
             return 0.0
         
-        ***REMOVED*** Apply weights to signals
+        # Apply weights to signals
         weighted_contributions = []
         total_weight = 0.0
         
@@ -358,21 +358,21 @@ class ExplainerService:
             weight = signal_weights.get(signal_type, 1.0)
             signal["weight"] = weight
             
-            ***REMOVED*** Calculate contribution (simplified - would be more sophisticated in production)
+            # Calculate contribution (simplified - would be more sophisticated in production)
             contribution = weight / len(signals_used)
             signal["contribution"] = contribution
             weighted_contributions.append(contribution)
             total_weight += weight
         
-        ***REMOVED*** Normalize contributions
+        # Normalize contributions
         if total_weight > 0:
             for signal in signals_used:
                 signal["contribution"] = signal["contribution"] / (total_weight / len(signals_used))
         
-        ***REMOVED*** Calculate base score from signals
+        # Calculate base score from signals
         base_score = sum(weighted_contributions) / len(weighted_contributions) if weighted_contributions else 0.0
         
-        ***REMOVED*** Incorporate location affinity (30% weight)
+        # Incorporate location affinity (30% weight)
         if location_affinity_score is not None:
             overall_score = (base_score * 0.7) + (location_affinity_score * 0.3)
         else:
@@ -388,17 +388,17 @@ class ExplainerService:
         """Calculate confidence levels"""
         confidence_breakdown = {}
         
-        ***REMOVED*** Per-signal confidence
+        # Per-signal confidence
         for signal in signals_used:
             signal_type = signal["signal_type"]
             confidence_breakdown[signal_type] = signal.get("confidence", "medium")
         
-        ***REMOVED*** Location confidence
+        # Location confidence
         if location_affinity_details:
             location_conf = "high" if location_affinity_details.get("within_radius") or location_affinity_details.get("within_polygon") else "medium"
             confidence_breakdown["location"] = location_conf
         
-        ***REMOVED*** Overall confidence (average of all confidences)
+        # Overall confidence (average of all confidences)
         if confidence_breakdown:
             high_count = sum(1 for c in confidence_breakdown.values() if c == "high")
             medium_count = sum(1 for c in confidence_breakdown.values() if c == "medium")

@@ -28,7 +28,7 @@ class VisionService:
         self.client = None
         if VISION_AVAILABLE:
             try:
-                ***REMOVED*** Initialize client - uses GOOGLE_APPLICATION_CREDENTIALS env var or default credentials
+                # Initialize client - uses GOOGLE_APPLICATION_CREDENTIALS env var or default credentials
                 self.client = vision.ImageAnnotatorClient()
             except Exception as e:
                 print(f"Warning: Could not initialize Vision API client: {e}")
@@ -72,10 +72,10 @@ class VisionService:
             features = ["all"]
         
         try:
-            ***REMOVED*** Create image object
+            # Create image object
             image = vision.Image(content=image_content)
             
-            ***REMOVED*** Prepare feature requests
+            # Prepare feature requests
             feature_requests = []
             
             if "all" in features or "objects" in features:
@@ -96,7 +96,7 @@ class VisionService:
                     types.Feature(type_=types.Feature.Type.LABEL_DETECTION, max_results=20)
                 )
             
-            ***REMOVED*** Perform batch annotation
+            # Perform batch annotation
             request = types.AnnotateImageRequest(
                 image=image,
                 features=feature_requests
@@ -104,7 +104,7 @@ class VisionService:
             
             response = self.client.annotate_image(request=request)
             
-            ***REMOVED*** Parse results
+            # Parse results
             result = {
                 "success": True,
                 "objects": [],
@@ -113,7 +113,7 @@ class VisionService:
                 "full_text_annotation": None
             }
             
-            ***REMOVED*** Extract objects
+            # Extract objects
             if response.localized_object_annotations:
                 for obj in response.localized_object_annotations:
                     result["objects"].append({
@@ -126,22 +126,22 @@ class VisionService:
                         ]
                     })
             
-            ***REMOVED*** Extract text (OCR)
+            # Extract text (OCR)
             detected_texts = []
             if response.text_annotations:
-                ***REMOVED*** First annotation is the full text
+                # First annotation is the full text
                 if len(response.text_annotations) > 0:
                     full_text = response.text_annotations[0].description
                     result["full_text_annotation"] = full_text
                     detected_texts.append(full_text)
             
-            ***REMOVED*** Also check document text detection
+            # Also check document text detection
             if response.full_text_annotation:
                 result["full_text_annotation"] = response.full_text_annotation.text
             
             result["text"] = "\n".join(detected_texts) if detected_texts else ""
             
-            ***REMOVED*** Extract labels
+            # Extract labels
             if response.label_annotations:
                 for label in response.label_annotations:
                     result["labels"].append({
@@ -215,7 +215,7 @@ class VisionService:
         if not analysis.get("success"):
             return analysis
         
-        ***REMOVED*** Extract product information
+        # Extract product information
         product_info = {
             "success": True,
             "product_name": "",
@@ -226,38 +226,38 @@ class VisionService:
             "raw_analysis": analysis
         }
         
-        ***REMOVED*** Try to extract product name from text
+        # Try to extract product name from text
         text = analysis.get("text", "").strip()
         if text:
-            ***REMOVED*** Look for product name patterns (first line, capitalized words, etc.)
+            # Look for product name patterns (first line, capitalized words, etc.)
             lines = text.split("\n")
             if lines:
-                ***REMOVED*** First non-empty line might be product name
-                for line in lines[:5]:  ***REMOVED*** Check first 5 lines
+                # First non-empty line might be product name
+                for line in lines[:5]:   # Check first 5 lines
                     line = line.strip()
                     if line and len(line) > 3 and len(line) < 100:
                         product_info["product_name"] = line
                         break
         
-        ***REMOVED*** Extract category from labels
+        # Extract category from labels
         labels = analysis.get("labels", [])
         if labels:
-            ***REMOVED*** Get highest confidence label as category
+            # Get highest confidence label as category
             top_label = labels[0] if labels else None
             if top_label and top_label.get("score", 0) > 0.7:
                 product_info["category"] = top_label.get("description", "")
                 product_info["confidence"] = top_label.get("score", 0)
         
-        ***REMOVED*** Look for barcode-like text (numeric sequences)
+        # Look for barcode-like text (numeric sequences)
         if text:
             import re
-            ***REMOVED*** Look for long numeric sequences (potential barcodes)
+            # Look for long numeric sequences (potential barcodes)
             barcode_pattern = r'\b\d{8,}\b'
             matches = re.findall(barcode_pattern, text)
             if matches:
                 product_info["barcode_text"] = matches[0]
         
-        ***REMOVED*** Build description from labels
+        # Build description from labels
         if labels:
             descriptions = [label.get("description", "") for label in labels[:5]]
             product_info["description"] = ", ".join(descriptions)
@@ -265,7 +265,7 @@ class VisionService:
         return product_info
 
 
-***REMOVED*** Singleton instance
+# Singleton instance
 _vision_service_instance = None
 
 

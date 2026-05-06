@@ -12,7 +12,7 @@ MODEL_EPOCH = "2026-01-01T00:00:00Z"
 
 
 def export_model_session_stability(*, session_id: str = "sess-demo-001") -> dict[str, Any]:
-    ***REMOVED*** Foundation: deterministic pinned model metadata.
+    # Foundation: deterministic pinned model metadata.
     return {
         "session_id": (session_id or "").strip() or "sess-demo-001",
         "model_id": "foundation-model-v1",

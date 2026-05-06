@@ -51,7 +51,7 @@ def decide_selective_expansion(
     selected_ids = [str(c.get("chunk_id") or "") for _, c in selected if c.get("chunk_id")]
     rejected_ids = [str(c.get("chunk_id") or "") for _, c in rejected if c.get("chunk_id")]
 
-    ***REMOVED*** naive savings estimate: expand only selected full text, keep others compressed
+    # naive savings estimate: expand only selected full text, keep others compressed
     full_tokens = sum(max(0, int(len(str(c.get("text") or "")) / 4)) for _, c in scored)
     expanded_tokens = sum(max(0, int(len(str(c.get("text") or "")) / 4)) for _, c in selected)
     token_savings = max(0, full_tokens - expanded_tokens)

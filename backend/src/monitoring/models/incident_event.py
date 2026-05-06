@@ -13,7 +13,7 @@ class IncidentEvent(Base):
     __tablename__ = "monitoring_incident_events"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    incident_id = Column(String(64), nullable=False, index=True)  ***REMOVED*** FK to Incident.incident_id
+    incident_id = Column(String(64), nullable=False, index=True)   # FK to Incident.incident_id
     event_message = Column(Text, nullable=True)
     module = Column(String(256), nullable=True, index=True)
     endpoint = Column(String(512), nullable=True)

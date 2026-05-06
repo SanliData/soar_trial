@@ -10,7 +10,7 @@ from typing import Any
 
 GATEWAY_EPOCH = "2025-05-01T00:00:00Z"
 
-***REMOVED*** Deterministic registry only — no runtime mutation API.
+# Deterministic registry only — no runtime mutation API.
 GATEWAYS: dict[str, dict[str, Any]] = {
     "browser_intelligence": {
         "gateway_name": "browser_intelligence",

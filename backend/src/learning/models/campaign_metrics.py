@@ -24,9 +24,9 @@ class CampaignMetrics(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=True)
 
-    ***REMOVED*** Optional context for analysis (industry, roles, etc.)
+    # Optional context for analysis (industry, roles, etc.)
     industry = Column(String(256), nullable=True, index=True)
     location = Column(String(256), nullable=True, index=True)
-    roles_snapshot = Column(String(512), nullable=True)  ***REMOVED*** JSON array as string or comma-separated
+    roles_snapshot = Column(String(512), nullable=True)   # JSON array as string or comma-separated
 
     __table_args__ = (Index("ix_campaign_metrics_campaign_id_created", "campaign_id", "created_at"),)

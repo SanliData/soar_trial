@@ -19,55 +19,55 @@ class Campaign(Base):
     
     __tablename__ = "campaigns"
     
-    ***REMOVED*** Primary key
+    # Primary key
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     
-    ***REMOVED*** Foreign key to User
+    # Foreign key to User
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     
-    ***REMOVED*** Campaign information
+    # Campaign information
     name = Column(String(255), nullable=False)
-    ad_content_type = Column(String(50), nullable=False)  ***REMOVED*** "text", "image", "link"
-    ad_content = Column(Text, nullable=False)  ***REMOVED*** Text, image URL, or link URL
-    ad_type = Column(String(50), nullable=False)  ***REMOVED*** "location-based", "social", "email", "sms"
+    ad_content_type = Column(String(50), nullable=False)   # "text", "image", "link"
+    ad_content = Column(Text, nullable=False)   # Text, image URL, or link URL
+    ad_type = Column(String(50), nullable=False)   # "location-based", "social", "email", "sms"
     
-    ***REMOVED*** Target information (stored as JSON)
-    target_data = Column(JSON, nullable=True)  ***REMOVED*** Company IDs, personnel IDs, locations, etc.
+    # Target information (stored as JSON)
+    target_data = Column(JSON, nullable=True)   # Company IDs, personnel IDs, locations, etc.
     
-    ***REMOVED*** Scheduling and budget
-    schedule = Column(JSON, nullable=True)  ***REMOVED*** Scheduling options
+    # Scheduling and budget
+    schedule = Column(JSON, nullable=True)   # Scheduling options
     budget = Column(Float, nullable=True)
     max_impressions = Column(Integer, nullable=True)
     
-    ***REMOVED*** Statistics
+    # Statistics
     total_targets = Column(Integer, default=0, nullable=False)
     companies_count = Column(Integer, default=0, nullable=False)
     personnel_count = Column(Integer, default=0, nullable=False)
     locations_count = Column(Integer, default=0, nullable=False)
     
-    ***REMOVED*** Campaign metrics
+    # Campaign metrics
     impressions = Column(Integer, default=0, nullable=False)
     clicks = Column(Integer, default=0, nullable=False)
     conversions = Column(Integer, default=0, nullable=False)
     
-    ***REMOVED*** Conversion strategy
-    conversion_strategy = Column(String(50), default="appointment", nullable=False)  ***REMOVED*** "appointment", "direct_traffic"
-    sales_site_url = Column(String(512), nullable=True)  ***REMOVED*** URL for direct traffic campaigns
-    utm_parameters = Column(JSON, nullable=True)  ***REMOVED*** UTM tracking parameters
+    # Conversion strategy
+    conversion_strategy = Column(String(50), default="appointment", nullable=False)   # "appointment", "direct_traffic"
+    sales_site_url = Column(String(512), nullable=True)   # URL for direct traffic campaigns
+    utm_parameters = Column(JSON, nullable=True)   # UTM tracking parameters
     
-    ***REMOVED*** Status
-    status = Column(String(50), default="draft", nullable=False)  ***REMOVED*** "draft", "active", "paused", "completed", "stopped"
+    # Status
+    status = Column(String(50), default="draft", nullable=False)   # "draft", "active", "paused", "completed", "stopped"
     
-    ***REMOVED*** Timestamps
+    # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
     started_at = Column(DateTime(timezone=True), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     
-    ***REMOVED*** Relationship to User
+    # Relationship to User
     user = relationship("User", backref="campaigns")
     
-    ***REMOVED*** Indexes for performance
+    # Indexes for performance
     __table_args__ = (
         Index('idx_campaign_user_id', 'user_id'),
         Index('idx_campaign_status', 'status'),
