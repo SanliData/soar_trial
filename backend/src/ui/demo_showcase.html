@@ -492,7 +492,7 @@
     <script>
         // API configuration
         const API_BASE = window.location.origin;
-        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        const API_KEY = new URLSearchParams(window.location.search).get('api_key') || '';
         
         async function loadHotels() {
             try {

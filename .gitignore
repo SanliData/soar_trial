@@ -1,0 +1,45 @@
+***REMOVED*** Repo-wide ignore (public-safe defaults)
+
+***REMOVED*** Secrets / env files
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+backend/env.yaml
+backend/env*.yaml.bak
+**/*secret*.json
+**/*service_account*.json
+
+***REMOVED*** Private keys / certs
+*.pem
+*.key
+*.p12
+*.pfx
+
+***REMOVED*** Logs / dumps
+*.log
+**/debug.log
+**/*.dump
+
+***REMOVED*** Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+***REMOVED*** Virtualenvs
+.venv/
+venv/
+
+***REMOVED*** Node (if any)
+node_modules/
+
+***REMOVED*** IDE / editor
+.vscode/
+.idea/
+
+***REMOVED*** OS
+.DS_Store
+Thumbs.db
+

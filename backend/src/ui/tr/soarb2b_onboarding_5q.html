@@ -1764,7 +1764,7 @@
                 if (token) {
                     headers['Authorization'] = 'Bearer ' + token;
                 } else {
-                    headers['X-API-Key'] = '<REDACTED_SOARB2B_API_KEY>';
+                    headers['X-API-Key'] = (new URLSearchParams(window.location.search).get('api_key') || '');
                 }
 
                 // Update loading text

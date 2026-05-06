@@ -171,7 +171,7 @@
     </div>
 
     <script>
-        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        const API_KEY = new URLSearchParams(window.location.search).get('api_key') || '';
         const planId = new URLSearchParams(window.location.search).get('plan_id');
         const selectedObjectives = new Set();
 

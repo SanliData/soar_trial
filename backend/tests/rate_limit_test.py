@@ -5,6 +5,7 @@ ENCODING: UTF-8 WITHOUT BOM
 """
 
 import asyncio
+import os
 import time
 import json
 from datetime import datetime
@@ -12,10 +13,11 @@ from typing import List, Dict, Any
 
 import httpx
 
-***REMOVED*** Test configuration
-BASE_URL = "https://soarb2b.com"  ***REMOVED*** Production URL
-***REMOVED*** BASE_URL = "http://localhost:8000"  ***REMOVED*** Local testing
-API_KEY = "<REDACTED_SOARB2B_API_KEY>"
+***REMOVED*** Test configuration (never hardcode production credentials)
+BASE_URL = "http://127.0.0.1:8000"
+API_KEY = os.getenv("SOARB2B_API_KEY", "")
+if not API_KEY:
+    raise RuntimeError("SOARB2B_API_KEY is required for this test run")
 
 ***REMOVED*** Expected rate limit: 100 req/min
 EXPECTED_LIMIT = 100

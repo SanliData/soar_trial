@@ -1,0 +1,28 @@
+***REMOVED***
+***REMOVED***
+***REMOVED*** Format:
+***REMOVED***   [literal:|glob:|regex:]MATCH==>REPLACEMENT
+***REMOVED*** If no ==>REPLACEMENT is given, default is "***REMOVED***"
+
+***REMOVED*** Known exposed SOARB2B API keys (historical)
+literal:<REDACTED_SOARB2B_API_KEY>==><REDACTED_SOARB2B_API_KEY>
+literal:<REDACTED_SOARB2B_API_KEY>==><REDACTED_SOARB2B_API_KEY>
+
+***REMOVED*** OpenAI
+regex:sk-(?:proj-|live-|test-)?[A-Za-z0-9_\\-]{20,}==><REDACTED_OPENAI_API_KEY>
+
+***REMOVED*** Google API keys
+regex:AIzaSy[0-9A-Za-z_\\-]{20,}==><REDACTED_GOOGLE_API_KEY>
+
+***REMOVED*** Stripe
+regex:pk_(?:live|test)_[0-9A-Za-z]{20,}==><REDACTED_STRIPE_PUBLISHABLE_KEY>
+regex:sk_(?:live|test)_[0-9A-Za-z]{20,}==><REDACTED_STRIPE_SECRET_KEY>
+regex:whsec_[0-9A-Za-z]{16,}==><REDACTED_STRIPE_WEBHOOK_SECRET>
+
+***REMOVED*** GitHub tokens
+regex:ghp_[A-Za-z0-9]{30,}==><REDACTED_GITHUB_TOKEN>
+regex:github_pat_[A-Za-z0-9_]{20,}==><REDACTED_GITHUB_TOKEN>
+
+***REMOVED*** Generic bearer tokens (reduce false positives by requiring long token)
+regex:(?i)Authorization:\\s*Bearer\\s+[A-Za-z0-9\\-\\._~\\+\\/]+=*==><REDACTED_BEARER_TOKEN>
+

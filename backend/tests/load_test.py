@@ -12,12 +12,15 @@ from datetime import datetime
 from typing import List, Dict, Any, Optional
 from collections import defaultdict
 
+import os
+
 import httpx
 
-***REMOVED*** Test configuration
-BASE_URL = "https://soarb2b.com"  ***REMOVED*** Production URL
-***REMOVED*** BASE_URL = "http://localhost:8000"  ***REMOVED*** Local testing
-API_KEY = "<REDACTED_SOARB2B_API_KEY>"
+***REMOVED*** Test configuration (never hardcode production credentials)
+BASE_URL = os.getenv("SOARB2B_BASE_URL", "http://127.0.0.1:8000")
+API_KEY = os.getenv("SOARB2B_API_KEY", "")
+if not API_KEY:
+    raise RuntimeError("SOARB2B_API_KEY is required for this test run")
 
 ***REMOVED*** Test scenarios
 TEST_SCENARIOS = {

@@ -170,7 +170,7 @@ INFO:     Uvicorn running on http://127.0.0.1:8000
 ```bash
 curl -X POST "http://127.0.0.1:8000/api/v1/b2b/acquisition/jobs" \
   -H "Content-Type: application/json" \
-  -H "X-API-Key: <REDACTED_SOARB2B_API_KEY>" \
+  -H "X-API-Key: <YOUR_API_KEY>" \
   -d '{
     "plan_id": "test_plan_123",
     "target_type": "both",
@@ -192,7 +192,7 @@ curl -X POST "http://127.0.0.1:8000/api/v1/b2b/acquisition/jobs" \
 
 ```bash
 curl "http://127.0.0.1:8000/api/v1/b2b/acquisition/jobs/{job_id}" \
-  -H "X-API-Key: <REDACTED_SOARB2B_API_KEY>"
+  -H "X-API-Key: <YOUR_API_KEY>"
 ```
 
 ***REMOVED******REMOVED******REMOVED*** 4. Download results
@@ -200,12 +200,12 @@ curl "http://127.0.0.1:8000/api/v1/b2b/acquisition/jobs/{job_id}" \
 ```bash
 ***REMOVED*** CSV
 curl "http://127.0.0.1:8000/api/v1/b2b/acquisition/jobs/{job_id}/export.csv" \
-  -H "X-API-Key: <REDACTED_SOARB2B_API_KEY>" \
+  -H "X-API-Key: <YOUR_API_KEY>" \
   -o results.csv
 
 ***REMOVED*** JSON
 curl "http://127.0.0.1:8000/api/v1/b2b/acquisition/jobs/{job_id}/export.json" \
-  -H "X-API-Key: <REDACTED_SOARB2B_API_KEY>" \
+  -H "X-API-Key: <YOUR_API_KEY>" \
   -o results.json
 ```
 

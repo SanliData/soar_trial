@@ -191,13 +191,18 @@
         .ad-placeholder .ad-cta { display: inline-block; padding: 0.5rem 1.25rem; background: ***REMOVED***C5A028; color: ***REMOVED***0F172A; font-weight: 700; font-size: 0.85rem; border-radius: 4px; text-decoration: none; }
     </style>
     <script>
-        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
-        const planId = new URLSearchParams(window.location.search).get('plan_id');
+        const qs = new URLSearchParams(window.location.search);
+        const API_KEY = qs.get('api_key') || '';
+        const planId = qs.get('plan_id');
+
+        function apiHeaders(){
+            return API_KEY ? { 'X-API-Key': API_KEY } : {};
+        }
 
         async function loadResults() {
             try {
                 const response = await fetch(`${window.location.origin}/api/v1/b2b/plans/${planId}/results`, {
-                    headers: { 'X-API-Key': API_KEY }
+                    headers: apiHeaders()
                 });
                 if (!response.ok) throw new Error(`Failed to load results: ${response.status}`);
                 
@@ -220,7 +225,7 @@
                 // Note: This would need an endpoint like /api/v1/b2b/plans/{plan_id}/acquisition-jobs
                 // For now, we'll use the acquisition router endpoint pattern
                 const response = await fetch(`${window.location.origin}/api/v1/b2b/acquisition/jobs?plan_id=${planId}`, {
-                    headers: { 'X-API-Key': API_KEY }
+                    headers: apiHeaders()
                 });
                 if (!response.ok) return; // No acquisition jobs yet
                 

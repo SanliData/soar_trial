@@ -1,0 +1,12 @@
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allow placeholders and docs examples"
+regexes = [
+  "<REDACTED_[A-Z0-9_]+>",
+  "your_[a-z0-9_]+_here",
+  "YOUR_[A-Z0-9_]+",
+  "postgresql://soarb2b:YOUR_PASSWORD@localhost:5432/finderos",
+]
+

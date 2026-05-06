@@ -1006,7 +1006,7 @@ Hedefleme: İstanbul, Ankara, İzmir, Antalya + İş unvanı: "Satınalma Müdü
         // --- Assistant panel (PlanSpec orchestrator) ---
         (function() {
             var API_BASE = window.location.origin;
-            var API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+            var API_KEY = new URLSearchParams(window.location.search).get('api_key') || '';
             var currentPlanId = null;
 
             var fab = document.getElementById('assistantFab');

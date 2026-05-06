@@ -1748,7 +1748,7 @@
             try {
                 const API_BASE = window.location.origin;
                 const endpoint = `${API_BASE}/api/v1/b2b/onboarding/create-plan`;
-                const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+                const API_KEY = new URLSearchParams(window.location.search).get('api_key') || '';
 
                 // Update loading text
                 if (loadingText) loadingText.textContent = 'Creating your meeting plan...';

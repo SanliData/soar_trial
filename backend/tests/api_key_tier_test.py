@@ -5,6 +5,7 @@ ENCODING: UTF-8 WITHOUT BOM
 """
 
 import asyncio
+import os
 import time
 import json
 from datetime import datetime
@@ -12,9 +13,8 @@ from typing import Dict, Any, List
 
 import httpx
 
-***REMOVED*** Test configuration
-BASE_URL = "https://soarb2b.com"  ***REMOVED*** Production URL
-***REMOVED*** BASE_URL = "http://localhost:8000"  ***REMOVED*** Local testing
+***REMOVED*** Test configuration (never hardcode production credentials)
+BASE_URL = os.getenv("SOARB2B_BASE_URL", "http://127.0.0.1:8000")
 
 ***REMOVED*** Tier quotas (requests per minute)
 TIER_QUOTAS = {
@@ -27,15 +27,17 @@ TIER_QUOTAS = {
 ***REMOVED*** Test API keys (these should be created in database first)
 ***REMOVED*** For testing, we'll use the existing key and simulate different tiers
 TEST_API_KEYS = {
-    "free": "<REDACTED_SOARB2B_API_KEY>",  ***REMOVED*** Replace with free tier key
-    "standard": "<REDACTED_SOARB2B_API_KEY>",  ***REMOVED*** Current key
-    "premium": "<REDACTED_SOARB2B_API_KEY>",  ***REMOVED*** Replace with premium tier key
-    "enterprise": "<REDACTED_SOARB2B_API_KEY>"  ***REMOVED*** Replace with enterprise tier key
+    "free": os.getenv("SOARB2B_API_KEY_FREE", ""),
+    "standard": os.getenv("SOARB2B_API_KEY_STANDARD", ""),
+    "premium": os.getenv("SOARB2B_API_KEY_PREMIUM", ""),
+    "enterprise": os.getenv("SOARB2B_API_KEY_ENTERPRISE", ""),
 }
 
 
 async def test_tier_quota(tier: str, api_key: str, expected_quota: int):
     """Test quota enforcement for a specific tier"""
+    if not api_key:
+        raise RuntimeError(f"Missing API key for tier={tier}. Set SOARB2B_API_KEY_{tier.upper()} env var.")
     print(f"\n{'=' * 70}")
     print(f"Testing Tier: {tier.upper()}")
     print(f"{'=' * 70}")
