@@ -1,0 +1,30 @@
+{
+  "trace_id": "trace-pass-example",
+  "run_id": "run-pass-example",
+  "query_id": "query-pass-example",
+  "timestamp": "2025-02-08T12:00:00Z",
+  "stage": "EXPORT",
+  "regulated_domain": false,
+  "simulation_mode": null,
+  "blocked_reason": null,
+  "limits": {
+    "company_size_max": 50,
+    "company_limit": 100
+  },
+  "rows_before": 5,
+  "rows_after": 5,
+  "rejected_counts": {
+    "size": 0
+  },
+  "decision_maker_summary": {
+    "Procurement": 2,
+    "QA": 1,
+    "Ops": 2
+  },
+  "channel_summary": {
+    "linkedin_only": 3,
+    "both_with_sequence": 2
+  },
+  "status": "PASS",
+  "reason": null
+}

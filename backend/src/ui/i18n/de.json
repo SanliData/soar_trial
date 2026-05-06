@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "language": "de",
+    "name": "Deutsch",
+    "region": "DE"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen"
+  },
+  "home": {
+    "title": "SOAR B2B — Verwandle die richtigen Unternehmen in Termine",
+    "description": "Greife auf verifizierte Unternehmen zu, kontaktiere echte Entscheidungsträger, verwandle Kontakte in Termine. B2B-Terminmotor für Hersteller und Großhändler.",
+    "cta": "Loslegen",
+    "demo": "Demo ansehen"
+  }
+}

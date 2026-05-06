@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>System Visibility Dashboard — FinderOS</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    h2 { margin-top: 18px; }
+    button { margin: 6px 8px 0 0; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***1d4ed8; color: ***REMOVED***fff; font-size: 12px; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 420px; font-size: 10px; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 13px; margin: 8px 0 14px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  </style>
+</head>
+<body>
+  <h1>System visibility dashboard (H-046)</h1>
+  <p class="muted">Unified operational cockpit — deterministic, auditable, no hidden overrides or unrestricted controls.</p>
+
+  <div>
+    <button type="button" data-p="/api/v1/system/visibility/health">health</button>
+    <button type="button" data-p="/api/v1/system/visibility/runtime-pressure">runtime-pressure</button>
+    <button type="button" data-p="/api/v1/system/visibility/retrieval">retrieval</button>
+    <button type="button" data-p="/api/v1/system/visibility/connectors">connectors</button>
+    <button type="button" data-p="/api/v1/system/visibility/agents">agents</button>
+    <button type="button" data-p="/api/v1/system/visibility/orchestration">orchestration</button>
+    <button type="button" data-p="/api/v1/system/visibility/approvals">approvals</button>
+    <button type="button" data-p="/api/v1/system/visibility/workflow-audit">workflow-audit</button>
+  </div>
+
+  <div class="grid">
+    <div>
+      <h2>Selected output</h2>
+      <pre id="out">(idle)</pre>
+    </div>
+    <div>
+      <h2>Notes</h2>
+      <pre>{
+  "rules": [
+    "no_fake_uptime_metrics",
+    "no_hidden_status_override",
+    "pressure_thresholds_explainable",
+    "lineage_visibility_enforced",
+    "no_auto_approval"
+  ]
+}</pre>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll("button[data-p]").forEach(function (btn) {
+      btn.onclick = function () {
+        fetch(btn.getAttribute("data-p"))
+          .then(function (r) { return r.json(); })
+          .then(function (j) { document.getElementById("out").textContent = JSON.stringify(j, null, 2); });
+      };
+    });
+  </script>
+</body>
+</html>
+

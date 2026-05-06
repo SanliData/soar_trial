@@ -1,0 +1,64 @@
+{
+  "case_id": "DENTAL_CLINIC_TX_DISTRIBUTOR",
+  "access_level": "sales",
+  "metadata": {
+    "sector": "Healthcare",
+    "region": "Texas",
+    "company_type": "distributor",
+    "product_category": "Dental equipment and supplies",
+    "created_date": "2025-01-10",
+    "updated_date": "2025-01-10"
+  },
+  "business_objective": {
+    "summary": "A dental equipment distributor in Texas needed to expand their client base by booking consultation meetings with dental practice owners and office managers who make purchasing decisions for equipment and consumables.",
+    "goal": "Dental clinics across Texas to book consultation meetings with practice owners and office managers."
+  },
+  "target_profile": {
+    "company_type": "Dental practices and clinics",
+    "departments": ["Administration", "Clinical Operations"],
+    "roles": ["Practice Owner", "Office Manager", "Dental Administrator"],
+    "geographic_scope": "Texas metropolitan areas: Dallas, Houston, Austin, San Antonio"
+  },
+  "communication_flow": [
+    "Verified dental clinic list created (practice type, location-based)",
+    "Decision-maker roles identified (practice owners, office managers, administrators)",
+    "Location + persona targeted visibility (role-specific messaging for practice owners vs office managers)",
+    "Platform expansion (LinkedIn for B2B, Facebook/Instagram for local reach)",
+    "Direct outreach escalation (consultation offer emails, follow-up phone calls)"
+  ],
+  "results": {
+    "list_size": {
+      "min": 200,
+      "max": 280,
+      "note": "Verified dental practices with contact information"
+    },
+    "decision_maker_coverage": {
+      "min": 70,
+      "max": 80,
+      "unit": "percent",
+      "note": "Percentage of practices with identified decision-makers"
+    },
+    "meeting_requests": {
+      "min": 12,
+      "max": 22,
+      "note": "Consultation meeting requests from practice owners and office managers"
+    },
+    "timeframe_days": {
+      "min": 45,
+      "max": 75,
+      "note": "Time from campaign start to first consultation bookings"
+    },
+    "additional_metrics": {
+      "response_rate": "3-7%",
+      "conversion_to_meeting": "15-25% of initial responses"
+    }
+  },
+  "usage": {
+    "sales_demo": true,
+    "onboarding_results": false,
+    "pricing_justification": true,
+    "feature_roadmap": false,
+    "public_marketing": false
+  },
+  "notes": "Sales-level detail. More specific than public cases. Used in sales conversations for healthcare sector prospects."
+}

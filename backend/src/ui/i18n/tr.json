@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "title": "SOAR B2B — Doğru Şirketleri Randevuya Dönüştürün",
+    "description": "Doğrulanmış işletmelere ulaşın, gerçek karar vericilerle iletişime geçin, temasları randevuya çevirin. Üretici ve toptancılar için B2B randevu motoru."
+  },
+  "header": {
+    "signIn": "Giriş Yap",
+    "getStarted": "Başlayın"
+  },
+  "hero": {
+    "title": "Doğru şirketleri randevuya dönüştürün.",
+    "description": "Gerçek şirketleri bulun, doğru karar vericilere ulaşın, ilgiyi randevuya çevirin.",
+    "ctaPrimary": "Randevu Planınızı Oluşturun",
+    "ctaSecondary": "Gerçek Örnek Görün"
+  },
+  "flow": {
+    "step01": {
+      "title": "Hedefle",
+      "description": "Coğrafyanızdaki doğrulanmış şirketler"
+    },
+    "step02": {
+      "title": "Belirle",
+      "description": "Karar verici roller ve departmanlar"
+    },
+    "step03": {
+      "title": "Maruz Bırak",
+      "description": "Çok kanallı, rol odaklı görünürlük"
+    },
+    "step04": {
+      "title": "Buluş",
+      "description": "Onaylı randevular, lead değil"
+    }
+  },
+  "trustBand": {
+    "label": "Stratejik veri ve ekosistem ortakları"
+  },
+  "whatYouGet": {
+    "title": "Ne Alırsınız",
+    "subtitle": "Maruz kalmayı randevuya dönüştüren çıktılar",
+    "items": [
+      {
+        "title": "Doğrulanmış Şirket Listeleri",
+        "description": "Adres, iletişim ve web sitesi bağlantıları ile işletme konumları. CRM'e aktarılabilir.",
+        "metric": "Ort. 120–180 şirket / kampanya"
+      },
+      {
+        "title": "Karar Verici Hedefleme",
+        "description": "Departman ve rol eşleştirme. Satın alma, operasyon, yönetim — satın alan roller.",
+        "metric": "%65–75 karar verici kapsama"
+      },
+      {
+        "title": "Konum-Doğru Erişim",
+        "description": "Yarıçap tabanlı kampanyalar için hassas coğrafi hedefleme. Doğrulanmış adresler, tahmin değil.",
+        "metric": "10m–50km yarıçap hedefleme"
+      },
+      {
+        "title": "Persona Tabanlı Maruz Kalma",
+        "description": "Rol odaklı mesajlaşma ve hedefleme kriterleri. LinkedIn, Meta, Google Ads için hazır.",
+        "metric": "Rol + konum hedefleme"
+      },
+      {
+        "title": "Randevu Odaklı Kampanyalar",
+        "description": "Optimize edilmiş landing sayfaları ve randevu talep formları. Tek, net eylem çağrısı.",
+        "metric": "%2–6 randevu talep oranı"
+      },
+      {
+        "title": "Aktif + Pasif Takip",
+        "description": "Hem doğrudan yanıtları hem de pasif etkileşimi izleyin. Dönüşüm yolunda tam görünürlük.",
+        "metric": "Çok kanallı takip"
+      },
+      {
+        "title": "CRM'e Hazır Aktarım",
+        "description": "Önceden eşleştirilmiş alanlar: şirket, adres, rol, iletişim, e-posta/telefon. Tek tıkla aktarım.",
+        "metric": "CSV, Excel, API"
+      },
+      {
+        "title": "Performans Görünürlüğü",
+        "description": "Yanıt oranları, randevu talepleri, dönüşüm takibi. Gerçek sayılar, gösteriş metrikleri değil.",
+        "metric": "Gerçek zamanlı paneller"
+      }
+    ]
+  },
+  "trusted": {
+    "title": "Güvenenler"
+  },
+  "sequence": {
+    "title": "Sıralama",
+    "subtitle": "Düşük maliyetli, izin tabanlı temas ile başlayın. Hedefli reklamlara ölçeklendirin. Sonra doğrudan erişim.",
+    "steps": [
+      {
+        "number": "01",
+        "process": "İstihbarat",
+        "title": "Şirketler belirlendi",
+        "output": "Doğrulanmış şirket listesi"
+      },
+      {
+        "number": "02",
+        "process": "Eşleştirme",
+        "title": "Karar rolleri eşleştirildi",
+        "output": "Rol hedefleme verisi"
+      },
+      {
+        "number": "03",
+        "process": "Her Yerde Bulunma",
+        "title": "Hedefli maruz kalma",
+        "output": "Çok kanallı kampanyalar"
+      },
+      {
+        "number": "04",
+        "process": "Etkileşim",
+        "title": "Yüksek niyetli temas",
+        "output": "Doğrudan erişim araçları"
+      },
+      {
+        "number": "05",
+        "process": "Sonuç",
+        "title": "Onaylı Randevu",
+        "output": "Rezerve edilmiş takvim slotu"
+      }
+    ]
+  },
+  "metrics": {
+    "title": "Performans Metrikleri",
+    "subtitle": "Gerçek kampanyalardan gerçek sonuçlar",
+    "items": [
+      {
+        "value": "%28",
+        "label": "Ort. Yanıt Oranı",
+        "note": "Rol hedefli kampanyalar"
+      },
+      {
+        "value": "12",
+        "label": "İlk Randevuya Ort. Süre (Gün)",
+        "note": "Kampanya başlangıcından"
+      },
+      {
+        "value": "$240",
+        "label": "Kalifiye Randevu Başına Maliyet",
+        "note": "Sektörler arası ortalama"
+      },
+      {
+        "value": "3–7",
+        "label": "Randevu / 30 Gün",
+        "note": "Tipik kampanya çıktısı"
+      }
+    ]
+  },
+  "caseLibrary": {
+    "title": "Vaka Kütüphanesi",
+    "subtitle": "Gerçek kampanyalardan gerçek sonuçlar",
+    "cta": "Tüm Vakaları Görüntüle"
+  },
+  "onboarding": {
+    "title": "Randevu Planınızı Oluşturun",
+    "subtitle": "5 soru cevaplayın. Özel randevu stratejisi alın.",
+    "cta": "Oluşturmaya Başla"
+  },
+  "pricing": {
+    "title": "Planınızı Seçin",
+    "subtitle": "Ücretsiz başlayın, büyüdükçe ölçeklendirin"
+  },
+  "caseLibraryPreview": {
+    "title": "Vaka Kütüphanesi",
+    "subtitle": "Sizin gibi şirketlerden gerçek sonuçlar",
+    "viewAll": "Tüm Vakaları Görüntüle",
+    "viewCase": "Vakayı görüntüle",
+    "cases": [
+      {
+        "id": "Vaka 01",
+        "title": "Türk Tekstil Devi — ABD Pazarına Giriş",
+        "description": "ABD distribütör ve perakendecilerini hedefleyen üretim şirketi.",
+        "result": "3 ayda 42 Randevu"
+      },
+      {
+        "id": "Vaka 02",
+        "title": "SaaS Büyümesi — Kurumsal Genişleme",
+        "description": "Kurumsal BT karar vericilerini hedefleyen B2B yazılım.",
+        "result": "$1.2M Boru Hattı Oluşturuldu",
+        "featured": true
+      },
+      {
+        "id": "Vaka 03",
+        "title": "Depo Temizlik Hizmetleri — Bölgesel Büyüme",
+        "description": "Lojistik merkezlerindeki tesis yöneticilerini hedefleyen hizmet sağlayıcı.",
+        "result": "60 günde 28 Randevu"
+      }
+    ]
+  },
+  "sponsorBadge": {
+    "label": "Kıyaslama verileri doğrulandı",
+    "name": "Global Analytics Partners"
+  },
+  "footer": {
+    "tagline": "SOAR B2B, satış yapan şirketler için yapılmıştır, sunum yapanlar için değil.",
+    "poweredBy": "SOAR B2B Platform tarafından desteklenmektedir",
+    "sections": {
+      "product": {
+        "title": "Ürün",
+        "links": [
+          {"text": "İstihbarat", "href": "***REMOVED***intelligence"},
+          {"text": "Maruz Kalma", "href": "***REMOVED***exposure"},
+          {"text": "Randevular", "href": "***REMOVED***meetings"},
+          {"text": "Demo", "href": "demo_showcase.html"}
+        ]
+      },
+      "useCases": {
+        "title": "Kullanım Senaryoları",
+        "links": [
+          {"text": "Pazar Girişi", "href": "soarb2b_case_hotel_cleaning.html"},
+          {"text": "Kurumsal Genişleme", "href": "case_library_index.html"},
+          {"text": "Bölgesel Büyüme", "href": "case_library_index.html"}
+        ]
+      },
+      "access": {
+        "title": "Erişim",
+        "links": [
+          {"text": "Kurumsal", "href": "***REMOVED***enterprise"},
+          {"text": "Ortak API", "href": "***REMOVED***partner-api"},
+          {"text": "Ajans Beyaz Etiket", "href": "***REMOVED***agency"}
+        ]
+      },
+      "legal": {
+        "title": "Yasal",
+        "links": [
+          {"text": "Gizlilik Politikası", "href": "***REMOVED***privacy"},
+          {"text": "Hizmet Şartları", "href": "***REMOVED***terms"},
+          {"text": "Uyumluluk", "href": "***REMOVED***compliance"}
+        ]
+      }
+    },
+    "ecosystem": {
+      "title": "Ekosistem Ortakları",
+      "partners": [
+        "CRM Bağlayıcıları",
+        "Veri Sağlayıcıları",
+        "Bölgesel Medya Ajansları",
+        "B2B Hizmet Firmaları"
+      ]
+    }
+  },
+  "mobileNav": {
+    "home": "Ana Sayfa",
+    "cases": "Vakalar",
+    "demo": "Demo",
+    "more": "Daha Fazla",
+    "getStarted": "Başlayın"
+  }
+}

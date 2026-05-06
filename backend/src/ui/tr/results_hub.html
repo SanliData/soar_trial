@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ticari İstihbarat Sonuç Merkezi — FinderOS</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0b1020; color: ***REMOVED***f8fafc; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 13px; margin: 8px 0 14px; }
+    button { margin: 6px 8px 0 0; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***16a34a; color: ***REMOVED***041012; font-size: 12px; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 520px; font-size: 10px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Ticari istihbarat sonuç merkezi (H-047)</h1>
+  <p class="muted">Birincil ticari yüz — deterministik çıktı, kanıt zinciri, explainability zorunlu, sadece öneri.</p>
+
+  <div>
+    <button type="button" data-p="/api/v1/results/opportunities">opportunity feed</button>
+    <button type="button" data-p="/api/v1/results/contractors">contractor intelligence</button>
+    <button type="button" data-p="/api/v1/results/risks">risk indicators</button>
+    <button type="button" data-p="/api/v1/results/executive-summary">executive insights</button>
+    <button type="button" data-p="/api/v1/results/relationships">relationship snapshots</button>
+    <button type="button" data-p="/api/v1/results/evidence">evidence trace</button>
+    <button type="button" data-p="/api/v1/results/explainability">explainability</button>
+    <button type="button" data-p="/api/v1/results/recommendations">workflow recommendations</button>
+  </div>
+
+  <div class="grid">
+    <div>
+      <h2>Seçilen çıktı</h2>
+      <pre id="out">(idle)</pre>
+    </div>
+    <div>
+      <h2>Kurallar</h2>
+      <pre>{
+  "lineage_zorunlu": true,
+  "explainability_zorunlu": true,
+  "otonom_aksiyon_calistirma": false,
+  "uydurma_opportunity_yok": true
+}</pre>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll("button[data-p]").forEach(function (btn) {
+      btn.onclick = function () {
+        fetch(btn.getAttribute("data-p"))
+          .then(function (r) { return r.json(); })
+          .then(function (j) { document.getElementById("out").textContent = JSON.stringify(j, null, 2); });
+      };
+    });
+  </script>
+</body>
+</html>
+

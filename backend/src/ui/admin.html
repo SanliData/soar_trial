@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B — Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: ***REMOVED***0F172A;
+            --surface: ***REMOVED***1e293b;
+            --text: ***REMOVED***F8FAFC;
+            --muted: rgba(248,250,252,0.6);
+            --gold: ***REMOVED***C5A028;
+            --danger: ***REMOVED***ef4444;
+            --success: ***REMOVED***22c55e;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 1.5rem; }
+        h1 { font-size: 1.5rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.15rem; margin: 1.5rem 0 0.75rem; color: var(--gold); }
+        .card { background: var(--surface); border: 1px solid rgba(248,250,252,0.1); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+        label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 0.25rem; }
+        input, select, textarea, button { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid rgba(248,250,252,0.2); border-radius: 6px; background: rgba(248,250,252,0.05); color: var(--text); font-size: 0.95rem; margin-bottom: 0.75rem; }
+        button { cursor: pointer; font-weight: 600; background: var(--gold); color: var(--bg); border: none; }
+        button:hover { filter: brightness(1.1); }
+        button.secondary { background: rgba(248,250,252,0.15); color: var(--text); }
+        .row { display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; }
+        .row > * { flex: 1 1 200px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { border: 1px solid rgba(248,250,252,0.1); padding: 0.5rem 0.75rem; text-align: left; }
+        th { background: rgba(0,0,0,0.2); color: var(--muted); }
+        tr:hover { background: rgba(248,250,252,0.03); }
+        .mono { font-family: ui-monospace, monospace; font-size: 0.85rem; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; }
+        .badge.ok { background: rgba(34,197,94,0.2); color: ***REMOVED***86efac; }
+        .badge.warn { background: rgba(234,179,8,0.2); color: ***REMOVED***fde047; }
+        .badge.danger { background: rgba(239,68,68,0.2); color: ***REMOVED***fca5a5; }
+        ***REMOVED***adminKeyStatus { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+        ***REMOVED***adminKeyStatus.ok { color: var(--success); }
+        .out { margin-top: 0.75rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 6px; font-size: 0.85rem; white-space: pre-wrap; max-height: 400px; overflow: auto; }
+        .err { color: ***REMOVED***fca5a5; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 768px) { .grid2 { grid-template-columns: 1fr; } }
+        .summary-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .summary-box { background: var(--surface); border: 1px solid rgba(248,250,252,0.15); border-radius: 8px; padding: 1rem 1.25rem; min-width: 140px; }
+        .summary-box .num { font-size: 1.5rem; font-weight: 700; color: var(--gold); }
+        .summary-box .label { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+        .data-table { width: 100%; font-size: 0.9rem; margin-top: 0.5rem; }
+        .data-table th, .data-table td { padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid rgba(248,250,252,0.08); }
+        .data-table tr.clickable { cursor: pointer; }
+        .data-table tr.clickable:hover { background: rgba(197,160,40,0.1); }
+        .plan-detail-section { margin-bottom: 1rem; padding: 0.75rem; background: rgba(0,0,0,0.2); border-radius: 6px; }
+        .plan-detail-section h4 { font-size: 0.9rem; color: var(--gold); margin-bottom: 0.5rem; }
+        .plan-detail-section pre { font-size: 0.8rem; white-space: pre-wrap; margin: 0; }
+        .empty-msg { color: var(--muted); font-style: italic; padding: 1rem; text-align: center; }
+        .raw-toggle { font-size: 0.8rem; color: var(--muted); cursor: pointer; margin-top: 0.5rem; }
+        .raw-toggle:hover { color: var(--gold); }
+    </style>
+</head>
+<body>
+    <h1>SOAR B2B — Admin Panel</h1>
+    <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem;">Gerçek verilere erişim: kullanıcı kayıtları, mesajlar, iletişim talepleri, sorgu talepleri (onay/öneri/düzenle).</p>
+    <p style="margin-bottom: 1rem;"><a href="/ui/admin_dashboard.html" style="color: var(--gold); font-weight: 600;">→ Strategist Dashboard</a> (Plan kuyruğu, özet, admin aksiyonlar)</p>
+
+    <div class="card">
+        <h2>Admin anahtarı</h2>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.75rem;">Yerel geliştirme için varsayılan anahtar kullanılabilir. Canlıda .env içinde <code>SOARB2B_ADMIN_KEYS</code> tanımlayın.</p>
+        <div class="row">
+            <div style="flex: 1 1 300px;">
+                <label for="adminKey">X-Admin-Key</label>
+                <input type="password" id="adminKey" placeholder="Admin anahtarını girin veya aşağıdaki butonu kullanın" autocomplete="off">
+            </div>
+            <div style="flex: 0 0 auto; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" id="saveKey">Kaydet</button>
+                <button type="button" id="useDevKey" class="secondary" title="Yerel sunucu için varsayılan anahtar">Yerel için varsayılan anahtar</button>
+            </div>
+        </div>
+        <p id="adminKeyStatus">Anahtar kaydedilmedi. API çağrıları için kaydedin veya «Yerel için varsayılan anahtar» kullanın.</p>
+    </div>
+
+    <div class="card" id="summaryCard" style="display: none;">
+        <h2>Özet (gerçek veriler)</h2>
+        <div class="summary-row">
+            <div class="summary-box"><span class="num" id="summaryUsers">0</span><div class="label">Kullanıcı kaydı</div></div>
+            <div class="summary-box"><span class="num" id="summaryMessages">0</span><div class="label">Mesaj</div></div>
+            <div class="summary-box"><span class="num" id="summaryIntakes">0</span><div class="label">İletişim talebi</div></div>
+            <div class="summary-box"><span class="num" id="summaryPlans">0</span><div class="label">Plan (sorgu talebi)</div></div>
+        </div>
+        <button type="button" id="refreshAll" class="secondary">Tüm verileri yenile</button>
+    </div>
+
+    <div class="card">
+        <h2>Kullanıcı hesapları</h2>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Veritabanındaki tüm kullanıcı kayıtları (kaynak: <strong>users</strong> tablosu). Kayıtlar sadece Google ile giriş veya kurumsal e-posta kaydı tamamlandığında oluşur.</p>
+        <button type="button" id="fetchUsers" class="secondary">Kullanıcıları getir</button>
+        <div id="usersOut" class="out" style="display: none;"></div>
+    </div>
+
+    <div class="card">
+        <h2>Mesaj kutusu (iletişim formundan gelen mesajlar)</h2>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem;">İletişim formu ile gelen gerçek mesajlar.</p>
+        <button type="button" id="fetchSupportMessages" class="secondary">Mesajları getir</button>
+        <div id="supportMessagesOut" class="out" style="display: none;"></div>
+        <div id="replyBlock" style="display: none; margin-top: 1rem;">
+            <label for="replyMessageId">Mesaj ID</label>
+            <input type="text" id="replyMessageId" readonly>
+            <label for="replyText">Yanıt metni</label>
+            <textarea id="replyText" rows="3" placeholder="Yanıtınız..."></textarea>
+            <button type="button" id="sendReply">Yanıt gönder</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>İletişim talepleri (onboarding / iletişim kutusu)</h2>
+        <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem;">İletişim kutusundan gelen talepler.</p>
+        <button type="button" id="fetchContactIntakes" class="secondary">İletişim taleplerini getir</button>
+        <div id="contactIntakesOut" class="out" style="display: none;"></div>
+    </div>
+
+    <div class="grid2">
+        <div>
+            <div class="card">
+                <h2>Sorgu talepleri (plan listesi)</h2>
+                <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Gerçek plan kayıtları — satıra tıklayarak detay/getir alanlarına kopyalanır.</p>
+                <div class="row">
+                    <input type="number" id="plansLimit" value="50" min="1" max="200" style="max-width: 100px;">
+                    <button type="button" id="fetchPlans" class="secondary">Planları getir</button>
+                </div>
+                <div id="plansOut" class="out" style="display: none;"></div>
+            </div>
+            <div class="card">
+                <h2>Plan detayı</h2>
+                <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Planın gerçek verileri: aşama, onboarding, admin notu.</p>
+                <label for="planIdDetail">Plan ID</label>
+                <input type="text" id="planIdDetail" placeholder="plan-uuid">
+                <button type="button" id="fetchPlanDetail" class="secondary">Detay getir</button>
+                <div id="planDetailOut" class="out" style="display: none;"></div>
+            </div>
+            <div class="card">
+                <h2>Plan sonuçları (Results Hub)</h2>
+                <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.5rem;">Bu plana ait modül çıktıları: discovery, persona, export vb. — kullanıcının gördüğü sonuçlar.</p>
+                <label for="planIdResults">Plan ID</label>
+                <input type="text" id="planIdResults" placeholder="plan-uuid (satıra tıklayınca dolar)">
+                <button type="button" id="fetchPlanResults" class="secondary">Sonuçları getir</button>
+                <div id="planResultsOut" class="out" style="display: none;"></div>
+            </div>
+            <div class="card">
+                <h2>Plan müdahale (intervene)</h2>
+                <label for="planIdIntervene">Plan ID</label>
+                <input type="text" id="planIdIntervene" placeholder="plan-uuid">
+                <label for="personaScope">Persona scope</label>
+                <input type="text" id="personaScope" placeholder="Expand or restrict">
+                <label for="roleStrictness">Role strictness</label>
+                <select id="roleStrictness">
+                    <option value="">—</option>
+                    <option value="strict">strict</option>
+                    <option value="moderate">moderate</option>
+                    <option value="flexible">flexible</option>
+                </select>
+                <label for="exposureRadiusKm">Exposure radius (km)</label>
+                <input type="number" id="exposureRadiusKm" placeholder="10" step="0.1">
+                <label for="adminNote">Admin notu (kullanıcıya görünür)</label>
+                <input type="text" id="adminNote" placeholder="Özel strateji uygulandı">
+                <label for="advanceStage">Aşamayı ilerlet</label>
+                <select id="advanceStage">
+                    <option value="">—</option>
+                    <option value="ANALYSIS_READY">ANALYSIS_READY</option>
+                    <option value="PERSONA_REVIEW">PERSONA_REVIEW</option>
+                    <option value="EXPOSURE_READY">EXPOSURE_READY</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                </select>
+                <label for="companyAlgorithmParams">Firmaya özel sorgu algoritması (JSON)</label>
+                <textarea id="companyAlgorithmParams" rows="3" placeholder='{"priority_industry": "...", "max_radius_km": 50}'></textarea>
+                <button type="button" id="doIntervene">Müdahale uygula (düzenle)</button>
+                <div id="interveneOut" class="out" style="display: none;"></div>
+            </div>
+            <div class="card">
+                <h2>Sorgu talebi: Onayla / Öneri</h2>
+                <label for="planIdApprove">Plan ID</label>
+                <input type="text" id="planIdApprove" placeholder="plan-uuid">
+                <div class="row">
+                    <button type="button" id="doApprove" style="flex: 1;">Onayla (sorgu başlasın)</button>
+                    <button type="button" id="doSuggest" class="secondary" style="flex: 1;">Öneri ekle (kullanıcıya görünür)</button>
+                </div>
+                <label for="suggestText" style="margin-top: 0.5rem;">Öneri metni (Öneri için)</label>
+                <textarea id="suggestText" rows="2" placeholder="Kullanıcıya gösterilecek öneri..."></textarea>
+                <div id="approveOut" class="out" style="display: none;"></div>
+            </div>
+        </div>
+        <div>
+            <div class="card">
+                <h2>Query cap override</h2>
+                <label for="planIdCap">Plan ID</label>
+                <input type="text" id="planIdCap" placeholder="plan-uuid">
+                <label for="newCap">Yeni cap (sonuç sayısı)</label>
+                <input type="number" id="newCap" value="500" min="100" max="1000">
+                <button type="button" id="doCapOverride">Cap uygula</button>
+                <div id="capOut" class="out" style="display: none;"></div>
+            </div>
+            <div class="card">
+                <h2>Uploads (kim ne yükledi, abuse)</h2>
+                <div class="row">
+                    <select id="uploadType" style="max-width: 160px;">
+                        <option value="">Tümü</option>
+                        <option value="linkedin_profile">LinkedIn</option>
+                        <option value="company_target">Firma</option>
+                    </select>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                        <input type="checkbox" id="abuseOnly" style="width: auto; margin: 0;"> Sadece abuse şüphesi
+                    </label>
+                    <button type="button" id="fetchUploads" class="secondary">Uploadları getir</button>
+                </div>
+                <div id="uploadsOut" class="out" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const ADMIN_PREFIX = '/api/v1/admin';
+
+        function getAdminKey() {
+            return sessionStorage.getItem('soarb2b_admin_key') || '';
+        }
+
+        function getAdminToken() {
+            try {
+                return localStorage.getItem('soarb2b_token') || '';
+            } catch (e) { return ''; }
+        }
+
+        function setAdminKey(key) {
+            key = (key || '').trim();
+            sessionStorage.setItem('soarb2b_admin_key', key);
+            const status = document.getElementById('adminKeyStatus');
+            const token = getAdminToken();
+            if (key || token) {
+                status.textContent = token ? 'Giriş: JWT (admin e-posta) kullanılıyor.' : 'Anahtar kaydedildi. API çağrıları kullanılacak.';
+                status.classList.add('ok');
+            } else {
+                status.textContent = 'Anahtar veya giriş yok. Admin anahtarını girin veya önce ana sitede Google ile giriş yapın.';
+                status.classList.remove('ok');
+            }
+        }
+
+        function friendlyAdminError(msg) {
+            if (!msg || typeof msg !== 'string') return msg;
+            if (msg.indexOf('Invalid admin API key') !== -1 || msg.indexOf('403') !== -1) {
+                return 'Admin anahtarı geçersiz. «Yerel için varsayılan anahtar» butonuna tıklayıp Kaydet\'e basın; canlıda .env içinde SOARB2B_ADMIN_KEYS tanımlı olmalı.';
+            }
+            if (msg.indexOf('401') !== -1 && msg.indexOf('required') !== -1) {
+                return 'Giriş gerekli. Admin anahtarını girin ve Kaydet\'e basın veya ana sitede Google ile giriş yapın.';
+            }
+            return msg;
+        }
+
+        async function adminFetch(path, options = {}) {
+            const key = getAdminKey();
+            const token = getAdminToken();
+            if (!key && !token) {
+                alert('Önce Admin anahtarını girin ve Kaydet\'e tıklayın, veya «Yerel için varsayılan anahtar» kullanın. Alternatif: ana sitede (SOAR B2B) Google ile giriş yapıp bu sayfayı açın.');
+                return null;
+            }
+            const url = API_BASE + ADMIN_PREFIX + path;
+            const headers = {};
+            if (key) headers['X-Admin-Key'] = key;
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+            Object.assign(headers, options.headers || {});
+            if (options.body && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
+            const res = await fetch(url, { ...options, headers });
+            const text = await res.text();
+            let data;
+            try { data = JSON.parse(text); } catch (e) { return { _raw: text, _ok: res.ok, _status: res.status }; }
+            if (!res.ok) {
+                const detail = data.detail || JSON.stringify(data);
+                const errMsg = typeof detail === 'string' ? detail : (detail.message || detail.error || JSON.stringify(detail));
+                throw new Error(friendlyAdminError(errMsg));
+            }
+            return data;
+        }
+
+        function updateSummary(boxId, count) {
+            const card = document.getElementById('summaryCard');
+            if (card) card.style.display = 'block';
+            const el = document.getElementById('summary' + boxId);
+            if (el && typeof count === 'number') el.textContent = count;
+        }
+
+        document.getElementById('saveKey').addEventListener('click', function() {
+            setAdminKey(document.getElementById('adminKey').value);
+        });
+        document.getElementById('useDevKey').addEventListener('click', function() {
+            document.getElementById('adminKey').value = 'admin-dev-key-12345';
+            setAdminKey('admin-dev-key-12345');
+            document.getElementById('adminKey').placeholder = '••••••••';
+        });
+        setAdminKey(getAdminKey());
+        if (getAdminKey()) {
+            document.getElementById('adminKey').placeholder = '••••••••';
+            document.getElementById('summaryCard').style.display = 'block';
+        }
+
+        function renderUsersTable(data) {
+            const sourceNote = (data.source && data.table) ? '<p style="color: var(--gold); font-size: 0.8rem; margin-bottom: 0.75rem;">Veri kaynağı: veritabanı (' + (data.database_type || '') + '), tablo: <strong>' + data.table + '</strong>' + (typeof data.total_in_db === 'number' ? ' — Toplam kayıt: ' + data.total_in_db : '') + '</p>' : '';
+            if (!data.users || !data.users.length) {
+                return sourceNote + '<div class="empty-msg">Veritabanında (users tablosu) henüz kullanıcı kaydı yok. Kullanıcılar sadece <strong>Google ile giriş</strong> veya <strong>Kurumsal kayıt</strong> (e-posta ile kayıt) tamamlandığında oluşur. Google OAuth hata verirse (örn. invalid_client) kayıt oluşmaz.</div>';
+            }
+            let html = sourceNote + '<table class="data-table"><thead><tr><th>ID</th><th>E-posta</th><th>Ad Soyad</th><th>Aktif</th><th>Kayıt tarihi</th></tr></thead><tbody>';
+            data.users.forEach(function(u) {
+                const created = (u.created_at || '').replace('T', ' ').substring(0, 19);
+                html += '<tr><td>' + (u.id || '') + '</td><td>' + (u.email || '—') + '</td><td>' + (u.full_name || '—') + '</td><td>' + (u.is_active ? 'Evet' : 'Hayır') + '</td><td>' + created + '</td></tr>';
+            });
+            html += '</tbody></table><p style="color: var(--muted); font-size: 0.8rem; margin-top: 0.5rem;">Gösterilen: ' + data.count + ' kullanıcı' + (typeof data.total_in_db === 'number' && data.total_in_db !== data.count ? ' (veritabanında toplam ' + data.total_in_db + ')' : '') + ' — gerçek veri (users tablosu)</p>';
+            return html;
+        }
+
+        document.getElementById('refreshAll').addEventListener('click', async function() {
+            if (!getAdminKey() && !getAdminToken()) { alert('Önce Admin anahtarını girin ve Kaydet\'e tıklayın veya «Yerel için varsayılan anahtar» kullanın.'); return; }
+            document.getElementById('summaryCard').style.display = 'block';
+            document.getElementById('summaryUsers').textContent = '…';
+            document.getElementById('summaryMessages').textContent = '…';
+            document.getElementById('summaryIntakes').textContent = '…';
+            document.getElementById('summaryPlans').textContent = '…';
+            try {
+                const [usersRes, messagesRes, intakesRes, plansRes] = await Promise.all([
+                    adminFetch('/users?limit=500').catch(function() { return { users: [], count: 0 }; }),
+                    adminFetch('/support-messages?limit=500').catch(function() { return { messages: [], count: 0 }; }),
+                    adminFetch('/contact-intakes?limit=500').catch(function() { return { intakes: [], count: 0 }; }),
+                    adminFetch('/plans?limit=500').catch(function() { return { plans: [], count: 0 }; }),
+                ]);
+                if (usersRes && typeof usersRes.count === 'number') { document.getElementById('summaryUsers').textContent = usersRes.count; }
+                if (messagesRes && typeof messagesRes.count === 'number') { document.getElementById('summaryMessages').textContent = messagesRes.count; }
+                if (intakesRes && typeof intakesRes.count === 'number') { document.getElementById('summaryIntakes').textContent = intakesRes.count; }
+                if (plansRes && typeof plansRes.count === 'number') { document.getElementById('summaryPlans').textContent = plansRes.count; }
+            } catch (e) {
+                alert('Özet yüklenirken hata: ' + e.message);
+            }
+        });
+
+        document.getElementById('fetchUsers').addEventListener('click', async function() {
+            const out = document.getElementById('usersOut');
+            out.style.display = 'block';
+            out.innerHTML = 'Yükleniyor...';
+            try {
+                const data = await adminFetch('/users?limit=200');
+                if (!data) return;
+                out.innerHTML = renderUsersTable(data);
+                updateSummary('Users', data.count);
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + e.message + '</span>';
+            }
+        });
+
+        document.getElementById('fetchSupportMessages').addEventListener('click', async function() {
+            const out = document.getElementById('supportMessagesOut');
+            out.style.display = 'block';
+            out.innerHTML = 'Yükleniyor...';
+            try {
+                const data = await adminFetch('/support-messages?limit=100');
+                if (!data) return;
+                updateSummary('Messages', data.count || 0);
+                if (data.messages && data.messages.length) {
+                    let html = '';
+                    data.messages.forEach(function(m) {
+                        const replies = (m.replies || []).map(function(r) { return r.reply_text + ' (' + (r.replied_at || '') + ')'; }).join('\n');
+                        html += '<div style="border: 1px solid rgba(248,250,252,0.1); padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px;">';
+                        html += '<strong>' + (m.subject || '') + '</strong> — ' + (m.email || '') + ' <span style="color: var(--muted); font-size: 0.85rem;">' + (m.created_at || '') + '</span><br>';
+                        html += '<span style="font-size: 0.9rem;">' + (m.message || '').substring(0, 200) + (m.message && m.message.length > 200 ? '...' : '') + '</span><br>';
+                        if (replies) html += '<div style="margin-top: 0.5rem; color: var(--success); font-size: 0.85rem;">Yanıtlar: ' + replies + '</div>';
+                        html += '<button type="button" class="secondary" style="width: auto; margin-top: 0.5rem; padding: 0.35rem 0.75rem;" data-message-id="' + (m.message_id || '') + '">Yanıtla</button>';
+                        html += '</div>';
+                    });
+                    out.innerHTML = html;
+                    out.querySelectorAll('[data-message-id]').forEach(function(btn) {
+                        btn.addEventListener('click', function() {
+                            document.getElementById('replyMessageId').value = btn.getAttribute('data-message-id');
+                            document.getElementById('replyBlock').style.display = 'block';
+                        });
+                    });
+                } else {
+                    out.innerHTML = '<div class="empty-msg">Henüz mesaj yok. İletişim formundan gelen mesajlar burada listelenir.</div>';
+                }
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + friendlyAdminError(e.message) + '</span>';
+            }
+        });
+
+        document.getElementById('sendReply').addEventListener('click', async function() {
+            const messageId = document.getElementById('replyMessageId').value.trim();
+            const replyText = document.getElementById('replyText').value.trim();
+            if (!messageId || !replyText) { alert('Mesaj ID ve yanıt metni gerekli.'); return; }
+            try {
+                const data = await adminFetch('/support-messages/' + encodeURIComponent(messageId) + '/reply', {
+                    method: 'POST',
+                    body: JSON.stringify({ reply_text: replyText }),
+                });
+                if (data && data.success) { alert('Yanıt kaydedildi.'); document.getElementById('replyText').value = ''; document.getElementById('fetchSupportMessages').click(); }
+            } catch (e) { alert(e.message); }
+        });
+
+        function renderIntakes(data) {
+            if (!data.intakes || !data.intakes.length) {
+                return '<div class="empty-msg">Henüz iletişim talebi yok.</div>';
+            }
+            let html = '<table class="data-table"><thead><tr><th>Tarih</th><th>E-posta / Alan</th><th>İçerik özeti</th></tr></thead><tbody>';
+            data.intakes.forEach(function(i) {
+                const created = (i.created_at || i.ts || '').toString().substring(0, 19);
+                const email = (i.email || i.company_email || JSON.stringify(i || {})).substring(0, 60);
+                const preview = (i.message || i.objective || JSON.stringify(i || {})).substring(0, 80);
+                html += '<tr><td>' + created + '</td><td>' + email + '</td><td>' + preview + '</td></tr>';
+            });
+            html += '</tbody></table><p style="color: var(--muted); font-size: 0.8rem; margin-top: 0.5rem;">Toplam: ' + data.count + ' talep (gerçek veri)</p>';
+            return html;
+        }
+
+        document.getElementById('fetchContactIntakes').addEventListener('click', async function() {
+            const out = document.getElementById('contactIntakesOut');
+            out.style.display = 'block';
+            out.innerHTML = 'Yükleniyor...';
+            try {
+                const data = await adminFetch('/contact-intakes?limit=100');
+                if (!data) return;
+                updateSummary('Intakes', data.count || 0);
+                out.innerHTML = renderIntakes(data);
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + e.message + '</span>';
+            }
+        });
+
+        function selectPlanId(planId) {
+            document.getElementById('planIdDetail').value = planId;
+            document.getElementById('planIdResults').value = planId;
+            document.getElementById('planIdIntervene').value = planId;
+            document.getElementById('planIdCap').value = planId;
+            document.getElementById('planIdApprove').value = planId;
+        }
+
+        document.getElementById('fetchPlans').addEventListener('click', async function() {
+            const limit = document.getElementById('plansLimit').value || 50;
+            const out = document.getElementById('plansOut');
+            out.style.display = 'block';
+            out.innerHTML = 'Yükleniyor...';
+            try {
+                const data = await adminFetch('/plans?limit=' + limit);
+                if (!data) return;
+                updateSummary('Plans', data.count || 0);
+                if (data.plans && data.plans.length) {
+                    let html = '<table class="data-table"><thead><tr><th>Plan ID</th><th>Coğrafya</th><th>Ürün/Hizmet</th><th>HS kodu</th><th>Aşama</th><th>Durum</th><th>Admin müdahale</th><th>Oluşturulma</th></tr></thead><tbody>';
+                    data.plans.forEach(function(p) {
+                        const shortId = (p.plan_id || '').substring(0, 8) + '…';
+                        const created = (p.created_at || '').toString().substring(0, 19);
+                        const geo = (p.geography || '—').toString().substring(0, 20);
+                        const prod = (p.product_service || '—').toString().substring(0, 25);
+                        html += '<tr class="clickable" data-plan-id="' + (p.plan_id || '') + '"><td class="mono" title="' + (p.plan_id || '') + '">' + shortId + '</td><td title="' + (p.geography || '') + '">' + geo + '</td><td title="' + (p.product_service || '') + '">' + prod + '</td><td>' + (p.hs_code || '—') + '</td><td>' + (p.current_stage || '—') + '</td><td>' + (p.status || '—') + '</td><td>' + (p.admin_intervened ? 'Evet' : 'Hayır') + '</td><td>' + created + '</td></tr>';
+                    });
+                    html += '</tbody></table><p style="color: var(--muted); font-size: 0.8rem; margin-top: 0.5rem;">Arşiv: Satıra tıklayın — Plan ID detay/onay alanlarına kopyalanır. Toplam: ' + data.count + ' plan</p>';
+                    out.innerHTML = html;
+                    out.querySelectorAll('tr.clickable[data-plan-id]').forEach(function(tr) {
+                        tr.addEventListener('click', function() { selectPlanId(tr.getAttribute('data-plan-id')); });
+                    });
+                    selectPlanId(data.plans[0].plan_id);
+                } else {
+                    out.innerHTML = '<div class="empty-msg">Henüz plan (sorgu talebi) yok.</div>';
+                }
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + e.message + '</span>';
+            }
+        });
+
+        document.getElementById('doApprove').addEventListener('click', async function() {
+            const planId = document.getElementById('planIdApprove').value.trim();
+            if (!planId) { alert('Plan ID girin.'); return; }
+            const out = document.getElementById('approveOut');
+            out.style.display = 'block';
+            out.textContent = 'Gönderiliyor...';
+            try {
+                const data = await adminFetch('/plan/' + encodeURIComponent(planId) + '/approve', { method: 'POST' });
+                if (!data) return;
+                out.textContent = JSON.stringify(data, null, 2);
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + e.message + '</span>';
+            }
+        });
+
+        document.getElementById('doSuggest').addEventListener('click', async function() {
+            const planId = document.getElementById('planIdApprove').value.trim();
+            const suggestion = document.getElementById('suggestText').value.trim();
+            if (!planId || !suggestion) { alert('Plan ID ve öneri metni girin.'); return; }
+            const out = document.getElementById('approveOut');
+            out.style.display = 'block';
+            out.textContent = 'Gönderiliyor...';
+            try {
+                const data = await adminFetch('/plan/' + encodeURIComponent(planId) + '/suggest', {
+                    method: 'POST',
+                    body: JSON.stringify({ suggestion: suggestion }),
+                });
+                if (!data) return;
+                out.innerHTML = '<p style="color: var(--success);">Öneri kaydedildi; kullanıcıya görünecek.</p><pre style="margin-top: 0.5rem; font-size: 0.85rem;">' + escapeHtml(JSON.stringify(data, null, 2)) + '</pre>';
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + friendlyAdminError(e.message) + '</span>';
+            }
+        });
+
+        function renderPlanDetail(data) {
+            const d = data;
+            let html = '';
+            const od = d.onboarding_data || {};
+            html += '<div class="plan-detail-section"><h4>Genel</h4><pre>Plan ID: ' + (d.plan_id || '') + '\nAşama: ' + (d.current_stage || '') + '\nDurum: ' + (d.status || '') + '\nAdmin müdahale: ' + (d.admin_intervened ? 'Evet' : 'Hayır') + '\nAdmin notu: ' + (d.admin_note || '—') + '\nHS / Gümrük kodu: ' + (od.hs_code || '—') + ' (' + (od.hs_code_source || '—') + ')\nÜrün/gümrük açıklaması: ' + (od.product_customs_description || '—') + '\nOluşturulma: ' + (d.created_at || '') + '\nGüncellenme: ' + (d.updated_at || '') + '</pre></div>';
+            if (d.onboarding_data && Object.keys(d.onboarding_data).length) {
+                html += '<div class="plan-detail-section"><h4>Kullanıcı / Onboarding verisi</h4><pre>' + JSON.stringify(d.onboarding_data, null, 2) + '</pre></div>';
+            }
+            if (d.stages && d.stages.length) {
+                html += '<div class="plan-detail-section"><h4>Aşamalar</h4><pre>' + d.stages.map(function(s) {
+                    return (s.name || '') + ' (sıra: ' + (s.order || '') + ') — ' + (s.status || '') + (s.started_at ? ' başladı: ' + s.started_at : '') + (s.completed_at ? ' bitti: ' + s.completed_at : '');
+                }).join('\n') + '</pre></div>';
+            }
+            if (d.objectives && d.objectives.length) {
+                html += '<div class="plan-detail-section"><h4>Hedefler</h4><pre>' + JSON.stringify(d.objectives, null, 2) + '</pre></div>';
+            }
+            if (d.admin_adjustments && Object.keys(d.admin_adjustments).length) {
+                html += '<div class="plan-detail-section"><h4>Admin ayarları</h4><pre>' + JSON.stringify(d.admin_adjustments, null, 2) + '</pre></div>';
+            }
+            html += '<p class="raw-toggle" id="planDetailRawToggle">Ham JSON göster</p>';
+            html += '<pre id="planDetailRaw" style="display:none; margin-top: 0.5rem; font-size: 0.8rem;">' + escapeHtml(JSON.stringify(data, null, 2)) + '</pre>';
+            return html;
+        }
+        function escapeHtml(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+        document.getElementById('fetchPlanDetail').addEventListener('click', async function() {
+            const planId = document.getElementById('planIdDetail').value.trim();
+            if (!planId) { alert('Plan ID girin.'); return; }
+            const out = document.getElementById('planDetailOut');
+            out.style.display = 'block';
+            out.innerHTML = 'Yükleniyor...';
+            try {
+                const data = await adminFetch('/plan/' + encodeURIComponent(planId));
+                if (!data) return;
+                out.innerHTML = renderPlanDetail(data);
+                document.getElementById('planDetailRawToggle').addEventListener('click', function() {
+                    const raw = document.getElementById('planDetailRaw');
+                    if (raw.style.display === 'none') { raw.style.display = 'block'; this.textContent = 'Ham JSON gizle'; } else { raw.style.display = 'none'; this.textContent = 'Ham JSON göster'; }
+                });
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + friendlyAdminError(e.message) + '</span>';
+            }
+        });
+
+        function getModuleTitle(type) {
+            const titles = { business_discovery: 'Keşif (şirket listesi)', persona_summary: 'Persona özeti', reachability_report: 'Erişilebilirlik', precision_exposure: 'Hassas maruz kalma', soft_conversion: 'Yumuşak dönüşüm', outreach_outcomes: 'Erişim / randevu sonuçları', visit_route: 'Ziyaret rotası', web_acquisition: 'Web edinim' };
+            return titles[type] || type;
+        }
+        function renderPlanResults(data) {
+            if (!data || data.status === 'pending' && (!data.modules || !data.modules.length)) {
+                return '<div class="empty-msg">Bu plan için henüz sonuç yok. Sorgu tamamlandığında modüller burada listelenir.</div>';
+            }
+            let html = '<p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 0.75rem;"><strong>Durum:</strong> ' + (data.status || '—') + (data.updated_at ? ' · Son güncelleme: ' + (data.updated_at || '').replace('T', ' ').substring(0, 19) : '') + '</p>';
+            html += '<div style="display: grid; gap: 0.75rem;">';
+            (data.modules || []).forEach(function(m) {
+                const statusClass = m.status === 'ready' ? 'ok' : (m.status === 'processing' ? 'warn' : 'danger');
+                const preview = m.preview_data ? (typeof m.preview_data === 'string' ? m.preview_data.substring(0, 120) : JSON.stringify(m.preview_data).substring(0, 120)) : '—';
+                html += '<div class="plan-detail-section" style="padding: 1rem;">';
+                html += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;"><strong style="color: var(--gold);">' + getModuleTitle(m.module_type) + '</strong><span class="badge ' + statusClass + '">' + (m.status || '—') + '</span></div>';
+                html += '<div style="font-size: 0.85rem; color: var(--muted);">' + (preview.length > 100 ? preview + '…' : preview) + '</div>';
+                if (m.ready_at) html += '<div style="font-size: 0.8rem; margin-top: 0.35rem;">Hazır: ' + (m.ready_at || '').replace('T', ' ').substring(0, 19) + '</div>';
+                html += '</div>';
+            });
+            html += '</div>';
+            html += '<p style="margin-top: 1rem;"><a href="' + window.location.origin + '/ui/en/soarb2b_results_hub.html?plan_id=' + encodeURIComponent(data.plan_id || '') + '" target="_blank" style="color: var(--gold); font-weight: 600;">→ Results Hub sayfasında aç</a></p>';
+            return html;
+        }
+
+        document.getElementById('fetchPlanResults').addEventListener('click', async function() {
+            const planId = (document.getElementById('planIdResults').value || document.getElementById('planIdDetail').value || '').trim();
+            if (!planId) { alert('Plan ID girin veya yukarıdan bir plan satırına tıklayın.'); return; }
+            const out = document.getElementById('planResultsOut');
+            out.style.display = 'block';
+            out.innerHTML = 'Yükleniyor...';
+            try {
+                const data = await adminFetch('/plan/' + encodeURIComponent(planId) + '/results');
+                if (!data) return;
+                out.innerHTML = renderPlanResults(data);
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + (e.message || friendlyAdminError(String(e))) + '</span>';
+            }
+        });
+
+        document.getElementById('doIntervene').addEventListener('click', async function() {
+            const planId = document.getElementById('planIdIntervene').value.trim();
+            if (!planId) { alert('Plan ID girin.'); return; }
+            let companyAlgorithmParams = null;
+            const rawAlgo = document.getElementById('companyAlgorithmParams').value.trim();
+            if (rawAlgo) {
+                try { companyAlgorithmParams = JSON.parse(rawAlgo); } catch (e) { alert('Firmaya özel algoritma JSON geçersiz: ' + e.message); return; }
+            }
+            const payload = {
+                persona_scope_adjustment: document.getElementById('personaScope').value.trim() || null,
+                role_strictness: document.getElementById('roleStrictness').value || null,
+                exposure_radius_km: parseFloat(document.getElementById('exposureRadiusKm').value) || null,
+                admin_note: document.getElementById('adminNote').value.trim() || null,
+                advance_stage: document.getElementById('advanceStage').value || null,
+                company_algorithm_params: companyAlgorithmParams,
+            };
+            const out = document.getElementById('interveneOut');
+            out.style.display = 'block';
+            out.textContent = 'Gönderiliyor...';
+            try {
+                const data = await adminFetch('/plan/' + encodeURIComponent(planId) + '/intervene', {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                });
+                if (!data) return;
+                out.innerHTML = '<p style="color: var(--success);">Müdahale uygulandı.</p><pre style="margin-top: 0.5rem; font-size: 0.85rem;">' + escapeHtml(JSON.stringify(data, null, 2)) + '</pre>';
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + friendlyAdminError(e.message) + '</span>';
+            }
+        });
+
+        document.getElementById('doCapOverride').addEventListener('click', async function() {
+            const planId = document.getElementById('planIdCap').value.trim();
+            const newCap = parseInt(document.getElementById('newCap').value, 10) || 500;
+            if (!planId) { alert('Plan ID girin.'); return; }
+            const out = document.getElementById('capOut');
+            out.style.display = 'block';
+            out.textContent = 'Gönderiliyor...';
+            try {
+                const data = await adminFetch('/query-cap-override', {
+                    method: 'POST',
+                    body: JSON.stringify({ plan_id: planId, new_cap: newCap }),
+                });
+                if (!data) return;
+                out.innerHTML = '<p style="color: var(--success);">Cap güncellendi.</p><pre style="margin-top: 0.5rem; font-size: 0.85rem;">' + escapeHtml(JSON.stringify(data, null, 2)) + '</pre>';
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + friendlyAdminError(e.message) + '</span>';
+            }
+        });
+
+        document.getElementById('fetchUploads').addEventListener('click', async function() {
+            const type = document.getElementById('uploadType').value;
+            const abuseOnly = document.getElementById('abuseOnly').checked;
+            let path = '/uploads?limit=100';
+            if (type) path += '&upload_type=' + encodeURIComponent(type);
+            if (abuseOnly) path += '&abuse_only=true';
+            const out = document.getElementById('uploadsOut');
+            out.style.display = 'block';
+            out.textContent = 'Yükleniyor...';
+            try {
+                const data = await adminFetch(path);
+                if (!data) return;
+                out.innerHTML = '<p style="color: var(--muted); font-size: 0.85rem;">Yüklenen kayıtlar (ham veri aşağıda):</p><pre style="margin-top: 0.5rem; font-size: 0.85rem; max-height: 300px; overflow: auto;">' + escapeHtml(JSON.stringify(data, null, 2)) + '</pre>';
+            } catch (e) {
+                out.innerHTML = '<span class="err">' + friendlyAdminError(e.message) + '</span>';
+            }
+        });
+    </script>
+</body>
+</html>

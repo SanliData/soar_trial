@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Long-context governance</title>
+<style>body{font-family:system-ui;margin:20px;background:***REMOVED***0f172a;color:***REMOVED***e2e8f0}button{margin:4px;padding:8px;background:***REMOVED***0369a1;color:***REMOVED***fff;border:none;border-radius:6px;cursor:pointer}pre{background:***REMOVED***020617;padding:12px;border-radius:8px;overflow:auto;max-height:480px;font-size:10px}</style>
+</head>
+<body>
+<h1>Long-context runtime (H-043)</h1>
+<button type="button" data-p="/api/v1/system/context/pressure">pressure</button>
+<button type="button" data-p="/api/v1/system/context/partitions">partitions</button>
+<button type="button" data-p="/api/v1/system/context/sparse-providers">sparse-providers</button>
+<button type="button" data-p="/api/v1/system/context/fallbacks">fallbacks</button>
+<pre id="o">idle</pre>
+<script>document.querySelectorAll('button[data-p]').forEach(b=>{b.onclick=()=>fetch(b.dataset.p).then(r=>r.json()).then(j=>{document.getElementById('o').textContent=JSON.stringify(j,null,2)})});</script>
+</body>
+</html>

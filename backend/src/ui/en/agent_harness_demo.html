@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Harness Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 480px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***7c2d12; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Agent harness — modular cognitive runtime (foundation)</h1>
+  <p class="muted">
+    Loads memory/skills/protocol manifests, runtime summary, and sample compression. Swarm flags are false in API envelope.
+  </p>
+  <button type="button" id="mBtn">GET memory</button>
+  <button type="button" id="sBtn">GET skills</button>
+  <button type="button" id="pBtn">GET protocols</button>
+  <button type="button" id="rBtn">GET runtime-summary</button>
+  <button type="button" id="cBtn">POST compress (context)</button>
+  <div class="card"><h2>Output</h2><pre id="out">(idle)</pre></div>
+  <script>
+    const base = "";
+    document.getElementById("mBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/harness/memory");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("sBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/harness/skills");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("pBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/harness/protocols");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("rBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/harness/runtime-summary");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("cBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/harness/compress", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          mode: "context",
+          payload: "Section A ... ".repeat(400)
+        })
+      });
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>H-050 Agent Deployment Profiles Demo</title>
+    <style>
+      body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 24px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .card { border: 1px solid ***REMOVED***e5e7eb; border-radius: 12px; padding: 14px; }
+      pre { background: ***REMOVED***0b1020; color: ***REMOVED***e5e7eb; padding: 12px; border-radius: 10px; overflow: auto; }
+      .muted { color: ***REMOVED***6b7280; }
+      a { color: ***REMOVED***2563eb; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <h2>H-050 Agent Deployment Profiles (Governed Foundation)</h2>
+    <p class="muted">
+      Profiles are metadata-only. No live deployment execution. No public unrestricted defaults.
+      External channels require identity + firewall + human approval.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Profiles</h3>
+        <p class="muted">GET <a href="/api/v1/system/deployment/profiles" target="_blank">/api/v1/system/deployment/profiles</a></p>
+        <pre id="profiles">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Channels</h3>
+        <p class="muted">GET <a href="/api/v1/system/deployment/channels" target="_blank">/api/v1/system/deployment/channels</a></p>
+        <pre id="channels">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Private Runtime Requirements</h3>
+        <p class="muted">GET <a href="/api/v1/system/deployment/private-runtime" target="_blank">/api/v1/system/deployment/private-runtime</a></p>
+        <pre id="privateRuntime">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Safety Scoring</h3>
+        <p class="muted">GET <a href="/api/v1/system/deployment/safety" target="_blank">/api/v1/system/deployment/safety</a></p>
+        <pre id="safety">loading...</pre>
+      </div>
+    </div>
+
+    <script>
+      async function loadJson(id, url) {
+        const el = document.getElementById(id);
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+          el.textContent = JSON.stringify(data, null, 2);
+        } catch (e) {
+          el.textContent = "error: " + String(e);
+        }
+      }
+      loadJson("profiles", "/api/v1/system/deployment/profiles");
+      loadJson("channels", "/api/v1/system/deployment/channels");
+      loadJson("privateRuntime", "/api/v1/system/deployment/private-runtime");
+      loadJson("safety", "/api/v1/system/deployment/safety");
+    </script>
+  </body>
+</html>
+

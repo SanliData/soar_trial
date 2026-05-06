@@ -1,0 +1,21 @@
+{
+  "trace_id": "trace-fail-example",
+  "run_id": "run-fail-example",
+  "query_id": "query-fail-example",
+  "timestamp": "2025-02-08T12:00:00Z",
+  "stage": "EXPORT",
+  "regulated_domain": true,
+  "simulation_mode": null,
+  "blocked_reason": "simulation_mode missing or false for regulated domain",
+  "limits": {
+    "company_size_max": 50,
+    "company_limit": 100
+  },
+  "rows_before": 3,
+  "rows_after": 0,
+  "rejected_counts": {},
+  "decision_maker_summary": {},
+  "channel_summary": {},
+  "status": "FAIL",
+  "reason": "regulated_domain_requires_simulation_mode"
+}

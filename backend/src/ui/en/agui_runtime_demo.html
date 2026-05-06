@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AG-UI Runtime Demo — H-048</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0b1020; color: ***REMOVED***f8fafc; }
+    button { margin: 6px 8px 0 0; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***60a5fa; color: ***REMOVED***06101f; font-size: 12px; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 520px; font-size: 10px; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <h1>AG-UI runtime demo (H-048)</h1>
+  <p class="muted">Event timeline metadata only. No uncontrolled streaming infra, no hidden execution, lineage required.</p>
+  <div>
+    <button type="button" data-p="/api/v1/system/agui/events">events</button>
+    <button type="button" data-p="/api/v1/system/agui/workflows">workflows</button>
+    <button type="button" data-p="/api/v1/system/agui/tool-streams">tool streams</button>
+    <button type="button" data-p="/api/v1/system/agui/approval-stream">approval stream</button>
+  </div>
+  <pre id="out">(idle)</pre>
+  <script>
+    document.querySelectorAll("button[data-p]").forEach(function (btn) {
+      btn.onclick = function () {
+        fetch(btn.getAttribute("data-p"))
+          .then(function (r) { return r.json(); })
+          .then(function (j) { document.getElementById("out").textContent = JSON.stringify(j, null, 2); });
+      };
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "language": "it",
+    "name": "Italiano",
+    "region": "IT"
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "close": "Chiudi"
+  },
+  "home": {
+    "title": "SOAR B2B — Trasforma le aziende giuste in appuntamenti",
+    "description": "Accedi ad aziende verificate, contatta i veri decision maker, converti i contatti in appuntamenti. Motore di appuntamenti B2B per produttori e grossisti.",
+    "cta": "Inizia",
+    "demo": "Vedi demo"
+  }
+}

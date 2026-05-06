@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SOAR B2B — My History / Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: ***REMOVED***0F172A;
+            --surface: ***REMOVED***1e293b;
+            --text: ***REMOVED***F8FAFC;
+            --muted: rgba(248,250,252,0.6);
+            --gold: ***REMOVED***C5A028;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem; }
+        .container { max-width: 900px; margin: 0 auto; }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+        .card { background: var(--surface); border: 1px solid rgba(248,250,252,0.1); border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+        label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 0.25rem; }
+        input, button { padding: 0.5rem 0.75rem; border: 1px solid rgba(248,250,252,0.2); border-radius: 6px; background: rgba(248,250,252,0.05); color: var(--text); font-size: 0.95rem; margin-bottom: 0.75rem; }
+        button { cursor: pointer; font-weight: 600; background: var(--gold); color: var(--bg); border: none; }
+        button:hover { filter: brightness(1.1); }
+        button.secondary { background: rgba(248,250,252,0.15); color: var(--text); }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .data-table th, .data-table td { border: 1px solid rgba(248,250,252,0.1); padding: 0.5rem 0.75rem; text-align: left; }
+        .data-table th { background: rgba(0,0,0,0.2); color: var(--muted); }
+        .data-table tr:hover { background: rgba(248,250,252,0.03); }
+        .link { color: var(--gold); text-decoration: none; }
+        .link:hover { text-decoration: underline; }
+        .empty-msg { color: var(--muted); font-style: italic; padding: 2rem; text-align: center; }
+        .err { color: ***REMOVED***fca5a5; }
+        .nav { margin-bottom: 1.5rem; }
+        .nav a { color: var(--gold); text-decoration: none; margin-right: 1rem; }
+        .nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav">
+            <a href="/ui/en/soarb2b_home.html">Home</a>
+            <a href="/ui/en/soarb2b_onboarding_5q.html">New plan</a>
+        </nav>
+        <h1>My history / Archive</h1>
+        <p class="subtitle">Plans and query history created in this browser. Open Timeline or Results for each plan.</p>
+
+        <div class="card">
+            <label for="apiKey">API key (X-API-Key)</label>
+            <input type="password" id="apiKey" placeholder="Enter API key or use saved" style="width: 100%; max-width: 400px;">
+            <button type="button" id="saveKey" class="secondary">Save</button>
+            <button type="button" id="fetchArchive">Load archive</button>
+        </div>
+
+        <div class="card" id="archiveOut" style="display: none;">
+            <h2 style="font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--gold);">Query list</h2>
+            <div id="archiveTable"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const STORAGE_KEY = 'soarb2b_api_key';
+        const PLAN_IDS_KEY = 'soarb2b_plan_ids';
+
+        function getApiKey() {
+            return localStorage.getItem(STORAGE_KEY) || '';
+        }
+        function setApiKey(key) {
+            key = (key || '').trim();
+            localStorage.setItem(STORAGE_KEY, key);
+        }
+
+        document.getElementById('saveKey').addEventListener('click', function() {
+            setApiKey(document.getElementById('apiKey').value);
+            document.getElementById('apiKey').placeholder = 'Saved.';
+        });
+        if (getApiKey()) document.getElementById('apiKey').placeholder = '••••••••';
+
+        document.getElementById('fetchArchive').addEventListener('click', async function() {
+            const key = getApiKey();
+            if (!key) {
+                alert('Enter and save your API key first (or the key used during onboarding).');
+                return;
+            }
+            const out = document.getElementById('archiveOut');
+            out.style.display = 'block';
+            const tableEl = document.getElementById('archiveTable');
+            tableEl.innerHTML = 'Loading...';
+            const planIds = [];
+            try {
+                var ids = JSON.parse(localStorage.getItem(PLAN_IDS_KEY) || '[]');
+                planIds.push.apply(planIds, ids);
+            } catch (e) {}
+            if (planIds.length === 0) {
+                tableEl.innerHTML = '<p class="empty-msg">No plans saved yet. New plans you create will appear here.</p>';
+                return;
+            }
+            const planIdsParam = planIds.join(',');
+            const url = API_BASE + '/api/v1/b2b/archive?plan_ids=' + encodeURIComponent(planIdsParam) + '&limit=100';
+            try {
+                const res = await fetch(url, { headers: { 'X-API-Key': key } });
+                const data = await res.json();
+                if (!res.ok) {
+                    tableEl.innerHTML = '<p class="err">' + (data.detail || res.status) + '</p>';
+                    return;
+                }
+                if (!data.plans || data.plans.length === 0) {
+                    tableEl.innerHTML = '<p class="empty-msg">No records found for these plan IDs. Check your API key.</p>';
+                    return;
+                }
+                let html = '<table class="data-table"><thead><tr><th>Geography</th><th>Product/Service</th><th>HS code</th><th>Stage</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+                data.plans.forEach(function(p) {
+                    const created = (p.created_at || '').toString().substring(0, 10);
+                    html += '<tr><td>' + (p.geography || '—') + '</td><td>' + (p.product_service || '—') + '</td><td>' + (p.hs_code || '—') + '</td><td>' + (p.current_stage || '—') + '</td><td>' + created + '</td><td>';
+                    html += '<a class="link" href="/ui/en/soarb2b_process_timeline.html?plan_id=' + encodeURIComponent(p.plan_id) + '">Timeline</a> ';
+                    html += '<a class="link" href="/ui/en/soarb2b_results_hub.html?plan_id=' + encodeURIComponent(p.plan_id) + '">Results</a>';
+                    html += '</td></tr>';
+                });
+                html += '</tbody></table><p style="color: var(--muted); font-size: 0.8rem; margin-top: 0.5rem;">Total: ' + data.count + ' plan(s)</p>';
+                tableEl.innerHTML = html;
+            } catch (e) {
+                tableEl.innerHTML = '<p class="err">' + e.message + '</p>';
+            }
+        });
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

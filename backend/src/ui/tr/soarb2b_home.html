@@ -1,0 +1,2988 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B — Doğru Şirketleri Randevuya Dönüştürün</title>
+    <meta name="description" content="Doğrulanmış işletmelere ulaşın, gerçek karar vericilerle iletişime geçin, temasları randevuya çevirin. Üretici ve toptancılar için B2B randevu motoru.">
+    <meta property="og:title" content="SOAR B2B — Doğru Şirketleri Randevuya Dönüştürün">
+    <meta property="og:description" content="Doğrulanmış işletmelere ulaşın, gerçek karar vericilerle iletişime geçin, temasları randevuya çevirin. Üretici ve toptancılar için B2B randevu motoru.">
+    <meta property="og:locale" content="tr_TR">
+    <!-- SEO hreflang tags -->
+    <link rel="alternate" hreflang="tr" href="https://soarb2b.com/ui/tr/soarb2b_home.html" />
+    <link rel="alternate" hreflang="en" href="https://soarb2b.com/ui/en/soarb2b_home.html" />
+    <link rel="alternate" hreflang="x-default" href="https://soarb2b.com/ui/tr/soarb2b_home.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028; /* Darkened Mat Gold for web */
+            --color-text-primary: ***REMOVED***0F172A;
+            --color-text-secondary: ***REMOVED***475569;
+            --color-border: ***REMOVED***E2E8F0;
+            --color-sponsor-bg: ***REMOVED***F1F5F9;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue); /* Always dark night blue background */
+            color: var(--color-off-white);
+            line-height: 1.7;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* iOS Safe Area Support - ensure content doesn't overlap with notch/home indicator */
+            padding-top: env(safe-area-inset-top);
+        }
+
+        /* Typography - Satoshi for headings */
+        h1, h2, h3, h4, h5, h6,
+        .hero-text h1,
+        .section-header h2,
+        .hero-title,
+        .step-title,
+        .result-title {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        /* B2B text tracking */
+        .logo-b2b,
+        .b2b-text {
+            letter-spacing: 0.02em;
+        }
+
+        /* Buttons - Satoshi Bold */
+        .btn,
+        .btn-primary,
+        .btn-secondary,
+        .btn-header,
+        button {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Header Navigation */
+        .header-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 1.5rem 0;
+            z-index: 1000;
+        }
+
+        .header-nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+            color: var(--color-off-white);
+        }
+
+        /* SOAR B2B Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-soar {
+            display: inline-flex;
+            align-items: baseline;
+            font-size: 1.5rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            color: var(--color-off-white);
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .logo-soar-r {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-r-arrow {
+            position: absolute;
+            right: -3px;
+            bottom: -1px;
+            width: 14px;
+            height: 14px;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--color-off-white);
+            opacity: 0.3;
+            margin: 0;
+        }
+
+        .logo-b2b {
+            font-size: 1.25rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: var(--color-off-white);
+            letter-spacing: 0.02em; /* B2B tracking */
+        }
+
+        /* Logo on light backgrounds (footer, etc.) */
+        .logo-container.light .logo-soar,
+        .logo-container.light .logo-b2b {
+            color: var(--color-night-blue);
+        }
+
+        .logo-container.light .logo-divider {
+            background: var(--color-night-blue);
+            opacity: 0.2;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Language Toggle - Visible, Global Readiness */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.8);
+            margin-right: 1.5rem;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid rgba(248, 250, 252, 0.15);
+            border-radius: 4px;
+            background: rgba(248, 250, 252, 0.03);
+            transition: all 0.2s;
+        }
+
+        .lang-toggle:hover {
+            border-color: rgba(248, 250, 252, 0.3);
+            background: rgba(248, 250, 252, 0.06);
+        }
+
+        .lang-toggle .world-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+
+        .lang-toggle:hover .world-icon {
+            opacity: 1;
+        }
+
+        .lang-toggle .lang-link {
+            background: transparent;
+            border: none;
+            color: rgba(248, 250, 252, 0.8);
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        .lang-toggle .lang-link:hover {
+            color: var(--color-off-white);
+        }
+
+        .lang-toggle .lang-link.active {
+            color: var(--color-gold);
+            font-weight: 600;
+        }
+
+        .lang-toggle span {
+            color: rgba(248, 250, 252, 0.5);
+            font-size: 0.8rem;
+            margin: 0 0.25rem;
+        }
+
+        .btn-header {
+            padding: 0.75rem 1.5rem;
+            min-height: 48px; /* Minimum touch target for mobile */
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(248, 250, 252, 0.2);
+            -webkit-tap-highlight-color: transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-header-signin {
+            background: transparent;
+            color: var(--color-off-white);
+        }
+
+        .btn-header-signin:hover {
+            background: rgba(248, 250, 252, 0.1);
+        }
+
+        .btn-header-signin:active {
+            transform: scale(0.95);
+            background: rgba(248, 250, 252, 0.15);
+        }
+
+        .btn-header-signup {
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border-color: var(--color-gold);
+        }
+
+        .btn-header-signup:hover {
+            background: ***REMOVED***C19D2D;
+        }
+
+        .btn-header-signup:active {
+            transform: scale(0.95);
+            background: ***REMOVED***B8921E;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            padding: 8rem 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .pricing-card {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px; /* Maximum 8px, but 4px for sharper, enterprise feel */
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            border-color: var(--color-gold);
+            transform: translateY(-4px);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--color-gold);
+            border-width: 2px;
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            right: 2rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px; /* Maximum 8px, but badge uses 4px for sharpness */
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .pricing-plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 4rem; /* Prominently large - numbers as output */
+            font-weight: 600;
+            color: var(--color-gold);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .pricing-period {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 0.9rem; /* Smaller, secondary - Satoshi-Medium */
+            font-weight: 500;
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pricing-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(248, 250, 252, 0.05);
+            color: rgba(248, 250, 252, 0.8);
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li::before {
+            content: "✓";
+            color: var(--color-gold);
+            font-weight: 700;
+            margin-right: 0.75rem;
+        }
+
+        .pricing-cta {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .pricing-cta:hover {
+            background: ***REMOVED***C19D2D;
+            transform: translateY(-2px);
+        }
+
+        .pricing-cta.secondary {
+            background: transparent;
+            color: var(--color-off-white);
+            border: 1px solid rgba(248, 250, 252, 0.3);
+        }
+
+        .pricing-cta.secondary:hover {
+            background: rgba(248, 250, 252, 0.1);
+        }
+
+        /* Google Sign-In Button Styles */
+        .google-signin-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: ***REMOVED***fff;
+            color: ***REMOVED***4285f4;
+            border: 1px solid ***REMOVED***dadce0;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .google-signin-btn:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .google-signin-icon {
+            width: 18px;
+            height: 18px;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 12rem 0; /* Increased spacing - each section breathes like a presentation slide */
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            padding: 12rem 0 8rem;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 6.5rem; /* Larger, more authoritative */
+            font-weight: 900; /* Satoshi-Black */
+            line-height: 0.95; /* Tight vertical spacing - Paula Scher style */
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em; /* Tighter letter spacing for impact */
+        }
+
+        .hero-text p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: rgba(248, 250, 252, 0.85);
+            margin-bottom: 3rem;
+            max-width: 90%;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1.25rem 2.5rem;
+            min-height: 48px; /* Minimum touch target for mobile */
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-primary:hover {
+            background: ***REMOVED***C19D2D;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            background: ***REMOVED***B8921E;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 1.25rem 2.5rem;
+            min-height: 48px; /* Minimum touch target for mobile */
+            background: transparent;
+            color: var(--color-off-white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            border: 1px solid rgba(248, 250, 252, 0.3);
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-off-white);
+            background: rgba(248, 250, 252, 0.05);
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+            background: rgba(248, 250, 252, 0.1);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .flow-diagram {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 4rem 3rem;
+            border-radius: 2px;
+        }
+
+        .flow-step {
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .flow-step:last-child {
+            border-bottom: none;
+        }
+
+        .flow-step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 0;
+            top: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--color-gold);
+            opacity: 0.7;
+        }
+
+        .flow-step-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-off-white);
+        }
+
+        .flow-step-desc {
+            font-size: 1rem;
+            color: rgba(248, 250, 252, 0.7);
+            font-weight: 300;
+        }
+
+        /* Trust Band */
+        .trust-band {
+            background: var(--color-sponsor-bg);
+            padding: 3rem 0;
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        /* What is SOAR B2B Section */
+        .what-is-section {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+        }
+
+        .what-is-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .what-is-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(248, 250, 252, 0.85);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .what-is-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--color-night-blue);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            margin: 2rem auto;
+            position: relative;
+            color: var(--color-off-white);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: transparent;
+            border: none;
+            color: rgba(248, 250, 252, 0.7);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+            transition: color 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .modal-close:hover {
+            color: var(--color-off-white);
+        }
+
+        .modal-content h2 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+            color: var(--color-off-white);
+        }
+
+        .modal-content h3 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--color-off-white);
+        }
+
+        .modal-content p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: rgba(248, 250, 252, 0.85);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content li {
+            padding: 0.75rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: rgba(248, 250, 252, 0.85);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        .modal-content li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-gold);
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .modal-content h2 {
+                font-size: 2rem;
+                padding-right: 2rem;
+            }
+
+            .what-is-content p {
+                font-size: 1.1rem;
+            }
+        }
+
+        .trust-band-content {
+            text-align: center;
+        }
+
+        .trust-band-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--color-text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .trust-band-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .sponsor-logo {
+            width: 120px;
+            height: 40px;
+            background: rgba(15, 23, 42, 0.05);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            opacity: 0.6;
+        }
+
+        /* What You Get */
+        .what-you-get {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 5rem; /* Larger, more authoritative */
+            font-weight: 900; /* Satoshi-Black */
+            line-height: 0.95; /* Tight vertical spacing - Paula Scher style */
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            color: var(--color-off-white);
+        }
+
+        .section-header p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: rgba(248, 250, 252, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .output-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .output-card {
+            background: rgba(248, 250, 252, 0.05); /* Subtle light overlay on dark bg */
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px; /* Sharp, enterprise - avoid soft/round appearance */
+            padding: 2.5rem;
+            transition: all 0.2s;
+        }
+
+        .output-card:hover {
+            border-color: var(--color-gold);
+            box-shadow: 0 4px 12px rgba(197, 160, 40, 0.15);
+        }
+
+        .output-card h3 {
+            font-size: 1.4rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-off-white);
+        }
+
+        .output-card p {
+            font-size: 1rem;
+            color: rgba(248, 250, 252, 0.8); /* Off-white with opacity for readability on dark bg */
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .output-card-metric {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem; /* Larger - numbers as output */
+            color: var(--color-gold);
+            font-weight: 600;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+        }
+
+        /* Sequence Section */
+        .sequence-section {
+            background: rgba(248, 250, 252, 0.05); /* Slight light overlay for contrast */
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+        }
+
+        .sequence-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-top: 4rem;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .sequence-timeline::before {
+            content: '';
+            position: absolute;
+            top: 3rem;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--color-border);
+            z-index: 0;
+        }
+
+        .sequence-item {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .sequence-number {
+            width: 60px;
+            height: 60px;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0 auto 1.5rem;
+        }
+
+        .sequence-item h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-primary);
+        }
+
+        .sequence-item .process {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .sequence-item .output {
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            font-weight: 300;
+        }
+
+        /* Metrics Section */
+        .metrics-section {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .metric-card {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 5.5rem; /* Prominently large - numbers as output */
+            font-weight: 600;
+            color: var(--color-gold);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+            letter-spacing: -0.02em; /* Tighter for monospace numbers */
+        }
+
+        .metric-label {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 0.9rem; /* Smaller, secondary */
+            font-weight: 500; /* Satoshi-Medium */
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-note {
+            font-size: 0.85rem;
+            color: rgba(248, 250, 252, 0.6);
+            font-weight: 300;
+            margin-top: 1rem;
+        }
+
+        .sponsor-badge {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+            text-align: center;
+        }
+
+        .sponsor-badge-text {
+            font-size: 0.85rem;
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .sponsor-badge-name {
+            font-size: 1rem;
+            color: rgba(248, 250, 252, 0.9);
+            font-weight: 500;
+        }
+
+        /* Case Library Preview */
+        .case-library-preview {
+            background: var(--color-off-white);
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .case-card {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px; /* Sharp, enterprise feel - avoid soft/round */
+            padding: 2.5rem;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .case-card:hover {
+            border-color: var(--color-night-blue);
+        }
+
+        .case-card.featured {
+            border-color: var(--color-gold);
+            border-width: 2px;
+        }
+
+        .case-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .case-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+
+        .case-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--color-text-primary);
+        }
+
+        .case-result {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--color-gold);
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .case-link {
+            margin-top: 1.5rem;
+            display: inline-block;
+            color: var(--color-text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .case-link::after {
+            content: '→';
+            margin-left: 0.5rem;
+        }
+
+        /* Onboarding CTA */
+        .onboarding-cta {
+            background: white;
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            text-align: center;
+            padding: 6rem 0;
+        }
+
+        .onboarding-cta h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .onboarding-cta p {
+            font-size: 1.3rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        /* Reklam slotları — maksimum görünürlük (REKLAM_MONETIZASYON_PLANI.md) */
+        .ad-slot {
+            display: block;
+            min-height: 120px;
+            max-width: 100%;
+            margin: 0 auto 2rem;
+            padding: 1rem 0;
+            text-align: center;
+            background: rgba(248, 250, 252, 0.04);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 8px;
+        }
+        .ad-slot .ad-slot-inner { min-height: 110px; }
+        @media (max-width: 768px) { .ad-slot { min-height: 100px; padding: 0.75rem 0; } .ad-slot .ad-slot-inner { min-height: 90px; } }
+        /* FINDIAG demo banner (canlı reklam yokken) — maksimum envanter */
+        .ad-placeholder { display: block; min-height: 100px; padding: 1.25rem 1.5rem; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9)); border: 1px solid rgba(212, 176, 67, 0.35); border-radius: 8px; color: rgba(248, 250, 252, 0.95); text-align: center; }
+        .ad-placeholder .ad-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.6; margin-bottom: 0.5rem; }
+        .ad-placeholder .ad-headline { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem; color: ***REMOVED***F8FAFC; line-height: 1.3; }
+        .ad-placeholder .ad-sub { font-size: 0.85rem; opacity: 0.85; margin-bottom: 0.75rem; line-height: 1.45; max-width: 520px; margin-left: auto; margin-right: auto; }
+        .ad-placeholder .ad-cta { display: inline-block; padding: 0.5rem 1.25rem; background: var(--color-gold); color: ***REMOVED***0F172A; font-weight: 700; font-size: 0.85rem; border-radius: 4px; text-decoration: none; margin-top: 0.25rem; }
+        .ad-placeholder .ad-cta:hover { background: ***REMOVED***D4B043; color: ***REMOVED***0F172A; }
+        .ad-placeholder.ad-compact .ad-headline { font-size: 1rem; }
+        .ad-placeholder.ad-compact .ad-sub { font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .ad-placeholder.ad-compact { padding: 1rem; min-height: 80px; }
+
+        /* Footer */
+        .footer {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            padding: 6rem 0 3rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(248, 250, 252, 0.9);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: rgba(248, 250, 252, 0.7);
+            text-decoration: none;
+            font-weight: 300;
+            transition: color 0.2s;
+        }
+
+        .footer-section a:hover {
+            color: var(--color-off-white);
+        }
+
+        .footer-ecosystem {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+        }
+
+        .footer-tagline {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: rgba(248, 250, 252, 0.8);
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+        }
+
+        .ecosystem-partners {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .ecosystem-partner {
+            font-size: 0.85rem;
+            color: rgba(248, 250, 252, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer Powered By - Visible but Subtle */
+        .footer-powered {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+        }
+
+        .footer-powered-text {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: rgba(248, 250, 252, 0.5);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        /* Trusted Companies Section - Quiet Prestige */
+        .trusted-section {
+            background: rgba(248, 250, 252, 0.02);
+            border-top: 1px solid rgba(248, 250, 252, 0.05);
+            border-bottom: 1px solid rgba(248, 250, 252, 0.05);
+            padding: 4rem 0;
+        }
+
+        .trusted-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .trusted-header-text {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(248, 250, 252, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .trusted-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .trusted-logo {
+            opacity: 0.4;
+            filter: grayscale(100%);
+            transition: all 0.3s;
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        .trusted-logo:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+
+        .trusted-logo img {
+            height: 100%;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+        }
+
+        /* Trusted logo hover effect - gold tint */
+        .trusted-logo:hover img {
+            filter: brightness(0) invert(1) sepia(1) saturate(3) hue-rotate(20deg);
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        /* Mobile Bottom Navigation - World-Class B2B SaaS Standard */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 0.5rem 0;
+            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+            z-index: 999;
+        }
+
+        .mobile-nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            padding-top: 0.5rem;
+        }
+
+        .mobile-nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex: 1;
+            gap: 0.5rem;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            color: rgba(248, 250, 252, 0.6);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s, transform 0.1s;
+            padding: 0.5rem;
+            min-height: 48px; /* Minimum touch target 48px */
+            min-width: 60px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-nav-item:active {
+            color: var(--color-off-white);
+            transform: scale(0.95);
+        }
+
+        .mobile-nav-item.active {
+            color: var(--color-gold);
+        }
+
+        .mobile-nav-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        /* Floating CTA Button - Center Position */
+        .mobile-nav-cta {
+            position: absolute;
+            left: 50%;
+            top: -20px;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(197, 160, 40, 0.25); /* Minimal, prestigious shadow */
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+            z-index: 1000;
+        }
+
+        .mobile-nav-cta:active {
+            transform: translateX(-50%) scale(0.92);
+            box-shadow: 0 1px 4px rgba(197, 160, 40, 0.3);
+        }
+
+        .mobile-nav-cta-text {
+            line-height: 1.2;
+            padding: 0.25rem;
+        }
+
+        @media (max-width: 1024px) {
+            .header-nav {
+                padding: 1rem 0;
+            }
+
+            .header-actions {
+                gap: 0.5rem;
+            }
+
+            .btn-header {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .hero-text h1 {
+                font-size: 4rem;
+            }
+
+            .section-header h2 {
+                font-size: 3rem;
+            }
+
+            .sequence-timeline {
+                flex-direction: column;
+                gap: 3rem;
+            }
+
+            .sequence-timeline::before {
+                display: none;
+            }
+
+            .sequence-item {
+                text-align: left;
+                padding-left: 4rem;
+            }
+
+            .sequence-number {
+                position: absolute;
+                left: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* iOS Safe Area Support */
+            body {
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            }
+
+            section {
+                padding: 4rem 0;
+            }
+
+            .hero {
+                padding: calc(6rem + env(safe-area-inset-top)) 0 4rem;
+                min-height: auto;
+            }
+
+            .hero-text h1 {
+                font-size: 4rem; /* Larger on tablet - maintain authority */
+                line-height: 0.95;
+            }
+
+            .hero-text p {
+                font-size: 1.2rem;
+            }
+
+            .section-header h2 {
+                font-size: 3.5rem; /* Larger on tablet - maintain authority */
+                line-height: 0.95;
+            }
+
+            .metric-value {
+                font-size: 4rem; /* Larger on tablet - numbers as output */
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            section {
+                padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+            }
+
+            /* Ensure floating CTA is visible and accessible */
+            .mobile-nav-cta {
+                width: 64px;
+                height: 64px;
+                min-height: 48px; /* Touch target compliance */
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* iOS Safe Area Support for small screens */
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            }
+
+            .header-nav {
+                padding-top: calc(1rem + env(safe-area-inset-top));
+            }
+
+            .hero-text h1 {
+                font-size: 3rem; /* Still large on mobile - maintain authority */
+                line-height: 0.95;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .metric-value {
+                font-size: 2.5rem;
+            }
+
+            /* Ensure all buttons meet touch target requirements */
+            .btn-primary,
+            .btn-secondary,
+            .btn-header {
+                min-height: 48px;
+                padding: 0.875rem 1.5rem;
+            }
+
+            /* Floating CTA adjustments for small screens */
+            .mobile-nav-cta {
+                width: 60px;
+                height: 60px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <nav class="header-nav">
+        <div class="container">
+            <div class="header-nav-content">
+                <a href="soarb2b_home.html" class="header-logo">
+                    <div class="logo-container">
+                        <span class="logo-soar">
+                            SOA<span class="logo-soar-r">R
+                                <svg class="logo-r-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2 12L12 2M12 2H6M12 2V8" stroke="***REMOVED***C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </span>
+                        <span class="logo-divider"></span>
+                        <span class="logo-b2b">B2B</span>
+                    </div>
+                </a>
+            <div class="header-actions">
+                <!-- Language Toggle - Global Readiness -->
+                <div class="lang-toggle">
+                    <svg class="world-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                    </svg>
+                    <a href="/ui/en/soarb2b_home.html" class="lang-link" id="lang-en">EN</a>
+                    <span>/</span>
+                    <a href="/ui/tr/soarb2b_home.html" class="lang-link active" id="lang-tr">TR</a>
+                </div>
+                <a href="soarb2b_agencies.html" class="btn-header">Ajanslar</a>
+                <a href="soarb2b_pricing.html" class="btn-header">Fiyat</a>
+                <a href="***REMOVED***" class="btn-header btn-header-signin" id="btnSignIn">Sign In</a>
+                <a href="***REMOVED***" class="btn-header btn-header-signup" id="btnSignUp">Get Started</a>
+            </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="padding-top: 10rem;">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Turn the right companies into booked meetings.</h1>
+                    <p>Find real companies, reach the right decision-makers, and turn attention into meetings.</p>
+                    <div class="hero-cta">
+                        <a href="soarb2b_onboarding_5q.html" class="btn-primary">Build Your Meeting Plan</a>
+                        <a href="soarb2b_case_hotel_cleaning.html" class="btn-secondary">See a Real Example</a>
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <button type="button" id="hero-signin-btn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(248,250,252,0.3); color: var(--color-off-white); padding: 10px 20px; border-radius: 6px; cursor: pointer; font-size: 0.95rem;">Oturum aç (Gmail veya şirket e-postası)</button>
+                        <div id="g-signin-button" style="display: none;"></div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="flow-diagram">
+                        <div class="flow-step" data-step="01">
+                            <div class="flow-step-title">Target</div>
+                            <div class="flow-step-desc">Verified companies in your geography</div>
+                        </div>
+                        <div class="flow-step" data-step="02">
+                            <div class="flow-step-title">Identify</div>
+                            <div class="flow-step-desc">Decision-maker roles and departments</div>
+                        </div>
+                        <div class="flow-step" data-step="03">
+                            <div class="flow-step-title">Expose</div>
+                            <div class="flow-step-desc">Multi-channel, role-focused visibility</div>
+                        </div>
+                        <div class="flow-step" data-step="04">
+                            <div class="flow-step-title">Meet</div>
+                            <div class="flow-step-desc">Confirmed meetings, not leads</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reklam: hero altı (REKLAM_MONETIZASYON_PLANI.md) -->
+    <div class="ad-slot" data-slot="home-below-hero" id="ad-slot-below-hero" aria-hidden="true">
+        <div class="container"><div class="ad-slot-inner" id="ad-slot-below-hero-inner"></div></div>
+    </div>
+
+    <!-- Trust Band -->
+    <section class="trust-band">
+        <div class="container">
+            <div class="trust-band-content">
+                <div class="trust-band-label">Strategic data & ecosystem partners</div>
+                <div class="trust-band-logos">
+                    <div class="sponsor-logo">Partner Logo</div>
+                    <div class="sponsor-logo">Partner Logo</div>
+                    <div class="sponsor-logo">Partner Logo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOAR B2B Nedir? -->
+    <section class="what-is-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>SOAR B2B Nedir?</h2>
+            </div>
+            <div class="what-is-content reveal reveal-delay-1">
+                <p>SOAR B2B, üretici ve toptancıların doğrulanmış işletmelere ulaşmasına ve dikkati randevuya çevirmesine yardımcı olur. Karar odaklı hedefleme üzerinde duruyoruz: hedef şirketlerinizde satın alma kararlarını veren belirli roller ve departmanları belirlemek.</p>
+                <p>Aktivasyonu siz kontrol edersiniz. Doğrulanmış şirket listeleri, karar verici eşleştirme ve hedefleme verileri sağlıyoruz. Nasıl ve ne zaman iletişime geçeceğinize—kendi çalışmalarınız, reklam platformları veya doğrudan kanallar aracılığıyla—siz karar verirsiniz.</p>
+                <p>Otomatik mesajlaşma yok. Gizli reklam maliyetleri yok. Randevu garantisi yok. İlişkiyi ve sonuçları siz yönetirsiniz.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- What You Get -->
+    <section class="what-you-get">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>What You Get</h2>
+                <p>Outputs that turn exposure into meetings</p>
+            </div>
+            <div class="output-grid reveal reveal-delay-1">
+                <div class="output-card">
+                    <h3>Verified Company Lists</h3>
+                    <p>Business locations with addresses, contacts, and website links. Exportable to CRM.</p>
+                    <div class="output-card-metric">Avg. 120–180 companies / campaign</div>
+                </div>
+                <div class="output-card">
+                    <h3>Decision-Maker Targeting</h3>
+                    <p>Department and role mapping. Procurement, operations, management — the roles that buy.</p>
+                    <div class="output-card-metric">65–75% decision-maker coverage</div>
+                </div>
+                <div class="output-card">
+                    <h3>Location-Accurate Reach</h3>
+                    <p>Precision geo-targeting for radius-based campaigns. Verified addresses, not estimates.</p>
+                    <div class="output-card-metric">10m–50km radius targeting</div>
+                </div>
+                <div class="output-card">
+                    <h3>Persona-Based Exposure</h3>
+                    <p>Role-focused messaging and targeting criteria. Ready for LinkedIn, Meta, Google Ads.</p>
+                    <div class="output-card-metric">Role + location targeting</div>
+                </div>
+                <div class="output-card">
+                    <h3>Meeting-Driven Campaigns</h3>
+                    <p>Optimized landing pages and meeting request forms. Single, clear call-to-action.</p>
+                    <div class="output-card-metric">2–6% meeting request rates</div>
+                </div>
+                <div class="output-card">
+                    <h3>Active + Passive Tracking</h3>
+                    <p>Monitor both direct responses and passive engagement. Full visibility into conversion path.</p>
+                    <div class="output-card-metric">Multi-channel tracking</div>
+                </div>
+                <div class="output-card">
+                    <h3>CRM-Ready Export</h3>
+                    <p>Pre-mapped fields: company, address, role, contact, email/phone. One-click export.</p>
+                    <div class="output-card-metric">CSV, Excel, API</div>
+                </div>
+                <div class="output-card">
+                    <h3>Performance Visibility</h3>
+                    <p>Response rates, meeting requests, conversion tracking. Real numbers, not vanity metrics.</p>
+                    <div class="output-card-metric">Real-time dashboards</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reklam: orta sayfa (maksimum envanter) -->
+    <div class="ad-slot" data-slot="home-mid" id="ad-slot-mid" aria-hidden="true">
+        <div class="container"><div class="ad-slot-inner" id="ad-slot-mid-inner"></div></div>
+    </div>
+
+    <!-- Trusted Companies Section - Quiet Prestige -->
+    <section class="trusted-section">
+        <div class="container">
+            <div class="trusted-header reveal">
+                <div class="trusted-header-text">Trusted by</div>
+            </div>
+            <div class="trusted-logos reveal reveal-delay-1">
+                <div class="trusted-logo">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: rgba(248, 250, 252, 0.7); white-space: nowrap;">Acme Corp</span>
+                </div>
+                <div class="trusted-logo">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: rgba(248, 250, 252, 0.7); white-space: nowrap;">TechGlobal</span>
+                </div>
+                <div class="trusted-logo">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: rgba(248, 250, 252, 0.7); white-space: nowrap;">Enterprise Solutions</span>
+                </div>
+                <div class="trusted-logo">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: rgba(248, 250, 252, 0.7); white-space: nowrap;">Business Partners</span>
+                </div>
+                <div class="trusted-logo">
+                    <span style="font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; color: rgba(248, 250, 252, 0.7); white-space: nowrap;">Global Ventures</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Communication Sequence -->
+    <section class="sequence-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>The Sequence</h2>
+                <p>Start with low-cost, permission-based outreach. Scale to targeted ads. Then direct access.</p>
+            </div>
+            <div class="sequence-timeline reveal reveal-delay-1">
+                <div class="sequence-item">
+                    <div class="sequence-number">01</div>
+                    <div class="process">Intelligence</div>
+                    <h3>Companies identified</h3>
+                    <div class="output">Verified company list</div>
+                </div>
+                <div class="sequence-item">
+                    <div class="sequence-number">02</div>
+                    <div class="process">Mapping</div>
+                    <h3>Decision roles mapped</h3>
+                    <div class="output">Role targeting data</div>
+                </div>
+                <div class="sequence-item">
+                    <div class="sequence-number">03</div>
+                    <div class="process">Omni-Presence</div>
+                    <h3>Targeted exposure</h3>
+                    <div class="output">Multi-channel campaigns</div>
+                </div>
+                <div class="sequence-item">
+                    <div class="sequence-number">04</div>
+                    <div class="process">Engagement</div>
+                    <h3>High-intent outreach</h3>
+                    <div class="output">Direct access tools</div>
+                </div>
+                <div class="sequence-item">
+                    <div class="sequence-number">05</div>
+                    <div class="process">Result</div>
+                    <h3>Confirmed Meeting</h3>
+                    <div class="output">Booked calendar slot</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics -->
+    <section class="metrics-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 style="color: var(--color-off-white);">Performance Metrics</h2>
+                <p style="color: rgba(248, 250, 252, 0.8);">Real results from real campaigns</p>
+            </div>
+            <div class="metrics-grid reveal reveal-delay-1">
+                <div class="metric-card">
+                    <div class="metric-value mono">28%</div>
+                    <div class="metric-label">Avg. Response Rate</div>
+                    <div class="metric-note">Role-targeted campaigns</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value mono">12</div>
+                    <div class="metric-label">Days Avg. Time to First Meeting</div>
+                    <div class="metric-note">From campaign start</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value mono">$240</div>
+                    <div class="metric-label">Cost Per Qualified Meeting</div>
+                    <div class="metric-note">Average across industries</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value mono">3–7</div>
+                    <div class="metric-label">Meetings / 30 Days</div>
+                    <div class="metric-note">Typical campaign output</div>
+                </div>
+            </div>
+            <div class="sponsor-badge">
+                <div class="sponsor-badge-text">Benchmark data verified by</div>
+                <div class="sponsor-badge-name">Global Analytics Partners</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Library Preview -->
+    <section class="case-library-preview">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Case Library</h2>
+                <p>Real results from companies like yours</p>
+            </div>
+            <div class="case-grid reveal reveal-delay-1">
+                <div class="case-card">
+                    <div class="case-id">Case 01</div>
+                    <div class="case-title">Turkish Textile Giant — US Market Entry</div>
+                    <p style="color: var(--color-text-secondary); font-weight: 300; margin-bottom: 1.5rem;">Manufacturing company targeting US distributors and retailers.</p>
+                    <div class="case-result">42 Meetings in 3 months</div>
+                    <a href="soarb2b_case_hotel_cleaning.html" class="case-link">View case</a>
+                </div>
+                <div class="case-card featured">
+                    <div class="case-badge">Featured</div>
+                    <div class="case-id">Case 02</div>
+                    <div class="case-title">SaaS Scale-up — Enterprise Expansion</div>
+                    <p style="color: var(--color-text-secondary); font-weight: 300; margin-bottom: 1.5rem;">B2B software targeting enterprise IT decision-makers.</p>
+                    <div class="case-result">$1.2M Pipeline Generated</div>
+                    <a href="case_library_index.html" class="case-link">View case</a>
+                </div>
+                <div class="case-card">
+                    <div class="case-id">Case 03</div>
+                    <div class="case-title">Warehouse Cleaning Services — Regional Growth</div>
+                    <p style="color: var(--color-text-secondary); font-weight: 300; margin-bottom: 1.5rem;">Service provider targeting facility managers in logistics hubs.</p>
+                    <div class="case-result">28 Meetings / 60 days</div>
+                    <a href="case_library_index.html" class="case-link">View case</a>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="case_library_index.html" class="btn-secondary" style="border-color: var(--color-night-blue); color: var(--color-night-blue);">View All Cases</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 style="color: var(--color-off-white);">Choose Your Plan</h2>
+                <p style="color: rgba(248, 250, 252, 0.8);">Start free, scale as you grow</p>
+            </div>
+            <div class="pricing-grid reveal reveal-delay-1" id="pricingGrid">
+                <!-- Safe fallback (never stuck). API-loaded plans will replace this if available. -->
+                <div class="pricing-card">
+                    <div class="pricing-plan-name">Starter</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-period">Forever</div>
+                    <ul class="pricing-features">
+                        <li>Results Hub access</li>
+                        <li>Export sample outputs</li>
+                        <li>Basic targeting</li>
+                    </ul>
+                    <button class="pricing-cta secondary" onclick="selectPlan('free')">Get Started Free</button>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-plan-name">Growth</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-period">Pay-as-you-go</div>
+                    <ul class="pricing-features">
+                        <li>Higher caps</li>
+                        <li>Priority data sources</li>
+                        <li>Provenance + confidence fields</li>
+                    </ul>
+                    <button class="pricing-cta" onclick="selectPlan('premium')">Choose Plan</button>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-plan-name">Enterprise</div>
+                    <div class="pricing-price">Contact</div>
+                    <div class="pricing-period">Custom</div>
+                    <ul class="pricing-features">
+                        <li>Compliance + governance alignment</li>
+                        <li>Custom caps and workflows</li>
+                        <li>Support and SLAs</li>
+                    </ul>
+                    <button class="pricing-cta secondary" onclick="selectPlan('agency')">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Onboarding CTA -->
+    <section class="onboarding-cta">
+        <div class="container">
+            <h2>Build Your Meeting Plan</h2>
+            <p>Answer 5 questions. Get a 30-day plan tailored to your business.</p>
+            <a href="soarb2b_onboarding_5q.html" class="btn-primary">Start Now</a>
+        </div>
+    </section>
+
+    <!-- Reklam: footer üstü (REKLAM_MONETIZASYON_PLANI.md) -->
+    <div class="ad-slot" data-slot="home-above-footer" id="ad-slot-above-footer" aria-hidden="true">
+        <div class="container"><div class="ad-slot-inner" id="ad-slot-above-footer-inner"></div></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="soarb2b_about.html">Hakkımızda</a></li>
+                        <li><a href="soarb2b_readme.html">Ürün Bilgisi (Read Me)</a></li>
+                        <li><a href="soarb2b_pricing.html">Tahmini Fiyat</a></li>
+                        <li><a href="soarb2b_agencies.html">Ajanslar</a></li>
+                        <li><a href="***REMOVED***intelligence">Intelligence</a></li>
+                        <li><a href="***REMOVED***exposure">Exposure</a></li>
+                        <li><a href="***REMOVED***meetings">Meetings</a></li>
+                        <li><a href="soarb2b_archive.html">Geçmiş sorgularım</a></li>
+                        <li><a href="demo_showcase.html">Demo</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Use Cases</h4>
+                    <ul>
+                        <li><a href="soarb2b_case_hotel_cleaning.html">Market Entry</a></li>
+                        <li><a href="case_library_index.html">Enterprise Expansion</a></li>
+                        <li><a href="case_library_index.html">Regional Growth</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Access</h4>
+                    <ul>
+                        <li><a href="***REMOVED***enterprise">Enterprise</a></li>
+                        <li><a href="***REMOVED***partner-api">Partner API</a></li>
+                        <li><a href="***REMOVED***agency">Agency White-label</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="soarb2b_privacy.html">Gizlilik Politikası</a></li>
+                        <li><a href="soarb2b_terms.html">Hizmet Şartları</a></li>
+                        <li><a href="***REMOVED***compliance">Compliance</a></li>
+                        <li><a href="***REMOVED***" id="how-it-works-link">SOAR B2B Nasıl Çalışır?</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-ecosystem">
+                <h4 style="text-align: center; margin-bottom: 2rem;">Ecosystem Partners</h4>
+                <div class="ecosystem-partners">
+                    <span class="ecosystem-partner">CRM Connectors</span>
+                    <span class="ecosystem-partner">Data Providers</span>
+                    <span class="ecosystem-partner">Regional Media Agencies</span>
+                    <span class="ecosystem-partner">B2B Service Firms</span>
+                </div>
+            </div>
+            <div class="footer-tagline">
+                SOAR B2B is built for companies that sell, not pitch.
+            </div>
+            <div class="footer-powered">
+                <div class="footer-powered-text">Powered by SOAR B2B Platform</div>
+                <a href="/ui/admin.html" style="font-size: 0.75rem; color: rgba(248,250,252,0.35); margin-left: 1rem; text-decoration: none;">Admin</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal: Gmail, LinkedIn, Corporate -->
+    <div class="modal-overlay" id="login-modal" aria-hidden="true">
+        <div class="modal-content" style="max-width: 400px;">
+            <button class="modal-close" id="login-modal-close" type="button">&times;</button>
+            <h2 style="margin-bottom: 1.5rem;">Oturum Aç</h2>
+            <p style="color: rgba(248, 250, 252, 0.8); font-size: 0.95rem; margin-bottom: 1.5rem;">Gmail, LinkedIn veya şirket e-postanızla giriş yapın.</p>
+            <div id="login-modal-google" style="margin-bottom: 1rem; min-height: 44px;"></div>
+            <div style="margin-bottom: 1rem; position: relative;">
+                <a href="***REMOVED***" id="login-linkedin-btn" class="login-provider-btn" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px 16px; background: rgba(10, 102, 194, 0.5); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; font-size: 1rem; font-weight: 600; text-decoration: none; cursor: pointer; pointer-events: auto;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    <span id="login-linkedin-text">LinkedIn ile giriş</span>
+                    <span id="login-linkedin-badge" style="font-size: 0.75rem; background: rgba(248,250,252,0.2); padding: 2px 8px; border-radius: 4px; margin-left: 6px;">Yakında</span>
+                </a>
+            </div>
+            <p style="margin: 1rem 0 0.5rem; font-size: 0.85rem; color: rgba(248, 250, 252, 0.6);">Şirket e-postası ile <strong>önce kayıt olun</strong>, sonra giriş linki isteyebilirsiniz.</p>
+            <div id="corporate-signup-block" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                <input type="email" id="corporate-signup-email" placeholder="sirket@firma.com" style="width: 100%; padding: 10px 12px; border: 1px solid rgba(248,250,252,0.2); border-radius: 6px; background: rgba(248,250,252,0.05); color: var(--color-off-white); font-size: 0.95rem;">
+                <button type="button" id="corporate-signup-submit" style="width: 100%; padding: 12px; background: rgba(34, 197, 94, 0.3); color: ***REMOVED***86efac; border: 1px solid rgba(34, 197, 94, 0.5); border-radius: 6px; font-weight: 600; font-size: 0.95rem; cursor: pointer;">Kayıt ol</button>
+                <p id="corporate-signup-message" style="font-size: 0.85rem; color: rgba(34, 197, 94, 0.9); display: none;"></p>
+            </div>
+            <p style="margin: 0.5rem 0; font-size: 0.85rem; color: rgba(248, 250, 252, 0.6);">Zaten hesabınız var mı? Giriş linki iste</p>
+            <div id="corporate-login-block" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <input type="email" id="corporate-login-email" placeholder="sirket@firma.com" style="width: 100%; padding: 10px 12px; border: 1px solid rgba(248,250,252,0.2); border-radius: 6px; background: rgba(248,250,252,0.05); color: var(--color-off-white); font-size: 0.95rem;">
+                <button type="button" id="corporate-login-submit" style="width: 100%; padding: 12px; background: var(--color-gold); color: var(--color-night-blue); border: none; border-radius: 6px; font-weight: 600; font-size: 0.95rem; cursor: pointer;">Giriş linki iste</button>
+                <p id="corporate-login-message" style="font-size: 0.85rem; color: rgba(34, 197, 94, 0.9); display: none;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOAR B2B Nasıl Çalışır Modal -->
+    <div class="modal-overlay" id="how-it-works-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            <h2>SOAR B2B Nasıl Çalışır?</h2>
+            <p>SOAR B2B, doğrulanmış şirket verileri ve karar verici hedefleme sağlar. Bilmeniz gerekenler:</p>
+            
+            <h3>Otomatik İletişim Yok</h3>
+            <p>Sizin adınıza mesaj, e-posta veya herhangi bir iletişim formu göndermiyoruz. Tüm iletişim faaliyetleri üzerinde tam kontrol sizde.</p>
+            
+            <h3>Gizli Reklam Maliyetleri Yok</h3>
+            <p>Aboneliğiniz veri erişimi ve hedefleme araçlarını kapsar. LinkedIn, Meta veya Google Ads gibi platformlardaki reklam harcamaları ayrıdır ve tamamen sizin kontrolünüzdedir.</p>
+            
+            <h3>Kullanıcı Kontrollü Aktivasyon</h3>
+            <p>Sağladığımız verileri nasıl kullanacağınıza siz karar verirsiniz. CRM'nize aktarın, reklam kitleleri oluşturun veya doğrudan iletişim için kullanın. Aktivasyon yöntemi ve zamanlaması tamamen sizin seçiminizdir.</p>
+            
+            <h3>Randevu Garantisi Yok</h3>
+            <p>Hedefleme verileri ve araçlar sağlıyoruz. Randevu veya belirli sonuçlar garanti etmiyoruz. Başarınız, verileri nasıl aktive ettiğinize, mesajınızın kalitesine ve piyasa koşullarına bağlıdır.</p>
+            
+            <p style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(248, 250, 252, 0.1);">
+                SOAR B2B, karar odaklı bir hedefleme platformudur. Doğru şirketleri ve rolleri belirlemenize yardımcı oluyoruz. İlişkileri siz kurarsınız.
+            </p>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation - World-Class B2B SaaS Standard -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-content">
+            <div class="mobile-nav-items">
+                <a href="soarb2b_home.html" class="mobile-nav-item active">
+                    <div class="mobile-nav-icon">🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="case_library_index.html" class="mobile-nav-item">
+                    <div class="mobile-nav-icon">📚</div>
+                    <span>Cases</span>
+                </a>
+            </div>
+            <!-- Floating CTA Button - Center Position -->
+            <a href="soarb2b_onboarding_5q.html" class="mobile-nav-cta">
+                <div class="mobile-nav-cta-text">Get<br>Started</div>
+            </a>
+            <div class="mobile-nav-items">
+                <a href="demo_showcase.html" class="mobile-nav-item">
+                    <div class="mobile-nav-icon">🎯</div>
+                    <span>Demo</span>
+                </a>
+                <a href="***REMOVED***" class="mobile-nav-item" id="mobileNavMore">
+                    <div class="mobile-nav-icon">⋯</div>
+                    <span>More</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Google Sign-In Script -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <script>
+        // API Configuration
+        const API_BASE = window.location.origin;
+        
+        // User state
+        let currentUser = null;
+        let authToken = null;
+
+        // Check if user is already logged in
+        function checkAuth() {
+            const storedUser = localStorage.getItem('soarb2b_user');
+            const storedToken = localStorage.getItem('soarb2b_token');
+            
+            if (storedUser && storedToken) {
+                currentUser = JSON.parse(storedUser);
+                authToken = storedToken;
+                updateAuthUI();
+            }
+        }
+
+        // Update UI based on auth state
+        function updateAuthUI() {
+            const btnSignIn = document.getElementById('btnSignIn');
+            const btnSignUp = document.getElementById('btnSignUp');
+            const gSignInBtn = document.getElementById('g-signin-button');
+            const heroSignInBtn = document.getElementById('hero-signin-btn');
+            
+            if (currentUser) {
+                if (btnSignIn) { btnSignIn.textContent = currentUser.full_name || currentUser.email; btnSignIn.href = '***REMOVED***'; }
+                if (btnSignUp) { btnSignUp.textContent = 'Dashboard'; btnSignUp.href = '***REMOVED***'; }
+                if (gSignInBtn) gSignInBtn.style.display = 'none';
+                if (heroSignInBtn) heroSignInBtn.style.display = 'none';
+            } else {
+                if (btnSignIn) { btnSignIn.textContent = 'Sign In'; btnSignIn.href = '***REMOVED***'; }
+                if (btnSignUp) { btnSignUp.textContent = 'Get Started'; btnSignUp.href = '***REMOVED***'; }
+                if (gSignInBtn) gSignInBtn.style.display = 'none';
+                if (heroSignInBtn) heroSignInBtn.style.display = 'inline-block';
+            }
+        }
+
+        // Load Google Client ID from backend
+        let googleClientId = null;
+
+        async function loadAuthConfig() {
+            try {
+                const response = await fetch(`${API_BASE}/v1/auth/config`);
+                
+                // Check if response is OK
+                if (!response.ok) {
+                    // Try to get error message from JSON response
+                    let errorMessage = 'Authentication service is not configured';
+                    try {
+                        const errorData = await response.json();
+                        errorMessage = errorData.detail || errorData.error || errorMessage;
+                    } catch (e) {
+                        // If not JSON, use status text
+                        errorMessage = response.statusText || errorMessage;
+                    }
+                    
+                    // Show configuration error message
+                    console.warn(`Auth service not configured: ${response.status} - ${errorMessage}`);
+                    const errEl = document.getElementById('login-modal-google') || document.getElementById('g-signin-button');
+                    if (errEl) {
+                        errEl.innerHTML = `<div style="color: ***REMOVED***ff6b6b; padding: 1rem; background: rgba(255, 107, 107, 0.1); border: 1px solid ***REMOVED***ff6b6b; border-radius: 4px; margin-top: 1rem; font-size: 0.9rem;">Google Sign-In yapılandırılmamış.<br><span style="font-size: 0.85rem; opacity: 0.9;">Backend .env dosyasında GOOGLE_CLIENT_ID ve JWT_SECRET ayarlayın.</span></div>`;
+                    }
+                    return;
+                }
+                
+                // Parse JSON response (only if response is OK)
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Response is not JSON');
+                }
+                
+                const config = await response.json();
+                const rawCid = (config.google_client_id || '').trim();
+                const isPlaceholder = !rawCid || /your-google|placeholder|ornek|example/i.test(rawCid) || !rawCid.endsWith('apps.googleusercontent.com');
+                if (rawCid && !isPlaceholder) {
+                    googleClientId = rawCid;
+                    initializeGoogleSignIn();
+                } else {
+                    console.error('Google Client ID not found or placeholder:', rawCid ? rawCid.substring(0, 30) + '...' : '(empty)');
+                    const errEl = document.getElementById('login-modal-google') || document.getElementById('g-signin-button');
+                    if (errEl) {
+                        errEl.innerHTML = '<div style="color: ***REMOVED***ff6b6b; padding: 1rem; background: rgba(255, 107, 107, 0.1); border: 1px solid ***REMOVED***ff6b6b; border-radius: 4px; margin-top: 1rem;">Google Client ID yapılandırılmadı veya placeholder kullanılıyor. Backend <code>backend/.env</code> dosyasında <code>GOOGLE_CLIENT_ID</code> değerini Google Cloud Console\'daki gerçek Client ID ile güncelleyin ve sunucuyu yeniden başlatın.</div>';
+                    }
+                }
+                if (config.linkedin_enabled && config.linkedin_auth_url) {
+                    const lb = document.getElementById('login-linkedin-btn');
+                    const badge = document.getElementById('login-linkedin-badge');
+                    if (lb) { lb.href = config.linkedin_auth_url; }
+                    if (badge) badge.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error loading auth config:', error);
+                const errEl = document.getElementById('login-modal-google') || document.getElementById('g-signin-button');
+                if (errEl) {
+                    errEl.innerHTML = '<div style="color: ***REMOVED***ff6b6b; padding: 1rem; background: rgba(255, 107, 107, 0.1); border: 1px solid ***REMOVED***ff6b6b; border-radius: 4px; margin-top: 1rem;">Kimlik doğrulama yapılandırması yüklenemedi. Backend loglarını kontrol edin.</div>';
+                }
+            }
+        }
+
+        // Initialize Google Sign-In (only with real Client ID; reject placeholder)
+        function initializeGoogleSignIn() {
+            if (!googleClientId || /your-google|placeholder/i.test(googleClientId) || !googleClientId.endsWith('apps.googleusercontent.com')) {
+                console.error('Google Client ID not valid (placeholder or missing). Set GOOGLE_CLIENT_ID in backend/.env and restart.');
+                return;
+            }
+
+            if (window.google && window.google.accounts) {
+                google.accounts.id.initialize({
+                    client_id: googleClientId,
+                    callback: handleGoogleSignIn,
+                    auto_select: false,
+                    ux_mode: "popup"
+                });
+                
+                // Prefer login modal container so "Sign In" opens modal with Google (Gmail) button
+                const googleContainer = document.getElementById('login-modal-google') || document.getElementById('g-signin-button');
+                if (googleContainer) {
+                    google.accounts.id.renderButton(googleContainer, {
+                        theme: 'outline',
+                        size: 'large',
+                        text: 'signin_with',
+                        width: 280
+                    });
+                    const gBtn = googleContainer.querySelector('div[role="button"]');
+                    if (gBtn) gBtn.style.width = '100%';
+                }
+            } else {
+                // Wait for Google script to load
+                setTimeout(initializeGoogleSignIn, 100);
+            }
+        }
+
+        // Handle Google Sign-In response
+        async function handleGoogleSignIn(response) {
+            try {
+                if (!response || !response.credential) {
+                    console.warn('Google Sign-In: no credential (user may have closed the popup)');
+                    return;
+                }
+                const idToken = response.credential;
+
+                const authResponse = await fetch(`${API_BASE}/v1/auth/google`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_token: idToken })
+                });
+
+                // Check if response is OK and content-type is JSON
+                if (!authResponse.ok) {
+                    let errorMessage = 'Giriş yapılamadı.';
+                    try {
+                        const errorData = await authResponse.json();
+                        let detail = errorData.detail || errorData.error;
+                        if (Array.isArray(detail)) detail = detail[0]?.msg || detail.join(', ');
+                        if (detail) errorMessage = typeof detail === 'string' ? detail : (detail.message || JSON.stringify(detail));
+                    } catch (e) {
+                        const errorText = await authResponse.text();
+                        if (errorText) errorMessage = errorText.length > 120 ? errorText.substring(0, 120) + '...' : errorText;
+                    }
+                    alert(errorMessage);
+                    console.error('Auth error:', authResponse.status, errorMessage);
+                    return;
+                }
+
+                // Parse JSON response
+                const contentType = authResponse.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const textResponse = await authResponse.text();
+                    console.error('Unexpected response type:', contentType, textResponse);
+                    alert('Sign in error: Server returned invalid response format');
+                    return;
+                }
+
+                const authData = await authResponse.json();
+
+                if (authData.success && authData.token) {
+                    currentUser = authData.user;
+                    authToken = authData.token;
+                    
+                    localStorage.setItem('soarb2b_user', JSON.stringify(authData.user));
+                    localStorage.setItem('soarb2b_token', authData.token);
+                    
+                    updateAuthUI();
+                    const loginModal = document.getElementById('login-modal');
+                    if (loginModal) {
+                        loginModal.classList.remove('active');
+                        loginModal.setAttribute('aria-hidden', 'true');
+                        document.body.style.overflow = '';
+                    }
+                    
+                    // Redirect to onboarding or dashboard
+                    window.location.href = 'soarb2b_onboarding_5q.html';
+                } else {
+                    alert('Sign in failed: ' + (authData.error || authData.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Sign in error:', error);
+                alert('Sign in error: ' + (error.message || 'Network or server error. Please try again.'));
+            }
+        }
+
+        // Load subscription plans
+        async function loadPlans() {
+            try {
+                const controller = new AbortController();
+                const t = setTimeout(() => controller.abort(), 6000);
+                const response = await fetch(`${API_BASE}/v1/subscriptions/plans`, { signal: controller.signal });
+                clearTimeout(t);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const plansData = await response.json();
+                
+                const plans = plansData.plans || {};
+                const pricingGrid = document.getElementById('pricingGrid');
+                
+                if (!pricingGrid) return;
+                
+                if (!plans || Object.keys(plans).length === 0) {
+                    console.warn('Pricing plans API returned empty plans. Using fallback cards.');
+                    return;
+                }
+
+                const planOrder = ['free', 'premium', 'agency'];
+                const isTR = (typeof currentLanguage !== 'undefined' && currentLanguage === 'tr');
+                pricingGrid.innerHTML = '';
+
+                planOrder.forEach((planKey, index) => {
+                    const plan = plans[planKey];
+                    if (!plan) return;
+
+                    const isFeatured = planKey === 'premium';
+                    const planName = (isTR && plan.name_tr) ? plan.name_tr : (plan.name || planKey);
+                    const features = (isTR && plan.features_tr) ? plan.features_tr : (plan.features || []);
+                    const periodFree = isTR ? 'Sonsuza kadar' : 'Forever';
+                    const periodPayGo = isTR ? 'Kullandıkça öde' : 'Pay-as-you-go';
+                    const regFee = plan.registration_fee != null ? plan.registration_fee : 0;
+                    const subtitle = (isTR && plan.subtitle_tr) ? plan.subtitle_tr : (plan.subtitle || '');
+                    const badgeText = isTR ? 'En popüler' : 'Most Popular';
+                    const ctaFree = isTR ? 'Ücretsiz Başla' : 'Get Started Free';
+                    const ctaPlan = isTR ? 'Planı Seç' : 'Choose Plan';
+
+                    const planCard = document.createElement('div');
+                    planCard.className = `pricing-card ${isFeatured ? 'featured' : ''}`;
+
+                    let periodHtml = planKey === 'free' ? periodFree : periodPayGo;
+                    let extraHtml = '';
+                    if (planKey === 'premium' && regFee > 0) {
+                        extraHtml = isTR
+                            ? `<div style="color: rgba(248, 250, 252, 0.6); font-size: 0.9rem; margin-bottom: 0.5rem;">Kayıt ücreti $${regFee}</div>`
+                            : `<div style="color: rgba(248, 250, 252, 0.6); font-size: 0.9rem; margin-bottom: 0.5rem;">Registration fee $${regFee}</div>`;
+                    }
+                    if (subtitle) {
+                        extraHtml += `<div style="color: rgba(248, 250, 252, 0.7); font-size: 0.85rem; margin-bottom: 1rem;">${subtitle}</div>`;
+                    }
+
+                    planCard.innerHTML = `
+                        ${isFeatured ? `<div class="pricing-badge">${badgeText}</div>` : ''}
+                        <div class="pricing-plan-name">${planName}</div>
+                        <div class="pricing-price">$${planKey === 'free' ? '0' : '0'}</div>
+                        <div class="pricing-period">${periodHtml}</div>
+                        ${extraHtml}
+                        <ul class="pricing-features">
+                            ${features.map(f => `<li>${f}</li>`).join('')}
+                        </ul>
+                        <button class="pricing-cta ${isFeatured ? '' : 'secondary'}" onclick="selectPlan('${planKey}')">
+                            ${planKey === 'free' ? ctaFree : ctaPlan}
+                        </button>
+                    `;
+
+                    pricingGrid.appendChild(planCard);
+                });
+            } catch (error) {
+                // Non-blocking: keep fallback cards instead of a permanent loading state.
+                console.warn('Pricing plans failed to load. Using fallback cards.', error);
+            }
+        }
+
+        // Handle plan selection
+        function selectPlan(planType) {
+            if (planType === 'free') {
+                window.location.href = 'soarb2b_onboarding_5q.html';
+            } else {
+                // Check if user is logged in
+                if (!currentUser) {
+                    // Show sign up prompt - scroll to sign in button
+                    const heroSection = document.querySelector('.hero');
+                    if (heroSection) {
+                        heroSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    return;
+                }
+                
+                // Redirect to checkout or create subscription
+                // For now, redirect to onboarding
+                window.location.href = 'soarb2b_onboarding_5q.html?plan=' + planType;
+            }
+        }
+
+        // Sign In/Sign Up button handlers
+        // Language Toggle Handler - URL-based switching (SEO-safe)
+        // Determine current language from URL path
+        let currentLanguage = 'tr'; // Default (TR is primary market)
+        const path = window.location.pathname;
+        if (path.includes('/tr/')) {
+            currentLanguage = 'tr';
+        } else if (path.includes('/en/')) {
+            currentLanguage = 'en';
+        } else {
+            // Fallback: check localStorage for preference (UX helper, not SEO signal)
+            currentLanguage = localStorage.getItem('soarb2b_lang') || 'en';
+        }
+        
+        function updateLanguageUI() {
+            const enBtn = document.getElementById('lang-en');
+            const trBtn = document.getElementById('lang-tr');
+            
+            if (enBtn && trBtn) {
+                enBtn.classList.toggle('active', currentLanguage === 'en');
+                trBtn.classList.toggle('active', currentLanguage === 'tr');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            const urlParams = new URLSearchParams(window.location.search);
+            const tokenFromUrl = urlParams.get('token');
+            if (tokenFromUrl) {
+                localStorage.setItem('soarb2b_token', tokenFromUrl);
+                authToken = tokenFromUrl;
+                const storedUser = localStorage.getItem('soarb2b_user');
+                if (storedUser) currentUser = JSON.parse(storedUser);
+                else currentUser = { email: 'user', id: 0 };
+                updateAuthUI();
+                history.replaceState({}, document.title, window.location.pathname || '/ui/tr/soarb2b_home.html');
+            }
+            if (urlParams.get('linkedin_error')) {
+                history.replaceState({}, document.title, window.location.pathname || '/ui/tr/soarb2b_home.html');
+            }
+            loadPlans();
+            
+            // Language toggle UI state (URL-based switching - links handle navigation)
+            updateLanguageUI();
+            loadAuthConfig(); // Load Google Client ID from backend
+
+            // Modal functionality
+            const modal = document.getElementById('how-it-works-modal');
+            const modalLink = document.getElementById('how-it-works-link');
+            const closeBtn = document.getElementById('modal-close-btn');
+
+            if (modalLink) {
+                modalLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (modal) {
+                        modal.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                });
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    if (modal) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            // Close modal on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (modal && modal.classList.contains('active')) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                    const loginModal = document.getElementById('login-modal');
+                    if (loginModal && loginModal.classList.contains('active')) {
+                        loginModal.classList.remove('active');
+                        loginModal.setAttribute('aria-hidden', 'true');
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+            
+            const btnSignIn = document.getElementById('btnSignIn');
+            const btnSignUp = document.getElementById('btnSignUp');
+            
+            if (btnSignIn) {
+                btnSignIn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentUser) {
+                        window.location.href = '***REMOVED***';
+                    } else {
+                        const loginModal = document.getElementById('login-modal');
+                        if (loginModal) {
+                            loginModal.classList.add('active');
+                            loginModal.setAttribute('aria-hidden', 'false');
+                            document.body.style.overflow = 'hidden';
+                            if (!googleClientId) loadAuthConfig();
+                        } else {
+                            const heroSection = document.querySelector('.hero');
+                            if (heroSection) heroSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            }
+            const loginModalClose = document.getElementById('login-modal-close');
+            if (loginModalClose) {
+                loginModalClose.addEventListener('click', function() {
+                    const loginModal = document.getElementById('login-modal');
+                    if (loginModal) {
+                        loginModal.classList.remove('active');
+                        loginModal.setAttribute('aria-hidden', 'true');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+            const loginModalOverlay = document.getElementById('login-modal');
+            if (loginModalOverlay) {
+                loginModalOverlay.addEventListener('click', function(e) {
+                    if (e.target === loginModalOverlay) {
+                        loginModalOverlay.classList.remove('active');
+                        loginModalOverlay.setAttribute('aria-hidden', 'true');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+            const loginLinkedInBtn = document.getElementById('login-linkedin-btn');
+            if (loginLinkedInBtn) {
+                loginLinkedInBtn.addEventListener('click', function(e) {
+                    const href = loginLinkedInBtn.getAttribute('href');
+                    if (href && href !== '***REMOVED***' && href.indexOf('/auth/linkedin') !== -1) {
+                        window.location.href = href;
+                        return;
+                    }
+                    e.preventDefault();
+                    const msg = document.getElementById('corporate-login-message');
+                    if (msg) { msg.textContent = 'LinkedIn girişi yapılandırılmadı. Gmail veya şirket e-postası ile giriş yapın.'; msg.style.color = 'rgba(248,250,252,0.7)'; msg.style.display = 'block'; }
+                });
+            }
+            const corporateSignupSubmit = document.getElementById('corporate-signup-submit');
+            const corporateSignupEmail = document.getElementById('corporate-signup-email');
+            const corporateSignupMessage = document.getElementById('corporate-signup-message');
+            if (corporateSignupSubmit && corporateSignupEmail) {
+                corporateSignupSubmit.addEventListener('click', async function() {
+                    const email = (corporateSignupEmail.value || '').trim();
+                    if (!email) {
+                        if (corporateSignupMessage) { corporateSignupMessage.textContent = 'Lütfen e-posta adresinizi girin.'; corporateSignupMessage.style.color = 'rgba(239, 68, 68, 0.9)'; corporateSignupMessage.style.display = 'block'; }
+                        return;
+                    }
+                    corporateSignupSubmit.disabled = true;
+                    corporateSignupSubmit.textContent = 'Gönderiliyor...';
+                    if (corporateSignupMessage) corporateSignupMessage.style.display = 'none';
+                    try {
+                        const res = await fetch(API_BASE + '/api/v1/public/corporate-signup', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: email }),
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            if (corporateSignupMessage) { corporateSignupMessage.textContent = data.message_tr || data.message || 'Hesabınız oluşturuldu. Giriş linki iste ile giriş yapabilirsiniz.'; corporateSignupMessage.style.color = 'rgba(34, 197, 94, 0.9)'; corporateSignupMessage.style.display = 'block'; }
+                            corporateSignupEmail.value = '';
+                        } else {
+                            if (corporateSignupMessage) { corporateSignupMessage.textContent = (data.detail && data.detail.message_tr) || data.detail || data.message || 'Bir hata oluştu.'; corporateSignupMessage.style.color = 'rgba(239, 68, 68, 0.9)'; corporateSignupMessage.style.display = 'block'; }
+                        }
+                    } catch (err) {
+                        if (corporateSignupMessage) { corporateSignupMessage.textContent = 'Bağlantı hatası. Lütfen tekrar deneyin.'; corporateSignupMessage.style.color = 'rgba(239, 68, 68, 0.9)'; corporateSignupMessage.style.display = 'block'; }
+                    }
+                    corporateSignupSubmit.disabled = false;
+                    corporateSignupSubmit.textContent = 'Kayıt ol';
+                });
+            }
+            const corporateLoginSubmit = document.getElementById('corporate-login-submit');
+            const corporateLoginEmail = document.getElementById('corporate-login-email');
+            const corporateLoginMessage = document.getElementById('corporate-login-message');
+            if (corporateLoginSubmit && corporateLoginEmail) {
+                corporateLoginSubmit.addEventListener('click', async function() {
+                    const email = (corporateLoginEmail.value || '').trim();
+                    if (!email) {
+                        if (corporateLoginMessage) {
+                            corporateLoginMessage.textContent = 'Lütfen e-posta adresinizi girin.';
+                            corporateLoginMessage.style.color = 'rgba(239, 68, 68, 0.9)';
+                            corporateLoginMessage.style.display = 'block';
+                        }
+                        return;
+                    }
+                    corporateLoginSubmit.disabled = true;
+                    corporateLoginSubmit.textContent = 'Gönderiliyor...';
+                    if (corporateLoginMessage) corporateLoginMessage.style.display = 'none';
+                    try {
+                        const base = window.location.origin;
+                        const res = await fetch(base + '/api/v1/public/corporate-login-request', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: email })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            if (corporateLoginMessage) {
+                                corporateLoginMessage.textContent = data.message_tr || data.message || 'Talebiniz alındı.';
+                                corporateLoginMessage.style.color = 'rgba(34, 197, 94, 0.9)';
+                                corporateLoginMessage.style.display = 'block';
+                            }
+                            corporateLoginEmail.value = '';
+                        } else {
+                            if (corporateLoginMessage) {
+                                corporateLoginMessage.textContent = data.detail?.message_tr || data.detail || 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                                corporateLoginMessage.style.color = 'rgba(239, 68, 68, 0.9)';
+                                corporateLoginMessage.style.display = 'block';
+                            }
+                        }
+                    } catch (err) {
+                        if (corporateLoginMessage) {
+                            corporateLoginMessage.textContent = 'Bağlantı hatası. Lütfen tekrar deneyin.';
+                            corporateLoginMessage.style.color = 'rgba(239, 68, 68, 0.9)';
+                            corporateLoginMessage.style.display = 'block';
+                        }
+                    }
+                    corporateLoginSubmit.disabled = false;
+                    corporateLoginSubmit.textContent = 'Giriş linki iste';
+                });
+            }
+            const heroSignInBtn = document.getElementById('hero-signin-btn');
+            if (heroSignInBtn) {
+                heroSignInBtn.addEventListener('click', function() {
+                    if (currentUser) return;
+                    const loginModal = document.getElementById('login-modal');
+                    if (loginModal) {
+                        loginModal.classList.add('active');
+                        loginModal.setAttribute('aria-hidden', 'false');
+                        document.body.style.overflow = 'hidden';
+                        if (!googleClientId) loadAuthConfig();
+                    }
+                });
+            }
+            
+            if (btnSignUp) {
+                btnSignUp.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentUser) {
+                        window.location.href = '***REMOVED***';
+                    } else {
+                        const heroSection = document.querySelector('.hero');
+                        if (heroSection) {
+                            heroSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }
+                });
+            }
+            
+            // Google Sign-In will be initialized after loadAuthConfig() completes
+        });
+
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all reveal elements
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Hero elements reveal on load
+        window.addEventListener('load', () => {
+            const heroText = document.querySelector('.hero-text');
+            const heroVisual = document.querySelector('.hero-visual');
+            if (heroText) {
+                setTimeout(() => heroText.style.opacity = '1', 100);
+            }
+            if (heroVisual) {
+                setTimeout(() => heroVisual.style.opacity = '1', 300);
+            }
+        });
+
+        // ***REMOVED***region agent log
+        // ***REMOVED***endregion
+
+        // SOAR B2B Chat Widget
+        (function() {
+            const API_BASE = window.location.origin;
+            let conversationId = null;
+            const messageHistory = [];
+
+            // Chat Widget HTML and Styles
+            const chatWidgetHTML = `
+                <div id="soarb2b-chat-widget" style="
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    width: 380px;
+                    max-width: calc(100vw - 40px);
+                    height: 600px;
+                    max-height: calc(100vh - 40px);
+                    background: var(--color-night-blue);
+                    border: 1px solid rgba(248, 250, 252, 0.2);
+                    border-radius: 12px;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+                    display: none;
+                    flex-direction: column;
+                    z-index: 10000;
+                    font-family: 'Inter', sans-serif;
+                ">
+                    <div style="
+                        background: var(--color-gold);
+                        color: var(--color-night-blue);
+                        padding: 16px 20px;
+                        border-radius: 12px 12px 0 0;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        font-weight: 700;
+                        font-size: 16px;
+                    ">
+                        <span>SOAR B2B Asistanı</span>
+                        <button id="chat-close-btn" style="
+                            background: transparent;
+                            border: none;
+                            color: var(--color-night-blue);
+                            font-size: 24px;
+                            cursor: pointer;
+                            padding: 0;
+                            width: 28px;
+                            height: 28px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 4px;
+                            transition: background 0.2s;
+                        ">×</button>
+                    </div>
+                    <div id="chat-messages" style="
+                        flex: 1;
+                        overflow-y: auto;
+                        padding: 20px;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 16px;
+                        background: rgba(15, 23, 42, 0.95);
+                    ">
+                        <div style="
+                            color: var(--color-off-white);
+                            text-align: center;
+                            padding: 20px;
+                            font-size: 14px;
+                            opacity: 0.8;
+                        ">
+                            👋 Merhaba! Ben SOAR B2B Asistanı. B2B büyüme, satış, SaaS, pazarlama veya otomasyon hakkında soru sorabilirsiniz.
+                        </div>
+                    </div>
+                    <div style="
+                        padding: 16px;
+                        border-top: 1px solid rgba(248, 250, 252, 0.1);
+                        background: rgba(15, 23, 42, 0.95);
+                        border-radius: 0 0 12px 12px;
+                    ">
+                        <form id="chat-form" style="display: flex; gap: 8px;">
+                            <input type="text" id="chat-input" placeholder="Mesajınızı yazın..." maxlength="2000" style="
+                                flex: 1;
+                                padding: 12px 16px;
+                                border: 1px solid rgba(248, 250, 252, 0.2);
+                                border-radius: 8px;
+                                background: rgba(248, 250, 252, 0.05);
+                                color: var(--color-off-white);
+                                font-size: 14px;
+                                font-family: 'Inter', sans-serif;
+                                outline: none;
+                            ">
+                            <button type="submit" id="chat-send-btn" style="
+                                padding: 12px 24px;
+                                background: var(--color-gold);
+                                color: var(--color-night-blue);
+                                border: none;
+                                border-radius: 8px;
+                                font-weight: 600;
+                                font-size: 14px;
+                                cursor: pointer;
+                                transition: background 0.2s;
+                                font-family: 'Inter', sans-serif;
+                            ">Gönder</button>
+                        </form>
+                    </div>
+                </div>
+                <button id="chat-toggle-btn" style="
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    width: 60px;
+                    height: 60px;
+                    border-radius: 50%;
+                    background: var(--color-gold);
+                    color: var(--color-night-blue);
+                    border: none;
+                    font-size: 24px;
+                    cursor: pointer;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    z-index: 9999;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: transform 0.2s, box-shadow 0.2s;
+                " title="SOAR B2B Asistanı ile Sohbet">💬</button>
+            `;
+
+            // Inject widget HTML
+            document.body.insertAdjacentHTML('beforeend', chatWidgetHTML);
+
+            const widget = document.getElementById('soarb2b-chat-widget');
+            const toggleBtn = document.getElementById('chat-toggle-btn');
+            const closeBtn = document.getElementById('chat-close-btn');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatSendBtn = document.getElementById('chat-send-btn');
+            const chatMessages = document.getElementById('chat-messages');
+
+            // Toggle widget
+            toggleBtn.addEventListener('click', () => {
+                widget.style.display = widget.style.display === 'none' ? 'flex' : 'none';
+                toggleBtn.style.display = widget.style.display === 'flex' ? 'none' : 'flex';
+                if (widget.style.display === 'flex') {
+                    chatInput.focus();
+                }
+            });
+
+            closeBtn.addEventListener('click', () => {
+                widget.style.display = 'none';
+                toggleBtn.style.display = 'flex';
+            });
+
+            // Scroll to bottom
+            function scrollToBottom() {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Add message to chat
+            function addMessage(text, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.style.cssText = `
+                    padding: 12px 16px;
+                    border-radius: 12px;
+                    max-width: 80%;
+                    word-wrap: break-word;
+                    ${isUser ? `
+                        background: var(--color-gold);
+                        color: var(--color-night-blue);
+                        align-self: flex-end;
+                        margin-left: auto;
+                    ` : `
+                        background: rgba(248, 250, 252, 0.1);
+                        color: var(--color-off-white);
+                        align-self: flex-start;
+                    `}
+                    font-size: 14px;
+                    line-height: 1.5;
+                `;
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom();
+                messageHistory.push({ text, isUser, timestamp: new Date().toISOString() });
+            }
+
+            // Show loading indicator
+            function showLoading() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.id = 'chat-loading';
+                loadingDiv.style.cssText = `
+                    padding: 12px 16px;
+                    border-radius: 12px;
+                    background: rgba(248, 250, 252, 0.1);
+                    color: var(--color-off-white);
+                    align-self: flex-start;
+                    font-size: 14px;
+                    font-style: italic;
+                    opacity: 0.7;
+                `;
+                loadingDiv.textContent = 'Düşünüyorum...';
+                chatMessages.appendChild(loadingDiv);
+                scrollToBottom();
+            }
+
+            // Remove loading indicator
+            function removeLoading() {
+                const loading = document.getElementById('chat-loading');
+                if (loading) loading.remove();
+            }
+
+            // Send message
+            async function sendMessage(message) {
+                if (!message.trim() || message.length > 2000) {
+                    return;
+                }
+
+                // ***REMOVED***region agent log
+                // ***REMOVED***endregion
+
+                addMessage(message, true);
+                showLoading();
+
+                try {
+                    // ***REMOVED***region agent log
+                    // ***REMOVED***endregion
+
+                    const response = await fetch(`${API_BASE}/api/chat`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            message: message.trim(),
+                            conversation_id: conversationId
+                        })
+                    });
+
+                    // ***REMOVED***region agent log
+                    // ***REMOVED***endregion
+
+                    removeLoading();
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({ detail: 'Bilinmeyen hata' }));
+                        throw new Error(errorData.detail || `HTTP ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    
+                    // ***REMOVED***region agent log
+                    // ***REMOVED***endregion
+
+                    conversationId = data.conversation_id || conversationId;
+                    addMessage(data.reply, false);
+                    
+                } catch (error) {
+                    removeLoading();
+                    addMessage(`Üzgünüm, bir hata oluştu: ${error.message}. Lütfen tekrar deneyin.`, false);
+                    
+                    // ***REMOVED***region agent log
+                    // ***REMOVED***endregion
+                }
+            }
+
+            // Form submit handler
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const message = chatInput.value.trim();
+                if (message) {
+                    chatInput.value = '';
+                    chatSendBtn.disabled = true;
+                    sendMessage(message).finally(() => {
+                        chatSendBtn.disabled = false;
+                        chatInput.focus();
+                    });
+                }
+            });
+
+            // Input validation
+            chatInput.addEventListener('input', (e) => {
+                const length = e.target.value.length;
+                if (length > 2000) {
+                    e.target.value = e.target.value.substring(0, 2000);
+                }
+            });
+
+            // Hover effects
+            toggleBtn.addEventListener('mouseenter', () => {
+                toggleBtn.style.transform = 'scale(1.1)';
+                toggleBtn.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.4)';
+            });
+            toggleBtn.addEventListener('mouseleave', () => {
+                toggleBtn.style.transform = 'scale(1)';
+                toggleBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+            });
+
+            closeBtn.addEventListener('mouseenter', () => {
+                closeBtn.style.background = 'rgba(15, 23, 42, 0.2)';
+            });
+            closeBtn.addEventListener('mouseleave', () => {
+                closeBtn.style.background = 'transparent';
+            });
+
+            chatSendBtn.addEventListener('mouseenter', () => {
+                chatSendBtn.style.background = '***REMOVED***D4B043';
+            });
+            chatSendBtn.addEventListener('mouseleave', () => {
+                chatSendBtn.style.background = 'var(--color-gold)';
+            });
+        })();
+    </script>
+    <!-- Reklam: canlı yokken FINDIAG banner (maksimum envanter) -->
+    <script>
+(function() {
+    var slotMap = { 'home-below-hero': 'ad-slot-below-hero-inner', 'home-mid': 'ad-slot-mid-inner', 'home-above-footer': 'ad-slot-above-footer-inner' };
+    var findiagBanners = {
+        'home-below-hero': '<div class="ad-placeholder"><span class="ad-label">Reklam</span><div class="ad-headline">Evidence-Based Diagnostics, End-to-End</div><div class="ad-sub">From raw clinical data to verified diagnostic insights — with full chain-of-custody and AI-powered analysis.</div><a href="***REMOVED***" class="ad-cta">Request a Demo</a></div>',
+        'home-mid': '<div class="ad-placeholder"><span class="ad-label">Reklam</span><div class="ad-headline">Where Clinical Data Becomes Trusted Diagnosis</div><div class="ad-sub">FINDIAG: AI-powered, traceable, and compliant diagnostic workflows. Every sample. Every step. Fully traceable.</div><a href="***REMOVED***" class="ad-cta">Book Your Demo</a></div>',
+        'home-above-footer': '<div class="ad-placeholder ad-compact"><span class="ad-label">Reklam</span><div class="ad-headline">Precision Diagnosis Starts with Verified Data</div><div class="ad-sub">End-to-end chain-of-custody • Evidence-based engine • Built for rare disease and translational research.</div><a href="***REMOVED***" class="ad-cta">Request a Demo</a></div>'
+    };
+    function showDemoPlaceholders() {
+        Object.keys(slotMap).forEach(function(slotName) {
+            var el = document.getElementById(slotMap[slotName]);
+            var slotWrap = el && el.closest('.ad-slot');
+            if (!el) return;
+            el.innerHTML = findiagBanners[slotName] || '';
+            if (slotWrap) slotWrap.setAttribute('aria-hidden', 'false');
+        });
+    }
+    var API_BASE = window.API_BASE || (window.location.origin + (window.API_BASE_PATH || ''));
+    fetch(API_BASE + '/api/v1/public/ad-config', { credentials: 'same-origin' }).then(function(r) { return r.json(); }).then(function(c) {
+        window.__AD_CONFIG__ = c;
+        if (c.enabled && c.client_id && c.slots) {
+            var filled = 0;
+            Object.keys(slotMap).forEach(function(slotName) {
+                var slotId = c.slots[slotName];
+                var el = slotId && document.getElementById(slotMap[slotName]);
+                if (!el || !slotId) return;
+                var ins = document.createElement('ins');
+                ins.className = 'adsbygoogle';
+                ins.style.display = 'block';
+                ins.setAttribute('data-ad-client', c.client_id);
+                ins.setAttribute('data-ad-slot', slotId);
+                ins.setAttribute('data-ad-format', 'auto');
+                ins.setAttribute('data-full-width-responsive', 'true');
+                el.appendChild(ins);
+                filled++;
+            });
+            if (filled > 0) {
+                if (window.adsbygoogle) (window.adsbygoogle = window.adsbygoogle || []).push({});
+                else {
+                    var s = document.createElement('script'); s.async = true; s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(c.client_id); document.head.appendChild(s);
+                    s.onload = function() { try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {} };
+                }
+                return;
+            }
+        }
+        showDemoPlaceholders();
+    }).catch(function() { showDemoPlaceholders(); });
+})();
+    </script>
+    <script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

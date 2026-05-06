@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reliability Governance Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 520px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***047857; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Reliability governance (H-033 foundation)</h1>
+  <p class="muted">Drift (+ evaluation governance), retrieval, embeddings, workflows, context, traces. Mesh/sprawl flags false in envelope.</p>
+  <button type="button" id="dBtn">GET drift</button>
+  <button type="button" id="rBtn">GET retrieval</button>
+  <button type="button" id="eBtn">GET embeddings</button>
+  <button type="button" id="wBtn">GET workflows</button>
+  <button type="button" id="cBtn">GET context</button>
+  <button type="button" id="tBtn">GET traces</button>
+  <div class="card"><h2>Output</h2><pre id="out">(idle)</pre></div>
+  <script>
+    const base = "";
+    document.getElementById("dBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/reliability/drift?retrieval_drift_signal=0.12&missing_coverage_ratio=0.08");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("rBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/reliability/retrieval?duplicate_ratio=0.1&relevance_decay=0.05");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("eBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/reliability/embeddings?stale_ratio=0.05&max_age_hours=120");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("wBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/reliability/workflows?retry_count=3&context_rot_score=0.4");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("cBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/reliability/context?rot_score=0.5&context_chars=90000");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("tBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/reliability/traces");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+***REMOVED*** Optional dependencies for SOAR B2B
+***REMOVED*** Install with: pip install -r requirements-optional.txt
+
+***REMOVED*** GPT Companion feature (requires OPENAI_API_KEY environment variable)
+openai>=1.0.0

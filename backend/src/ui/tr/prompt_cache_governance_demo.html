@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>H-050 Prompt Cache Governance Demo</title>
+    <style>
+      body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 24px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .card { border: 1px solid ***REMOVED***e5e7eb; border-radius: 12px; padding: 14px; }
+      pre { background: ***REMOVED***0b1020; color: ***REMOVED***e5e7eb; padding: 12px; border-radius: 10px; overflow: auto; }
+      .muted { color: ***REMOVED***6b7280; }
+      a { color: ***REMOVED***2563eb; text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <h2>H-050 Prompt Cache Governance (Governed Foundation)</h2>
+    <p class="muted">
+      Statik prefix stabil + cachelenebilir; dinamik suffix denetlenebilir ve prefix sonrası büyür.
+      Gizli prefix mutasyonu yok, canlı deployment yürütümü yok.
+    </p>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Static Prefix</h3>
+        <p class="muted">GET <a href="/api/v1/system/cache/static-prefix" target="_blank">/api/v1/system/cache/static-prefix</a></p>
+        <pre id="staticPrefix">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Dynamic Suffix</h3>
+        <p class="muted">GET <a href="/api/v1/system/cache/dynamic-suffix" target="_blank">/api/v1/system/cache/dynamic-suffix</a></p>
+        <pre id="dynamicSuffix">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Cache Breakpoints</h3>
+        <p class="muted">GET <a href="/api/v1/system/cache/breakpoints" target="_blank">/api/v1/system/cache/breakpoints</a></p>
+        <pre id="breakpoints">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Cache Efficiency</h3>
+        <p class="muted">GET <a href="/api/v1/system/cache/efficiency" target="_blank">/api/v1/system/cache/efficiency</a></p>
+        <pre id="efficiency">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Tool Schema Stability</h3>
+        <p class="muted">GET <a href="/api/v1/system/cache/tool-schema-stability" target="_blank">/api/v1/system/cache/tool-schema-stability</a></p>
+        <pre id="toolStability">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Model Session Stability</h3>
+        <p class="muted">GET <a href="/api/v1/system/cache/model-session-stability" target="_blank">/api/v1/system/cache/model-session-stability</a></p>
+        <pre id="modelStability">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Cache-safe Compression</h3>
+        <p class="muted">GET <a href="/api/v1/system/cache/compression" target="_blank">/api/v1/system/cache/compression</a></p>
+        <pre id="compression">loading...</pre>
+      </div>
+      <div class="card">
+        <h3>Notes</h3>
+        <ul>
+          <li>Statik prefix bileşenleri deterministiktir ve volatile metadata içermez.</li>
+          <li>Sıkıştırma, talimatı dinamik suffix olarak ekler; statik prefix asla yeniden yazılmaz.</li>
+          <li>Tüm cache invalidation sebepleri açıklanabilir; gizli invalidation yoktur.</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      async function loadJson(id, url) {
+        const el = document.getElementById(id);
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+          el.textContent = JSON.stringify(data, null, 2);
+        } catch (e) {
+          el.textContent = "error: " + String(e);
+        }
+      }
+      loadJson("staticPrefix", "/api/v1/system/cache/static-prefix");
+      loadJson("dynamicSuffix", "/api/v1/system/cache/dynamic-suffix");
+      loadJson("breakpoints", "/api/v1/system/cache/breakpoints");
+      loadJson("efficiency", "/api/v1/system/cache/efficiency");
+      loadJson("toolStability", "/api/v1/system/cache/tool-schema-stability");
+      loadJson("modelStability", "/api/v1/system/cache/model-session-stability");
+      loadJson("compression", "/api/v1/system/cache/compression");
+    </script>
+  </body>
+</html>
+

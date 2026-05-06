@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Knowledge Ingestion Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    .badge { display: inline-block; padding: 6px 12px; border-radius: 999px; background: ***REMOVED***047857; color: ***REMOVED***fff; font-weight: 700; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 360px; font-size: 12px; }
+    button { margin-top: 12px; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***2563eb; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Structured knowledge ingestion (foundation)</h1>
+  <p><span class="badge">Deterministic ingestion — no scraping execution</span></p>
+  <p class="muted">
+    Read-only fetch of ranked blocks and retrieval policy from <code>/api/v1/system/knowledge/*</code>.
+    Authority and freshness scores are computed server-side; lineage is required for auditability.
+  </p>
+  <button type="button" id="loadBtn">Load blocks &amp; policies</button>
+  <h2>Retrieval policy</h2>
+  <pre id="policiesOut">(not loaded)</pre>
+  <h2>Ranked blocks</h2>
+  <pre id="blocksOut">(not loaded)</pre>
+  <script>
+    document.getElementById("loadBtn").onclick = async () => {
+      const base = "";
+      const pRes = await fetch(base + "/api/v1/system/knowledge/policies");
+      const bRes = await fetch(base + "/api/v1/system/knowledge/blocks?limit=20");
+      const pJson = await pRes.json();
+      const bJson = await bRes.json();
+      document.getElementById("policiesOut").textContent = JSON.stringify(pJson, null, 2);
+      document.getElementById("blocksOut").textContent = JSON.stringify(bJson, null, 2);
+    };
+  </script>
+</body>
+</html>

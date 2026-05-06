@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trajectory Evaluation Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 420px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***059669; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Relative trajectory evaluation (foundation)</h1>
+  <p class="muted">
+    Same workflow as EN demo: two trajectories, group, evaluate, list traces. Deterministic API — no RL training layer.
+  </p>
+  <button type="button" id="runBtn">Run sample comparison</button>
+  <button type="button" id="listBtn">List groups &amp; evaluations</button>
+  <div class="card"><h2>Output</h2><pre id="out">(idle)</pre></div>
+  <script>
+    const base = "";
+    const wf = "demo_opportunity_rank";
+
+    async function postTrajectory(label, meta) {
+      const body = {
+        workflow_name: wf,
+        strategy_name: "json_prompting",
+        input_summary: "shared procurement signal",
+        output_summary: "candidate " + label,
+        reasoning_metadata: meta,
+        tags: ["demo"]
+      };
+      const r = await fetch(base + "/api/v1/system/trajectory", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      });
+      return r.json();
+    }
+
+    document.getElementById("runBtn").onclick = async () => {
+      document.getElementById("out").textContent = "running…";
+      const a = await postTrajectory("A", {
+        commercial_usefulness: 0.85,
+        graph_consistency: 0.9,
+        geographic_relevance: 0.8,
+        structured_output_quality: 0.88,
+        hallucination_risk: 0.15,
+        verbosity_excess: 0.1
+      });
+      const b = await postTrajectory("B", {
+        commercial_usefulness: 0.55,
+        graph_consistency: 0.45,
+        geographic_relevance: 0.5,
+        structured_output_quality: 0.5,
+        hallucination_risk: 0.55,
+        verbosity_excess: 0.4
+      });
+      const ida = a.trajectory.trajectory_id;
+      const idb = b.trajectory.trajectory_id;
+      const g = await fetch(base + "/api/v1/system/trajectory/group", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          workflow_name: wf,
+          shared_input_summary: "shared procurement signal",
+          trajectory_ids: [ida, idb],
+          comparison_notes: "demo relative pass"
+        })
+      }).then(r => r.json());
+      const gid = g.group.group_id;
+      const ev = await fetch(base + "/api/v1/system/trajectory/evaluate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ group_id: gid })
+      }).then(r => r.json());
+      document.getElementById("out").textContent = JSON.stringify({
+        envelope: {
+          deterministic_trajectory_evaluation: ev.deterministic_trajectory_evaluation,
+          reinforcement_learning_training: ev.reinforcement_learning_training,
+          hidden_reasoning_exposure: ev.hidden_reasoning_exposure
+        },
+        winner: ev.evaluation.winning_trajectory_id,
+        ranked: ev.evaluation.ranked_trajectory_ids,
+        scoring_reasoning: ev.evaluation.scoring_reasoning
+      }, null, 2);
+    };
+
+    document.getElementById("listBtn").onclick = async () => {
+      const [groups, evaluations] = await Promise.all([
+        fetch(base + "/api/v1/system/trajectory/groups").then(r => r.json()),
+        fetch(base + "/api/v1/system/trajectory/evaluations").then(r => r.json())
+      ]);
+      document.getElementById("out").textContent = JSON.stringify({ groups, evaluations }, null, 2);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intelligence Widgets Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    .badge { display: inline-block; padding: 6px 12px; border-radius: 999px; background: ***REMOVED***1d4ed8; color: ***REMOVED***fff; font-weight: 700; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 280px; font-size: 11px; }
+    .panel { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; }
+    .iw-widget { margin: 12px 0; padding: 12px; border: 1px solid ***REMOVED***334155; border-radius: 8px; background: ***REMOVED***0f172a; }
+    button { margin-top: 8px; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***2563eb; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Interactive intelligence widgets (foundation)</h1>
+  <p><span class="badge">Deterministic rendering — no external JS required</span></p>
+  <p class="muted">
+    Loads registry types, demo payload from <code>/api/v1/system/widgets/demo</code>, and injects escaped HTML fragments below.
+    No MCP runtime; no autonomous DOM agents.
+  </p>
+  <button type="button" id="loadBtn">Load types &amp; demo widgets</button>
+  <div class="panel">
+    <h2>Registry</h2>
+    <pre id="typesOut">(not loaded)</pre>
+  </div>
+  <div class="panel">
+    <h2>Rendered widgets</h2>
+    <div id="widgetsMount"></div>
+  </div>
+  <script>
+    document.getElementById("loadBtn").onclick = async () => {
+      const base = "";
+      const tRes = await fetch(base + "/api/v1/system/widgets/types");
+      const dRes = await fetch(base + "/api/v1/system/widgets/demo");
+      const tJson = await tRes.json();
+      const dJson = await dRes.json();
+      document.getElementById("typesOut").textContent = JSON.stringify(tJson, null, 2);
+      const mount = document.getElementById("widgetsMount");
+      mount.innerHTML = "";
+      const frags = dJson.html_fragments || [];
+      frags.forEach((html, i) => {
+        const wrap = document.createElement("div");
+        wrap.className = "iw-mount";
+        wrap.innerHTML = html;
+        mount.appendChild(wrap);
+      });
+    };
+  </script>
+</body>
+</html>

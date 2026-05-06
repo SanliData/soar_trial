@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Capability Gateway — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 520px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***155e75; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Capability gateway (H-037)</h1>
+  <p class="muted">Governed gateways, providers, execution policies, browser sandbox, hybrid serving, local inference metadata. Read-only manifests.</p>
+  <button type="button" id="gBtn">GET gateways</button>
+  <button type="button" id="pBtn">GET providers</button>
+  <button type="button" id="eBtn">GET execution-policies</button>
+  <button type="button" id="lBtn">GET local-inference</button>
+  <button type="button" id="bBtn">GET browser-policies</button>
+  <button type="button" id="hBtn">GET hybrid-serving</button>
+  <div class="card"><h2>Output</h2><pre id="out">(idle)</pre></div>
+  <script>
+    const base = "";
+    document.getElementById("gBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/gateways");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("pBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/providers");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("eBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/execution-policies");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("lBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/local-inference");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("bBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/browser-policies");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("hBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/hybrid-serving");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+  </script>
+</body>
+</html>

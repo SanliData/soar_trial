@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SOAR B2B — Build Your Meeting Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028; /* Darkened Mat Gold for web */
+            --color-text-primary: ***REMOVED***0F172A;
+            --color-text-secondary: ***REMOVED***475569;
+            --color-border: ***REMOVED***E2E8F0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            font-weight: 400;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: pan-y;
+            /* iOS Safe Area Support */
+            padding-top: env(safe-area-inset-top);
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        /* SOAR B2B Logo */
+        .logo-header {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-soar {
+            display: inline-flex;
+            align-items: baseline;
+            font-size: 1.25rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            color: var(--color-off-white);
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .logo-soar-r {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-r-arrow {
+            position: absolute;
+            right: -2px;
+            bottom: -1px;
+            width: 10px;
+            height: 10px;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(248, 250, 252, 0.3);
+            margin: 0;
+        }
+
+        .logo-b2b {
+            font-size: 1rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: var(--color-off-white);
+            letter-spacing: 0.02em; /* B2B tracking */
+        }
+
+        .onboarding-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: rgba(248, 250, 252, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-gold);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 20%;
+        }
+
+        .step-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--color-gold);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        .step-title {
+            font-family: 'Satoshi', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em; /* Satoshi heading tracking */
+        }
+
+        .step-description {
+            font-size: 1.2rem;
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.6);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .input-field,
+        .input-select {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            min-height: 48px; /* Minimum touch target for mobile */
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 2px;
+            color: var(--color-off-white);
+            font-size: 1.1rem;
+            font-family: inherit;
+            font-weight: 400;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-field:focus,
+        .input-select:focus {
+            outline: none;
+            border-color: var(--color-gold);
+            background: rgba(248, 250, 252, 0.08);
+        }
+
+        .input-field::placeholder {
+            color: rgba(248, 250, 252, 0.4);
+        }
+
+        .input-select {
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23C5A028' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            padding-right: 3rem;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option-card {
+            padding: 1.5rem 1rem;
+            min-height: 48px; /* Minimum touch target */
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 2px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .option-card:hover {
+            border-color: var(--color-gold);
+            background: rgba(248, 250, 252, 0.08);
+        }
+
+        .option-card:active {
+            transform: scale(0.98);
+            border-color: var(--color-gold);
+        }
+
+        .option-card.selected {
+            border-color: var(--color-gold);
+            background: rgba(197, 160, 40, 0.1); /* Updated to match new gold */
+            color: var(--color-gold);
+        }
+
+        .slider-container {
+            margin-top: 2rem;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.6);
+        }
+
+        .slider-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--color-gold);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            background: rgba(248, 250, 252, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--color-gold);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--color-gold);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+            padding-top: 3rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1.25rem 2rem;
+            min-height: 48px; /* Minimum touch target for mobile */
+            font-family: 'Satoshi', sans-serif;
+            font-size: 1rem;
+            font-weight: 700; /* Satoshi Bold */
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+        }
+
+        .btn-primary:hover {
+            background: ***REMOVED***C19D2D;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-off-white);
+            border: 1px solid rgba(248, 250, 252, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-off-white);
+            background: rgba(248, 250, 252, 0.05);
+        }
+
+        .result-screen {
+            display: none;
+            min-height: 100vh;
+            padding: 3rem 2rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .result-screen.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--color-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2.5rem;
+        }
+
+        .result-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .result-subtitle {
+            font-size: 1.3rem;
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        .plan-summary {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 2.5rem;
+            border-radius: 2px;
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .plan-item {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+        }
+
+        .plan-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .plan-item-label {
+            font-size: 0.85rem;
+            color: rgba(248, 250, 252, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .plan-item-value {
+            font-size: 1.1rem;
+            color: var(--color-off-white);
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* Mobile Bottom Nav - World-Class B2B SaaS Standard */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 0.5rem 0;
+            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+            z-index: 999;
+        }
+
+        .mobile-nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            padding-top: 0.5rem;
+        }
+
+        .mobile-nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex: 1;
+            gap: 0.5rem;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            color: rgba(248, 250, 252, 0.6);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s, transform 0.1s;
+            padding: 0.5rem;
+            min-height: 48px; /* Minimum touch target */
+            min-width: 60px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-nav-item:active {
+            color: var(--color-off-white);
+            transform: scale(0.95);
+        }
+
+        .mobile-nav-item.active {
+            color: var(--color-gold);
+        }
+
+        .mobile-nav-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        /* Floating CTA Button - Center Position */
+        .mobile-nav-cta {
+            position: absolute;
+            left: 50%;
+            top: -20px;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(197, 160, 40, 0.25);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+            z-index: 1000;
+        }
+
+        .mobile-nav-cta:active {
+            transform: translateX(-50%) scale(0.92);
+            box-shadow: 0 1px 4px rgba(197, 160, 40, 0.3);
+        }
+
+        .mobile-nav-cta-text {
+            line-height: 1.2;
+            padding: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            /* iOS Safe Area Support */
+            body {
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            .step-container {
+                padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+            }
+
+            .option-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                min-height: 48px; /* Touch target compliance */
+            }
+
+            /* Ensure floating CTA is visible */
+            .mobile-nav-cta {
+                width: 64px;
+                height: 64px;
+                min-height: 48px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* iOS Safe Area Support for small screens */
+            body {
+                padding-top: env(safe-area-inset-top);
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            }
+
+            .logo-header {
+                top: calc(1rem + env(safe-area-inset-top));
+            }
+
+            .step-title {
+                font-size: 2rem;
+            }
+
+            .step-description {
+                font-size: 1rem;
+            }
+
+            .input-field,
+            .input-select {
+                padding: 1rem 1.25rem;
+                min-height: 48px; /* Touch target compliance */
+                font-size: 1rem;
+            }
+
+            /* Floating CTA adjustments for small screens */
+            .mobile-nav-cta {
+                width: 60px;
+                height: 60px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-header">
+        <div class="logo-container">
+            <span class="logo-soar">
+                SOA<span class="logo-soar-r">R
+                    <svg class="logo-r-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 12L12 2M12 2H6M12 2V8" stroke="***REMOVED***C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </span>
+            <span class="logo-divider"></span>
+            <span class="logo-b2b">B2B</span>
+        </div>
+    </div>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="onboarding-container">
+        <!-- Step 1: Target Type -->
+        <div class="step-container active" id="step1">
+            <div class="step-number">Question 01 / 05</div>
+            <h1 class="step-title">Which industry are you conquering?</h1>
+            <p class="step-description">Tell us the type of businesses you want to reach</p>
+            <div class="input-group">
+                <label class="input-label">Target Business Type</label>
+                <input type="text" class="input-field" id="targetType" placeholder="e.g., 3-5 star hotels, manufacturing companies, retail chains" autocomplete="off">
+                <div class="option-grid" style="margin-top: 1rem;">
+                    <div class="option-card" data-value="Hotels">Hotels</div>
+                    <div class="option-card" data-value="Manufacturing">Manufacturing</div>
+                    <div class="option-card" data-value="Retail">Retail</div>
+                    <div class="option-card" data-value="Healthcare">Healthcare</div>
+                    <div class="option-card" data-value="Technology">Technology</div>
+                    <div class="option-card" data-value="Real Estate">Real Estate</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="nextStep()" id="btnNext1">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Decision Maker -->
+        <div class="step-container" id="step2">
+            <div class="step-number">Question 02 / 05</div>
+            <h1 class="step-title">Who is the decision maker?</h1>
+            <p class="step-description">Identify the role that makes purchasing decisions</p>
+            <div class="input-group">
+                <label class="input-label">Decision Maker Role</label>
+                <input type="text" class="input-field" id="decisionMaker" placeholder="e.g., CEO, VP Sales, Procurement Manager" autocomplete="off">
+                <div class="option-grid" style="margin-top: 1rem;">
+                    <div class="option-card" data-value="CEO">CEO</div>
+                    <div class="option-card" data-value="VP Sales">VP Sales</div>
+                    <div class="option-card" data-value="Procurement Manager">Procurement</div>
+                    <div class="option-card" data-value="Operations Manager">Operations</div>
+                    <div class="option-card" data-value="IT Director">IT Director</div>
+                    <div class="option-card" data-value="Marketing Director">Marketing</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn btn-primary" onclick="nextStep()" id="btnNext2">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Geography -->
+        <div class="step-container" id="step3">
+            <div class="step-number">Question 03 / 05</div>
+            <h1 class="step-title">Primary region?</h1>
+            <p class="step-description">Where should we focus the targeting?</p>
+            <div class="input-group">
+                <label class="input-label">Target Geography</label>
+                <input type="text" class="input-field" id="geography" placeholder="Type or select a region" autocomplete="off">
+                <select class="input-select" id="geographySelect" style="display: none;">
+                    <option value="">Select region</option>
+                    <option value="North America">North America</option>
+                    <option value="Europe">Europe</option>
+                    <option value="DACH">DACH</option>
+                    <option value="MENA">MENA</option>
+                    <option value="UK & Ireland">UK & Ireland</option>
+                    <option value="Turkey">Turkey</option>
+                    <option value="Asia Pacific">Asia Pacific</option>
+                </select>
+                <div class="option-grid" style="margin-top: 1rem;">
+                    <div class="option-card" data-value="North America">North America</div>
+                    <div class="option-card" data-value="Europe">Europe</div>
+                    <div class="option-card" data-value="DACH">DACH</div>
+                    <div class="option-card" data-value="MENA">MENA</div>
+                    <div class="option-card" data-value="UK & Ireland">UK & Ireland</div>
+                    <div class="option-card" data-value="Turkey">Turkey</div>
+                    <div class="option-card" data-value="Asia Pacific">Asia Pacific</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn btn-primary" onclick="nextStep()" id="btnNext3">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Product/Service -->
+        <div class="step-container" id="step4">
+            <div class="step-number">Question 04 / 05</div>
+            <h1 class="step-title">What is your average contract value?</h1>
+            <p class="step-description">Help us understand the scale of your offering</p>
+            <div class="input-group">
+                <label class="input-label">Average Contract Value (USD)</label>
+                <input type="number" class="input-field" id="contractValue" placeholder="e.g., 50000" min="0" step="1000">
+            </div>
+            <div class="input-group">
+                <label class="input-label">What product or service are you selling?</label>
+                <input type="text" class="input-field" id="productService" placeholder="Briefly describe your offering" autocomplete="off">
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn btn-primary" onclick="nextStep()" id="btnNext4">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Meeting Goal -->
+        <div class="step-container" id="step5">
+            <div class="step-number">Question 05 / 05</div>
+            <h1 class="step-title">Your monthly meeting goal?</h1>
+            <p class="step-description">How many meetings do you want to book per month?</p>
+            <div class="input-group">
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Monthly Meetings</span>
+                        <span class="slider-value mono" id="meetingGoalValue">5</span>
+                    </div>
+                    <input type="range" class="range-slider" id="meetingGoal" min="1" max="50" value="5" step="1">
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn btn-primary" onclick="submitForm()" id="btnSubmit">Submit Request</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div class="result-screen" id="resultScreen">
+        <div class="result-icon">✓</div>
+        <h1 class="result-title">Request received.</h1>
+        <p class="result-subtitle">Your information has been submitted successfully.</p>
+        
+        <div class="plan-summary" id="planSummary">
+            <!-- Populated by JavaScript -->
+        </div>
+
+        <div class="action-buttons">
+            <a href="soarb2b_home.html" class="btn btn-secondary">View Home</a>
+            <a href="demo_showcase.html" class="btn btn-primary">See Demo</a>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation - World-Class B2B SaaS Standard -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-content">
+            <div class="mobile-nav-items">
+                <a href="soarb2b_home.html" class="mobile-nav-item">
+                    <div class="mobile-nav-icon">🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="case_library_index.html" class="mobile-nav-item">
+                    <div class="mobile-nav-icon">📚</div>
+                    <span>Cases</span>
+                </a>
+            </div>
+            <!-- Floating CTA Button - Center Position -->
+            <a href="soarb2b_home.html" class="mobile-nav-cta">
+                <div class="mobile-nav-cta-text">Get<br>Started</div>
+            </a>
+            <div class="mobile-nav-items">
+                <a href="demo_showcase.html" class="mobile-nav-item">
+                    <div class="mobile-nav-icon">🎯</div>
+                    <span>Demo</span>
+                </a>
+                <a href="***REMOVED***" class="mobile-nav-item" id="mobileNavMore">
+                    <div class="mobile-nav-icon">⋯</div>
+                    <span>More</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+        const formData = {};
+
+        // Option card selection
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const step = this.closest('.step-container');
+                const input = step.querySelector('.input-field');
+                const select = step.querySelector('.input-select');
+                const allCards = step.querySelectorAll('.option-card');
+                
+                allCards.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                const selectedValue = this.dataset.value;
+                if (input) {
+                    input.value = selectedValue;
+                    input.dispatchEvent(new Event('input'));
+                }
+                if (select) {
+                    select.value = selectedValue;
+                    select.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+
+        // Geography input click - open dropdown or show options
+        const geographyInput = document.getElementById('geography');
+        if (geographyInput) {
+            geographyInput.addEventListener('focus', function() {
+                this.blur(); // Prevent keyboard on mobile
+                // Option cards will handle the selection
+            });
+        }
+
+        // Meeting goal slider
+        const meetingGoalSlider = document.getElementById('meetingGoal');
+        const meetingGoalValue = document.getElementById('meetingGoalValue');
+        
+        meetingGoalSlider.addEventListener('input', function() {
+            meetingGoalValue.textContent = this.value;
+        });
+
+        // Input validation
+        function validateStep(stepNum) {
+            const step = document.getElementById(`step${stepNum}`);
+            const inputs = step.querySelectorAll('.input-field, .input-select');
+            
+            for (let input of inputs) {
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    return false;
+                }
+            }
+            
+            // Special validation for step 5 (slider is always valid)
+            if (stepNum === 5) {
+                return true;
+            }
+            
+            return true;
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showStep(stepNum) {
+            // Hide all steps
+            document.querySelectorAll('.step-container').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Show current step
+            const currentStepEl = document.getElementById(`step${stepNum}`);
+            if (currentStepEl) {
+                setTimeout(() => {
+                    currentStepEl.classList.add('active');
+                    // Auto scroll to top on step change (mobile-friendly)
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    // Also scroll the container if needed
+                    document.querySelector('.onboarding-container').scrollTop = 0;
+                }, 50);
+            }
+
+            updateProgress();
+        }
+
+        function saveStepData(stepNum) {
+            const step = document.getElementById(`step${stepNum}`);
+            const inputs = step.querySelectorAll('.input-field, .input-select, .range-slider');
+            
+            inputs.forEach(input => {
+                if (input.id) {
+                    // For geography, use input field value (which is set by option cards)
+                    if (input.id === 'geographySelect') {
+                        // Sync select value to geography field
+                        const geoInput = document.getElementById('geography');
+                        if (geoInput) {
+                            formData['geography'] = geoInput.value;
+                        }
+                    } else {
+                        formData[input.id] = input.value;
+                    }
+                }
+            });
+        }
+
+        function nextStep() {
+            if (!validateStep(currentStep)) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            saveStepData(currentStep);
+            
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+                // Auto scroll to top - smooth animation
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+                // Focus first input (optional, as scroll handles visibility)
+                const firstInput = document.querySelector(`***REMOVED***step${currentStep} .input-field, ***REMOVED***step${currentStep} .input-select`);
+                if (firstInput) {
+                    setTimeout(() => firstInput.focus(), 400);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                // Auto scroll to top on back
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+
+        async function submitForm() {
+            saveStepData(currentStep);
+            
+            // Calculate and show cost preview before submission
+            try {
+                await showCostPreview();
+            } catch (error) {
+                // User cancelled or error occurred
+                if (error.message === 'User cancelled') {
+                    return; // User cancelled, don't proceed
+                }
+                // If error, proceed anyway (graceful degradation)
+                console.warn('Cost preview failed, proceeding anyway:', error);
+            }
+            
+            // Show loading state
+            const btn = document.getElementById('btnSubmit');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+
+            try {
+                const API_BASE = window.location.origin;
+                const endpoint = `${API_BASE}/api/v1/public/onboarding-intake`;
+
+                // Calculate cost before submission
+                let costConfirmed = false;
+                try {
+                    await showCostPreview();
+                    costConfirmed = true; // User confirmed in modal
+                } catch (error) {
+                    if (error.message === 'User cancelled') {
+                        btn.disabled = false;
+                        btn.textContent = originalText;
+                        return; // User cancelled, don't submit
+                    }
+                    // If error, proceed anyway (graceful degradation)
+                    console.warn('Cost preview failed, proceeding anyway:', error);
+                    costConfirmed = true; // Allow submission if cost calc fails
+                }
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        industry: formData.targetType || '',
+                        target_region: formData.geography || '',
+                        product_type: formData.productService || '',
+                        auto_start_queries: true, // Assuming user wants to start queries
+                        cost_confirmed: costConfirmed
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text().catch(() => 'Unknown error');
+                    throw new Error(`Failed to submit request: ${response.status} ${errorText.substring(0, 100)}`);
+                }
+
+                const result = await response.json();
+                
+                // Show confirmation screen
+                displayConfirmation(result);
+                
+            } catch (error) {
+                alert('Error submitting request: ' + error.message);
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        }
+
+        // Cost preview modal
+        async function showCostPreview() {
+            return new Promise((resolve, reject) => {
+                // Calculate cost (base query only for onboarding)
+                const API_BASE = window.location.origin;
+                fetch(`${API_BASE}/v1/subscriptions/pricing/calculate`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success && data.cost) {
+                            const cost = data.cost;
+                            const modal = document.createElement('div');
+                            modal.id = 'cost-preview-modal';
+                            modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.95); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 2rem;';
+                            
+                            modal.innerHTML = `
+                                <div style="background: var(--color-night-blue); border: 1px solid rgba(248, 250, 252, 0.2); border-radius: 8px; padding: 2rem; max-width: 500px; width: 100%;">
+                                    <h2 style="color: var(--color-off-white); margin-bottom: 1rem; font-family: \'Satoshi\', sans-serif; font-weight: 700;">Query Cost Preview</h2>
+                                    <div style="color: rgba(248, 250, 252, 0.8); margin-bottom: 1.5rem;">
+                                        <div style="margin-bottom: 0.75rem;"><strong>Query Execution:</strong> $${cost.base_query.toFixed(2)} (max 100 businesses)</div>
+                                        <div style="margin-bottom: 0.75rem; padding-top: 0.75rem; border-top: 1px solid rgba(248, 250, 252, 0.1);">
+                                            <strong>Total Cost:</strong> <span style="font-size: 1.5rem; color: var(--color-gold);">$${cost.total_cost.toFixed(2)}</span>
+                                        </div>
+                                        <div style="margin-top: 1rem; padding: 1rem; background: rgba(197, 160, 40, 0.1); border-radius: 4px; font-size: 0.9rem;">
+                                            <strong>Note:</strong> This is a one-time cost per query. Account activation fee ($0.98/month) applies separately.
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 1rem;">
+                                        <button id="cost-preview-confirm" style="flex: 1; padding: 1rem; background: var(--color-gold); color: var(--color-night-blue); border: none; border-radius: 4px; font-family: \'Satoshi\', sans-serif; font-weight: 700; cursor: pointer;">Confirm & Proceed</button>
+                                        <button id="cost-preview-cancel" style="flex: 1; padding: 1rem; background: transparent; color: var(--color-off-white); border: 1px solid rgba(248, 250, 252, 0.3); border-radius: 4px; font-family: \'Satoshi\', sans-serif; font-weight: 700; cursor: pointer;">Cancel</button>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            document.body.appendChild(modal);
+                            
+                            document.getElementById('cost-preview-confirm').onclick = () => {
+                                document.body.removeChild(modal);
+                                resolve();
+                            };
+                            
+                            document.getElementById('cost-preview-cancel').onclick = () => {
+                                document.body.removeChild(modal);
+                                reject(new Error('User cancelled'));
+                            };
+                        } else {
+                            // If cost calculation fails, proceed anyway (graceful degradation)
+                            resolve();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error calculating cost:', error);
+                        // Proceed anyway if cost calculation fails
+                        resolve();
+                    });
+            });
+        }
+
+        function displayConfirmation(result) {
+            const resultScreen = document.getElementById('resultScreen');
+            const planSummary = document.getElementById('planSummary');
+            
+            // Show confirmation message
+            planSummary.innerHTML = `
+                <div style="padding: 2rem 0; color: rgba(248, 250, 252, 0.8); font-size: 1.1rem; line-height: 1.8;">
+                    ${result.message || 'Your request has been received. A SOAR strategist will activate your plan.'}
+                </div>
+            `;
+            
+            // Hide onboarding container
+            document.querySelector('.onboarding-container').style.display = 'none';
+            
+            // Show result screen
+            setTimeout(() => {
+                resultScreen.classList.add('active');
+            }, 100);
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

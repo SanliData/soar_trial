@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B — Ajanslar İçin</title>
+    <meta name="description" content="Ajanslar için kullandıkça öde B2B hedefleme. Gerçek firmalar, gerçek roller, ölçülebilir ROI.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            padding-top: 80px;
+        }
+        h1, h2, h3 { font-family: 'Satoshi', sans-serif; font-weight: 900; letter-spacing: -0.03em; }
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; }
+        .header-nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 1rem 0;
+            z-index: 1000;
+        }
+        .header-nav-content {
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header-logo {
+            text-decoration: none; font-size: 1.35rem; font-weight: 900;
+            color: var(--color-off-white); font-family: 'Satoshi', sans-serif;
+        }
+        .header-actions { display: flex; gap: 1rem; align-items: center; }
+        .btn-header {
+            padding: 0.6rem 1.2rem; border-radius: 4px; text-decoration: none;
+            font-weight: 500; font-size: 0.9rem; border: 1px solid rgba(248, 250, 252, 0.2);
+            color: var(--color-off-white);
+        }
+        .btn-header:hover { background: rgba(248, 250, 252, 0.1); }
+        .hero { text-align: center; margin-bottom: 4rem; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-off-white); line-height: 1.2; }
+        .hero .sub { font-size: 1.2rem; color: rgba(248, 250, 252, 0.85); margin-bottom: 1.5rem; }
+        .hero .bullets { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1.5rem; font-size: 0.95rem; color: rgba(248, 250, 252, 0.8); }
+        .btn-cta {
+            display: inline-block;
+            padding: 0.9rem 1.75rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 0.5rem;
+            transition: background 0.2s;
+        }
+        .btn-cta:hover { background: ***REMOVED***C19D2D; }
+        .btn-cta.secondary {
+            background: transparent;
+            color: var(--color-off-white);
+            border: 1px solid rgba(248, 250, 252, 0.3);
+        }
+        .btn-cta.secondary:hover { background: rgba(248, 250, 252, 0.08); }
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-size: 1.75rem; margin-bottom: 1rem; color: var(--color-off-white); }
+        .section p, .section ul { color: rgba(248, 250, 252, 0.85); margin-bottom: 0.75rem; }
+        .section ul { padding-left: 1.5rem; }
+        .roi-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        .roi-table th, .roi-table td {
+            border: 1px solid rgba(248, 250, 252, 0.15);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .roi-table th { background: rgba(248, 250, 252, 0.06); color: var(--color-gold); font-weight: 600; }
+        .roi-table td { color: rgba(248, 250, 252, 0.9); }
+        .pricing-box {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+        .pricing-box ul { list-style: none; padding-left: 0; }
+        .pricing-box li { padding: 0.35rem 0; padding-left: 1.25rem; position: relative; }
+        .pricing-box li::before { content: "✓"; position: absolute; left: 0; color: var(--color-gold); font-weight: 700; }
+        .footer-links { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(248, 250, 252, 0.1); text-align: center; }
+        .footer-links a { color: rgba(248, 250, 252, 0.7); text-decoration: none; margin: 0 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="header-nav">
+        <div class="header-nav-content">
+            <a href="soarb2b_home.html" class="header-logo">SOAR<span style="color: var(--color-gold);">→</span>B2B</a>
+            <div class="header-actions">
+                <a href="soarb2b_pricing.html" class="btn-header">Fiyatlandırma</a>
+                <a href="soarb2b_about.html" class="btn-header">Hakkımızda</a>
+                <a href="soarb2b_home.html" class="btn-header">Ana Sayfa</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <h1>Ajansların daha fazla lead'e ihtiyacı yok.<br>Doğru firmalara ihtiyaç var.</h1>
+            <p class="sub">SOAR B2B ajanslar için: kullandıkça öde, veri odaklı B2B hedefleme.</p>
+            <div class="bullets">
+                <span>🎯 Reklamdan önce hedefi netleştirir</span>
+                <span>📍 Reklamı doğru kişiye yönlendirir</span>
+                <span>📊 Ajansa ölçülebilir kontrol verir</span>
+            </div>
+            <div>
+                <a href="soarb2b_home.html" class="btn-cta">Kullandıkça Öde ile Başla</a>
+                <a href="soarb2b_pricing.html" class="btn-cta secondary">Ajans Fiyatlandırması</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Ajans problemi</h2>
+            <p>Ajanslar genelde şunu yaşar:</p>
+            <ul>
+                <li>Reklam bütçesi var ama doğru hedef yok</li>
+                <li>“Lead” geliyor ama karar verici değil</li>
+                <li>Müşteri soruyor: “Bu parayla ne kazandık?”</li>
+                <li>Platformlar şeffaf değil</li>
+            </ul>
+            <p>SOAR B2B burada devreye girer.</p>
+        </section>
+
+        <section class="section">
+            <h2>SOAR B2B ajanslara ne sağlar?</h2>
+            <p><strong>1. Gerçek hedef listesi</strong> — Bölge bazlı işletmeler, adres, iletişim, sahiplik (mevcutsa), ön doğrulama (resmi + online kaynaklar).</p>
+            <p><strong>2. Persona engine</strong> — Rol (Procurement, CEO, Ops…), yetki seviyesi, departman, erişim kanalı uygunluğu (e-posta / LinkedIn / web). Persona = etiket değil, ulaşılabilirlik + motivasyon.</p>
+            <p><strong>3. Precision exposure</strong> — Doğru lokasyon, doğru bağlam; istenirse ajansın kendi reklam hesabıyla, istenirse SOAR partnerleriyle.</p>
+            <p><strong>4. Soft conversion → direct outreach</strong> — Site ziyareti, içerik etkileşimi, opsiyonel randevu / temas.</p>
+        </section>
+
+        <section class="section">
+            <h2>ROI: Reklam bütçesi vs SOAR B2B</h2>
+            <p>B2B satış, karar vericiye ulaşma hedefi.</p>
+            <table class="roi-table">
+                <thead>
+                    <tr>
+                        <th>Kriter</th>
+                        <th>Klasik dijital reklam (Google / LinkedIn)</th>
+                        <th>SOAR B2B (Kullandıkça Öde)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Hedefleme</td><td>İlgi & tahmin bazlı</td><td>Gerçek işletme + gerçek rol</td></tr>
+                    <tr><td>Kime gider</td><td>Geniş kitle</td><td>Karar verici personel</td></tr>
+                    <tr><td>Ortalama CPM</td><td>$30 – $120</td><td>Yok (sorgu bazlı)</td></tr>
+                    <tr><td>Ortalama CPL</td><td>$80 – $300</td><td>$0.29 – $0.49 / sorgu</td></tr>
+                    <tr><td>Boşa giden gösterim</td><td>%60 – %80</td><td>Minimize edilmiş</td></tr>
+                    <tr><td>Lokasyon hassasiyeti</td><td>Tahmini</td><td>Adres bazlı doğrulama</td></tr>
+                    <tr><td>Ölçülebilirlik</td><td>Zor</td><td>Net: sorgu → çıktı</td></tr>
+                    <tr><td>Ajans kontrolü</td><td>Platform bağımlı</td><td>Ajans kontrolünde</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Kısa ROI örneği:</strong> Ajans müşteri için $2.000 reklam bütçesi yönetiyor → ortalama CPL $150 → ~13 lead. SOAR B2B ile: 300 sorgu × $0.39 = $117 → aynı bütçeyle 10–15 kat daha fazla hedefli temas. SOAR B2B reklamı ikame etmez, israfı azaltır.</p>
+        </section>
+
+        <section class="section">
+            <h2>Ajanslar için fiyatlandırma</h2>
+            <p>Kullandıkça öde. Aktivasyon: $0.98. Hacim bazlı:</p>
+            <div class="pricing-box">
+                <ul>
+                    <li>1–100 sorgu → $0.49</li>
+                    <li>100–500 sorgu → $0.39</li>
+                    <li>500+ sorgu → $0.29</li>
+                </ul>
+                <p style="margin-top: 1rem;">❌ Sabit abonelik yok &nbsp; ❌ Kullanılmayan kapasite yok &nbsp; ✅ Müşteri bütçesiyle uyumlu</p>
+            </div>
+            <p><strong>Ajanslar neden seviyor?</strong> Reklamdan önce hedef net. Müşteriye ön rapor gösterilebilir. ROI anlatılabilir. Ajans değerini yükseltir. White-label’a uygun (Enterprise).</p>
+            <div style="margin-top: 1.5rem;">
+                <a href="soarb2b_home.html" class="btn-cta">İlk hedef planınızı oluşturun</a>
+            </div>
+        </section>
+
+        <section class="hero" style="margin-top: 3rem;">
+            <h2 style="font-size: 1.75rem;">Tahmin etmeyi bırakın. Hedeflemeye başlayın.</h2>
+            <a href="soarb2b_home.html" class="btn-cta">İlk hedef planınızı oluşturun</a>
+        </section>
+
+        <div class="footer-links">
+            <a href="soarb2b_home.html">Ana Sayfa</a>
+            <a href="soarb2b_pricing.html">Fiyatlandırma</a>
+            <a href="soarb2b_about.html">Hakkımızda</a>
+            <a href="support.html">İletişim</a>
+        </div>
+    </div>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

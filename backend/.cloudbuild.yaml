@@ -1,0 +1,34 @@
+***REMOVED*** Google Cloud Build configuration for SOAR B2B
+***REMOVED*** This file is used by Cloud Build when building the Docker image
+***REMOVED*** Updated to use Artifact Registry (GCR is deprecated)
+
+steps:
+  ***REMOVED*** Build Docker image using Dockerfile from backend directory
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/soarb2b-v1:${SHORT_SHA}'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/soarb2b-v1:latest'
+      - '-f'
+      - 'dockerfile'
+      - '.'
+    id: 'build-image'
+
+***REMOVED*** Store images in Artifact Registry (GCR is deprecated)
+images:
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/soarb2b-v1:${SHORT_SHA}'
+  - '${_REGION}-docker.pkg.dev/${PROJECT_ID}/${_REPO_NAME}/soarb2b-v1:latest'
+
+***REMOVED*** Substitution variables (set when triggering build)
+***REMOVED*** _REGION: us-central1
+***REMOVED*** _REPO_NAME: soarb2b-repo
+
+***REMOVED*** Build options
+options:
+  machineType: 'E2_HIGHCPU_8'
+  logging: CLOUD_LOGGING_ONLY
+
+***REMOVED*** Timeout (10 minutes)
+timeout: '600s'

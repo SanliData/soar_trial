@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B - Case Study: Hotel Cleaning Supplier</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028; /* Darkened Mat Gold for web */
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue); /* Always dark night blue background */
+            color: var(--color-off-white);
+            line-height: 1.6;
+        }
+
+        /* Typography - Satoshi for headings */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        /* B2B text tracking */
+        .logo-b2b,
+        .b2b-text {
+            letter-spacing: 0.02em;
+        }
+
+        /* Buttons - Satoshi Bold */
+        .btn,
+        button {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+        }
+
+        header {
+            background: var(--color-night-blue); /* Dark night blue background */
+            color: ***REMOVED***fff;
+            padding: 2rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header-content h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-content p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .case-intro {
+            background: rgba(248, 250, 252, 0.05); /* Subtle overlay on dark bg */
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .case-intro h2 {
+            color: var(--color-off-white);
+            margin-bottom: 1rem;
+            font-size: 1.75rem;
+        }
+
+        .case-intro .scenario {
+            background: rgba(248, 250, 252, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid var(--color-gold);
+        }
+
+        .section {
+            background: rgba(248, 250, 252, 0.05); /* Subtle overlay on dark bg */
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .section h3 {
+            color: var(--color-off-white);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .outcome-box {
+            background: rgba(197, 160, 40, 0.1);
+            border: 1px solid var(--color-gold);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .outcome-box h4 {
+            color: var(--color-gold);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .outcome-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .outcome-box li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(197, 160, 40, 0.2);
+            color: var(--color-off-white);
+        }
+
+        .outcome-box li:last-child {
+            border-bottom: none;
+        }
+
+        .outcome-box strong {
+            color: var(--color-gold);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--color-gold);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .section-content {
+            color: rgba(248, 250, 252, 0.7);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .cta-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 12px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            margin: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: ***REMOVED***B8921E;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-off-white);
+            border: 1px solid rgba(248, 250, 252, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(248, 250, 252, 0.1);
+            border-color: var(--color-gold);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>How a Hotel Cleaning Supplier Books Meetings with Decision-Makers</h1>
+            <p>Manufacturer / Wholesaler → Procurement Manager + Housekeeping Manager</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="soarb2b_home.html" class="back-link">← Back to Home</a>
+
+        <div class="case-intro">
+            <h2>The Challenge</h2>
+            <div class="scenario">
+                <p><strong>Company:</strong> Manufacturer / wholesaler selling professional cleaning products to hotels</p>
+                <p><strong>Target Customers:</strong> 3–5 star hotels</p>
+                <p><strong>Decision-Maker Roles:</strong></p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Procurement Manager (primary decision-maker)</li>
+                    <li>Housekeeping Manager (operational decision-maker)</li>
+                    <li>Operations Manager (optional)</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Goal:</strong> Book meetings to establish regular cleaning supply agreements with hotels.</p>
+            </div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="section">
+            <h3><span class="section-number">1</span> Verified Company List</h3>
+            
+            <div class="outcome-box">
+                <h4>✓ Delivered</h4>
+                <ul>
+                    <li><strong>150+ verified hotels</strong> in Istanbul, Ankara, Izmir, and Antalya</li>
+                    <li><strong>Contact information</strong> for 350+ decision-makers (Procurement, Housekeeping, Operations roles)</li>
+                    <li><strong>CRM-ready export</strong> with mapped company data and contact fields</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="section">
+            <h3><span class="section-number">2</span> Decision-Maker Identification</h3>
+            
+            <div class="outcome-box">
+                <h4>✓ Delivered</h4>
+                <ul>
+                    <li><strong>Decision-maker roles mapped</strong> for each hotel property</li>
+                    <li><strong>Procurement Managers identified</strong> (primary budget decision-makers)</li>
+                    <li><strong>Housekeeping Managers identified</strong> (operational decision-makers)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="section">
+            <h3><span class="section-number">3</span> Multi-Channel Visibility</h3>
+            
+            <div class="outcome-box">
+                <h4>✓ Delivered</h4>
+                <ul>
+                    <li><strong>Meeting request landing page</strong> with role-optimized messaging</li>
+                    <li><strong>Ad campaigns launched</strong> on LinkedIn, Google Ads, and Meta/Instagram</li>
+                    <li><strong>Location + role targeting</strong> reaching decision-makers in target cities</li>
+                    <li><strong>42,000–58,000 impressions</strong> delivered across platforms</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="section">
+            <h3><span class="section-number">4</span> Engagement & Response</h3>
+            
+            <div class="outcome-box">
+                <h4>✓ Delivered</h4>
+                <ul>
+                    <li><strong>380–520 lead form opens</strong> from decision-makers</li>
+                    <li><strong>95–135 lead form submissions</strong> with contact information</li>
+                    <li><strong>24–38 meeting requests</strong> generated</li>
+                    <li><strong>2.1–2.8% click-through rate</strong> on ad campaigns</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="section">
+            <h3><span class="section-number">5</span> Meetings Booked</h3>
+            
+            <div class="outcome-box">
+                <h4>✓ Delivered</h4>
+                <ul>
+                    <li><strong>18–28 meetings booked</strong> with verified decision-makers</li>
+                    <li><strong>14–22 qualified meetings</strong> with budget authority</li>
+                    <li><strong>45–75 day timeframe</strong> from campaign start to first meeting</li>
+                    <li><strong>$240 average cost per qualified meeting</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cta-footer">
+            <a href="soarb2b_home.html" class="btn btn-secondary">Build Your Meeting Plan</a>
+            <a href="demo_showcase.html" class="btn">View Demo Showcase</a>
+        </div>
+    </div>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

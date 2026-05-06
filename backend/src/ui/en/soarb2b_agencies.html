@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B — For Agencies</title>
+    <meta name="description" content="Pay-as-you-go B2B targeting for agencies. Real companies, real roles, measurable ROI.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            padding-top: 80px;
+        }
+        h1, h2, h3 { font-family: 'Satoshi', sans-serif; font-weight: 900; letter-spacing: -0.03em; }
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; }
+        .header-nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 1rem 0;
+            z-index: 1000;
+        }
+        .header-nav-content {
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header-logo {
+            text-decoration: none; font-size: 1.35rem; font-weight: 900;
+            color: var(--color-off-white); font-family: 'Satoshi', sans-serif;
+        }
+        .header-actions { display: flex; gap: 1rem; align-items: center; }
+        .btn-header {
+            padding: 0.6rem 1.2rem; border-radius: 4px; text-decoration: none;
+            font-weight: 500; font-size: 0.9rem; border: 1px solid rgba(248, 250, 252, 0.2);
+            color: var(--color-off-white);
+        }
+        .btn-header:hover { background: rgba(248, 250, 252, 0.1); }
+        .hero { text-align: center; margin-bottom: 4rem; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--color-off-white); line-height: 1.2; }
+        .hero .sub { font-size: 1.2rem; color: rgba(248, 250, 252, 0.85); margin-bottom: 1.5rem; }
+        .hero .bullets { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1.5rem; font-size: 0.95rem; color: rgba(248, 250, 252, 0.8); }
+        .btn-cta {
+            display: inline-block;
+            padding: 0.9rem 1.75rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin: 0.5rem;
+            transition: background 0.2s;
+        }
+        .btn-cta:hover { background: ***REMOVED***C19D2D; }
+        .btn-cta.secondary {
+            background: transparent;
+            color: var(--color-off-white);
+            border: 1px solid rgba(248, 250, 252, 0.3);
+        }
+        .btn-cta.secondary:hover { background: rgba(248, 250, 252, 0.08); }
+        .section { margin-bottom: 3rem; }
+        .section h2 { font-size: 1.75rem; margin-bottom: 1rem; color: var(--color-off-white); }
+        .section p, .section ul { color: rgba(248, 250, 252, 0.85); margin-bottom: 0.75rem; }
+        .section ul { padding-left: 1.5rem; }
+        .roi-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        .roi-table th, .roi-table td {
+            border: 1px solid rgba(248, 250, 252, 0.15);
+            padding: 0.75rem 1rem;
+            text-align: left;
+        }
+        .roi-table th { background: rgba(248, 250, 252, 0.06); color: var(--color-gold); font-weight: 600; }
+        .roi-table td { color: rgba(248, 250, 252, 0.9); }
+        .pricing-box {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+        .pricing-box ul { list-style: none; padding-left: 0; }
+        .pricing-box li { padding: 0.35rem 0; padding-left: 1.25rem; position: relative; }
+        .pricing-box li::before { content: "✓"; position: absolute; left: 0; color: var(--color-gold); font-weight: 700; }
+        .footer-links { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(248, 250, 252, 0.1); text-align: center; }
+        .footer-links a { color: rgba(248, 250, 252, 0.7); text-decoration: none; margin: 0 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="header-nav">
+        <div class="header-nav-content">
+            <a href="soarb2b_home.html" class="header-logo">SOAR<span style="color: var(--color-gold);">→</span>B2B</a>
+            <div class="header-actions">
+                <a href="soarb2b_pricing.html" class="btn-header">Pricing</a>
+                <a href="soarb2b_about.html" class="btn-header">About</a>
+                <a href="soarb2b_home.html" class="btn-header">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <h1>Agencies don't need more leads.<br>They need the right companies.</h1>
+            <p class="sub">SOAR B2B is built for agencies: pay-as-you-go, data-driven B2B targeting.</p>
+            <div class="bullets">
+                <span>🎯 Clarify target before ad spend</span>
+                <span>📍 Direct spend to the right people</span>
+                <span>📊 Measurable control for the agency</span>
+            </div>
+            <div>
+                <a href="soarb2b_home.html" class="btn-cta">Start with Pay-As-You-Go</a>
+                <a href="soarb2b_pricing.html" class="btn-cta secondary">See Agency Pricing</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>The agency problem</h2>
+            <p>Agencies often face:</p>
+            <ul>
+                <li>Ad budget exists but the right target is unclear</li>
+                <li>“Leads” come in but they’re not decision-makers</li>
+                <li>Clients ask: “What did we get for this spend?”</li>
+                <li>Platforms lack transparency</li>
+            </ul>
+            <p>SOAR B2B addresses this.</p>
+        </section>
+
+        <section class="section">
+            <h2>What SOAR B2B gives agencies</h2>
+            <p><strong>1. Real target list</strong> — Businesses by geography, address, contact, ownership (where available), pre-validated (official + online sources).</p>
+            <p><strong>2. Persona engine</strong> — Role (Procurement, CEO, Ops…), seniority, department, channel fit (email / LinkedIn / web). Persona = reachability + intent, not just a label.</p>
+            <p><strong>3. Precision exposure</strong> — Right location, right context; optionally with the agency’s own ad account or SOAR partners.</p>
+            <p><strong>4. Soft conversion → direct outreach</strong> — Site visit, content engagement, optional meeting / contact.</p>
+        </section>
+
+        <section class="section">
+            <h2>ROI: Ad spend vs SOAR B2B</h2>
+            <p>B2B sales, reaching decision-makers.</p>
+            <table class="roi-table">
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th>Classic digital ads (Google / LinkedIn)</th>
+                        <th>SOAR B2B (Pay-As-You-Go)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Targeting</td><td>Interest & inference</td><td>Real business + real role</td></tr>
+                    <tr><td>Who sees it</td><td>Broad audience</td><td>Decision-maker personas</td></tr>
+                    <tr><td>Avg CPM</td><td>$30 – $120</td><td>N/A (query-based)</td></tr>
+                    <tr><td>Avg CPL</td><td>$80 – $300</td><td>$0.29 – $0.49 per query</td></tr>
+                    <tr><td>Wasted impressions</td><td>60–80%</td><td>Minimized</td></tr>
+                    <tr><td>Location accuracy</td><td>Estimated</td><td>Address-verified</td></tr>
+                    <tr><td>Measurability</td><td>Hard</td><td>Clear: query → outcome</td></tr>
+                    <tr><td>Agency control</td><td>Platform-dependent</td><td>Agency-controlled</td></tr>
+                </tbody>
+            </table>
+            <p><strong>Short ROI example:</strong> Agency manages $2,000 ad budget for a client → avg CPL $150 → ~13 leads. With SOAR B2B: 300 queries × $0.39 = $117 → 10–15x more targeted touchpoints for the same budget. SOAR B2B doesn’t replace ads; it reduces waste.</p>
+        </section>
+
+        <section class="section">
+            <h2>Pricing for agencies</h2>
+            <p>Pay-as-you-go. Activation: $0.98. Volume-based:</p>
+            <div class="pricing-box">
+                <ul>
+                    <li>1–100 queries → $0.49</li>
+                    <li>100–500 queries → $0.39</li>
+                    <li>500+ queries → $0.29</li>
+                </ul>
+                <p style="margin-top: 1rem;">❌ No fixed subscription &nbsp; ❌ No unused capacity &nbsp; ✅ Aligns with client budget</p>
+            </div>
+            <p><strong>Why agencies choose it:</strong> Target is clear before ad spend. You can show clients a pre-report. ROI is explainable. Lifts agency value. White-label ready (Enterprise).</p>
+            <div style="margin-top: 1.5rem;">
+                <a href="soarb2b_home.html" class="btn-cta">Create your first target plan</a>
+            </div>
+        </section>
+
+        <section class="hero" style="margin-top: 3rem;">
+            <h2 style="font-size: 1.75rem;">Stop guessing. Start targeting.</h2>
+            <a href="soarb2b_home.html" class="btn-cta">Create your first target plan</a>
+        </section>
+
+        <div class="footer-links">
+            <a href="soarb2b_home.html">Home</a>
+            <a href="soarb2b_pricing.html">Pricing</a>
+            <a href="soarb2b_about.html">About</a>
+            <a href="support.html">Contact</a>
+        </div>
+    </div>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

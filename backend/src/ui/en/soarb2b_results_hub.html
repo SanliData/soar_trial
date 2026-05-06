@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SOAR B2B — Results Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+        }
+        .container {
+            min-height: 100vh;
+            padding: 4rem 2rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(248, 250, 252, 0.7);
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .result-module {
+            padding: 2rem;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+        }
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .module-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+        .module-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-pending { background: rgba(248, 250, 252, 0.1); color: rgba(248, 250, 252, 0.6); }
+        .status-ready { background: rgba(34, 197, 94, 0.2); color: ***REMOVED***22c55e; }
+        .status-processing { background: rgba(59, 130, 246, 0.2); color: ***REMOVED***3b82f6; }
+        .module-preview {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(248, 250, 252, 0.03);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.7);
+            line-height: 1.8;
+        }
+        .module-summary {
+            margin-bottom: 0.5rem;
+        }
+        .module-summary strong {
+            color: var(--color-gold);
+        }
+        .module-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .btn-secondary {
+            background: rgba(248, 250, 252, 0.1);
+            color: var(--color-off-white);
+            border: 1px solid rgba(248, 250, 252, 0.2);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(248, 250, 252, 0.15);
+            border-color: var(--color-gold);
+        }
+        .btn[title] {
+            position: relative;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: ***REMOVED***C19D2D;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .export-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(248, 250, 252, 0.03);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+        }
+        .export-format {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .export-format:hover {
+            border-color: var(--color-gold);
+            background: rgba(197, 160, 40, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Results Hub</h1>
+            <p class="subtitle">Your completed results are ready. Download files for use in your CRM, field visits, or outreach.</p>
+        </div>
+
+        <div class="results-grid" id="resultsGrid">
+            <!-- Modules will be loaded here -->
+        </div>
+
+        <div class="export-section">
+            <h2 style="margin-bottom: 1rem;">Download All Results</h2>
+            <p style="margin-bottom: 1rem; color: rgba(248, 250, 252, 0.7);">Export all completed modules in a single file:</p>
+            <div>
+                <span class="export-format" data-format="csv" onclick="exportResults('csv')" title="Download all results as CSV for Excel/CRM import">CSV</span>
+                <span class="export-format" data-format="xlsx" onclick="exportResults('xlsx')" title="Download all results as Excel workbook">XLSX</span>
+                <span class="export-format" data-format="json" onclick="exportResults('json')" title="Download all results as JSON for API integration">JSON</span>
+                <span class="export-format" data-format="zip" onclick="exportResults('zip')" title="Download all results as ZIP archive">ZIP (All Files)</span>
+            </div>
+            <p style="margin-top: 1.5rem; margin-bottom: 0.5rem; font-size: 0.95rem; color: rgba(248, 250, 252, 0.85);">Export for ad platforms (1:1 audience upload):</p>
+            <div>
+                <span class="export-format" data-format="linkedin_ads" onclick="exportResultsAds('linkedin_ads')" title="CSV for LinkedIn Campaign Manager > Upload a list">Export for LinkedIn Ads</span>
+                <span class="export-format" data-format="google_ads" onclick="exportResultsAds('google_ads')" title="CSV for Google Ads Customer Match">Export for Google Ads</span>
+                <span class="export-format" data-format="both_ads" onclick="exportResultsAds('both_ads')" title="ZIP with both CSVs and campaign setup guide">Export for Both (Google + LinkedIn)</span>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.85rem; color: rgba(248, 250, 252, 0.5);">💡 All files are ready to use in your CRM, field visits, or outreach campaigns</p>
+        </div>
+
+        <!-- Ad slot: results-below-summary (Findiag / Novarchive placeholder when no live ads) -->
+        <div class="ad-slot" data-slot="results-below-summary" id="ad-slot-results" style="margin-top: 2rem; margin-bottom: 2rem;">
+            <div class="ad-slot-inner" id="ad-slot-results-inner"></div>
+        </div>
+    </div>
+
+    <style>
+        .ad-slot { min-height: 120px; text-align: center; background: rgba(248, 250, 252, 0.04); border: 1px solid rgba(248, 250, 252, 0.1); border-radius: 8px; padding: 1rem 0; }
+        .ad-placeholder { display: block; min-height: 100px; padding: 1.25rem; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9)); border: 1px solid rgba(212, 176, 67, 0.35); border-radius: 8px; color: rgba(248, 250, 252, 0.95); text-align: center; }
+        .ad-placeholder .ad-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.6; margin-bottom: 0.5rem; }
+        .ad-placeholder .ad-headline { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: ***REMOVED***F8FAFC; }
+        .ad-placeholder .ad-sub { font-size: 0.85rem; opacity: 0.85; margin-bottom: 0.6rem; line-height: 1.4; }
+        .ad-placeholder .ad-cta { display: inline-block; padding: 0.5rem 1.25rem; background: ***REMOVED***C5A028; color: ***REMOVED***0F172A; font-weight: 700; font-size: 0.85rem; border-radius: 4px; text-decoration: none; }
+    </style>
+    <script>
+        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        const planId = new URLSearchParams(window.location.search).get('plan_id');
+
+        async function loadResults() {
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plans/${planId}/results`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+                if (!response.ok) throw new Error(`Failed to load results: ${response.status}`);
+                
+                const results = await response.json();
+                displayResults(results);
+                
+                // Load visit routes if any
+                loadVisitRoutes();
+                
+                // Load web acquisition jobs if any
+                loadWebAcquisitionJobs();
+            } catch (error) {
+                alert('Error loading results: ' + error.message);
+            }
+        }
+        
+        async function loadWebAcquisitionJobs() {
+            try {
+                // Get acquisition jobs for this plan
+                // Note: This would need an endpoint like /api/v1/b2b/plans/{plan_id}/acquisition-jobs
+                // For now, we'll use the acquisition router endpoint pattern
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/acquisition/jobs?plan_id=${planId}`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+                if (!response.ok) return; // No acquisition jobs yet
+                
+                const jobsData = await response.json();
+                if (jobsData.jobs && jobsData.jobs.length > 0) {
+                    displayWebAcquisitionJobs(jobsData.jobs);
+                }
+            } catch (error) {
+                // Ignore - acquisition jobs are optional
+                console.log('No web acquisition jobs found:', error.message);
+            }
+        }
+        
+        function displayWebAcquisitionJobs(jobs) {
+            const grid = document.getElementById('resultsGrid');
+            
+            // Filter for ready jobs only
+            const readyJobs = jobs.filter(job => job.status === 'ready');
+            if (readyJobs.length === 0) return;
+            
+            // Display the most recent ready job
+            const latestJob = readyJobs[0];
+            const coverage = latestJob.coverage_report || {};
+            
+            const moduleEl = document.createElement('div');
+            moduleEl.className = 'result-module';
+            moduleEl.innerHTML = `
+                <div class="module-header">
+                    <div class="module-title">Business List & Contacts (Web Acquisition)</div>
+                    <div class="module-status status-ready">Ready</div>
+                </div>
+                <div class="module-preview">
+                    <div class="module-summary">
+                        <strong>Coverage:</strong> ${coverage.businesses_found || 0} businesses, ${coverage.contacts_found || 0} contacts<br>
+                        <strong>Contact channels:</strong> ${coverage.emails || 0} emails, ${coverage.phones || 0} phones, ${coverage.websites || 0} websites
+                        ${coverage.is_capped ? '<br><span style="color: ***REMOVED***fbbf24;">⚠️ Capped at ' + (coverage.capped_at || 100) + ' results</span>' : ''}
+                    </div>
+                    <div style="font-size: 0.85rem; color: rgba(248, 250, 252, 0.5); margin-top: 0.5rem;">💡 Use this for web-acquired business and contact data</div>
+                </div>
+                <div class="module-actions">
+                    <button class="btn btn-primary" onclick="exportAcquisitionJob('${latestJob.job_id}', 'csv')" title="Download web acquisition results as CSV">Download CSV</button>
+                    <button class="btn btn-secondary" onclick="exportAcquisitionJob('${latestJob.job_id}', 'json')" title="Download web acquisition results as JSON">Download JSON</button>
+                </div>
+            `;
+            grid.appendChild(moduleEl);
+        }
+        
+        async function exportAcquisitionJob(jobId, format) {
+            try {
+                const formatExt = format === 'json' ? 'json' : 'csv';
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/acquisition/jobs/${jobId}/export.${formatExt}`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+                if (!response.ok) throw new Error(`Failed to export: ${response.status}`);
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `acquisition_job_${jobId}.${formatExt}`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } catch (error) {
+                alert('Error exporting acquisition job: ' + error.message);
+            }
+        }
+
+        async function loadVisitRoutes() {
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plans/${planId}/routes`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+                if (!response.ok) return; // No routes yet
+                
+                const routesData = await response.json();
+                if (routesData.routes && routesData.routes.length > 0) {
+                    displayVisitRoutes(routesData.routes);
+                }
+            } catch (error) {
+                // Ignore - routes are optional
+            }
+        }
+
+        function displayVisitRoutes(routes) {
+            const grid = document.getElementById('resultsGrid');
+            
+            routes.forEach(route => {
+                const stopsCount = route.stops_count || route.stops?.length || 0;
+                const routeEl = document.createElement('div');
+                routeEl.className = 'result-module';
+                routeEl.innerHTML = `
+                    <div class="module-header">
+                        <div class="module-title">Visit Route: ${route.region || 'Optimized Route'}</div>
+                        <div class="module-status status-ready">Ready</div>
+                    </div>
+                    <div class="module-preview">
+                        <div class="module-summary">
+                            <strong>${stopsCount} stops</strong> optimized for efficiency<br>
+                            Google Maps route available
+                        </div>
+                        <div style="font-size: 0.85rem; color: rgba(248, 250, 252, 0.5); margin-top: 0.5rem;">💡 Use this for optimized field sales routes</div>
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="window.open('${route.google_maps_url || '***REMOVED***'}', '_blank')" title="Open optimized route in Google Maps">Open in Google Maps</button>
+                        <button class="btn btn-secondary" onclick="exportRoute('${route.id || route.route_id}', 'csv')" title="Download route as CSV for CRM import">Download CSV</button>
+                        <button class="btn btn-secondary" onclick="exportRoute('${route.id || route.route_id}', 'pdf')" title="Download route as PDF for printing">Download PDF</button>
+                    </div>
+                `;
+                grid.appendChild(routeEl);
+            });
+        }
+
+        async function exportRoute(routeId, format) {
+            try {
+                // Export route via export API
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plans/${planId}/export`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({ format, modules: ['visit_route'] })
+                });
+                if (!response.ok) throw new Error(`Failed to export route: ${response.status}`);
+                
+                const job = await response.json();
+                checkExportStatus(job.export_id);
+            } catch (error) {
+                alert('Error exporting route: ' + error.message);
+            }
+        }
+
+        function displayResults(results) {
+            const grid = document.getElementById('resultsGrid');
+            grid.innerHTML = '';
+            
+            // If no modules, show empty state
+            if (!results.modules || results.modules.length === 0) {
+                grid.innerHTML = `
+                    <div class="result-module" style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem;">
+                        <div class="module-title" style="margin-bottom: 1rem;">Results Pending</div>
+                        <div class="module-preview">
+                            <div class="module-summary">
+                                Your plan results are being prepared. Modules will appear here as they complete.
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            results.modules.forEach(module => {
+                const summary = formatSummary(module.module_type, module.preview_data);
+                const tooltip = getModuleTooltip(module.module_type);
+                
+                const moduleEl = document.createElement('div');
+                moduleEl.className = 'result-module';
+                moduleEl.innerHTML = `
+                    <div class="module-header">
+                        <div class="module-title">${getModuleTitle(module.module_type)}</div>
+                        <div class="module-status status-${module.status}">${module.status}</div>
+                    </div>
+                    <div class="module-preview">
+                        <div class="module-summary">${summary}</div>
+                        ${tooltip ? `<div style="font-size: 0.85rem; color: rgba(248, 250, 252, 0.5); margin-top: 0.5rem;">💡 ${tooltip}</div>` : ''}
+                    </div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" ${module.status !== 'ready' ? 'disabled' : ''} 
+                                title="${tooltip}" onclick="exportModule('${module.module_type}', 'csv')">Download CSV</button>
+                        <button class="btn btn-secondary" ${module.status !== 'ready' ? 'disabled' : ''} 
+                                title="${tooltip}" onclick="exportModule('${module.module_type}', 'xlsx')">Download XLSX</button>
+                        ${module.module_type !== 'visit_route' ? `<button class="btn btn-secondary" ${module.status !== 'ready' ? 'disabled' : ''} title="${tooltip}" onclick="exportModule('${module.module_type}', 'json')">Download JSON</button>` : ''}
+                    </div>
+                `;
+                grid.appendChild(moduleEl);
+            });
+        }
+
+        function getModuleTitle(type) {
+            const titles = {
+                'business_discovery': 'Business Discovery',
+                'persona_summary': 'Persona Summary',
+                'reachability_report': 'Reachability Report',
+                'precision_exposure': 'Precision Exposure',
+                'soft_conversion': 'Soft Conversion',
+                'outreach_outcomes': 'Outreach / Appointment Outcomes',
+                'web_acquisition': 'Business List & Contacts (Web Acquisition)'
+            };
+            return titles[type] || type;
+        }
+
+        function formatSummary(moduleType, previewData) {
+            if (!previewData) return '<strong>Status:</strong> Preparing...';
+            
+            // Parse if string
+            let data = previewData;
+            if (typeof previewData === 'string') {
+                try {
+                    data = JSON.parse(previewData);
+                } catch (e) {
+                    return '<strong>Status:</strong> ' + previewData;
+                }
+            }
+            
+            // Module-specific summaries
+            switch(moduleType) {
+                case 'business_discovery':
+                    const businesses = data.business_count || data.count || 0;
+                    return `<strong>${businesses} businesses</strong> found and verified<br>Ready for CRM import`;
+                    
+                case 'persona_summary':
+                    const personas = data.persona_count || data.count || 0;
+                    const departments = data.departments || [];
+                    return `<strong>${personas} personas</strong> identified<br>${departments.length > 0 ? `${departments.join(', ')} departments` : 'Department analysis included'}`;
+                    
+                case 'reachability_report':
+                    const emails = data.emails || data.email_count || 0;
+                    const linkedin = data.linkedin_profiles || data.linkedin_count || 0;
+                    const phones = data.phones || data.phone_count || 0;
+                    return `<strong>Contact channels:</strong> ${emails} emails, ${linkedin} LinkedIn profiles, ${phones} phones<br>Ready for outreach`;
+                    
+                case 'precision_exposure':
+                    return `<strong>Precision targeting</strong> configured<br>Location and persona-based exposure ready`;
+                    
+                case 'soft_conversion':
+                    return `<strong>Soft conversion</strong> tracking active<br>Website visits and content engagement monitored`;
+                    
+                case 'outreach_outcomes':
+                    return `<strong>Outreach results</strong> available<br>Appointment and contact outcomes tracked`;
+                    
+                default:
+                    if (data.count) {
+                        return `<strong>${data.count} records</strong> available`;
+                    }
+                    return '<strong>Data ready</strong> for download';
+            }
+        }
+        
+        function getModuleTooltip(moduleType) {
+            const tooltips = {
+                'business_discovery': 'Use this in your CRM to import business contacts',
+                'persona_summary': 'Use this for targeted outreach planning',
+                'reachability_report': 'Use this for field visits and contact strategy',
+                'precision_exposure': 'Use this to track exposure performance',
+                'soft_conversion': 'Use this to analyze engagement metrics',
+                'outreach_outcomes': 'Use this to track appointment results',
+                'visit_route': 'Use this for optimized field sales routes'
+            };
+            return tooltips[moduleType] || 'Ready for download';
+        }
+
+        async function exportResults(format) {
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plans/${planId}/export`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({ format, modules: null })
+                });
+                if (!response.ok) throw new Error(`Failed to create export: ${response.status}`);
+                
+                const job = await response.json();
+                checkExportStatus(job.export_id);
+            } catch (error) {
+                alert('Error creating export: ' + error.message);
+            }
+        }
+
+        async function checkExportStatus(exportId) {
+            const maxAttempts = 30;
+            let attempts = 0;
+            
+            const check = async () => {
+                try {
+                    const response = await fetch(`${window.location.origin}/api/v1/b2b/exports/${exportId}/status`, {
+                        headers: { 'X-API-Key': API_KEY }
+                    });
+                    const status = await response.json();
+                    
+                    if (status.status === 'ready') {
+                        window.location.href = `${window.location.origin}/api/v1/b2b/exports/${exportId}/download?X-API-Key=${API_KEY}`;
+                    } else if (status.status === 'failed') {
+                        alert('Export failed: ' + (status.error_message || 'Unknown error'));
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        setTimeout(check, 2000);
+                    } else {
+                        alert('Export timed out');
+                    }
+                } catch (error) {
+                    alert('Error checking export status: ' + error.message);
+                }
+            };
+            
+            check();
+        }
+
+        async function exportModule(moduleType, format) {
+            // Export single module
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plans/${planId}/export`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({ format, modules: [moduleType] })
+                });
+                if (!response.ok) throw new Error(`Failed to create export: ${response.status}`);
+                
+                const job = await response.json();
+                checkExportStatus(job.export_id);
+            } catch (error) {
+                alert('Error creating export: ' + error.message);
+            }
+        }
+
+        async function exportResultsAds(format) {
+            try {
+                const response = await fetch(`${window.location.origin}/api/export/results`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ format: format, query_id: planId, language: 'en' })
+                });
+                if (!response.ok) {
+                    const err = await response.json().catch(function() { return {}; });
+                    const detail = err.detail || {};
+                    if (response.status === 422 && (detail.error_code === 'UPAP_EXPORT_FAIL' || detail.reason)) {
+                        const reason = typeof detail === 'string' ? detail : (detail.reason || detail.error || 'UPAP export validation failed');
+                        const nextAction = 'Refine your plan (e.g. company_size_max, min_ready_leads, regulated_domain) or contact support.';
+                        alert('Export blocked (UPAP)\n\nReason: ' + reason + '\n\nNext action: ' + nextAction);
+                        return;
+                    }
+                    throw new Error(typeof detail === 'string' ? detail : (detail.error || detail.message || response.statusText || 'Export failed'));
+                }
+                const blob = await response.blob();
+                const disp = response.headers.get('Content-Disposition');
+                let filename = 'soar_ads_export';
+                if (disp) {
+                    const m = disp.match(/filename="?([^";\n]+)"?/);
+                    if (m) filename = m[1].trim();
+                }
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } catch (error) {
+                alert('Error exporting for ads: ' + error.message);
+            }
+        }
+
+        // Ad slot: show Findiag placeholder when no live ads (REKLAM_MONETIZASYON_PLANI.md)
+        (function() {
+            var el = document.getElementById('ad-slot-results-inner');
+            if (!el) return;
+            var API_BASE = window.location.origin + (window.API_BASE_PATH || '');
+            fetch(API_BASE + '/api/v1/public/ad-config', { credentials: 'same-origin' }).then(function(r) { return r.json(); }).then(function(c) {
+                var slotId = c.slots && c.slots['results-below-summary'];
+                if (c.enabled && c.client_id && slotId) {
+                    var ins = document.createElement('ins');
+                    ins.className = 'adsbygoogle';
+                    ins.style.display = 'block';
+                    ins.setAttribute('data-ad-client', c.client_id);
+                    ins.setAttribute('data-ad-slot', slotId);
+                    ins.setAttribute('data-ad-format', 'auto');
+                    el.appendChild(ins);
+                    if (window.adsbygoogle) (window.adsbygoogle = window.adsbygoogle || []).push({});
+                    return;
+                }
+                el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">Evidence-Based Diagnostics, End-to-End</div><div class="ad-sub">From sample to diagnosis — fully traceable. FINDIAG: AI-powered, compliant diagnostic workflows.</div><a href="***REMOVED***" class="ad-cta">Request a Demo</a></div>';
+            }).catch(function() { if (el) el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">FINDIAG</div><div class="ad-sub">Evidence-based diagnostic insights. Request a Demo.</div><a href="***REMOVED***" class="ad-cta">Request a Demo</a></div>'; });
+        })();
+
+        // Load results on page load
+        if (planId) {
+            loadResults();
+        } else {
+            alert('Plan ID not found');
+        }
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

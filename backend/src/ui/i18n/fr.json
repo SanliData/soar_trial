@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "language": "fr",
+    "name": "Français",
+    "region": "FR"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer"
+  },
+  "home": {
+    "title": "SOAR B2B — Transformez les bonnes entreprises en rendez-vous",
+    "description": "Accédez à des entreprises vérifiées, contactez les décideurs réels, convertissez les contacts en rendez-vous. Moteur de rendez-vous B2B pour fabricants et grossistes.",
+    "cta": "Commencer",
+    "demo": "Voir la démo"
+  }
+}

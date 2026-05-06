@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H-019 — Kontrollü Generative UI Demosu — SOAR B2B</title>
+    <style>
+        body { font-family: system-ui, sans-serif; margin: 0; background: ***REMOVED***0F172A; color: ***REMOVED***F8FAFC; padding: 1.25rem 1.5rem 3rem; }
+        h1 { font-size: 1.25rem; margin: 0 0 0.35rem; }
+        p.note { font-size: 0.875rem; color: rgba(248,250,252,0.75); max-width: 52rem; line-height: 1.55; margin: 0 0 1rem; }
+        .warn { margin: 0.75rem 0; padding: 0.65rem 0.85rem; background: rgba(248,250,252,0.06); border: 1px solid rgba(248,250,252,0.12); border-radius: 8px; font-size: 0.8rem; }
+        iframe***REMOVED***genuiFrame { width: 100%; min-height: 320px; border: 1px solid rgba(248,250,252,0.15); border-radius: 10px; background: ***REMOVED***020617; margin-top: 0.75rem; }
+        pre***REMOVED***metaOut { margin-top: 1rem; font-size: 0.75rem; color: rgba(248,250,252,0.65); overflow: auto; max-height: 180px; }
+        button { cursor: pointer; padding: 0.45rem 0.95rem; border-radius: 6px; border: 1px solid rgba(248,250,252,0.2); background: rgba(197,160,40,0.95); color: ***REMOVED***0F172A; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <h1>H-019 — Kontrollü Generative UI temeli</h1>
+    <p class="note">
+        Statik demo sayfası. Yalnızca şablonlara bağlı, yapısal veriden üretilir; sınırsız çalışma zamanı AI arayüzü değildir.
+    </p>
+    <div class="warn">
+        B2B API anahtarını sorgu ile verin: <code>?api_key=ANAHTARINIZ</code> (repo’ya commit etmeyin). Bildirimler yalnızca <code>console</code>.
+    </div>
+    <p><button type="button" id="btnRender">Örnek brifing widget’ını yükle</button></p>
+    <iframe id="genuiFrame" title="Generative widget (sandbox)" sandbox=""
+        referrerpolicy="no-referrer"></iframe>
+    <pre id="metaOut"></pre>
+    <script>
+        (function () {
+            function apiKeyFromQuery() {
+                var q = new URLSearchParams(window.location.search);
+                return (q.get('api_key') || '').trim();
+            }
+            document.getElementById('btnRender').addEventListener('click', function () {
+                var key = apiKeyFromQuery();
+                if (!key) {
+                    console.warn('[H-019 demo] api_key parametresi yok.');
+                    document.getElementById('metaOut').textContent = '?api_key=... ekleyin';
+                    return;
+                }
+                var payload = {
+                    widget_type: 'executive_briefing',
+                    title: 'Dallas Endüstriyel Fırıncılık Fırsatı',
+                    summary: 'Hedef koridorda uygun üretici yoğunluğu yüksek.',
+                    metrics: [
+                        { label: 'Uygun şirket', value: '84' },
+                        { label: 'Kontakt kapsamı', value: '%62' }
+                    ],
+                    recommendations: [
+                        'Önce Kuzey Dallas kümeleri',
+                        'Owner/operator persona ile başla'
+                    ]
+                };
+                fetch(window.location.origin + '/api/v1/b2b/generative-ui/render', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-Key': key },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(payload)
+                }).then(function (r) {
+                    return r.json().then(function (j) {
+                        document.getElementById('metaOut').textContent = JSON.stringify({
+                            http: r.status,
+                            sandbox_required: j.sandbox_required,
+                            runtime_js_allowed: j.runtime_js_allowed
+                        }, null, 2);
+                        if (!r.ok) throw new Error(j.detail || JSON.stringify(j));
+                        if (j.runtime_js_allowed) console.warn('[H-019 demo] runtime_js_allowed=true beklenmez');
+                        var doc = document.getElementById('genuiFrame').contentDocument ||
+                            document.getElementById('genuiFrame').contentWindow.document;
+                        doc.open();
+                        doc.write(j.html || '<p>No HTML</p>');
+                        doc.close();
+                    });
+                }).catch(function (e) {
+                    console.warn('[H-019 demo] hata', e);
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

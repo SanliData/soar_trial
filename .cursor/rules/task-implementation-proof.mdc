@@ -1,0 +1,26 @@
+---
+description: Mandatory documentation, backlog, verification, and proof standards for backlog-driven FinderOS tasks
+alwaysApply: true
+---
+
+***REMOVED*** Task implementation, documentation, and proof (mandatory)
+
+For every substantive backlog or feature task in this repository:
+
+1. **MainBook** — Update `backend/docs/main_book/FinderOS_MainBook_v0.1.html` with an appropriate section reflecting the task. If a companion DOCX exists and cannot be edited safely here, note that **DOCX regeneration is required from the updated HTML/source** (`backend/docs/main_book/DOCX_REGEN_NOTE.md`).
+
+2. **LiveBook** — Update `backend/docs/live_book/FinderOS_LiveBook_2025-12-13.html` with matching verification/runbook bullets. Same DOCX note path: `backend/docs/live_book/DOCX_REGEN_NOTE.md`.
+
+3. **Master backlog** — Update `docs/SOARB2B_MASTER_BACKLOG.md` for the affected item(s) (status, verification).
+
+4. **Implementation proof** — Create or refresh `docs/<TASK_ID>_IMPLEMENTATION_PROOF.md` (or canonical process doc referenced by the backlog) including: files touched, implementation summary, MainBook/LiveBook sections updated, backlog status, **commands executed**, **PASS/FAIL**, unresolved issues, next step.
+
+5. **Verification script** — When the task warrants automation, add or update `scripts/verify_<task_slug>.py` and **run it**. Do **not** claim DONE if the script fails (document failure explicitly).
+
+6. **Tests** — Run scoped `pytest` for new/changed behaviour; record results in the proof. If tests cannot run, document dependency or environment failure verbatim.
+
+7. **Live probe** — If a server exists, validate via real HTTP/UI paths; prefer `VERIFY_BASE_URL` patterns where already used in verification scripts.
+
+8. **Claims of completion** — Only state “implemented successfully” when: code merges, docs above are updated (or waived with explicit rationale in proof), verification passes (or failure is disclosed), proof states **PASS**. On failure say: **Implementation incomplete because: …**
+
+Canonical human-readable checklist: `docs/TASK_IMPLEMENTATION_AND_PROOF_STANDARD.md`.

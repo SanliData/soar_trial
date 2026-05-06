@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SOAR B2B — مركز النتائج</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            direction: rtl;
+        }
+        .container {
+            min-height: 100vh;
+            padding: 4rem 2rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .header {
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(248, 250, 252, 0.7);
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .result-module {
+            padding: 2rem;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+        }
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .module-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-gold);
+        }
+        .module-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-pending { background: rgba(248, 250, 252, 0.1); color: rgba(248, 250, 252, 0.6); }
+        .status-ready { background: rgba(34, 197, 94, 0.2); color: ***REMOVED***22c55e; }
+        .status-processing { background: rgba(59, 130, 246, 0.2); color: ***REMOVED***3b82f6; }
+        .module-preview {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(248, 250, 252, 0.03);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.7);
+        }
+        .module-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: ***REMOVED***C19D2D;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .export-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(248, 250, 252, 0.03);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+        }
+        .export-format {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .export-format:hover {
+            border-color: var(--color-gold);
+            background: rgba(197, 160, 40, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>مركز النتائج</h1>
+            <p class="subtitle">قم بتنزيل النتائج المكتملة</p>
+        </div>
+
+        <div class="results-grid" id="resultsGrid">
+            <!-- Modules will be loaded here -->
+        </div>
+
+        <div class="export-section">
+            <h2 style="margin-bottom: 1rem;">تصدير جميع النتائج</h2>
+            <p style="margin-bottom: 1rem; color: rgba(248, 250, 252, 0.7);">قم بتنزيل جميع الوحدات بالتنسيق المفضل لديك:</p>
+            <div>
+                <span class="export-format" data-format="csv" onclick="exportResults('csv')">CSV</span>
+                <span class="export-format" data-format="xlsx" onclick="exportResults('xlsx')">XLSX</span>
+                <span class="export-format" data-format="json" onclick="exportResults('json')">JSON</span>
+                <span class="export-format" data-format="zip" onclick="exportResults('zip')">ZIP</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        const planId = new URLSearchParams(window.location.search).get('plan_id');
+
+        async function loadResults() {
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plans/${planId}/results`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+                if (!response.ok) throw new Error(`تعذر تحميل النتائج: ${response.status}`);
+                
+                const results = await response.json();
+                displayResults(results);
+            } catch (error) {
+                alert('خطأ في تحميل النتائج: ' + error.message);
+            }
+        }
+
+        function displayResults(results) {
+            const grid = document.getElementById('resultsGrid');
+            grid.innerHTML = '';
+            
+            results.modules.forEach(module => {
+                const moduleEl = document.createElement('div');
+                moduleEl.className = 'result-module';
+                moduleEl.innerHTML = `
+                    <div class="module-header">
+                        <div class="module-title">${getModuleTitle(module.module_type)}</div>
+                        <div class="module-status status-${module.status}">${getStatusText(module.status)}</div>
+                    </div>
+                    <div class="module-preview">${formatPreview(module.preview_data)}</div>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" ${module.status !== 'ready' ? 'disabled' : ''} 
+                                onclick="exportModule('${module.module_type}', 'csv')">تنزيل CSV</button>
+                    </div>
+                `;
+                grid.appendChild(moduleEl);
+            });
+        }
+
+        function getModuleTitle(type) {
+            const titles = {
+                'business_discovery': 'اكتشاف الأعمال',
+                'persona_summary': 'ملخص الشخصيات',
+                'reachability_report': 'تقرير إمكانية الوصول',
+                'precision_exposure': 'التعرض الدقيق',
+                'soft_conversion': 'التحويل الناعم',
+                'outreach_outcomes': 'نتائج التواصل / المواعيد'
+            };
+            return titles[type] || type;
+        }
+
+        function getStatusText(status) {
+            const statuses = {
+                'pending': 'قيد الانتظار',
+                'processing': 'قيد التنفيذ',
+                'ready': 'جاهز',
+                'failed': 'فشل'
+            };
+            return statuses[status] || status;
+        }
+
+        function formatPreview(preview) {
+            if (!preview) return 'معاينة غير متاحة';
+            if (typeof preview === 'string') return preview;
+            return JSON.stringify(preview, null, 2).substring(0, 200) + '...';
+        }
+
+        async function exportResults(format) {
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plans/${planId}/export`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({ format, modules: null })
+                });
+                if (!response.ok) throw new Error(`تعذر إنشاء التصدير: ${response.status}`);
+                
+                const job = await response.json();
+                checkExportStatus(job.export_id);
+            } catch (error) {
+                alert('خطأ في التصدير: ' + error.message);
+            }
+        }
+
+        async function checkExportStatus(exportId) {
+            const maxAttempts = 30;
+            let attempts = 0;
+            
+            const check = async () => {
+                try {
+                    const response = await fetch(`${window.location.origin}/api/v1/b2b/exports/${exportId}/status`, {
+                        headers: { 'X-API-Key': API_KEY }
+                    });
+                    const status = await response.json();
+                    
+                    if (status.status === 'ready') {
+                        window.location.href = `${window.location.origin}/api/v1/b2b/exports/${exportId}/download?X-API-Key=${API_KEY}`;
+                    } else if (status.status === 'failed') {
+                        alert('فشل التصدير: ' + (status.error_message || 'خطأ غير معروف'));
+                    } else if (attempts < maxAttempts) {
+                        attempts++;
+                        setTimeout(check, 2000);
+                    } else {
+                        alert('انتهت مهلة التصدير');
+                    }
+                } catch (error) {
+                    alert('خطأ في التحقق من حالة التصدير: ' + error.message);
+                }
+            };
+            
+            check();
+        }
+
+        async function exportModule(moduleType, format) {
+            exportResults(format);
+        }
+
+        if (planId) {
+            loadResults();
+        } else {
+            alert('لم يتم العثور على معرف الخطة');
+        }
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

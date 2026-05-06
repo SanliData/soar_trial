@@ -1,0 +1,28 @@
+***REMOVED*** Data directory
+data/
+*.db
+*.db-journal
+
+***REMOVED*** API keys (dev)
+data/dev_api_keys.txt
+
+***REMOVED*** Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+ENV/
+
+***REMOVED*** IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+***REMOVED*** OS
+.DS_Store
+Thumbs.db

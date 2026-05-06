@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yansıma İnceleme Demosu — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    .badge { display: inline-block; padding: 6px 12px; border-radius: 999px; background: ***REMOVED***b45309; color: ***REMOVED***fff; font-weight: 700; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 320px; font-size: 12px; }
+    button { margin-top: 12px; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***2563eb; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Yansıma tabanlı prompt optimizasyonu (temel katman)</h1>
+  <p><span class="badge">İnsan Onayı Gerekli</span></p>
+  <p class="muted">
+    Bu sayfa yalnızca <code>/api/v1/system/reflection/*</code> uçlarından salt okunur listeleri yükler.
+    Otomatik prompt yayını, otonom çalıştırma veya üretimde sessiz değişiklik yoktur.
+  </p>
+  <button type="button" id="loadBtn">İzleri ve adayları yükle</button>
+  <h2>İzler (traces)</h2>
+  <pre id="tracesOut">(yüklenmedi)</pre>
+  <h2>Adaylar (candidates)</h2>
+  <pre id="candidatesOut">(yüklenmedi)</pre>
+  <script>
+    document.getElementById("loadBtn").onclick = async () => {
+      const base = "";
+      const tRes = await fetch(base + "/api/v1/system/reflection/traces?limit=30");
+      const cRes = await fetch(base + "/api/v1/system/reflection/candidates?limit=30");
+      const tJson = await tRes.json();
+      const cJson = await cRes.json();
+      document.getElementById("tracesOut").textContent = JSON.stringify(tJson, null, 2);
+      document.getElementById("candidatesOut").textContent = JSON.stringify(cJson, null, 2);
+    };
+  </script>
+</body>
+</html>

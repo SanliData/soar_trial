@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime Context Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 480px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***7c3aed; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Runtime context engineering (foundation)</h1>
+  <p class="muted">
+    Same endpoints as EN demo — metadata, capabilities, topology, hints, context budget.
+  </p>
+  <button type="button" id="mBtn">GET metadata</button>
+  <button type="button" id="hBtn">GET hints</button>
+  <button type="button" id="bBtn">POST context-budget</button>
+  <div class="card"><h2>Output</h2><pre id="out">(idle)</pre></div>
+  <script>
+    const base = "";
+    document.getElementById("mBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/runtime/metadata");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("hBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/runtime/hints");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("bBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/runtime/context-budget", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          estimated_chars: 2000,
+          requested_layers: ["metadata", "capabilities"],
+          large_text_sample: ""
+        })
+      });
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+  </script>
+</body>
+</html>

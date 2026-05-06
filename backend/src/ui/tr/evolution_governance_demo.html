@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evrim Yönetişimi — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 520px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***047857; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Evrim yönetişimi (H-036)</h1>
+  <p class="muted">Sandbox önerileri, simülasyon, geri alma kontrolleri, izler, politika yuvaları. Zarf kısıtlamasız öz-değişimi kapalı bildirir.</p>
+  <button type="button" id="pBtn">GET proposals</button>
+  <button type="button" id="sBtn">POST simulate</button>
+  <button type="button" id="tBtn">GET traces</button>
+  <button type="button" id="rBtn">POST rollback-check</button>
+  <button type="button" id="polBtn">GET policies</button>
+  <div class="card"><h2>Çıktı</h2><pre id="out">(boşta)</pre></div>
+  <script>
+    const base = "";
+    document.getElementById("pBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/evolution/proposals");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("sBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/evolution/simulate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          proposal_id: "mut-orch-001",
+          sandbox_only: true,
+          request_production_deploy: false
+        })
+      });
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("tBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/evolution/traces");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("rBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/evolution/rollback-check", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          proposal_id: "mut-wf-opt-001",
+          mutation_deployed: false,
+          governance_approval_completed: true,
+          evaluation_trace_stored: true
+        })
+      });
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("polBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/evolution/policies");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+  </script>
+</body>
+</html>

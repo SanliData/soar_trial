@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B - Demo Showcase</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028; /* Darkened Mat Gold for web */
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue); /* Always dark night blue background */
+            color: var(--color-off-white);
+            line-height: 1.6;
+        }
+
+        /* Typography - Satoshi for headings */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        /* B2B text tracking */
+        .logo-b2b,
+        .b2b-text {
+            letter-spacing: 0.02em;
+        }
+
+        /* Buttons - Satoshi Bold */
+        .btn,
+        button {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+        }
+
+        header {
+            background: var(--color-night-blue); /* Dark night blue background */
+            color: ***REMOVED***fff;
+            padding: 2rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        /* SOAR B2B Logo */
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .logo-soar {
+            display: inline-flex;
+            align-items: baseline;
+            font-size: 1.75rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            color: ***REMOVED***fff;
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .logo-soar-r {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-r-arrow {
+            position: absolute;
+            right: -3px;
+            bottom: -1px;
+            width: 14px;
+            height: 14px;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.3);
+            margin: 0;
+        }
+
+        .logo-b2b {
+            font-size: 1.5rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: ***REMOVED***fff;
+            letter-spacing: 0.02em; /* B2B tracking */
+        }
+
+        .header-content h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            background: rgba(248, 250, 252, 0.05); /* Subtle overlay on dark bg */
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .section h2 {
+            color: ***REMOVED***1a202c;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid ***REMOVED***667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .hotel-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .hotel-entry {
+            background: ***REMOVED***f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid ***REMOVED***667eea;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        @media (max-width: 1024px) {
+            .hotel-entry {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hotel-name {
+            font-weight: 600;
+            color: ***REMOVED***1a202c;
+            font-size: 1.1rem;
+        }
+
+        .hotel-location {
+            color: ***REMOVED***4a5568;
+            font-size: 0.95rem;
+        }
+
+        .hotel-roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .role-badge {
+            background: ***REMOVED***e0e7ff;
+            color: ***REMOVED***4338ca;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .hotel-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            background: ***REMOVED***667eea;
+            color: ***REMOVED***fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-small:hover {
+            background: ***REMOVED***5568d3;
+        }
+
+        .targeting-panel {
+            background: ***REMOVED***f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .targeting-panel h3 {
+            color: ***REMOVED***1a202c;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .targeting-filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            background: ***REMOVED***fff;
+            padding: 1rem;
+            border-radius: 6px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            color: ***REMOVED***4a5568;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid ***REMOVED***e2e8f0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .sequence-panel {
+            background: ***REMOVED***f7fafc;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .sequence-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .sequence-item {
+            background: ***REMOVED***fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 150px;
+            border: 2px solid ***REMOVED***667eea;
+        }
+
+        .sequence-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, ***REMOVED***667eea 0%, ***REMOVED***764ba2 100%);
+            color: ***REMOVED***fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin: 0 auto 0.75rem;
+        }
+
+        .sequence-item h4 {
+            color: ***REMOVED***1a202c;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sequence-item p {
+            color: ***REMOVED***4a5568;
+            font-size: 0.85rem;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, ***REMOVED***667eea 0%, ***REMOVED***764ba2 100%);
+            color: ***REMOVED***fff;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .cta-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-large {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: ***REMOVED***fff;
+            color: ***REMOVED***667eea;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-large:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: ***REMOVED***667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: ***REMOVED***e0e7ff;
+            border-radius: 6px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: ***REMOVED***4338ca;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: ***REMOVED***4a5568;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <span class="logo-soar">
+                    SOA<span class="logo-soar-r">R
+                        <svg class="logo-r-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 12L12 2M12 2H6M12 2V8" stroke="***REMOVED***C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </span>
+                <span class="logo-divider"></span>
+                <span class="logo-b2b">B2B</span>
+            </div>
+            <h1>Demo Showcase</h1>
+            <p>See how targeting and sequences work with real examples</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="soarb2b_home.html" class="back-link">← Back to Home</a>
+
+        <!-- Hotel List Section -->
+        <div class="section">
+            <h2>Verified Hotel Targets</h2>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">Hotels Listed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Target Roles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Cities</div>
+                </div>
+            </div>
+            
+            <div id="hotel-list-container" class="hotel-list" style="margin-top: 1.5rem;">
+                <div style="text-align: center; padding: 2rem; color: ***REMOVED***4a5568;">Loading hotels...</div>
+            </div>
+        </div>
+
+        <!-- Role Targeting Panel -->
+        <div class="section">
+            <h2>Role Targeting</h2>
+            <div class="targeting-panel">
+                <h3>Filter by Decision-Maker Role</h3>
+                <div class="targeting-filters">
+                    <div class="filter-group">
+                        <label>Primary Role</label>
+                        <select>
+                            <option>All Roles</option>
+                            <option>Procurement Manager</option>
+                            <option>Housekeeping Manager</option>
+                            <option>Operations Manager</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Location</label>
+                        <select>
+                            <option>All Locations</option>
+                            <option>Istanbul</option>
+                            <option>Ankara</option>
+                            <option>Antalya</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Star Rating</label>
+                        <select>
+                            <option>All Ratings</option>
+                            <option>5 Star</option>
+                            <option>4 Star</option>
+                            <option>3 Star</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Communication Sequence Panel -->
+        <div class="section">
+            <h2>Communication Sequence</h2>
+            <div class="sequence-panel">
+                <p style="text-align: center; color: ***REMOVED***4a5568; margin-bottom: 1rem;">
+                    Your recommended outreach sequence, optimized for meeting conversion
+                </p>
+                <div class="sequence-steps">
+                    <div class="sequence-item">
+                        <div class="sequence-number">1</div>
+                        <h4>Target Lists</h4>
+                        <p>Verified businesses in your geography</p>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-number">2</div>
+                        <h4>Role Focus</h4>
+                        <p>Procurement, Housekeeping, Operations</p>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-number">3</div>
+                        <h4>Precision Exposure</h4>
+                        <p>Persona + location targeting</p>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-number">4</div>
+                        <h4>Platform Expansion</h4>
+                        <p>LinkedIn, Meta, Instagram</p>
+                    </div>
+                    <div class="sequence-item">
+                        <div class="sequence-number">5</div>
+                        <h4>Direct Access</h4>
+                        <p>Email → Phone → Meeting</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-box">
+            <h3>Ready to Build Your Meeting Pipeline?</h3>
+            <p style="margin-bottom: 1rem;">Get your personalized meeting plan in 5 questions</p>
+            <a href="soarb2b_onboarding_5q.html" class="btn-large">Book a Meeting</a>
+        </div>
+    </div>
+
+    <script>
+        // API configuration
+        const API_BASE = window.location.origin;
+        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        
+        async function loadHotels() {
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/b2b/demo/hotels`, {
+                    headers: {
+                        'X-API-Key': API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load hotels');
+                }
+                
+                const data = await response.json();
+                const hotels = data.hotels || [];
+                
+                const container = document.getElementById('hotel-list-container');
+                container.innerHTML = '';
+                
+                if (hotels.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; padding: 2rem; color: ***REMOVED***4a5568;">No hotels found.</div>';
+                    return;
+                }
+                
+                // Update stats
+                const totalRoles = hotels.reduce((sum, hotel) => sum + (hotel.roles?.length || 0), 0);
+                document.querySelector('.stats-bar .stat-item:nth-child(1) .stat-value').textContent = hotels.length;
+                document.querySelector('.stats-bar .stat-item:nth-child(2) .stat-value').textContent = totalRoles;
+                
+                // Render hotels
+                hotels.forEach(hotel => {
+                    const entry = document.createElement('div');
+                    entry.className = 'hotel-entry';
+                    
+                    const rolesHTML = (hotel.roles || []).map(role => 
+                        `<span class="role-badge">${role}</span>`
+                    ).join('');
+                    
+                    entry.innerHTML = `
+                        <div>
+                            <div class="hotel-name">${hotel.name}</div>
+                            <div class="hotel-location">${hotel.location}</div>
+                        </div>
+                        <div class="hotel-roles">${rolesHTML}</div>
+                        <div style="color: ${hotel.verified ? '***REMOVED***10b981' : '***REMOVED***f59e0b'}; font-weight: 500;">
+                            ${hotel.verified ? 'Verified' : 'Pending'}
+                        </div>
+                        <div class="hotel-actions">
+                            <button class="btn-small">View</button>
+                        </div>
+                    `;
+                    
+                    container.appendChild(entry);
+                });
+            } catch (error) {
+                document.getElementById('hotel-list-container').innerHTML = 
+                    '<div style="text-align: center; padding: 2rem; color: ***REMOVED***dc2626;">Error loading hotels: ' + error.message + '</div>';
+            }
+        }
+        
+        // Load hotels on page load
+        loadHotels();
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

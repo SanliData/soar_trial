@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spec Verification Governance — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 520px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***b45309; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Spec verification governance (H-035)</h1>
+  <p class="muted">Specs, architecture contracts, traces, trace→eval, review gates. Envelope flags autonomous mutation off.</p>
+  <button type="button" id="sBtn">GET specs</button>
+  <button type="button" id="cBtn">GET contracts</button>
+  <button type="button" id="tBtn">GET traces</button>
+  <button type="button" id="eBtn">POST trace-to-eval</button>
+  <button type="button" id="rBtn">GET review-status</button>
+  <button type="button" id="vBtn">POST validate (sample)</button>
+  <div class="card"><h2>Output</h2><pre id="out">(idle)</pre></div>
+  <script>
+    const base = "";
+    document.getElementById("sBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/specs");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("cBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/specs/contracts");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("tBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/specs/traces");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("eBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/specs/trace-to-eval", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ trace_category: "invalid_orchestration", trace_code: "generic" })
+      });
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("rBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/specs/review-status");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("vBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/specs/validate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          spec_id: "workflow_validation",
+          outputs: { contract_keys_present: 1, constraints_flag_true: 1 },
+          constraints_respected: true,
+          escalation_acknowledged: true,
+          architecture_contracts_ok: true
+        })
+      });
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+  </script>
+</body>
+</html>

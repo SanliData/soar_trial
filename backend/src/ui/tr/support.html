@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B — İletişim</title>
+    <meta name="description" content="SOAR B2B iletişim - Sorularınız ve müşteri desteği için bizimle iletişime geçin">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+            --color-text-primary: ***REMOVED***0F172A;
+            --color-text-secondary: ***REMOVED***475569;
+            --color-border: ***REMOVED***E2E8F0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            padding-top: 100px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .header-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 1.5rem 0;
+            z-index: 1000;
+        }
+
+        .header-nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-off-white);
+            font-family: 'Satoshi', sans-serif;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-header {
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(248, 250, 252, 0.2);
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+        }
+
+        .btn-header-secondary {
+            background: transparent;
+            color: var(--color-off-white);
+        }
+
+        .btn-header-secondary:hover {
+            background: rgba(248, 250, 252, 0.1);
+        }
+
+        .support-hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .support-hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-off-white);
+        }
+
+        .support-hero p {
+            font-size: 1.3rem;
+            color: rgba(248, 250, 252, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .support-card {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 8px;
+            padding: 2.5rem;
+        }
+
+        .support-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--color-gold);
+        }
+
+        .support-card p {
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 2rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--color-off-white);
+            font-size: 0.95rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.2);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            color: var(--color-off-white);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--color-gold);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 4px;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit:hover {
+            background: ***REMOVED***C19D2D;
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .contact-info {
+            list-style: none;
+        }
+
+        .contact-info li {
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .contact-info li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--color-gold);
+        }
+
+        .contact-info strong {
+            display: block;
+            color: var(--color-off-white);
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-info span {
+            color: rgba(248, 250, 252, 0.7);
+        }
+
+        .message-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: ***REMOVED***86efac;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .message-success.show {
+            display: block;
+        }
+
+        .message-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: ***REMOVED***fca5a5;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .message-error.show {
+            display: block;
+        }
+
+        .live-chat-widget {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+        }
+
+        .chat-button {
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border: none;
+            border-radius: 50px;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-window.active {
+            display: flex;
+        }
+
+        .chat-header {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: var(--color-off-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: ***REMOVED***f8f9fa;
+            color: var(--color-text-primary);
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+        }
+
+        .chat-message.system {
+            background: rgba(197, 160, 40, 0.1);
+            border-color: var(--color-gold);
+        }
+
+        .chat-input-area {
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .chat-send {
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .chat-window {
+                width: calc(100vw - 2rem);
+                right: -1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="header-nav">
+        <div class="header-nav-content">
+            <a href="soarb2b_home.html" class="header-logo">
+                SOAR<span style="color: var(--color-gold);">→</span>B2B
+            </a>
+            <div class="header-actions">
+                <a href="soarb2b_home.html" class="btn-header btn-header-secondary">Ana Sayfa</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" id="contact">
+        <div class="support-hero">
+            <h1>İletişim</h1>
+            <p>Sorularınız mı var? İletişim formunu doldurun veya canlı destek ile bize ulaşın. Müşteri desteği burada.</p>
+        </div>
+
+        <div class="support-grid">
+            <div class="support-card">
+                <h2>İletişim Formu</h2>
+                <p>Mesajınızı gönderin, en kısa sürede size dönüş yapacağız.</p>
+                
+                <div id="messageSuccess" class="message-success"></div>
+                <div id="messageError" class="message-error"></div>
+
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Adınız *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-posta *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Konu *</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Mesajınız *</label>
+                        <textarea id="message" name="message" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit" id="submitBtn">Gönder</button>
+                </form>
+            </div>
+
+            <div class="support-card">
+                <h2>İletişim Bilgileri</h2>
+                <p>Bize ulaşmanın diğer yolları:</p>
+                <ul class="contact-info">
+                    <li>
+                        <strong>E-posta Desteği</strong>
+                        <span>support@soarb2b.com</span>
+                    </li>
+                    <li>
+                        <strong>Yanıt Süresi</strong>
+                        <span>24 saat içinde yanıt garantisi</span>
+                    </li>
+                    <li>
+                        <strong>Çalışma Saatleri</strong>
+                        <span>Pazartesi - Cuma, 09:00 - 18:00</span>
+                    </li>
+                    <li>
+                        <strong>Canlı Destek</strong>
+                        <span>Sağ alttaki butona tıklayın</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Chat Widget -->
+    <div class="live-chat-widget">
+        <button class="chat-button" id="chatButton" title="Canlı Destek">💬</button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3>Canlı Destek</h3>
+                <button class="chat-close" id="chatClose">×</button>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="chat-message system">
+                    <strong>SOAR B2B Desteği</strong><br>
+                    Merhaba! Size nasıl yardımcı olabiliriz? Mesajınızı yazın, en kısa sürede yanıtlayacağız.
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Mesajınızı yazın...">
+                <button class="chat-send" id="chatSend">Gönder</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Contact Form
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const messageSuccess = document.getElementById('messageSuccess');
+        const messageError = document.getElementById('messageError');
+
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Gönderiliyor...';
+            messageSuccess.classList.remove('show');
+            messageError.classList.remove('show');
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value,
+                language: 'tr'
+            };
+
+            try {
+                const response = await fetch('/api/v1/support/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                let data = {};
+                try {
+                    data = await response.json();
+                } catch (_) {
+                    data = { detail: response.status === 403 ? 'Erişim reddedildi.' : 'Sunucu yanıtı işlenemedi.' };
+                }
+
+                if (response.ok) {
+                    messageSuccess.textContent = data.message || 'Mesajınız başarıyla gönderildi!';
+                    messageSuccess.classList.add('show');
+                    contactForm.reset();
+                    messageSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    const detail = typeof data.detail === 'string' ? data.detail : (data.detail && data.detail.message) || 'Bir hata oluştu. Lütfen tekrar deneyin.';
+                    if (response.status === 403 && (detail.includes('API key') || detail.includes('Invalid'))) {
+                        messageError.textContent = 'İletişim formu için API anahtarı gerekmez. Tarayıcı önbelleğini temizleyip sayfayı yenileyin veya gizli pencerede deneyin.';
+                    } else {
+                        messageError.textContent = detail;
+                    }
+                    messageError.classList.add('show');
+                }
+            } catch (error) {
+                messageError.textContent = 'Bağlantı hatası. Lütfen tekrar deneyin.';
+                messageError.classList.add('show');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Gönder';
+            }
+        });
+
+        // Live Chat Widget
+        const chatButton = document.getElementById('chatButton');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatClose = document.getElementById('chatClose');
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+
+        chatButton.addEventListener('click', function() {
+            chatWindow.classList.toggle('active');
+            if (chatWindow.classList.contains('active')) {
+                chatInput.focus();
+            }
+        });
+
+        chatClose.addEventListener('click', function() {
+            chatWindow.classList.remove('active');
+        });
+
+        function addChatMessage(text, isSystem = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message' + (isSystem ? ' system' : '');
+            messageDiv.innerHTML = text;
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        chatSend.addEventListener('click', function() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addChatMessage('<strong>Siz:</strong><br>' + message);
+
+            // Clear input
+            chatInput.value = '';
+
+            // Add system response (placeholder - can be connected to backend)
+            setTimeout(function() {
+                addChatMessage('<strong>SOAR B2B Desteği:</strong><br>Mesajınız alındı. En kısa sürede size dönüş yapacağız. E-posta adresinize de bir onay mesajı gönderdik.', true);
+            }, 1000);
+        });
+
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                chatSend.click();
+            }
+        });
+
+        // Close chat when clicking outside (mobile)
+        document.addEventListener('click', function(e) {
+            if (chatWindow.classList.contains('active') && 
+                !chatWindow.contains(e.target) && 
+                !chatButton.contains(e.target)) {
+                // Don't close on mobile to avoid accidental closes
+                if (window.innerWidth > 768) {
+                    chatWindow.classList.remove('active');
+                }
+            }
+        });
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

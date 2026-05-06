@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Çalışma Alanı Protokolü — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 520px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***5b21b6; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Çalışma alanı protokolü (H-038)</h1>
+  <p class="muted">Yönetilen ilkeler, modüler kurallar, kapsamlı bellek bildirimi, komutlar, beceriler, izinler ve alt ajan kapsamları.</p>
+  <button type="button" id="pBtn">GET policies</button>
+  <button type="button" id="rBtn">GET rules</button>
+  <button type="button" id="mBtn">GET memory</button>
+  <button type="button" id="cBtn">GET commands</button>
+  <button type="button" id="sBtn">GET skills</button>
+  <button type="button" id="permBtn">GET permissions</button>
+  <div class="card"><h2>Çıktı</h2><pre id="out">(boşta)</pre></div>
+  <script>
+    const base = "";
+    function get(path) {
+      return fetch(base + path).then(r => r.json());
+    }
+    document.getElementById("pBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/workspaces/policies"), null, 2);
+    };
+    document.getElementById("rBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/workspaces/rules"), null, 2);
+    };
+    document.getElementById("mBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/workspaces/memory"), null, 2);
+    };
+    document.getElementById("cBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/workspaces/commands"), null, 2);
+    };
+    document.getElementById("sBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/workspaces/skills"), null, 2);
+    };
+    document.getElementById("permBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/workspaces/permissions"), null, 2);
+    };
+  </script>
+</body>
+</html>

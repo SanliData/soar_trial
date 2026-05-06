@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Çıkarım Çalışma Zamanı — FinderOS</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    button { margin: 6px 8px 0 0; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***1d4ed8; color: ***REMOVED***fff; font-size: 12px; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 440px; font-size: 10px; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 13px; margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <h1>Çıkarım çalışma zamanı (H-041)</h1>
+  <p class="muted">Yalnızca yönetim bildirimleri — otonom zamanlama veya gizli ayar yok.</p>
+  <button type="button" data-p="/api/v1/system/inference/token-budgets">token-budgets</button>
+  <button type="button" data-p="/api/v1/system/inference/kv-cache">kv-cache</button>
+  <button type="button" data-p="/api/v1/system/inference/batching">batching</button>
+  <button type="button" data-p="/api/v1/system/inference/costs">costs</button>
+  <button type="button" data-p="/api/v1/system/inference/telemetry">telemetry</button>
+  <button type="button" data-p="/api/v1/system/inference/collapse-risk">collapse-risk</button>
+  <button type="button" data-p="/api/v1/system/inference/prefill-pressure">prefill-pressure</button>
+  <button type="button" data-p="/api/v1/system/inference/efficiency">efficiency</button>
+  <button type="button" data-p="/api/v1/system/inference/speculative">speculative</button>
+  <button type="button" data-p="/api/v1/system/inference/parallelism">parallelism</button>
+  <pre id="out">(boşta)</pre>
+  <script>
+    document.querySelectorAll("button[data-p]").forEach(function (btn) {
+      btn.onclick = function () {
+        fetch(btn.getAttribute("data-p")).then(function (r) { return r.json(); }).then(function (j) {
+          document.getElementById("out").textContent = JSON.stringify(j, null, 2);
+        });
+      };
+    });
+  </script>
+</body>
+</html>

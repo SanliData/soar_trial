@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SOAR B2B — Hedefinizi Seçin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        .container {
+            min-height: 100vh;
+            padding: 4rem 2rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 2rem;
+        }
+        .capped-warning {
+            display: none;
+            padding: 1rem;
+            margin-top: 1rem;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 4px;
+            color: rgba(248, 250, 252, 0.9);
+        }
+        .objective-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .objective-card {
+            padding: 2rem;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .objective-card:hover {
+            border-color: var(--color-gold);
+            background: rgba(248, 250, 252, 0.08);
+        }
+        .objective-card.selected {
+            border-color: var(--color-gold);
+            background: rgba(197, 160, 40, 0.1);
+        }
+        .objective-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--color-gold);
+        }
+        .objective-items {
+            font-size: 0.95rem;
+            color: rgba(248, 250, 252, 0.7);
+            line-height: 1.8;
+        }
+        .transparency-notice {
+            padding: 1.5rem;
+            background: rgba(248, 250, 252, 0.03);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: rgba(248, 250, 252, 0.8);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border: none;
+            border-radius: 4px;
+            font-family: 'Satoshi', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: ***REMOVED***C19D2D;
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Hedefinizi Seçin</h1>
+            <p class="subtitle">Ne başarmak istiyorsunuz? (Birden fazla seçebilirsiniz)</p>
+            <div class="capped-warning" id="cappedWarning">
+                ⚠️ Bu bölge 100'den fazla uygun işletme içeriyor. Lütfen kriterlerinizi daraltın veya sınırlı örnekle devam edin.
+            </div>
+        </div>
+
+        <div class="objective-grid">
+            <div class="objective-card" data-objective="market_intelligence">
+                <div class="objective-title">Pazar İstihbaratı</div>
+                <div class="objective-items">• Hedef bölgedeki işletmelerin listesi<br>• Adres, ölçek, faaliyet bilgileri</div>
+            </div>
+
+            <div class="objective-card" data-objective="persona_discovery">
+                <div class="objective-title">Persona Keşfi</div>
+                <div class="objective-items">• Hedef departmanlar (Satın Alma, Operasyonlar, Kurucu…)<br>• Yetki ve karar tipi analizi</div>
+            </div>
+
+            <div class="objective-card" data-objective="reachability_report">
+                <div class="objective-title">Erişilebilirlik Raporu (Önizleme)</div>
+                <div class="objective-items">• E-posta / LinkedIn / Telefon erişilebilirlik durumu<br>• Kanal bazlı sayı ve oranlar</div>
+            </div>
+
+            <div class="objective-card" data-objective="precision_exposure">
+                <div class="objective-title">Hassas Görünürlük</div>
+                <div class="objective-items">• Doğru lokasyonda, doğru kişilere reklam<br>• En düşük maliyetli görünürlük</div>
+            </div>
+
+            <div class="objective-card" data-objective="soft_conversion">
+                <div class="objective-title">Yumuşak Dönüşüm</div>
+                <div class="objective-items">• Web sitesi ziyaretleri<br>• İçerik tüketimi</div>
+            </div>
+
+            <div class="objective-card" data-objective="direct_access">
+                <div class="objective-title">Doğrudan Erişim (İsteğe Bağlı)</div>
+                <div class="objective-items">• Ulaşım / randevu (premium)</div>
+            </div>
+        </div>
+
+        <div class="transparency-notice">
+            🔒 Kontrol sizde. Hiçbir şey onayınız olmadan aktifleştirilmez.
+        </div>
+
+        <div style="padding: 1rem; margin-bottom: 2rem; background: rgba(248, 250, 252, 0.03); border: 1px solid rgba(248, 250, 252, 0.1); border-radius: 4px; font-size: 0.9rem; color: rgba(248, 250, 252, 0.7);">
+            <strong style="color: var(--color-gold);">SOAR B2B kontrollü, yüksek kaliteli çıktılar sunar.</strong><br>
+            Büyük bölgeler doğruluk ve performansı korumak için örneklenir. Sorgu başına maksimum 100 sonuç.
+        </div>
+
+        <button class="btn-primary" id="continueBtn" onclick="saveObjectives()" disabled>Devam Et</button>
+    </div>
+
+    <script>
+        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        const planId = new URLSearchParams(window.location.search).get('plan_id');
+        const selectedObjectives = new Set();
+
+        if (planId) {
+            checkPreviewWarning();
+        }
+
+        async function checkPreviewWarning() {
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plan/${planId}/preview`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+                if (!response.ok) return;
+                
+                const preview = await response.json();
+                if (preview.requires_refinement && preview.warning_message) {
+                    document.getElementById('cappedWarning').style.display = 'block';
+                    document.getElementById('cappedWarning').textContent = '⚠️ ' + preview.warning_message;
+                }
+            } catch (error) {
+                // Ignore
+            }
+        }
+
+        document.querySelectorAll('.objective-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('selected');
+                const objective = card.dataset.objective;
+                if (selectedObjectives.has(objective)) {
+                    selectedObjectives.delete(objective);
+                } else {
+                    selectedObjectives.add(objective);
+                }
+                document.getElementById('continueBtn').disabled = selectedObjectives.size === 0;
+            });
+        });
+
+        async function saveObjectives() {
+            if (selectedObjectives.size === 0) return;
+
+            const btn = document.getElementById('continueBtn');
+            btn.disabled = true;
+            btn.textContent = 'Kaydediliyor...';
+
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plan/objectives`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        plan_id: planId,
+                        objectives: Array.from(selectedObjectives)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Hedefler kaydedilemedi: ${response.status}`);
+                }
+
+                window.location.href = `/ui/tr/soarb2b_process_timeline.html?plan_id=${planId}`;
+            } catch (error) {
+                alert('Hedefler kaydedilirken hata: ' + error.message);
+                btn.disabled = false;
+                btn.textContent = 'Devam Et';
+            }
+        }
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

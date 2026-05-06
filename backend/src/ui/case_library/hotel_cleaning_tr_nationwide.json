@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "case_id": "HOTEL_CLEANING_TR_NATIONWIDE",
+    "title": "Hotel Cleaning Supplies - Turkey Nationwide",
+    "sector": "Hospitality",
+    "region": "TR",
+    "access_level": "public",
+    "created_at": "2025-01-15T10:00:00Z",
+    "updated_at": "2025-01-15T10:00:00Z"
+  },
+  "objective": {
+    "paragraph": "A manufacturer of professional cleaning and sanitation products sought to expand market presence across Turkey's hospitality sector. The goal was to establish supply agreements with hotels and resort properties by booking meetings with decision-makers responsible for procurement and facility maintenance.",
+    "one_liner": "Hotels across Turkey to book meetings with procurement and housekeeping managers for cleaning supplies supply agreements."
+  },
+  "target_profile": {
+    "company_type": "3-5 star hotels and resort properties",
+    "geography": "Turkey nationwide (Istanbul, Ankara, Antalya, Izmir, Cappadocia, coastal resorts)",
+    "decision_roles": ["Procurement Manager", "Housekeeping Director", "Operations Manager", "Facility Manager"]
+  },
+  "sequence": {
+    "step_01": "Target: Verified hotel list created with addresses and contact information for major Turkish hospitality properties",
+    "step_02": "Identify: Decision-maker roles mapped including procurement, housekeeping, and operations departments",
+    "step_03": "Expose: Multi-channel visibility launched with role-focused messaging on LinkedIn and location-targeted Google Ads",
+    "step_04": "Engage: High-intent outreach initiated via email templates and phone scripts for properties showing engagement signals",
+    "step_05": "Meet: Confirmed meetings booked with verified decision-makers from target roles"
+  },
+  "outputs": {
+    "companies_targeted": "280-320 verified hotel properties",
+    "personas_targeted": "Procurement, housekeeping, operations decision-makers",
+    "locations_targeted": "Istanbul, Ankara, Antalya, Izmir, Cappadocia, coastal resort areas",
+    "campaigns_launched": "LinkedIn role-targeted campaigns, Google Ads location-focused, Meta/Instagram hospitality interest targeting"
+  },
+  "analysis_result": {
+    "impressions": {"min": 85000, "max": 120000, "unit": "number"},
+    "reach": {"min": 42000, "max": 58000, "unit": "number"},
+    "clicks": {"min": 1800, "max": 2400, "unit": "number"},
+    "ctr": {"min": 2.1, "max": 2.8, "unit": "percent"},
+    "cpc": {"min": 0.35, "max": 0.52, "unit": "USD"},
+    "cpm": {"min": 12.5, "max": 18.2, "unit": "USD"},
+    "spend": {"min": 630, "max": 1250, "unit": "USD"},
+    "landing_views": {"min": 1450, "max": 1950, "unit": "number"},
+    "lead_form_opens": {"min": 380, "max": 520, "unit": "number"},
+    "lead_form_submits": {"min": 95, "max": 135, "unit": "number"},
+    "meeting_requests": {"min": 24, "max": 38, "unit": "number"},
+    "meetings_booked": {"min": 18, "max": 28, "unit": "number"},
+    "qualified_meetings": {"min": 14, "max": 22, "unit": "number"},
+    "conversion_rates": {
+      "click_to_landing": {"min": 78.5, "max": 82.3, "unit": "percent"},
+      "landing_to_lead": {"min": 24.2, "max": 28.7, "unit": "percent"},
+      "lead_to_meeting": {"min": 18.9, "max": 23.5, "unit": "percent"}
+    },
+    "active_leads": {"min": 95, "max": 135, "unit": "number"},
+    "passive_leads": {"min": 285, "max": 385, "unit": "number"},
+    "timeframe_days": {"min": 45, "max": 75, "unit": "days"},
+    "notes": "Strong performance in resort areas during peak season. Procurement managers showed highest engagement rates."
+  },
+  "usage_flags": {
+    "sales_demo": true,
+    "onboarding": true,
+    "pricing": true,
+    "sponsor_ready": true,
+    "seo_ready": true
+  }
+}

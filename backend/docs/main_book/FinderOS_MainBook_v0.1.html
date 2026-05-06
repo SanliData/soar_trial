@@ -1,0 +1,1488 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderOS – Main Book (v0.1) + Appendix Growth & Activation (2025-12-13)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:***REMOVED***0F172A;
+    --fg:***REMOVED***F8FAFC;
+    --muted:rgba(248,250,252,.72);
+    --border:rgba(248,250,252,.10);
+    --panel:rgba(248,250,252,.04);
+    --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sans:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --head:'Satoshi', sans-serif;
+    --gold:***REMOVED***C5A028;
+  }
+  body { font-family: var(--sans); margin: 0; line-height: 1.65; color:var(--fg); background: var(--bg); padding-top: 72px; }
+  a{ color: rgba(248,250,252,.9); text-decoration: none; }
+  a:hover{ color: var(--fg); text-decoration: underline; }
+  .topbar{
+    position: fixed; inset: 0 0 auto 0; height: 60px;
+    background: rgba(15,23,42,.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border); z-index: 50;
+    display:flex; align-items:center;
+  }
+  .topbar .inner{ max-width: 1100px; padding: 0 18px; margin: 0 auto; width:100%; display:flex; align-items:center; gap:14px; }
+  .brand{ font-family: var(--head); font-weight: 900; letter-spacing: .02em; }
+  .nav{ margin-left: auto; display:flex; gap:12px; flex-wrap: wrap; }
+  .nav a{ font-size: 13px; opacity: .9; padding: 6px 10px; border: 1px solid transparent; border-radius: 999px; }
+  .nav a:hover{ border-color: var(--border); text-decoration:none; }
+  .container{ max-width: 980px; margin: 0 auto; padding: 24px 18px 64px; }
+  h1,h2,h3{ font-family: var(--head); font-weight: 900; letter-spacing: -0.02em; }
+  h1 { font-size: 30px; margin: 0 0 10px; }
+  h2 { font-size: 20px; margin-top: 28px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 16px; margin-top: 18px; }
+  .meta { color:var(--muted); font-size: 13px; margin-bottom: 18px; }
+  code, pre { font-family: var(--mono); }
+  pre { background: rgba(11,16,32,.9); color:***REMOVED***e5e7eb; padding: 12px; border-radius: 10px; overflow:auto; border: 1px solid rgba(248,250,252,.10); }
+  .box { border:1px solid var(--border); border-radius: 12px; padding: 14px 16px; background: var(--panel); }
+  .tag { display:inline-block; font-size:12px; padding:2px 10px; border-radius:999px; border:1px solid rgba(197,160,40,.35); background: rgba(197,160,40,.08); color: rgba(248,250,252,.92); margin-right:8px; }
+  ul { margin-top: 6px; }
+  table { border-collapse: collapse; width:100%; margin-top: 10px; }
+  th, td { border:1px solid var(--border); padding: 8px; text-align:left; vertical-align: top; }
+  th { background: rgba(248,250,252,.06); }
+  .pill{ display:inline-block; font-size: 12px; padding: 2px 10px; border-radius: 999px; border:1px solid rgba(197,160,40,.35); color: rgba(248,250,252,.9); background: rgba(197,160,40,.08); }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="inner">
+    <div class="brand">FinderOS Docs</div>
+    <div class="nav">
+      <a href="/ui/en/soarb2b_home.html">SOAR B2B</a>
+      <a href="/ui/docs/finderos_livebook.html">LiveBook</a>
+      <a href="/ui/docs/finderos_mainbook.html">Main Book</a>
+      <a href="/ui/docs/appendix_growth_activation.html">Appendix I</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+<h1>FinderOS – Main Book (v0.1) + Appendix Growth & Activation <span class="pill">2025-12-13</span></h1>
+<div class="meta">
+  Owner view: FinderOS (Lead Generation OS) | Hedef: FINDIAG için ulusal ölçekte nitelikli firma/teknisyen/tamirci onboarding ve aktivasyon.<br>
+  Not: FINDIAG iç akışları ayrı yönetilir. FinderOS yalnızca “nitelikli lead üretimi + activation” katmanına odaklanır.
+</div>
+
+<div class="box">
+  <div class="tag">Non-negotiables</div>
+  <ul>
+    <li>Router katmanı iş mantığı içermez; doğrulama, auth, rate-limit, logging, context binding yapar.</li>
+    <li>Kod ve kod içi dokümantasyon: English only + UTF-8 (no BOM). Pre-run UTF-8 scan zorunlu.</li>
+    <li>API sözleşmeleri idempotency ve rate limit error contract (429) gibi kuralları açıklar.</li>
+    <li>Security: secrets vault, OWASP-aligned input validation, least-privilege erişim.</li>
+  </ul>
+</div>
+
+<h2>1. Ürün Tanımı ve Sınırları</h2>
+<h3>1.1. Ana Ürün</h3>
+<ul>
+  <li><strong>FinderOS</strong> = nitelikli ürün/servis bazlı lead üretim platformu.</li>
+  <li>Çıktı: doğrulanmış firma/departman kontakları, randevu/appointment akışı, görünürlük (ads) ve ölçüm.</li>
+</ul>
+
+<h3>1.2. FinderOS vs FINDIAG</h3>
+<ul>
+  <li>FinderOS, FINDIAG’a “supply” sağlar: kategorilere göre firmaları keşfeder, segmentler, iletişim açar, onboarding sağlar.</li>
+  <li>FINDIAG, tüketici tarafında iş atama, teklif alma, token, seçim ve service fee/komisyon kesme akışlarını yürütür.</li>
+</ul>
+
+<h2>2. Proje Tasarımı (Baştan)</h2>
+<h3>2.1. Bounded Contexts</h3>
+<table>
+  <tr><th>Context</th><th>Purpose</th><th>Core Entities</th><th>Notes</th></tr>
+  <tr><td>Directory Ingestion</td><td>Resmi kaynaklardan firma/şube verisi toplama</td><td>Source, RawListing, ParseJob</td><td>Robots/ToS uyumu; throttle; provenance log</td></tr>
+  <tr><td>Enrichment</td><td>Telefon/email/department çıkarımı, doğrulama</td><td>Contact, VerificationAttempt</td><td>Quality score; dedupe; confidence</td></tr>
+  <tr><td>Geo Targeting</td><td>Adres → geo ve micro-radius hedefleme</td><td>Place, GeoPoint, RadiusPolicy</td><td>0.1 mile ≈ 160.9 m; 20–50 m için “pin + geofence” stratejisi</td></tr>
+  <tr><td>Activation</td><td>Onboarding, teklif/lead kabul süreci</td><td>VendorProfile, Category, SLAProfile</td><td>Minimal onboarding; category compliance</td></tr>
+  <tr><td>Campaign Ops</td><td>Reklam harcaması yönetimi, ölçüm</td><td>Campaign, Budget, Creative, Audience</td><td>UTM/Call tracking; RUM + backend metrics</td></tr>
+  <tr><td>Partner Sync</td><td>FINDIAG’a supply push</td><td>PartnerExport, SyncToken</td><td>Idempotent export; audit logs</td></tr>
+</table>
+
+<h3>2.2. Minimal Service Topology (MVP)</h3>
+<ul>
+  <li><strong>finderos-api</strong>: FastAPI gateway, routers only (no business logic)</li>
+  <li><strong>directory-service</strong>: ingestion + parsing + dedupe</li>
+  <li><strong>enrichment-service</strong>: contact extraction + verification</li>
+  <li><strong>activation-service</strong>: vendor onboarding + policy compliance</li>
+  <li><strong>campaign-service</strong>: budgets + geo targeting policies</li>
+</ul>
+
+<h3>2.3. Data Model (MVP Tables)</h3>
+<ul>
+  <li>vendors(vendor_id, tenant_id, legal_name, dba_name, category_codes[], status, created_at)</li>
+  <li>locations(location_id, vendor_id, address, geo_lat, geo_lon, source, quality_score)</li>
+  <li>contacts(contact_id, vendor_id, type, value, department, verified, confidence)</li>
+  <li>campaigns(campaign_id, vendor_id, geo_policy_id, budget_daily, status)</li>
+  <li>exports(export_id, partner="FINDIAG", payload_hash, created_at, status)</li>
+</ul>
+
+<h2>3. Mimari Tasarım İlkeleri (ROL-3 Uygulama İçin)</h2>
+<ul>
+  <li>Router: request validation (DTO), auth binding, rate limiting, structured logging, error mapping.</li>
+  <li>Service layer: business rules, DB, external calls, retries, idempotency keys.</li>
+</ul>
+
+<h2>APPENDIX – Growth &amp; Activation</h2>
+<h3>B1.1. Supply Strategy (DFW başlangıç)</h3>
+<ul>
+  <li>Kaynaklar: resmi lisans kayıtları, belediye izinleri, meslek odaları, state contractor registries, Google Business Profiles.</li>
+  <li>Çıktı: kategori bazlı vendor listesi + lokasyon + iletişim kanalları + kalite skoru.</li>
+</ul>
+
+<h3>B1.2. Category Constraints (FINDIAG kategorileriyle sınırlı)</h3>
+<ul>
+  <li>FinderOS, sadece FINDIAG’da listelenen kategorileri hedefler.</li>
+  <li>Kategori mapping: external NAICS/keyword → FINDIAG category_code.</li>
+</ul>
+
+<h3>B1.3. Geo Targeting: Micro-radius ve “Zero Point”</h3>
+<ul>
+  <li>0.1 mile ≈ 160.9 metre. 20–50 m hedeflemek platform limitlerine bağlıdır.</li>
+  <li>Pratik: pin-drop + geofence (20–50 m) + adres odaklı keyword intent.</li>
+  <li>Risk: çok dar hedefleme reach düşürür; fallback radius policy gerekir.</li>
+</ul>
+
+<h3>B1.4. Activation Funnel</h3>
+<ul>
+  <li>Verify contact → confirm category & region → SLA prefs → export to FINDIAG.</li>
+</ul>
+
+<h3>B1.5. Supply Ops</h3>
+<ul>
+  <li>Daily ingestion jobs + enrichment queue + dedupe rules.</li>
+  <li>Human-in-the-loop sadece low confidence contact’larda.</li>
+</ul>
+
+<h3>B1.6. Global Scaling</h3>
+<ul>
+  <li>Adapter-based source ingestion + unified listing schema.</li>
+  <li>Data moat: vendor graph + response behavior + conversion metrics.</li>
+</ul>
+
+<h2>4. ROL-2 için Uygulama Komutları</h2>
+<ol>
+  <li>MVP bounded context sınırlarını yazılı hale getir ve repo modül sınırlarını dondur.</li>
+  <li>Category mapping spec oluştur (FINDIAG category_code listesi + mapping tablosu).</li>
+  <li>API contract: onboarding, verification, export; idempotency + 429 error contract zorunlu.</li>
+  <li>Observability: structured logs + minimal metrics + health endpoints.</li>
+  <li>Security baseline: secrets plan + input validation checklist.</li>
+</ol>
+
+<h2>5. Frontend Enhancements (2025-12-13 Update)</h2>
+<h3>5.1. Smart Stepper Navigation</h3>
+<ul>
+  <li><strong>Location</strong>: Left sidebar (vertical navigation)</li>
+  <li><strong>Features</strong>: All 11 steps + Dashboard visible at once, completed steps show green checkmark (✓), active step glows with animation, click any step to navigate, auto-updates on tab change</li>
+  <li><strong>Auto-save</strong>: Form data automatically saved to localStorage on step change</li>
+</ul>
+
+<h3>5.2. Magic Dashboard (Performance Cockpit)</h3>
+<ul>
+  <li><strong>Location</strong>: Tab 0 (New Dashboard tab)</li>
+  <li><strong>4 Performance Cards</strong>:
+    <ul>
+      <li>Total Leads: Companies discovered</li>
+      <li>Active Ads: Daily spend</li>
+      <li>Upcoming Meetings: Today's appointments</li>
+      <li>Plan Usage: Usage statistics with limits</li>
+    </ul>
+  </li>
+  <li>Real-time data loading from backend APIs</li>
+  <li>Quick action buttons for common tasks</li>
+</ul>
+
+<h3>5.3. Drag & Drop CSV/Excel Upload</h3>
+<ul>
+  <li><strong>Location</strong>: Step 4 (Research & Company Pool)</li>
+  <li>Drag & drop zone for CSV/Excel files</li>
+  <li>Skeleton loader animation during processing</li>
+  <li>"AI is analyzing and verifying companies..." message</li>
+  <li>Automatic column mapping detection</li>
+</ul>
+
+<h3>5.4. FullCalendar Integration</h3>
+<ul>
+  <li><strong>Location</strong>: Step 11 (Appointment)</li>
+  <li>Interactive calendar view (month/week/day)</li>
+  <li>Appointments displayed as colored blocks</li>
+  <li>Hover tooltip with Lead info and keyword</li>
+  <li>Drag & drop to reschedule appointments</li>
+  <li>"Join Google Meet" link in tooltip</li>
+</ul>
+
+<h3>5.5. Dark Mode</h3>
+<ul>
+  <li><strong>Location</strong>: Top-right toggle button</li>
+  <li>Electric Blue (***REMOVED***3b82f6) accent color</li>
+  <li>Deep Slate (***REMOVED***0f172a) background</li>
+  <li>Preference saved in localStorage</li>
+  <li>All components support dark mode</li>
+</ul>
+
+<h3>5.6. AI Co-Pilot Assistant</h3>
+<ul>
+  <li><strong>Location</strong>: Floating button (bottom-right)</li>
+  <li>Gemini API integration ready</li>
+  <li>Context-aware advice based on current step</li>
+  <li>Step-specific recommendations</li>
+  <li>Beautiful slide-up panel</li>
+</ul>
+
+<h2>6. HTTPS Support (2025-12-13 Update)</h2>
+<h3>6.1. Frontend Auto-Detection</h3>
+<ul>
+  <li><strong>Development</strong>: localhost/127.0.0.1 → HTTP</li>
+  <li><strong>Production</strong>: Other domains → HTTPS</li>
+  <li>Automatic protocol selection based on hostname</li>
+</ul>
+
+<h3>6.2. Backend HTTPS Redirect Middleware</h3>
+<ul>
+  <li>Production'da HTTP isteklerini HTTPS'e yönlendirir</li>
+  <li>Environment variable ile kontrol: <code>FINDEROS_FORCE_HTTPS=true</code></li>
+  <li>Middleware: <code>src/middleware/https_redirect_middleware.py</code></li>
+</ul>
+
+<h3>6.3. SSL/TLS Certificate Support</h3>
+<ul>
+  <li>Uvicorn ile SSL sertifikaları kullanılabilir</li>
+  <li>Environment variables:
+    <ul>
+      <li><code>FINDEROS_USE_HTTPS=true</code></li>
+      <li><code>FINDEROS_SSL_CERTFILE=/path/to/cert.pem</code></li>
+      <li><code>FINDEROS_SSL_KEYFILE=/path/to/key.pem</code></li>
+    </ul>
+  </li>
+  <li>Let's Encrypt veya diğer CA sertifikaları desteklenir</li>
+</ul>
+
+<h3>6.4. Security Best Practices</h3>
+<ul>
+  <li>Always use HTTPS in production</li>
+  <li>Use Let's Encrypt for free SSL certificates</li>
+  <li>Set up reverse proxy (Nginx) for better security</li>
+  <li>Enable HSTS (HTTP Strict Transport Security)</li>
+</ul>
+
+<h2>7. Industrial Chain Hunter (2025-12-13 Update)</h2>
+<h3>7.1. X → Y Analysis</h3>
+<ul>
+  <li><strong>Purpose</strong>: Identifies end products (Y) from raw materials (X) using Gemini AI</li>
+  <li><strong>Service</strong>: <code>src/services/industrial_chain_hunter_service.py</code></li>
+  <li><strong>API</strong>: <code>POST /v1/industrial-chain-hunter/hunt</code></li>
+  <li><strong>Example</strong>: Input "Maya" → Output ["Bread", "Pizza", "Pastries"]</li>
+</ul>
+
+<h3>7.2. Producer Extraction</h3>
+<ul>
+  <li><strong>Digital Label Scraper</strong>: Scrapes Google/Amazon ads for Y products</li>
+  <li><strong>Producer Filter</strong>: Distinguishes manufacturers from resellers using keywords (Factory, Bakery, Producer, Homemade)</li>
+  <li><strong>Auto-Pool Integration</strong>: Automatically adds verified producers to Company Pool with "Verified Manufacturer" tag</li>
+  <li><strong>Address Extraction</strong>: Extracts physical addresses from scraped content</li>
+</ul>
+
+<h3>7.3. UI Integration</h3>
+<ul>
+  <li><strong>Location</strong>: Step 4 (Research & Company Pool)</li>
+  <li><strong>Features</strong>: Raw Material input, Hunt button, Results table with confidence scores and reasoning</li>
+  <li><strong>Reasoning Column</strong>: Shows why a producer was selected (e.g., "Found producer keywords: factory, bakery")</li>
+</ul>
+
+<h2>8. Sniper-B2B Autonomous Sales Cycle (2025-12-13 Update)</h2>
+<h3>8.1. Phase 1-2: X to Y Mapping & Producer Extraction</h3>
+<ul>
+  <li>Uses Industrial Chain Hunter service</li>
+  <li>Gemini API for X → Y analysis</li>
+  <li>Google/Amazon scraping for producer discovery</li>
+  <li>Automatic address extraction</li>
+</ul>
+
+<h3>8.2. Phase 3: Sniper Targeting (10m Accuracy)</h3>
+<ul>
+  <li><strong>Geocoding Service</strong>: <code>src/services/geocoding_service.py</code></li>
+  <li><strong>Primary</strong>: Google Geocoding API (high accuracy)</li>
+  <li><strong>Fallback</strong>: Nominatim (OpenStreetMap) - free</li>
+  <li><strong>10m Radius Targeting</strong>: Google Ads API with ProximityInfo (0.00009 degrees = 10 meters)</li>
+  <li><strong>Map Visualization</strong>: Leaflet.js with 10m radius circle</li>
+</ul>
+
+<h3>8.3. Phase 4: Persona & Creative Generation</h3>
+<ul>
+  <li><strong>Auto Persona Generation</strong>: Creates "Production Head" and "Owner" personas</li>
+  <li><strong>Persona-Based Ad Copy</strong>: Gemini API generates persona-specific ad copies</li>
+  <li><strong>Locale-Aware</strong>: Supports TR/EN/DE/ES languages</li>
+  <li><strong>Service</strong>: <code>src/services/sniper_b2b_service.py</code></li>
+</ul>
+
+<h3>8.4. Phase 5: Cycle Closure</h3>
+<ul>
+  <li><strong>Won Customers Tracking</strong>: Company model with <code>status="won"</code> and <code>cycle_status</code> fields</li>
+  <li><strong>Conversion Types</strong>: lead_form, appointment, sale</li>
+  <li><strong>API Endpoints</strong>:
+    <ul>
+      <li><code>POST /v1/sniper-b2b/mark-won</code> - Mark company as won</li>
+      <li><code>GET /v1/sniper-b2b/won-customers</code> - Get won customers list</li>
+    </ul>
+  </li>
+  <li><strong>Automatic Closure</strong>: When Lead Form is filled or Appointment is booked, company is automatically marked as "won"</li>
+</ul>
+
+<h3>8.5. UI Integration</h3>
+<ul>
+  <li><strong>Sniper Mode Toggle</strong>: Step 4 toggle switch</li>
+  <li><strong>Current Target Dashboard</strong>: Shows target company, location, coordinates, and 10m radius map</li>
+  <li><strong>Map Visualization</strong>: Leaflet.js with marker and radius circle</li>
+</ul>
+
+<h2>9. Multi-Language Support (i18n) (2025-01-16 Update)</h2>
+<h3>9.1. Frontend</h3>
+<ul>
+  <li><strong>Library</strong>: i18next + Static HTML translations</li>
+  <li><strong>Languages</strong>: Turkish (TR), English (EN), German (DE), Spanish (ES), French (FR), Italian (IT), Arabic (AR) - <strong>7 languages total</strong></li>
+  <li><strong>Language Selector</strong>: Header dropdown (order: EN, ES, FR, DE, IT, TR, AR)</li>
+  <li><strong>Translation Scope</strong>:
+    <ul>
+      <li>Objective Selection (7/7 languages complete)</li>
+      <li>Process Timeline (7/7 languages complete)</li>
+      <li>Results Hub (6/7 languages: EN, TR, DE, ES, FR, AR)</li>
+      <li>Onboarding confirmation messages (all languages)</li>
+      <li>Step titles, button labels, UI elements</li>
+    </ul>
+  </li>
+  <li><strong>RTL Support</strong>: Full right-to-left support for Arabic (dir="rtl", direction: rtl in CSS)</li>
+</ul>
+
+<h3>9.2. Backend</h3>
+<ul>
+  <li><strong>Middleware</strong>: <code>src/middleware/locale_middleware.py</code></li>
+  <li><strong>Header</strong>: Reads <code>Accept-Language</code> header</li>
+  <li><strong>Request State</strong>: Sets <code>request.state.locale</code></li>
+</ul>
+
+<h3>9.3. AI Integration</h3>
+<ul>
+  <li><strong>Gemini Prompts</strong>: Includes "Respond in [Language]" parameter</li>
+  <li><strong>Services</strong>: All Gemini-based services accept <code>locale</code> parameter</li>
+  <li><strong>Google Ads</strong>: Keyword research in selected language</li>
+</ul>
+
+<h2>10. Conversion Path Selector (2025-12-13 Update)</h2>
+<h3>10.1. Two Conversion Strategies</h3>
+<ul>
+  <li><strong>Lead Gen (Appointment)</strong>: For high-value services, redirects to appointment booking</li>
+  <li><strong>Direct Traffic (Sales Site)</strong>: For product-focused sales, redirects to sales site with UTM tracking</li>
+</ul>
+
+<h3>10.2. UTM Tracking</h3>
+<ul>
+  <li><strong>Automatic Generation</strong>: UTM parameters for every sales site link</li>
+  <li><strong>Parameters</strong>: campaign, region, public_data_source (from Step 4)</li>
+  <li><strong>Service</strong>: <code>src/services/utm_service.py</code></li>
+</ul>
+
+<h3>10.3. Sales Page Audit</h3>
+<ul>
+  <li><strong>AI-Powered LPO</strong>: Gemini API scans sales site URL</li>
+  <li><strong>Recommendations</strong>: Landing page optimization suggestions (e.g., "This page is not convincing enough for a US customer; you should add these headings")</li>
+  <li><strong>API</strong>: <code>POST /v1/sales-page-audit/audit</code></li>
+  <li><strong>Service</strong>: <code>src/services/sales_page_audit_service.py</code></li>
+</ul>
+
+<h2>11. Monetization Package (2025-12-13 Update)</h2>
+<h3>11.1. Subscription Plans</h3>
+<ul>
+  <li><strong>Free</strong>: $0/mo - Basic features</li>
+  <li><strong>Pro</strong>: $99/mo - Unlimited features</li>
+  <li><strong>Enterprise</strong>: $299/mo - Custom support and API access</li>
+</ul>
+
+<h3>11.2. Payment Integration</h3>
+<ul>
+  <li><strong>Stripe</strong>: Credit card payments</li>
+  <li><strong>Iyzico</strong>: Turkish payment gateway</li>
+  <li><strong>Service</strong>: <code>src/services/payment_service.py</code></li>
+</ul>
+
+<h3>11.3. Usage Tracking</h3>
+<ul>
+  <li><strong>Real-time Monitoring</strong>: Plan limit tracking</li>
+  <li><strong>Automatic Enforcement</strong>: Plan-based usage limits</li>
+  <li><strong>Service</strong>: <code>src/services/usage_tracking_service.py</code></li>
+  <li><strong>API</strong>: <code>GET /v1/usage/statistics</code></li>
+</ul>
+
+<h2>12. SOAR B2B Access & Exposure Architecture (2025-01-09)</h2>
+<h3>12.1. Access Feasibility Preview</h3>
+<ul>
+  <li><strong>Purpose</strong>: Show aggregated, anonymous feasibility data BEFORE purchase</li>
+  <li><strong>Data Displayed</strong>: Total businesses (count), contact availability counts, industry/size distributions</li>
+  <li><strong>Data NOT Displayed</strong>: Individual company names, personal emails, phone numbers, LinkedIn URLs, any PII</li>
+  <li><strong>API</strong>: <code>POST /api/v1/b2b/feasibility/generate</code>, <code>GET /api/v1/b2b/feasibility/report/{report_id}</code></li>
+  <li><strong>Model</strong>: <code>src/models/feasibility_report.py</code></li>
+  <li><strong>Service</strong>: <code>src/services/feasibility_service.py</code></li>
+</ul>
+
+<h3>12.2. Purchase Gating Logic</h3>
+<ul>
+  <li><strong>Purpose</strong>: Lock access data behind purchase actions, track usage for billing</li>
+  <li><strong>Access Gates</strong>: Module-based access control (feasibility, exposure, outreach, contact_data)</li>
+  <li><strong>Gating Behavior</strong>: Preview mode (default) shows aggregated counts, Unlocked mode (after purchase) grants access to underlying data</li>
+  <li><strong>Usage Tracking</strong>: Access count, last accessed timestamp, usage limits enforced</li>
+  <li><strong>Model</strong>: <code>src/models/access_gate.py</code></li>
+  <li><strong>Service</strong>: <code>src/services/access_gate_service.py</code></li>
+</ul>
+
+<h3>12.3. Precision Exposure Module</h3>
+<ul>
+  <li><strong>Purpose</strong>: Contextual targeting by location + persona context, NO individual identifiers</li>
+  <li><strong>Targeting</strong>: Location coordinates/radius/polygon, target roles (e.g., "CEO, CTO" - roles, NOT names), target industry</li>
+  <li><strong>Management Types</strong>: SOAR-managed, partner-managed, customer agency</li>
+  <li><strong>API</strong>: <code>POST /api/v1/b2b/exposure/create</code>, <code>POST /api/v1/b2b/exposure/track-conversion</code></li>
+  <li><strong>Model</strong>: <code>src/models/precision_exposure.py</code></li>
+</ul>
+
+<h3>12.4. Soft Conversion Tracking</h3>
+<ul>
+  <li><strong>Purpose</strong>: Track impressions, clicks, content views WITHOUT labeling as "leads"</li>
+  <li><strong>Tracked Events</strong>: Impressions, clicks, content views</li>
+  <li><strong>Interest Signals</strong>: Interest score (0-100, aggregated) based on event type</li>
+  <li><strong>Model</strong>: <code>src/models/exposure_conversion.py</code></li>
+  <li><strong>API</strong>: <code>POST /api/v1/b2b/exposure/track-conversion</code>, <code>GET /api/v1/b2b/exposure/conversions/{exposure_id}</code></li>
+</ul>
+
+<h3>12.5. Direct Outreach Module (Optional, Disabled by Default)</h3>
+<ul>
+  <li><strong>Purpose</strong>: Optional module for appointments/escalations, disabled by default, user must explicitly enable</li>
+  <li><strong>Escalation Types</strong>: Appointment, callback, referral</li>
+  <li><strong>Call Center Partnerships</strong>: Architecture prepared for call center partnerships</li>
+  <li><strong>API</strong>: <code>POST /api/v1/b2b/reachability/escalation</code>, <code>POST /api/v1/b2b/reachability/enable</code></li>
+  <li><strong>Model</strong>: <code>src/models/reachability_escalation.py</code></li>
+</ul>
+
+<h3>12.6. UX Language Rules</h3>
+<ul>
+  <li><strong>Approved Terminology</strong>: Reachability, Exposure, Interest, Escalation</li>
+  <li><strong>Never Use</strong>: "Lead" (not used as default terminology), "Lead generation" (use "reachability" or "exposure")</li>
+  <li><strong>Updated</strong>: Onboarding confirmation messages in all languages (EN, TR, DE, ES, FR, AR, IT) - "We have received your request. Your process will begin after our experts have evaluated it."</li>
+</ul>
+
+<h2>13. Post-Onboarding User Flow (2025-01-16 Update)</h2>
+<h3>13.1. Objective Selection</h3>
+<ul>
+  <li><strong>Purpose</strong>: User selects their objectives before execution</li>
+  <li><strong>Languages</strong>: Complete in 7 languages (EN, ES, FR, DE, IT, TR, AR)</li>
+  <li><strong>Modules</strong>: Market Intelligence, Persona Discovery, Reachability Report (Preview), Precision Exposure, Soft Conversion, Direct Access (Optional)</li>
+  <li><strong>Files</strong>: <code>backend/src/ui/{lang}/soarb2b_objective_selection.html</code></li>
+  <li><strong>Features</strong>: Capped sample warnings, transparency notices, modular selection</li>
+</ul>
+
+<h3>13.2. Process Timeline</h3>
+<ul>
+  <li><strong>Purpose</strong>: User-visible process steps with status tracking</li>
+  <li><strong>Languages</strong>: Complete in 7 languages (EN, ES, FR, DE, IT, TR, AR)</li>
+  <li><strong>Stages</strong>: Market Scan, Persona Mapping, Reachability Assessment, Activation Options, Activation</li>
+  <li><strong>Files</strong>: <code>backend/src/ui/{lang}/soarb2b_process_timeline.html</code></li>
+  <li><strong>Features</strong>: Status badges (pending, in_progress, completed), admin notes, transparency notices</li>
+</ul>
+
+<h3>13.3. Results Hub</h3>
+<ul>
+  <li><strong>Purpose</strong>: Outcome-guaranteed results delivery for every completed plan</li>
+  <li><strong>Languages</strong>: 6/7 languages (EN, TR, DE, ES, FR, AR)</li>
+  <li><strong>Features</strong>:
+    <ul>
+      <li>What the user received (Business list count, Contact availability, Persona summary, Visit route availability)</li>
+      <li>Where outputs are (clear labels, download buttons for CSV/XLSX/PDF, tooltips)</li>
+      <li>Action buttons ("Download All", "Open Route in Google Maps", "Export for CRM")</li>
+      <li>Capped sample transparency (UX notice for queries > 100 businesses)</li>
+    </ul>
+  </li>
+  <li><strong>Files</strong>: <code>backend/src/ui/{lang}/soarb2b_results_hub.html</code></li>
+  <li><strong>API</strong>: <code>GET /api/v1/b2b/plans/{plan_id}/results</code>, <code>GET /api/v1/b2b/plans/{plan_id}/routes</code></li>
+</ul>
+
+<h3>13.4. Visit Route Engine</h3>
+<ul>
+  <li><strong>Purpose</strong>: Generate physical visit plans for sales users</li>
+  <li><strong>Output</strong>: Google Maps compatible CSV + PDF</li>
+  <li><strong>Rules</strong>: Max 20 visits per route, geographic optimization, persona density priority</li>
+  <li><strong>Features</strong>: Route stops with addresses, suggested time windows, priority scores</li>
+  <li><strong>API</strong>: <code>GET /api/v1/b2b/plans/{plan_id}/routes</code></li>
+</ul>
+
+<h2>14. Deployment & Testing (2025-01-16 Update)</h2>
+<h3>14.1. Cloud Shell Deployment</h3>
+<ul>
+  <li><strong>Script</strong>: <code>deploy_gcp.sh</code> (bash script for Cloud Shell)</li>
+  <li><strong>Features</strong>: Automated build, Cloud Run deployment, environment variable management</li>
+  <li><strong>Platform</strong>: Google Cloud Run</li>
+</ul>
+
+<h3>14.2. Pre-Deployment Validation</h3>
+<ul>
+  <li><strong>Script</strong>: <code>PRE_DEPLOYMENT_CHECK.ps1</code></li>
+  <li><strong>Checks</strong>: File existence, language files (14/14), Dockerfile, dependencies, git status</li>
+</ul>
+
+<h3>14.3. Multi-Language Frontend Testing</h3>
+<ul>
+  <li><strong>Script</strong>: <code>TEST_MULTILINGUAL_FRONTEND.ps1</code></li>
+  <li><strong>Tests</strong>: All 14 language files (7 languages x 2 files), server health, response times</li>
+  <li><strong>Results</strong>: 14/14 files tested successfully, ~14ms average response time</li>
+</ul>
+
+<h2>15. SOARB2B Değişiklik Raporu (Son Eklenen Modüller)</h2>
+<p>Bu bölüm <code>docs/DEGISIKLIK_RAPORU.md</code> ile senkron tutulur. SOARB2B platformuna eklenen yeni modüller ve değişikliklerin özeti.</p>
+
+<h3>15.1. Intelligence Graph &amp; Company Graph</h3>
+<ul>
+  <li><strong>intelligence_graph</strong>: Şema + semantik graf; Redis cache; join path, similar_companies, high_response_industries, role_response_correlations.</li>
+  <li><strong>company_graph</strong>: graph_builder, graph_store, relationship_extractor, graph_query_engine, similarity_engine; node tipleri: company, contact, industry, campaign, message, geography.</li>
+</ul>
+
+<h3>15.2. NL Sorgu &amp; Analytics</h3>
+<ul>
+  <li><strong>nl_query</strong>: question_parser → graph_sql_planner → sql_generator → query_validator → response_formatter. Sadece SELECT, whitelist tablo.</li>
+  <li><strong>POST /v1/analytics/query</strong>: Body <code>{"question": "..."}</code> → sql_used, result, summary.</li>
+</ul>
+
+<h3>15.3. Sales Skills &amp; Market Signals</h3>
+<ul>
+  <li><strong>sales_skills</strong>: base_skill, skill_registry, skill_executor; discovery, persona, outreach, qualification. <code>run(context) → dict</code>.</li>
+  <li><strong>skills/sales</strong>: Async satış becerileri (company_discovery, qualification, persona_selection, contact_enrichment, outreach, reply_classification, followup_strategy).</li>
+  <li><strong>market_signals</strong>: signal_detector, signal_classifier, signal_store, opportunity_detector (hiring_spike, funding_event, technology_adoption vb.).</li>
+</ul>
+
+<h3>15.4. Agent &amp; Automation</h3>
+<ul>
+  <li><strong>context_engine</strong>: build_context_from_request, build_layered_context (instructions, examples, knowledge, memory, tools, market_intelligence).</li>
+  <li><strong>agent_pipeline</strong>: İstek → Context → Reasoning → Skill Execution → Güncel bağlam → LLM yanıtı.</li>
+  <li><strong>automation_engine</strong>: campaign_executor (Redis kuyruk), scheduling_engine, response_router (yanıt sınıflandırma).</li>
+</ul>
+
+<h3>15.5. Learning &amp; Opportunity Engine</h3>
+<ul>
+  <li><strong>campaign_learning</strong>: industry_performance_model (get_industry_rates), persona_performance_model (get_persona_scores), campaign_metrics_collector.</li>
+  <li><strong>opportunity_engine</strong>: detector (sinyallerle aday), ranker (skor 0–1, persona önerisi), store (Redis cache), recommendation_engine. API: <code>GET /v1/opportunities/recommendations</code>.</li>
+</ul>
+
+<h3>15.6. API Özeti</h3>
+<table>
+  <tr><th>Alan</th><th>Endpoint / Modül</th></tr>
+  <tr><td>Graf</td><td>GET /v1/graph/company/{id}, GET /v1/graph/similar/{id}, POST /v1/graph/refresh</td></tr>
+  <tr><td>Sinyaller</td><td>GET /v1/signals/industry, GET /v1/signals/region</td></tr>
+  <tr><td>Fırsatlar</td><td>GET /v1/opportunities/recommendations</td></tr>
+  <tr><td>Analytics</td><td>POST /v1/analytics/query</td></tr>
+</table>
+
+<h3>15.7. Admin ve Ödeme Muafiyeti</h3>
+<ul>
+  <li><strong>Admin</strong>: isanli058@gmail.com; ek adminler <code>SOARB2B_ADMIN_EMAILS</code> (virgülle).</li>
+  <li>Admin için: quote_token zorunlu değil, plan limiti uygulanmaz, <code>GET /v1/subscriptions/current</code> admin_override_active döner.</li>
+</ul>
+
+<p><em>Detaylı liste: <code>docs/DEGISIKLIK_RAPORU.md</code></em></p>
+
+</div>
+<div class="container">
+<h2>16. Strategic Hardening Backlog</h2>
+<p>
+  This section summarizes the Master Backlog and establishes non-negotiable positioning and launch readiness requirements.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Positioning</strong>: SOAR B2B must be positioned as a <strong>Market Access / Commercial Intelligence / Precision Exposure OS</strong> — not a cheap lead scraper.</li>
+    <li><strong>Partner boundary</strong>: The FinderOS ↔ FINDIAG relationship must be documented as a <strong>partner / supply-sync architecture</strong> with explicit export and idempotency contracts.</li>
+    <li><strong>Primary value surface</strong>: The <strong>Results Hub</strong> is the primary customer value surface and must be visible, reliable, and exportable.</li>
+    <li><strong>Launch gates</strong>: <strong>Compliance</strong>, <strong>provenance</strong>, <strong>observability</strong>, and <strong>deployment standardization</strong> are mandatory before broader launch.</li>
+  </ul>
+</div>
+<p>
+  Canonical backlog source: <code>docs/SOARB2B_MASTER_BACKLOG.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>17. H-019 Controlled Generative UI Foundation</h2>
+<p>
+  SOAR B2B needs a safe path to present <strong>Commercial Intelligence</strong> as visual widgets inside Results Hub–class surfaces without opening an unrestricted runtime UI attack surface.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>H-019 summary</strong>: Controlled, template-bound HTML snippets rendered from structured inputs only; embed in iframe sandbox.</li>
+    <li><strong>Why it matters</strong>: Positions Results Hub / Intelligence UX as explainable insight, not scraped lists.</li>
+    <li><strong>Approved widget types (foundation)</strong>: <code>executive_briefing</code>, <code>graph_summary</code>, <code>market_signal_cockpit</code>, <code>opportunity_cluster</code>.</li>
+    <li><strong>Security boundaries</strong>: No arbitrary HTML/JavaScript generation, no LLM-driven DOM in parent, no credential exposure, strict allowlist.</li>
+    <li><strong>Deferred</strong>: Full unrestricted generative runtime UI / model-executed JS — out of scope until governance and tooling mature.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-019_GENERATIVE_UI_FOUNDATION.md</code>.
+  DOCX regeneration: see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code> when exporting from HTML.
+</p>
+
+</div>
+<div class="container">
+<h2>18. H-020 Semantic Capability Layer</h2>
+<p>
+  Future planner and orchestration workloads need a deterministic, audited description of FinderOS endpoints (purpose, sensitivity, approvals, destructive impact, orchestration allowances) layered on top of OpenAPI payloads.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Semantic backend overview</strong>: Each curated capability declares <code>risk_level</code>, <code>auth_required</code>, <code>idempotent</code>, <code>orchestration_safe</code>, <code>human_approval_required</code>, <code>sensitive_fields</code>, plus brief schema summaries.</li>
+    <li><strong>Machine-readable manifests</strong>: <code>GET /api/v1/system/capabilities</code> returns JSON suitable for tooling without embedding secrets.</li>
+    <li><strong>Deterministic orchestration</strong>: Planners ingest explicit metadata—not inferred behavior—preventing hallucinated automation paths.</li>
+    <li><strong>Risk posture</strong>: Destructive or customer-impacting operations must advertise higher risk tiers and forbid silent agent execution defaults.</li>
+    <li><strong>Deferred</strong>: Autonomous multi-agent choreography, adaptive permissions, runtime registry mutation, unrestricted planner execution.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-020_SEMANTIC_CAPABILITY_LAYER.md</code>.
+  <strong>AI systems must not assume implicit execution authority.</strong> manifests describe intent—policy gates, auth flows, budgets, and human approvals still gate real traffic.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>19. Task Implementation, Documentation, and Proof Obligations</h2>
+<p>
+  FinderOS adopts a repeatable delivery bar for substantive backlog tasks: implementations must ship with aligned documentation,
+  backlog truth, deterministic verification where applicable, and an explicit PASS/FAIL implementation proof—not code alone.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>MainBook</strong> (this document) and <strong>LiveBook</strong>: update HTML for every substantive change; regenerate companion DOCX from HTML/source when DOCX parity is maintained (see DOCX regeneration notes).</li>
+    <li><strong>Master backlog</strong> (<code>docs/SOARB2B_MASTER_BACKLOG.md</code>): statuses and verification MUST stay consistent with deployed behaviour.</li>
+    <li><strong>Proof report</strong> per task: <code>docs/&lt;TASK_ID&gt;_IMPLEMENTATION_PROOF.md</code> with files touched, summaries, verification commands, test counts, unresolved issues, and next step.</li>
+    <li><strong>Verification script</strong> when warranted: <code>scripts/verify_&lt;task_slug&gt;.py</code> must PASS before claiming DONE; disclose failures verbatim.</li>
+    <li><strong>Agents &amp; humans</strong>: canonical checklist lives in <code>docs/TASK_IMPLEMENTATION_AND_PROOF_STANDARD.md</code>; Cursor always-on rule mirrors it under <code>.cursor/rules/</code>.</li>
+  </ul>
+</div>
+<p>
+  If parity Word exports cannot be patched safely inline, regeneration from updated HTML/source is REQUIRED—never assume silent DOCX correctness.
+</p>
+
+</div>
+<div class="container">
+<h2>20. H-021 Inference-Aware AI Runtime Optimization Layer</h2>
+<p>
+  Before attaching heavyweight inference stacks, FinderOS needs deterministic telemetry primitives—token budgets, compaction markers,
+  placeholder routing by tier and task, latency envelopes, and TTFT planning hints—without invoking unmanaged GPU fleets prematurely.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>AI runtime telemetry</strong>: <code>POST /api/v1/system/ai-runtime/profile</code> returns sizing metadata with <code>llm_invoked=false</code>; <code>GET /api/v1/system/ai-runtime/profiles</code> surfaces recent bounded history.</li>
+    <li><strong>Token budgeting</strong>: deterministic estimator (<code>len(text)//4</code>) plus safe truncation when compaction is disabled.</li>
+    <li><strong>Prompt compaction</strong>: head/tail preservation with explicit marker when context exceeds budgets.</li>
+    <li><strong>Model routing</strong>: curated placeholder names (<code>economy-reasoner</code>, <code>standard-reasoner</code>, <code>premium-reasoner</code>) keyed off task + tier.</li>
+    <li><strong>Deferred</strong>: Custom GPU serving, TensorRT/vLLM/Triton stacks, speculative decoding, KV-cache engineering—requires measured workloads first.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-021_AI_RUNTIME_OPTIMIZATION_LAYER.md</code>.
+  <strong>Custom GPU serving and KV-cache-level optimization are deferred until measured load justifies them.</strong>
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>21. H-022 Reflection-Driven Prompt Optimization Layer</h2>
+<p>
+  Multi-step AI workflows accumulate orchestration and prompt-quality drift. A GEPA-style reflection layer captures structured traces,
+  deterministic revision suggestions, and human-reviewed prompt candidates—without autonomous production mutation.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Reflection architecture</strong>: Execution traces with scored outcomes, structured failure codes, and append-only optimization history.</li>
+    <li><strong>Deterministic candidates</strong>: Template-bound proposals derived from <code>feedback_contracts</code>—no external LLM calls in this foundation.</li>
+    <li><strong>Human approval</strong>: Every candidate defaults to <code>pending</code> with <code>human_review_required=true</code>; approve/reject endpoints record explicit identities.</li>
+    <li><strong>Audit trail</strong>: Optimization history entries capture approvals/rejections without rewriting production prompts inline.</li>
+    <li><strong>Deferred</strong>: Autonomous prompt evolution, RL-style online updates, recursive self-improvement loops, weight fine-tuning.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-022_REFLECTION_OPTIMIZATION_LAYER.md</code>.
+  Review UI demos: <code>/ui/en/reflection_review_demo.html</code>, <code>/ui/tr/reflection_review_demo.html</code>.
+  <strong>Prompt candidates are never automatically promoted into production.</strong>
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>22. H-024 Context Acquisition &amp; Structured Knowledge Ingestion Layer</h2>
+<p>
+  Results Hub, Opportunity Engine, graph reasoning, and market analytics require retrieval-grade representations—not unstructured text dumps.
+  This foundation ingests <strong>semantic knowledge blocks</strong> with explicit lineage, deterministic authority and freshness scoring,
+  explainable retrieval policies, and paragraph-aware chunking—without introducing scraping swarms or autonomous crawling agents.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes structured commercial intelligence ingestion over uncontrolled large-scale scraping.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Semantic knowledge blocks</strong>: Typed intelligence units (procurement notices, market signals, graph edges, exposure patterns) with tags and scope metadata.</li>
+    <li><strong>Authority scoring</strong>: Registry-backed trust anchors combined with freshness decay and lineage hints—fully deterministic.</li>
+    <li><strong>Freshness scoring</strong>: Confidence decreases with age; stale thresholds are explicit for audit and filtering.</li>
+    <li><strong>Retrieval policy</strong>: Weighted linear model over authority, freshness confidence, commercial relevance, and geo/industry alignment—with per-block factor breakdowns.</li>
+    <li><strong>Source lineage</strong>: Every block records approved source classes; anonymous unverified scraping sources are rejected at validation.</li>
+    <li><strong>Semantic chunking</strong>: Paragraph-first splitting with bounded merges—no LLM calls in the chunker.</li>
+    <li><strong>Deferred</strong>: Massive scraping orchestration, BrightData-scale residential proxy meshes, recursive retrieval agents, aggressive protected-platform harvesting.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-024_KNOWLEDGE_INGESTION_LAYER.md</code>.
+  Review UI demos: <code>/ui/en/knowledge_ingestion_demo.html</code>, <code>/ui/tr/knowledge_ingestion_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>23. H-025 Interactive Intelligence Widget Layer</h2>
+<p>
+  Commercial intelligence must be <strong>consumable</strong>: Results Hub, Opportunity Engine, and executive surfaces need structured presentation—not only JSON blobs.
+  This foundation defines deterministic widget contracts, a static registry, escaped HTML fragments, and visualization mappings suitable for cards, charts, timelines, tables, maps, and bounded graph summaries.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes deterministic intelligence presentation over uncontrolled agent-rendered UI.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Widget contracts</strong>: Typed widgets with authority levels, freshness, visualization type, and structured <code>data</code> payloads.</li>
+    <li><strong>Deterministic rendering</strong>: Template-bound HTML via <code>html.escape</code>; no arbitrary markup, no external script loads from the render pipeline.</li>
+    <li><strong>Results Hub readiness</strong>: Executive summary cards, market signal tables, procurement timelines, exposure funnel placeholders, and graph edge lists.</li>
+    <li><strong>Registry</strong>: Fixed allow-lists for widget type ↔ visualization pairs—no runtime plugin registration.</li>
+    <li><strong>Future MCP-compatible export</strong>: Same JSON contracts could be surfaced to external tools later—without MCP controlling the core UI.</li>
+    <li><strong>Deferred</strong>: Full MCP migration, distributed widget orchestration, autonomous DOM agents, React-only rewrite, uncontrolled runtime generation.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-025_INTERACTIVE_WIDGET_LAYER.md</code>.
+  Demo pages: <code>/ui/en/intelligence_widgets_demo.html</code>, <code>/ui/tr/intelligence_widgets_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>24. H-026 Graph-Centric Commercial Intelligence Layer</h2>
+<p>
+  Opportunity graphs, procurement chains, and exposure intelligence depend on <strong>explicit relationships</strong>, not only similarity search.
+  This foundation stores typed commercial entities and registry-bound edges with deterministic confidence, BFS traversal, path discovery, and explainable insights—using an in-memory adjacency structure without requiring Neo4j or a GraphRAG rewrite.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes explainable commercial relationship intelligence over opaque autonomous graph orchestration.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Entities</strong>: Companies, municipalities, utilities, procurement projects, contractors, assets, opportunity clusters, market signals—with authority and freshness metadata.</li>
+    <li><strong>Relationships</strong>: Approved types (contracts_with, funds_project, operates_in, competes_with, partners_with, related_to, supplies, influences) with evidence lists.</li>
+    <li><strong>Confidence scoring</strong>: Deterministic blend of authority, freshness, evidence strength, tag overlap, and repetition.</li>
+    <li><strong>Traversal</strong>: Bounded-depth neighbourhood discovery, optional opportunity surfaces, shortest-path summaries.</li>
+    <li><strong>Hybrid roadmap</strong>: Complements vector and semantic-block retrieval—does not replace existing stacks.</li>
+    <li><strong>Deferred</strong>: Full GraphRAG migration, mandatory graph databases, distributed graph infra, giant ontologies, autonomous edge-writing agents.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-026_GRAPH_COMMERCIAL_INTELLIGENCE.md</code>.
+  Demo pages: <code>/ui/en/commercial_graph_demo.html</code>, <code>/ui/tr/commercial_graph_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>25. H-027 Structured Prompt Orchestration &amp; Evaluation Layer</h2>
+<p>
+  Results Hub, graph reasoning, executive briefings, and onboarding flows need consistent orchestration—not ad-hoc prompts.
+  This foundation registers approved strategies, persona templates, ARQ checklist templates, JSON output contracts, deterministic task→strategy policies,
+  and numeric evaluation of prompt configurations—without exposing hidden chain-of-thought or autonomous prompt mutation.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes deterministic reasoning orchestration over unrestricted autonomous prompting.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Strategy registry</strong>: Seven deterministic strategies with hierarchy ranks for governance comparisons.</li>
+    <li><strong>Reasoning policies</strong>: Task labels map to strategies with explicit rationale strings (audit-friendly).</li>
+    <li><strong>JSON contracts</strong>: Named schemas for Results Hub, widgets, graph insights, opportunity rankings.</li>
+    <li><strong>Role prompts</strong>: Five approved commercial personas with bounded templates.</li>
+    <li><strong>ARQ templates</strong>: Visible checklist steps for procurement, opportunities, graph confidence, market signals.</li>
+    <li><strong>Evaluation</strong>: Rule-based scoring for alignment, contracts, personas, negative constraints—no remote LLM in this layer.</li>
+    <li><strong>Deferred</strong>: Autonomous prompt evolution, unrestricted CoT export to clients, self-hosted frontier stacks, recursive planner agents.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-027_PROMPT_ORCHESTRATION_LAYER.md</code>.
+  Demo pages: <code>/ui/en/prompt_orchestration_demo.html</code>, <code>/ui/tr/prompt_orchestration_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>26. H-028 Relative Trajectory Evaluation &amp; Agent Reward Layer</h2>
+<p>
+  Results Hub tuning, opportunity comparisons, and graph reasoning paths need **relative** quality ordering—not only pass/fail gates.
+  This foundation registers candidate trajectories, groups them under one workflow, performs deterministic weighted ranking from explicit metadata facets,
+  writes template-based comparison reasoning, and stores evaluation traces—without RL trainers or online weight updates.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes explainable relative evaluation over autonomous reinforcement learning infrastructure.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Trajectory registry</strong>: Append-only in-process store (immutable history preferred; no DELETE endpoint).</li>
+    <li><strong>Grouping</strong>: Same <code>workflow_name</code> only; shared input summary for audit context.</li>
+    <li><strong>Relative scoring</strong>: Fixed weights on commercial, graph, geography, structure, hallucination inverse, verbosity penalty.</li>
+    <li><strong>Comparison reasoning</strong>: Visible factor deltas via deterministic templates—no hidden scratchpad export.</li>
+    <li><strong>Traces</strong>: Each evaluation stored with ranked IDs and metadata breakdown.</li>
+    <li><strong>Deferred</strong>: PPO/GRPO clusters, distributed RL, GPU training orchestration, autonomous policy optimization.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-028_TRAJECTORY_EVALUATION_LAYER.md</code>.
+  Demo pages: <code>/ui/en/trajectory_evaluation_demo.html</code>, <code>/ui/tr/trajectory_evaluation_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>27. H-029 Agent Security, Isolation &amp; Trust Boundary Layer</h2>
+<p>
+  Agentic workflows introduce prompt injection, tool poisoning, retrieval poisoning, and implicit capability escalation.
+  This foundation defines static tool capabilities with trust tiers, deterministic prompt and retrieval sanitizers,
+  explicit delegation allow-lists, risk heuristics, and append-only security traces—without autonomous tool execution or MCP runtimes.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes explicit trust boundaries and capability isolation over unrestricted autonomous agent execution.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Capability registry</strong>: Fixed tool catalog with trust levels and allowed actions—no runtime mutation API.</li>
+    <li><strong>Trust boundaries</strong>: Fail-closed validation of actions and domains; escalation blocked across tiers.</li>
+    <li><strong>Sanitization</strong>: Prompt injection / delimiter heuristics; retrieval HTML and directive scans.</li>
+    <li><strong>Isolation</strong>: Delegation allowed only on explicit edge pairs.</li>
+    <li><strong>Risk scoring</strong>: Explainable weighted factors—policy governance flags risk-score capability for human review.</li>
+    <li><strong>Deferred</strong>: Unrestricted MCP integration, dynamic capability expansion, autonomous orchestration chains.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-029_AGENT_SECURITY_LAYER.md</code>.
+  Demo pages: <code>/ui/en/agent_security_demo.html</code>, <code>/ui/tr/agent_security_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>28. H-030 Backend Context Engineering &amp; Structured Runtime Metadata Layer</h2>
+<p>
+  Orchestration and AI workflows waste tokens when backend topology and subsystem status are opaque.
+  This foundation exposes deterministic metadata snapshots, summary-first capability rows with progressive depth,
+  curated topology manifests, orchestration hint strings, and explicit context budgeting with truncation markers—without autonomous exploration loops.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes AI-readable structured runtime context over expensive backend exploration loops.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Backend metadata</strong>: Active module tags, capability counts, subsystem status flags, runtime version.</li>
+    <li><strong>Capability snapshots</strong>: Summary-first loading; <code>depth=full</code> adds endpoint metadata when needed.</li>
+    <li><strong>Topology</strong>: Curated router/domain visibility — no unrestricted infra introspection.</li>
+    <li><strong>Hints &amp; budgeting</strong>: Deterministic hint lines; prioritised layers; visible truncation for oversized samples.</li>
+    <li><strong>Deferred</strong>: Autonomous orchestration meshes, self-exploring runtime agents, distributed orchestration rewrites.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-030_RUNTIME_CONTEXT_ENGINEERING.md</code>.
+  Demo pages: <code>/ui/en/runtime_context_demo.html</code>, <code>/ui/tr/runtime_context_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>29. H-031 Agent Harness Architecture &amp; Modular Cognitive Runtime Layer</h2>
+<p>
+  Commercial intelligence, graph reasoning, onboarding, and Results Hub workflows need a stable separation between memory domains, reusable skills,
+  communication protocols, evaluation routing, and bounded runtime aggregation — instead of collapsing everything into monolithic system prompts.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes modular cognitive harness architecture over monolithic system-prompt orchestration.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Memory domains</strong>: Working, semantic, episodic, user context, and workflow memory — each with lifecycle and mutation policy metadata; no unrestricted mutation API in this foundation.</li>
+    <li><strong>Skill registry</strong>: Fixed catalog of intelligence skills (e.g. procurement analysis, opportunity evaluation, graph investigation) — no runtime skill registration.</li>
+    <li><strong>Protocol registry</strong>: Agent-to-user, agent-to-tool, agent-to-agent, evaluation, and escalation — explicit trust boundaries and envelopes.</li>
+    <li><strong>Compression layer</strong>: Deterministic context, trajectory, and memory compression with visible <code>[HARNESS_CONTEXT_TRUNCATED]</code> markers.</li>
+    <li><strong>Evaluation routing</strong>: Static workflow labels map to evaluation destinations (graph, onboarding, briefing, etc.).</li>
+    <li><strong>Modular orchestration runtime</strong>: Aggregated summary of registries and routes; explicit caps on sub-agent spawning (foundation limit).</li>
+    <li><strong>Deferred</strong>: Recursive autonomous swarms, giant orchestration meshes, unrestricted memory mutation, distributed orchestration infrastructure.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-031_AGENT_HARNESS_ARCHITECTURE.md</code>.
+  Demo pages: <code>/ui/en/agent_harness_demo.html</code>, <code>/ui/tr/agent_harness_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>30. H-032 Delegated Autonomous Workflow Execution &amp; Adaptive Effort Governance Layer</h2>
+<p>
+  Long-running procurement, onboarding, graph, Results Hub, and executive workflows need explicit contracts, adaptive reasoning-effort routing,
+  session lifecycle discipline, context decay handling, delegation policies, and bounded parallel execution — without unrestricted autonomous expansion.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes governed delegated workflows over unrestricted autonomous orchestration.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Workflow contracts</strong>: Named workflows with objectives, constraints, acceptance criteria, recommended effort, allowed tools, escalation policy, and output contract — static registry only.</li>
+    <li><strong>Adaptive effort governance</strong>: Deterministic mapping from task/workflow kinds to effort bands (<code>low</code> through <code>max</code>) with explainable routing rules.</li>
+    <li><strong>Session lifecycle</strong>: Create, summarize, checkpoint, and close sessions with deterministic summaries derived from stored state.</li>
+    <li><strong>Context decay</strong>: Rot scoring, compression recommendations, optional reset guidance, and preview truncation with explicit markers.</li>
+    <li><strong>Delegation &amp; parallelization</strong>: Explicit delegation targets, permission checks against contracts, depth and sub-agent caps, bounded parallel policies.</li>
+    <li><strong>Acceptance validation</strong>: Outputs checked against contract acceptance criteria with constraint and escalation acknowledgements.</li>
+    <li><strong>Deferred</strong>: Unrestricted autonomous swarms, recursive orchestration meshes, uncontrolled parallel execution, distributed orchestration infrastructure.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-032_WORKFLOW_GOVERNANCE_LAYER.md</code>.
+  Demo pages: <code>/ui/en/workflow_governance_demo.html</code>, <code>/ui/tr/workflow_governance_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>31. H-033 Production AI Reliability, Drift Monitoring &amp; Evaluation Governance Layer</h2>
+<p>
+  Production failures often stem from drift, stale retrieval and embeddings, unstable workflows, weak evaluation hygiene, and opaque runtime behaviour — not only from base model capability.
+  This foundation adds deterministic drift signals, retrieval and embedding health scoring, workflow reliability pressures, context stability checks, evaluation governance metadata,
+  and auditable observability traces — without building distributed telemetry meshes or Kubernetes-centric observability rewrites.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes production AI reliability governance over benchmark-centric optimization.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Drift monitoring</strong>: Named drift types with explainable signal aggregation and risk bands.</li>
+    <li><strong>Evaluation governance</strong>: Coverage, staleness, consistency, and comparison-quality warnings with deterministic scoring.</li>
+    <li><strong>Embedding health</strong>: Staleness, coverage, confidence, age, and source-validity pressures — scores only; no embedding mutation API.</li>
+    <li><strong>Retrieval governance</strong>: Duplicate, stale, authority, graph linkage, and relevance decay components.</li>
+    <li><strong>Workflow reliability</strong>: Token, retry, delegation flap, acceptance failure, and context rot pressures.</li>
+    <li><strong>Context stability</strong>: Decay, size, summarization jumps, and metadata inconsistency recommendations.</li>
+    <li><strong>Observability traces</strong>: Canonical examples plus bounded append-only buffer for live signals.</li>
+    <li><strong>Deferred</strong>: Giant observability meshes, enterprise feature store rebuilds, Kubernetes migration requirements, RL observability stacks.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-033_RELIABILITY_GOVERNANCE_LAYER.md</code>.
+  Demo pages: <code>/ui/en/reliability_governance_demo.html</code>, <code>/ui/tr/reliability_governance_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>32. H-034 Semantic Capability Graph &amp; AI-Native Backend Abstraction Layer</h2>
+<p>
+  Orchestration planners need machine-readable backend topology: how semantic capability domains relate, which contracts govern interaction,
+  and where trust and evaluation boundaries apply — rather than ad hoc endpoint discovery.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes machine-readable semantic backend topology over dashboard-centric backend architecture.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Semantic entities</strong>: Curated capability nodes with trust level, graph access mode, evaluation flags, and related domains.</li>
+    <li><strong>Relationships</strong>: Directed edges (<code>depends_on</code>, <code>secured_by</code>, <code>evaluated_by</code>, …) with explicit validation rules.</li>
+    <li><strong>Topology</strong>: Summaries, dependency paths, and trust-path scans — explainable only; no autonomous topology mutation.</li>
+    <li><strong>Semantic contracts</strong>: Allowed actions, trust requirements, escalation, and runtime visibility between capability pairs.</li>
+    <li><strong>Cross-capability awareness</strong>: Deterministic narratives tying workflows to runtime, evaluation, and security.</li>
+    <li><strong>Runtime snapshots</strong>: Curated active-capability views — no unrestricted infrastructure introspection.</li>
+    <li><strong>H-020 integration</strong>: Catalog export includes <code>semantic_capability_graph</code> pointers and topology summary metadata.</li>
+    <li><strong>Deferred</strong>: Giant ontology systems, recursive semantic mutation, autonomous capability discovery, distributed orchestration rewrites.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-034_SEMANTIC_CAPABILITY_GRAPH.md</code>.
+  Graph routes (flat manifest remains at <code>GET /api/v1/system/capabilities</code> — H-020): <code>/api/v1/system/capabilities/graph</code>, <code>/topology</code>, <code>/contracts</code>, <code>/awareness</code>, <code>/runtime-context</code>.
+  Demo pages: <code>/ui/en/semantic_capability_graph_demo.html</code>, <code>/ui/tr/semantic_capability_graph_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>33. H-035 Spec-Driven Engineering, Trace-to-Eval Automation &amp; Verification-Centric Development Layer</h2>
+<p>
+  AI-assisted implementation only stays safe when specifications, acceptance criteria, verification traces, trace-to-eval mappings, architecture contracts, and review gates are first-class — not afterthoughts bolted onto generated code.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes specification-driven verified engineering over uncontrolled AI-generated implementation.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Specification registry</strong>: Named implementation specs with objectives, constraints, criteria, verification requirements, escalation, and linked architecture contract ids — static only.</li>
+    <li><strong>Acceptance &amp; verification</strong>: Deterministic key-presence and flag checks; bounded verification trace buffer with canonical exemplars.</li>
+    <li><strong>Trace-to-eval</strong>: Deterministic mapping from failure categories to evaluation heuristics and governance recommendations — no autonomous rule mutation.</li>
+    <li><strong>Validation agents</strong>: Isolated context budgets, permission prefixes, and shallow delegation in foundation mode.</li>
+    <li><strong>Architecture contracts</strong>: Declarative rules (router thin, no secrets, deterministic governance surfaces).</li>
+    <li><strong>Review governance</strong>: Auditable gate manifest for verification, architecture, security, and evaluation hooks.</li>
+    <li><strong>Deferred</strong>: Autonomous architecture mutation, recursive self-healing governance, uncontrolled autonomous engineering.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-035_SPEC_VERIFICATION_GOVERNANCE.md</code>.
+  API: <code>GET /api/v1/system/specs</code>, <code>/contracts</code>, <code>POST /validate</code>, <code>GET /traces</code>, <code>POST /trace-to-eval</code>, <code>GET /review-status</code>.
+  Demo pages: <code>/ui/en/spec_verification_demo.html</code>, <code>/ui/tr/spec_verification_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>34. H-036 Controlled Self-Optimization, Harness Mutation Sandbox &amp; Governance-Gated Evolution Layer</h2>
+<p>
+  Safe adaptive behaviour requires proposals, sandbox scoring, rollback gates, and evolution traces — not silent runtime rewriting.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes sandboxed reversible optimization over unrestricted autonomous self-modification.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Mutation proposals</strong>: Typed optimization intents with risk, benefit, rollback availability — proposal-only; no automatic deployment.</li>
+    <li><strong>Sandbox evaluation</strong>: Deterministic score vectors for regression risk, stability, token impact, retries, orchestration consistency.</li>
+    <li><strong>Rollback governance</strong>: Mandatory rollback semantics with auditable readiness checks before any promotion path.</li>
+    <li><strong>Workflow simulation</strong>: Named scenarios (retry reduction, loop detection, subagent limits, context compression) — lab deltas only.</li>
+    <li><strong>Policy evolution</strong>: Governance-gated slots for delegation, retry, escalation, and context reset — explicit approval required.</li>
+    <li><strong>Evolution traces</strong>: Canonical exemplars plus bounded buffer hook for future instrumentation.</li>
+    <li><strong>Deferred</strong>: Autonomous production mutation, recursive self-healing evolution, uncontrolled orchestration expansion, runtime rewriting.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-036_EVOLUTION_GOVERNANCE.md</code>.
+  API: <code>GET /api/v1/system/evolution/proposals</code>, <code>POST /simulate</code>, <code>GET /traces</code>, <code>POST /rollback-check</code>, <code>GET /policies</code>.
+  Demo pages: <code>/ui/en/evolution_governance_demo.html</code>, <code>/ui/tr/evolution_governance_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>35. H-037 Local-First AI Infrastructure, MCP Capability Gateway &amp; Hybrid Serving Governance Layer</h2>
+<p>
+  External tools, browser automation, and provider routing must be expressed as governed gateway manifests — not implicit SDK behaviour.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes governed capability orchestration over unrestricted external AI execution.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>MCP-style gateways</strong>: Named domains with execution scope, trust level, sandbox requirement, and provider type — registry only.</li>
+    <li><strong>Provider abstraction</strong>: Capability and restriction surfaces per provider family; deterministic selection table with explicit explanations.</li>
+    <li><strong>Execution policies</strong>: Budgets, domain lists, rate limits, escalation hooks — no blanket egress.</li>
+    <li><strong>Browser automation</strong>: Allowlists, isolation, replay traces — unrestricted browsing explicitly false.</li>
+    <li><strong>Local-first inference</strong>: Metadata for offline and loopback modes without embedding vendor secrets.</li>
+    <li><strong>Hybrid serving</strong>: Hosted vs local vs future internal surfaces — abstraction placeholders only.</li>
+    <li><strong>Deferred</strong>: Autonomous internet orchestration, open MCP marketplaces, unrestricted tool chaining, distributed cluster rewrites.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-037_CAPABILITY_GATEWAY_LAYER.md</code>.
+  API: <code>GET /api/v1/system/gateways</code>, <code>/providers</code>, <code>/execution-policies</code>, <code>/local-inference</code>, <code>/browser-policies</code>, <code>/hybrid-serving</code>.
+  Demo pages: <code>/ui/en/capability_gateway_demo.html</code>, <code>/ui/tr/capability_gateway_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>36. H-038 AI Workspace Protocol, Claude Runtime Governance &amp; Multi-Agent Project Memory Layer</h2>
+<p>
+  Operational AI needs explicit workspace policies, modular runtime rules, scoped memory, command and skill registries, and permission-visible subagent scopes — not tacit environment knowledge.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes governed operational AI workspaces over uncontrolled persistent AI environments.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Workspace policies</strong>: Named scopes with execution permissions, bounded memory semantics, escalation hooks, audit defaults.</li>
+    <li><strong>Runtime rules</strong>: Separate domain, workflow, security, evaluation, and orchestration buckets — deterministic merge without monolithic prompts.</li>
+    <li><strong>Project memory</strong>: Typed manifests (patterns, notes, context, evaluation, constraints) with caps; unrestricted persistence explicitly off.</li>
+    <li><strong>Commands &amp; skills</strong>: Reusable operational verbs and skill packages with deterministic activation metadata.</li>
+    <li><strong>Permission governance</strong>: Allowlists, deny rules, memory/domain restrictions; execution permissions not hidden.</li>
+    <li><strong>Subagent scopes</strong>: Isolated tool, domain, visibility, and escalation boundaries; uncontrolled spawning off.</li>
+    <li><strong>Deferred</strong>: Omniscient persistent memory, autonomous workspace mutation, recursive workspace evolution, unrestricted agent fan-out.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-038_WORKSPACE_PROTOCOL.md</code>.
+  API: <code>GET /api/v1/system/workspaces/policies</code>, <code>/rules</code>, <code>/memory</code>, <code>/commands</code>, <code>/skills</code>, <code>/permissions</code>.
+  Demo pages: <code>/ui/en/workspace_protocol_demo.html</code>, <code>/ui/tr/workspace_protocol_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>37. H-039 AI Proxy Firewall, Bidirectional Filter Chains &amp; Agent-Safe Execution Gateway Layer</h2>
+<p>
+  Agent safety fails when controls live only inside shrinking context windows — infrastructure must intercept inbound prompts and outbound directives before tools or browsers act.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes infrastructure-level AI interception over context-only security enforcement.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Proxy gateways</strong>: Metadata for intercepting surfaces with ordered input/output filter identifiers, policy domains, execution scopes, and audit defaults.</li>
+    <li><strong>Input/output chains</strong>: Sequential, deterministic filter stages with explicit violation actions and trace requirements.</li>
+    <li><strong>Policy interception</strong>: Procurement, onboarding, browser, graph mutation, external execution, and export domains — proxy-level enforcement, not prompt-only hints.</li>
+    <li><strong>Execution firewall</strong>: Deny rules for mass actions, destructive ops, unsigned external submit, unauthorized graph writes, and escalation fences.</li>
+    <li><strong>Sensitive actions</strong>: Mandatory interception for mass delete, bulk export, external submit, graph rewrite, workflow override — approval-aware manifests.</li>
+    <li><strong>Compression resilience</strong>: Critical rules carried outside compressible context with mandatory proxy enforcement checksum metadata.</li>
+    <li><strong>Deferred</strong>: Unrestricted autonomous execution, hidden bypasses, runtime self-modifying security, uncontrolled browser orchestration, blind agent-to-provider trust.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-039_AGENT_PROXY_FIREWALL.md</code>.
+  API: <code>GET /api/v1/system/firewall/gateways</code>, <code>/input-filters</code>, <code>/output-filters</code>, <code>/policies</code>, <code>/protected-actions</code>, <code>/interception-traces</code>.
+  Demo pages: <code>/ui/en/agent_proxy_firewall_demo.html</code>, <code>/ui/tr/agent_proxy_firewall_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>38. H-040 Scoped AI Skill Runtime, Dynamic Workflow Loading &amp; Operational Capability Packaging Layer</h2>
+<p>
+  Monolithic runtime prompts pollute context, waste tokens, obscure activation paths, and weaken operational governance for B2B workflows.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes modular governed operational skills over monolithic runtime instruction systems.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Modular skill runtime</strong>: Deterministic registry (<code>skill_name</code>, tools, activation rules, runtime scope, escalation, dependencies, created_at).</li>
+    <li><strong>Dynamic activation</strong>: Explicit methods only (<code>automatic_intent_match</code>, <code>explicit_command</code>, <code>workflow_trigger</code>, <code>evaluation_trigger</code>) with auditable manifests — no hidden activation.</li>
+    <li><strong>Permission-scoped execution</strong>: Allowed tools, memory access, execution domains, escalation requirements — least privilege enforced in manifests and permission gates.</li>
+    <li><strong>Skill dependency governance</strong>: Acyclic edges, bounded transitive depth semantics, unsafe inheritance patterns rejected — no recursive expansion.</li>
+    <li><strong>Operational capability packaging</strong>: Small, named skills as capability units; metadata-only load plans (<code>plan_skill_load</code>) without unrestricted spawning.</li>
+    <li><strong>Runtime context optimization</strong>: Per-skill token budgeting and pruning recommendations — deterministic guidance, no hidden context mutation.</li>
+    <li><strong>Deferred</strong>: Unrestricted autonomous skill spawning, recursive workflow mutation, giant monolithic runtime prompts, hidden tool escalation, uncontrolled skill inheritance.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-040_SKILL_RUNTIME_LAYER.md</code>.
+  API: <code>GET /api/v1/system/skills</code>, <code>/active</code>, <code>/permissions</code>, <code>/dependencies</code>, <code>/context-optimization</code>, <code>/traces</code>.
+  Semantic layer: <code>skills.registry</code>, <code>skills.activation</code>, <code>skills.permissions</code>, <code>skills.dependencies</code>, <code>skills.context_optimization</code>.
+  Demo pages: <code>/ui/en/skill_runtime_demo.html</code>, <code>/ui/tr/skill_runtime_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>39. H-041 Inference Runtime Intelligence, KV-Aware Orchestration, Runtime Telemetry &amp; Continuous Batching Governance Layer</h2>
+<p>
+  Operational AI fails at scale when inference lacks token budgets, telemetry, collapse signals, KV reuse metadata, batching visibility, and cost accounting — teams cannot govern latency, spend, or stability.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes governed inference efficiency and runtime stability over uncontrolled orchestration expansion.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Runtime governance architecture</strong>: Deterministic manifests for budgets, parallelism, speculative metadata, and cost estimates — no autonomous execution mutation.</li>
+    <li><strong>KV-aware orchestration</strong>: Cache entries are metadata (scope, signature, reuse flags, savings) — no uncontrolled reuse.</li>
+    <li><strong>Runtime telemetry</strong>: Explainable structures for latency, tokens, batching efficiency, retries, depth, context load, reflection/retrieval ratios.</li>
+    <li><strong>Runtime collapse detection</strong>: Rule-based flags (runaway steps, retry storms, depth, token explosions, parallelism spikes, orchestration floods) — detection only.</li>
+    <li><strong>Prefill pressure governance</strong>: Classified pressure levels from context size, repeated prefill, duplication, retrieval breadth — no hidden optimization.</li>
+    <li><strong>Token budgeting</strong>: Categories orchestration, reflection, evaluation, skill_activation, retrieval, graph_reasoning with explicit overflow policy.</li>
+    <li><strong>Continuous batching</strong>: Abstractions for workflow grouping, eligibility, token pooling, latency and efficiency metadata.</li>
+    <li><strong>Runtime efficiency scoring</strong>: Documented weights over token, latency, orchestration, batching, reflection, retrieval components.</li>
+    <li><strong>Inference cost intelligence</strong>: Deterministic provider cost estimates from published rate constants in manifests.</li>
+    <li><strong>Integrations</strong>: H-040 skills carry optional <code>estimated_token_cost</code>, <code>prefill_weight</code>, <code>cache_eligibility</code>, <code>batching_eligibility</code>, <code>runtime_efficiency_score</code>; H-039 firewall gateways expose <code>runtime_inference_alignment</code> (detection-only signals).</li>
+    <li><strong>Deferred</strong>: Giant vLLM rewrites, custom CUDA kernels, uncontrolled speculative execution, autonomous runtime scheduling, self-tuning runtime systems.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-041_INFERENCE_RUNTIME_LAYER.md</code>.
+  API: <code>GET /api/v1/system/inference/kv-cache</code>, <code>/batching</code>, <code>/token-budgets</code>, <code>/costs</code>, <code>/parallelism</code>, <code>/speculative</code>, <code>/telemetry</code>, <code>/collapse-risk</code>, <code>/prefill-pressure</code>, <code>/efficiency</code>.
+  Semantic layer: <code>inference.kv_cache</code>, <code>inference.batching</code>, <code>inference.token_budgets</code>, <code>inference.parallelism</code>, <code>inference.costs</code>, <code>inference.telemetry</code>, <code>inference.collapse_detection</code>, <code>inference.prefill_pressure</code>, <code>inference.runtime_efficiency</code>.
+  Demo pages: <code>/ui/en/inference_runtime_demo.html</code>, <code>/ui/tr/inference_runtime_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>40. H-042 Persistent Agent Workspace, Typed Operational State &amp; Graph-Native Intelligence Layer</h2>
+<p>
+  Operational AI degrades when every session starts cold: teams need governed typed state, durable workflow checkpoints, scheduled operational pulls, and relationship-aware intelligence without forcing a monolithic graph migration.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes governed persistent operational intelligence over uncontrolled autonomous persistence.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Persistent operational state</strong>: Typed registry (<code>workflow_state</code>, <code>contractor_state</code>, <code>onboarding_state</code>, <code>graph_state</code>, <code>evaluation_state</code>) with documented field shapes and audit-friendly transitions.</li>
+    <li><strong>Cross-session continuity</strong>: Explicit resume tokens with TTL — no autonomous long-running agents.</li>
+    <li><strong>Scheduled workflows</strong>: Bounded cron-style schedules with max runs per day, per-run time limits, and explicit execution boundaries.</li>
+    <li><strong>Hybrid graph intelligence</strong>: Read-only projections and multi-hop traversal plans with deterministic depth caps — graph augments relational systems, never mandatory native graph stores.</li>
+    <li><strong>Hybrid query planning</strong>: Relational steps first; optional graph augmentation — deterministic manifests.</li>
+    <li><strong>Runtime clustering abstractions</strong>: Embedding clusters, retrieval partitions, index grouping, semantic batching — abstraction-first without giant clustering infrastructure.</li>
+    <li><strong>Deferred</strong>: Full graph DB migration swarms, uncontrolled persistence, autonomous graph mutation, recursive self-expanding memory, distributed clustering platforms.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-042_PERSISTENT_OPERATIONAL_LAYER.md</code>.
+  API: <code>GET /api/v1/system/workspace/state</code>, <code>/schedules</code>, <code>/system/graph/traversals</code>, <code>/system/graph/hybrid-query</code>, <code>/system/clustering/groups</code>, <code>/system/clustering/semantic-batches</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>41. H-043 Long-Context Sparse Inference, Private Agent Runtime Hardening &amp; Ensemble Governance Layer</h2>
+<p>
+  Operational AI strains when contexts grow unbounded, providers route opaquely, runtimes bleed onto public surfaces, and single-evaluator judgments drive high-stakes workflows without dissent visibility.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes adaptive, isolated, ensemble-governed operational intelligence over uncontrolled autonomous runtime expansion.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Adaptive context orchestration</strong>: Importance-aware loading metadata, partitioned operational slices, retrieval-fallback recommendations — no default full-corpus loads.</li>
+    <li><strong>Sparse-aware provider surfaces</strong>: Declared MoE/active-parameter style metadata (informational); H-037 provider export augmented without auto-switching.</li>
+    <li><strong>Context pressure governance</strong>: Deterministic scoring for oversized windows, retrieval breadth, duplication, reflection share, orchestration depth; prefill amplification signals bridged into inference prefill manifests.</li>
+    <li><strong>Private runtime isolation</strong>: Segmentation, execution boundaries, non-root preference — policy-enforced metadata.</li>
+    <li><strong>Network exposure governance</strong>: Detection-only flags for public bind, unrestricted ingress, external escalation — H-039 firewall alignment; no autonomous shutdowns.</li>
+    <li><strong>Trusted overlay posture</strong>: Tailscale-oriented governance manifests (metadata only).</li>
+    <li><strong>Ensemble evaluation</strong>: Multi-evaluator rows with explicit weights; consensus mean/variance/confidence/disagreement risk; variance issue flags; seeded auditor replay ordering.</li>
+    <li><strong>Deferred</strong>: Autonomous swarms, unrestricted internet execution, giant sparse infra, hidden ensemble weighting, uncontrolled persistence or graph migration.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-043_LONG_CONTEXT_PRIVATE_RUNTIME_ENSEMBLE_LAYER.md</code>.
+  API: <code>GET /api/v1/system/context/*</code>, <code>/api/v1/system/runtime/*</code>, <code>/api/v1/system/ensemble/*</code>.
+  Demo pages: <code>/ui/en/long_context_runtime_demo.html</code>, <code>/ui/tr/…</code>, <code>private_runtime_security_demo.html</code>, <code>ensemble_governance_demo.html</code>.
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+  <em>Section numbering: backlog template lists &quot;40&quot; for H-043; the book uses <strong>§41</strong> after H-042 <strong>§40</strong>.</em>
+</p>
+
+</div>
+<div class="container">
+<h2>42. H-044 Typed Context Orchestration, Document Intelligence &amp; MCP Runtime Compatibility Layer</h2>
+<p>
+  AI workflows become unstable and expensive when <em>instructions, examples, knowledge, memory, tools, and guardrails</em> are mixed into an untyped global prompt context.
+</p>
+<p>
+  <strong>SOAR B2B treats context as first-class infrastructure, not as an untyped prompt blob.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Typed context domains</strong>: Separate, auditable units for instructions, examples, knowledge, memory, tools, and guardrails — hard type boundaries.</li>
+    <li><strong>Lifecycle governance</strong>: Register/list/prioritize/stale/summarize with deterministic rules and no hidden deletion.</li>
+    <li><strong>Deterministic compression</strong>: Semantic summarization via head/tail truncation with a visible marker; no LLM calls; lineage preserved.</li>
+    <li><strong>Duplicate detection</strong>: Recommendations only — no automatic deletion; token-waste estimates are deterministic.</li>
+    <li><strong>Workflow isolation</strong>: Workflow partitions with explicit cross-workflow access rules; no shared global context blobs.</li>
+    <li><strong>Document intelligence abstraction</strong>: OCR/layout/forms/markdown projections as deterministic placeholders with lineage and safe metadata validation (no GPU OCR infrastructure).</li>
+    <li><strong>MCP runtime compatibility</strong>: MCP-friendly capability + tool projections that are policy-scoped and align with H-037 capability gateway and H-039 firewall principles; no public MCP server and no unrestricted execution.</li>
+    <li><strong>Deferred</strong>: Giant MCP-native rewrite, uncontrolled sub-agent spawning, autonomous MCP meshes, GPU OCR clusters, unrestricted MCP execution.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-044_TYPED_CONTEXT_DOCUMENT_MCP_LAYER.md</code>.
+  API: <code>GET /api/v1/system/context/*</code>, <code>/api/v1/system/documents/*</code>, <code>/api/v1/system/mcp/*</code>.
+  Demo pages: <code>/ui/en/context_orchestration_demo.html</code>, <code>document_intelligence_demo.html</code>, <code>mcp_runtime_demo.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>43. H-045 Unified Agent Operating System, Federated Retrieval Fabric &amp; REFRAG-Inspired Selective Context Runtime</h2>
+<p>
+  AI systems become fragmented and expensive when agents, retrieval sources, command routing, context expansion, and governance are managed separately.
+</p>
+<p>
+  <strong>SOAR B2B prioritizes governed agent operations, federated retrieval, and selective context expansion over unrestricted autonomous agent fleets.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Agent OS</strong>: Deterministic agent registry, role-scoped capabilities, fleet visibility, permission gates, and observability — no autonomous spawning or fleet mutation.</li>
+    <li><strong>Natural-language control plane</strong>: NL commands are parsed into intent metadata, routed to workflow categories, and audited; no unrestricted NL execution.</li>
+    <li><strong>Federated retrieval fabric</strong>: Connector registry + incremental sync metadata + deterministic foundation search; all results preserve source lineage.</li>
+    <li><strong>Selective context runtime</strong>: REFRAG-inspired deterministic relevance scoring and selective expansion decisions with explicit retrieval budgets; no RL training infrastructure.</li>
+    <li><strong>Deferred</strong>: Autonomous swarms, live connector execution without governance, uncontrolled retrieval expansion, microservice sprawl.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-045_AGENT_OS_FEDERATED_RETRIEVAL_SELECTIVE_CONTEXT.md</code>.
+  API: <code>GET /api/v1/system/agents*</code>, <code>/api/v1/system/nl-control/*</code>, <code>/api/v1/system/retrieval/*</code>, <code>/api/v1/system/selective-context/*</code>.
+  Demo pages: <code>/ui/en/agent_operating_system_demo.html</code>, <code>federated_retrieval_demo.html</code>, <code>selective_context_runtime_demo.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>44. H-046 Unified Operational Admin &amp; System Visibility Layer</h2>
+<p>
+  <strong>SOAR B2B transitions from infrastructure-heavy AI architecture into visible operational commercial intelligence delivery.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>System health</strong>: Active routers/domains, warnings, verification signals, telemetry availability — deterministic (no fake uptime).</li>
+    <li><strong>Runtime pressure</strong>: Token/context/orchestration/retrieval/agent/retry pressure with explainable thresholds.</li>
+    <li><strong>Auditability</strong>: Workflow audit metadata including approvals, retrieval lineage visibility, and context expansion events.</li>
+    <li><strong>Governance visibility</strong>: Approval queue metadata only; no auto-approval.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-046_SYSTEM_VISIBILITY_LAYER.md</code>.
+  API: <code>GET /api/v1/system/visibility/*</code>.
+  Dashboard: <code>/ui/en/system_visibility_dashboard.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>45. H-047 Commercial Intelligence Results Hub</h2>
+<p>
+  H-047 is the <strong>primary commercial surface</strong> of SOAR B2B: deterministic opportunity delivery, contractor intelligence, risks, evidence traces, and explainability.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Opportunity feed</strong>: Deterministic scoring and urgency signals; no hallucinated opportunity data.</li>
+    <li><strong>Evidence trace</strong>: Every surfaced insight has source lineage; no orphaned conclusions.</li>
+    <li><strong>Explainability</strong>: Why surfaced, scoring inputs, freshness and confidence indicators; no hidden ranking logic.</li>
+    <li><strong>Recommendations</strong>: Workflow recommendations only; no autonomous action execution.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-047_COMMERCIAL_INTELLIGENCE_RESULTS_HUB.md</code>.
+  API: <code>GET /api/v1/results/*</code>.
+  UI: <code>/ui/en/results_hub.html</code> (and <code>/ui/tr/…</code>).
+  Admin index: <code>/ui/en/system_admin_index.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>46. H-048 Conversational Evaluation Runtime, Generative Operational UI &amp; AG-UI Event Streaming Layer</h2>
+<p>
+  <strong>SOAR B2B evolves from request/response AI interaction into governed event-driven operational intelligence workflows.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Conversational evaluation</strong>: multi-turn sessions + turn-level risk and policy alignment; immutable-style traces (metadata only).</li>
+    <li><strong>Generative operational UI (governed)</strong>: registry-only components, safe projections, dashboards/charts/graphs as metadata (no raw HTML/JS).</li>
+    <li><strong>AG-UI runtime</strong>: auditable event stream schemas + workflow event bus (no distributed infra required for foundation).</li>
+    <li><strong>HITL runtime</strong>: approval checkpoints, review queue, deterministic escalations; no automatic approvals.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-048_CONVERSATIONAL_EVAL_AGUI_RUNTIME.md</code>.
+  API: <code>GET /api/v1/system/conversation-eval/*</code>, <code>/api/v1/system/generative-ui/*</code>, <code>/api/v1/system/agui/*</code>, <code>/api/v1/system/hitl/*</code>.
+  Demo pages: <code>/ui/en/conversational_eval_demo.html</code>, <code>generative_operational_ui_demo.html</code>, <code>agui_runtime_demo.html</code>, <code>hitl_runtime_demo.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>47. H-049 Agentic Identity Governance, Hardware-Aware Runtime Scheduling &amp; Adaptive Clustering Intelligence Layer</h2>
+<p>
+  <strong>SOAR B2B evolves toward identity-governed, hardware-aware, utility-optimized operational AI infrastructure.</strong>
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Identity governance</strong>: explicit issuance, cryptographic-style fingerprints (metadata only), least privilege policies, budgets, immutable audit, shadow-agent detection.</li>
+    <li><strong>MCP endpoint governance</strong>: endpoint exposure constraints and budgets; no unrestricted MCP execution.</li>
+    <li><strong>Hardware-aware runtime</strong>: workload routing recommendations, cost intelligence, and latency classes (no infrastructure execution; no fake benchmarks).</li>
+    <li><strong>Adaptive clustering intelligence</strong>: Breathing KMeans-inspired cycle metadata, utility scoring, variance/stability, optimization proposals (recommendation only; no autonomous mutation).</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-049_AGENTIC_IDENTITY_HARDWARE_CLUSTERING.md</code>.
+  API: <code>GET /api/v1/system/identity/*</code>, <code>/api/v1/system/runtime/*</code>, <code>/api/v1/system/clustering/*</code>.
+  Demo pages: <code>/ui/en/agentic_identity_demo.html</code>, <code>hardware_runtime_demo.html</code>, <code>adaptive_clustering_demo.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>48. H-050 Prompt Cache Governance, Static/Dynamic Context Discipline &amp; Agent Deployment Profile Layer</h2>
+<p>
+  <strong>SOAR B2B treats prompt caching as an architectural discipline:</strong> static prefix stability, dynamic suffix isolation, and governed deployment profiles are required for economical long-running AI workflows.
+</p>
+<div class="box">
+  <ul>
+    <li><strong>Static prefix registry</strong>: stable cacheable components with deterministic hashing; rejects volatile metadata (timestamps/random IDs).</li>
+    <li><strong>Dynamic suffix isolation</strong>: user turns, tool outputs, runtime observations, and approvals grow after the prefix without mutating it.</li>
+    <li><strong>Cache breakpoints</strong>: explicit boundary metadata and explainable invalidation reasons (no hidden invalidation logic).</li>
+    <li><strong>Tool schema + model session stability</strong>: detection-only drift signals with cache reset warnings; no mid-session schema mutation.</li>
+    <li><strong>Cache-safe compression</strong>: compression instructions are appended as suffix events; the static prefix is never rewritten.</li>
+    <li><strong>Deployment profiles</strong>: governed, private-by-default profiles; external channels require identity + firewall + approval.</li>
+  </ul>
+</div>
+<p>
+  Operational detail: <code>docs/H-050_PROMPT_CACHE_DEPLOYMENT_PROFILES.md</code>.
+  API: <code>GET /api/v1/system/cache/*</code>, <code>/api/v1/system/deployment/*</code>.
+  Demo pages: <code>/ui/en/prompt_cache_governance_demo.html</code>, <code>/ui/en/agent_deployment_profiles_demo.html</code> (and <code>/ui/tr/…</code>).
+</p>
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/main_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<script src="/ui/assets/ad-rails.js"></script>
+
+</body>
+</html>

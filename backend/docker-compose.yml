@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  soarb2b:
+    build: .
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - ENV=${ENV:-production}
+      - PORT=${PORT:-8000}
+      - FINDEROS_HOST=0.0.0.0
+      - FINDEROS_PORT=8000
+      - SOARB2B_API_KEYS=${SOARB2B_API_KEYS:-}
+      - FINDEROS_CORS_ORIGINS=${FINDEROS_CORS_ORIGINS:-}
+      - DATABASE_URL=${DATABASE_URL:-sqlite:///./data/soarb2b.db}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - JWT_SECRET=${JWT_SECRET:-}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/healthz')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s

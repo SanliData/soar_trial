@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "language": "es",
+    "name": "Español",
+    "region": "ES"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar"
+  },
+  "home": {
+    "title": "SOAR B2B — Convierte las empresas correctas en citas",
+    "description": "Accede a empresas verificadas, contacta con tomadores de decisiones reales, convierte contactos en citas. Motor de citas B2B para fabricantes y mayoristas.",
+    "cta": "Comenzar",
+    "demo": "Ver demo"
+  }
+}

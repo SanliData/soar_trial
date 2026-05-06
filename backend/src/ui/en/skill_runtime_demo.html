@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill Runtime — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 520px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***0e7490; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Skill runtime (H-040)</h1>
+  <p class="muted">Registry, active surface, permissions, dependencies, context optimization, traces.</p>
+  <button type="button" id="sBtn">GET skills</button>
+  <button type="button" id="aBtn">GET active</button>
+  <button type="button" id="pBtn">GET permissions</button>
+  <button type="button" id="dBtn">GET dependencies</button>
+  <button type="button" id="cBtn">GET context-optimization</button>
+  <button type="button" id="tBtn">GET traces</button>
+  <div class="card"><h2>Output</h2><pre id="out">(idle)</pre></div>
+  <script>
+    const base = "";
+    function get(p) { return fetch(base + p).then(r => r.json()); }
+    document.getElementById("sBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/skills"), null, 2);
+    };
+    document.getElementById("aBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/skills/active"), null, 2);
+    };
+    document.getElementById("pBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/skills/permissions"), null, 2);
+    };
+    document.getElementById("dBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/skills/dependencies"), null, 2);
+    };
+    document.getElementById("cBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/skills/context-optimization"), null, 2);
+    };
+    document.getElementById("tBtn").onclick = async () => {
+      document.getElementById("out").textContent = JSON.stringify(await get("/api/v1/system/skills/traces"), null, 2);
+    };
+  </script>
+</body>
+</html>

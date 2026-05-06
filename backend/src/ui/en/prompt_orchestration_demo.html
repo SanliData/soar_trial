@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt Orchestration Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 360px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***2563eb; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Structured prompt orchestration (foundation)</h1>
+  <p class="muted">
+    Loads strategy registry, personas, ARQ templates, and runs a sample evaluation. Deterministic API only — no autonomous prompt mutation.
+    CoT exposure flag is always <code>none</code> at this governance layer.
+  </p>
+  <button type="button" id="loadBtn">Load registries</button>
+  <button type="button" id="evalBtn">Evaluate graph_reasoning sample</button>
+  <div class="card"><h2>Output</h2><pre id="out">(not loaded)</pre></div>
+  <script>
+    document.getElementById("loadBtn").onclick = async () => {
+      const base = "";
+      const [s, p, a] = await Promise.all([
+        fetch(base + "/api/v1/system/prompts/strategies").then(r => r.json()),
+        fetch(base + "/api/v1/system/prompts/personas").then(r => r.json()),
+        fetch(base + "/api/v1/system/prompts/arq-templates").then(r => r.json()),
+      ]);
+      document.getElementById("out").textContent = JSON.stringify({ strategies: s, personas: p, arq: a }, null, 2);
+    };
+    document.getElementById("evalBtn").onclick = async () => {
+      const base = "";
+      const body = {
+        task_type: "graph_reasoning",
+        persona: "commercial_intelligence_officer",
+        contract_id: "graph_insight_v1",
+        arq_template_id: "graph_confidence",
+        include_negative_constraints: true
+      };
+      const r = await fetch(base + "/api/v1/system/prompts/evaluate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(body)
+      });
+      const j = await r.json();
+      document.getElementById("out").textContent = JSON.stringify(j, null, 2);
+    };
+  </script>
+</body>
+</html>

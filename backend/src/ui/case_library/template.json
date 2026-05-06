@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "case_id": "CATEGORY_REGION_TYPE",
+    "title": "Case Title",
+    "sector": "Industry sector",
+    "region": "Geographic region",
+    "access_level": "public|sales|internal",
+    "created_at": "YYYY-MM-DDTHH:MM:SSZ",
+    "updated_at": "YYYY-MM-DDTHH:MM:SSZ"
+  },
+  "objective": {
+    "paragraph": "One paragraph description of what the customer wanted to achieve.",
+    "one_liner": "Single sentence clear objective statement."
+  },
+  "target_profile": {
+    "company_type": "Type of target companies",
+    "geography": "Geographic scope description",
+    "decision_roles": ["Role 1", "Role 2", "Role 3"]
+  },
+  "sequence": {
+    "step_01": "Target: Verified company list created",
+    "step_02": "Identify: Decision-maker roles mapped",
+    "step_03": "Expose: Multi-channel visibility launched",
+    "step_04": "Engage: High-intent outreach initiated",
+    "step_05": "Meet: Confirmed meetings booked"
+  },
+  "outputs": {
+    "companies_targeted": "Description or count",
+    "personas_targeted": "Description or count",
+    "locations_targeted": "Description or count",
+    "campaigns_launched": "Description or count"
+  },
+  "analysis_result": {
+    "impressions": {"min": 0, "max": 0, "unit": "number"},
+    "reach": {"min": 0, "max": 0, "unit": "number"},
+    "clicks": {"min": 0, "max": 0, "unit": "number"},
+    "ctr": {"min": 0.0, "max": 0.0, "unit": "percent"},
+    "cpc": {"min": 0.0, "max": 0.0, "unit": "USD"},
+    "cpm": {"min": 0.0, "max": 0.0, "unit": "USD"},
+    "spend": {"min": 0.0, "max": 0.0, "unit": "USD"},
+    "landing_views": {"min": 0, "max": 0, "unit": "number"},
+    "lead_form_opens": {"min": 0, "max": 0, "unit": "number"},
+    "lead_form_submits": {"min": 0, "max": 0, "unit": "number"},
+    "meeting_requests": {"min": 0, "max": 0, "unit": "number"},
+    "meetings_booked": {"min": 0, "max": 0, "unit": "number"},
+    "qualified_meetings": {"min": 0, "max": 0, "unit": "number"},
+    "conversion_rates": {
+      "click_to_landing": {"min": 0.0, "max": 0.0, "unit": "percent"},
+      "landing_to_lead": {"min": 0.0, "max": 0.0, "unit": "percent"},
+      "lead_to_meeting": {"min": 0.0, "max": 0.0, "unit": "percent"}
+    },
+    "active_leads": {"min": 0, "max": 0, "unit": "number"},
+    "passive_leads": {"min": 0, "max": 0, "unit": "number"},
+    "timeframe_days": {"min": 0, "max": 0, "unit": "days"},
+    "notes": "Additional analysis notes"
+  },
+  "usage_flags": {
+    "sales_demo": false,
+    "onboarding": false,
+    "pricing": false,
+    "sponsor_ready": false,
+    "seo_ready": false
+  }
+}

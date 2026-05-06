@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selective Context Runtime — FinderOS</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    button { margin: 6px 8px 0 0; padding: 8px 12px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***1d4ed8; color: ***REMOVED***fff; font-size: 12px; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 440px; font-size: 10px; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 13px; margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <h1>Selective context runtime (H-045)</h1>
+  <p class="muted">REFRAG-inspired deterministic selection — no RL training, no hidden expansion.</p>
+  <button type="button" data-p="/api/v1/system/selective-context/compression">compression</button>
+  <button type="button" data-p="/api/v1/system/selective-context/relevance">relevance</button>
+  <button type="button" data-p="/api/v1/system/selective-context/expansion">expansion</button>
+  <button type="button" data-p="/api/v1/system/selective-context/token-pressure">token-pressure</button>
+  <button type="button" data-p="/api/v1/system/selective-context/budgets">budgets</button>
+  <pre id="out">(idle)</pre>
+  <script>
+    document.querySelectorAll("button[data-p]").forEach(function (btn) {
+      btn.onclick = function () {
+        fetch(btn.getAttribute("data-p")).then(function (r) { return r.json(); }).then(function (j) {
+          document.getElementById("out").textContent = JSON.stringify(j, null, 2);
+        });
+      };
+    });
+  </script>
+</body>
+</html>
+

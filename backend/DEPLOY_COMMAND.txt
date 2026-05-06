@@ -1,0 +1,1 @@
+gcloud run deploy soarb2b --source backend --region us-central1 --project finderos-entegrasyon-480708 --service-account soarb2b@finderos-entegrasyon-480708.iam.gserviceaccount.com --set-secrets="GOOGLE_CLIENT_ID=google-client-id:latest,JWT_SECRET=jwt-secret:latest,QUOTE_SECRET=quote-secret:latest" --allow-unauthenticated

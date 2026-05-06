@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SOAR B2B — Build Your Meeting Plan</title>
+    <!-- SEO hreflang tags -->
+    <link rel="alternate" hreflang="tr" href="https://soarb2b.com/ui/tr/soarb2b_onboarding_5q.html" />
+    <link rel="alternate" hreflang="en" href="https://soarb2b.com/ui/en/soarb2b_onboarding_5q.html" />
+    <link rel="alternate" hreflang="x-default" href="https://soarb2b.com/ui/tr/soarb2b_onboarding_5q.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028; /* Darkened Mat Gold for web */
+            --color-text-primary: ***REMOVED***0F172A;
+            --color-text-secondary: ***REMOVED***475569;
+            --color-border: ***REMOVED***E2E8F0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            font-weight: 400;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            touch-action: pan-y;
+            /* iOS Safe Area Support - padding-top handled in media queries */
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        /* SOAR B2B Logo */
+        .logo-header {
+            position: fixed;
+            top: calc(60px + 1rem); /* Below banner */
+            left: 1rem;
+            z-index: 1001;
+        }
+
+        .logo-link {
+            text-decoration: none;
+            color: inherit;
+            display: inline-block;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .logo-link:hover {
+            opacity: 0.8;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Language Selector - Dropdown Menu */
+        .lang-header {
+            position: fixed;
+            top: calc(60px + 1rem); /* Below banner */
+            right: 1rem;
+            z-index: 1001;
+        }
+
+        .lang-selector {
+            position: relative;
+            display: inline-block;
+        }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.8);
+            padding: 0.5rem 0.75rem;
+            border: 1px solid rgba(248, 250, 252, 0.15);
+            border-radius: 4px;
+            background: rgba(248, 250, 252, 0.03);
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .lang-toggle:hover {
+            border-color: rgba(248, 250, 252, 0.3);
+            background: rgba(248, 250, 252, 0.06);
+        }
+
+        .lang-toggle .world-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+
+        .lang-toggle:hover .world-icon {
+            opacity: 1;
+        }
+
+        .lang-current {
+            font-weight: 500;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        .lang-arrow {
+            width: 12px;
+            height: 12px;
+            opacity: 0.6;
+            transition: transform 0.2s;
+        }
+
+        .lang-selector.open .lang-arrow {
+            transform: rotate(180deg);
+        }
+
+        .lang-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(248, 250, 252, 0.15);
+            border-radius: 4px;
+            min-width: 120px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s;
+            z-index: 1002;
+        }
+
+        .lang-selector.open .lang-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .lang-menu-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: rgba(248, 250, 252, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border-bottom: 1px solid rgba(248, 250, 252, 0.05);
+        }
+
+        .lang-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .lang-menu-item:hover {
+            background: rgba(248, 250, 252, 0.05);
+            color: var(--color-off-white);
+        }
+
+        .lang-menu-item.active {
+            color: var(--color-gold);
+            font-weight: 600;
+            background: rgba(197, 160, 40, 0.1);
+        }
+
+        .lang-menu-item.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .logo-soar {
+            display: inline-flex;
+            align-items: baseline;
+            font-size: 1.25rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            color: var(--color-off-white);
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .logo-soar-r {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-r-arrow {
+            position: absolute;
+            right: -2px;
+            bottom: -1px;
+            width: 10px;
+            height: 10px;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(248, 250, 252, 0.3);
+            margin: 0;
+        }
+
+        .logo-b2b {
+            font-size: 1rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: var(--color-off-white);
+            letter-spacing: 0.02em; /* B2B tracking */
+        }
+
+        .onboarding-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Fixed top banner */
+        .processing-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 1rem 1.5rem;
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .processing-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .processing-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .processing-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--color-off-white);
+        }
+
+        .processing-time {
+            font-size: 0.85rem;
+            color: rgba(248, 250, 252, 0.7);
+        }
+
+        .sponsor-logo-placeholder {
+            width: 80px;
+            height: 30px;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px dashed rgba(248, 250, 252, 0.2);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(248, 250, 252, 0.4);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: rgba(248, 250, 252, 0.1);
+            position: fixed;
+            top: 60px; /* Below banner */
+            left: 0;
+            right: 0;
+            z-index: 1001;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--color-gold);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 20%;
+        }
+
+        .step-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: calc(60px + 1rem) 2rem 2rem; /* Top padding accounts for banner */
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .step-container.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--color-gold);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        .step-title {
+            font-family: 'Satoshi', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em; /* Satoshi heading tracking */
+        }
+
+        .step-description {
+            font-size: 1.2rem;
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            margin-bottom: 2rem;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.6);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .input-field,
+        .input-select,
+        textarea.input-field {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            min-height: 48px; /* Minimum touch target for mobile */
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 2px;
+            color: var(--color-off-white);
+            font-size: 1.1rem;
+            font-family: inherit;
+            font-weight: 400;
+            transition: all 0.3s;
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+        }
+
+        textarea.input-field {
+            display: block;
+            resize: vertical;
+        }
+
+        .input-field:focus,
+        .input-select:focus {
+            outline: none;
+            border-color: var(--color-gold);
+            background: rgba(248, 250, 252, 0.08);
+        }
+
+        .input-field::placeholder {
+            color: rgba(248, 250, 252, 0.4);
+        }
+
+        .input-select {
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23C5A028' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            padding-right: 3rem;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .option-card {
+            padding: 1.5rem 1rem;
+            min-height: 48px; /* Minimum touch target */
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 2px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .option-card:hover {
+            border-color: var(--color-gold);
+            background: rgba(248, 250, 252, 0.08);
+        }
+
+        .option-card:active {
+            transform: scale(0.98);
+            border-color: var(--color-gold);
+        }
+
+        .option-card.selected {
+            border-color: var(--color-gold);
+            background: rgba(197, 160, 40, 0.1); /* Updated to match new gold */
+            color: var(--color-gold);
+        }
+
+        .slider-container {
+            margin-top: 2rem;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.6);
+        }
+
+        .slider-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--color-gold);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            background: rgba(248, 250, 252, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--color-gold);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .range-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--color-gold);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        /* Map container styles */
+        ***REMOVED***mapContainer {
+            margin-top: 1rem;
+        }
+
+        ***REMOVED***map {
+            height: 300px;
+            border-radius: 4px;
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            background: rgba(248, 250, 252, 0.02);
+        }
+
+        /* Leaflet map dark theme adjustments */
+        .leaflet-container {
+            background: rgba(248, 250, 252, 0.02) !important;
+        }
+
+        .leaflet-control-zoom a {
+            background-color: rgba(15, 23, 42, 0.9) !important;
+            color: var(--color-off-white) !important;
+            border: 1px solid rgba(248, 250, 252, 0.1) !important;
+        }
+
+        .leaflet-control-zoom a:hover {
+            background-color: rgba(197, 160, 40, 0.2) !important;
+            border-color: var(--color-gold) !important;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: var(--color-night-blue) !important;
+            color: var(--color-off-white) !important;
+            border-radius: 4px !important;
+        }
+
+        .leaflet-popup-tip {
+            background: var(--color-night-blue) !important;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+            padding-top: 3rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1.25rem 2rem;
+            min-height: 48px; /* Minimum touch target for mobile */
+            font-family: 'Satoshi', sans-serif;
+            font-size: 1rem;
+            font-weight: 700; /* Satoshi Bold */
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            -webkit-tap-highlight-color: transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+        }
+
+        .btn-primary:hover {
+            background: ***REMOVED***C19D2D;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(15, 23, 42, 0.3);
+            border-top-color: var(--color-night-blue);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 0.5rem;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            gap: 1.5rem;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-spinner-large {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(248, 250, 252, 0.1);
+            border-top-color: var(--color-gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .loading-text {
+            color: var(--color-off-white);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .loading-progress {
+            color: rgba(248, 250, 252, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Pricing model section */
+        .pricing-section {
+            background: rgba(248, 250, 252, 0.03);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+            padding: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--color-off-white);
+            margin-bottom: 1.5rem;
+            font-family: 'Satoshi', sans-serif;
+        }
+
+        .pricing-model {
+            margin-bottom: 2rem;
+        }
+
+        .pricing-model:last-child {
+            margin-bottom: 0;
+        }
+
+        .pricing-model-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-gold);
+            margin-bottom: 0.75rem;
+        }
+
+        .pricing-item {
+            font-size: 0.95rem;
+            color: rgba(248, 250, 252, 0.8);
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .pricing-item strong {
+            color: var(--color-off-white);
+            font-weight: 600;
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            background: rgba(197, 160, 40, 0.15);
+            color: var(--color-gold);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--color-off-white);
+            border: 1px solid rgba(248, 250, 252, 0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--color-off-white);
+            background: rgba(248, 250, 252, 0.05);
+        }
+
+        .result-screen {
+            display: none;
+            min-height: 100vh;
+            padding: 3rem 2rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .result-screen.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--color-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2.5rem;
+        }
+
+        .result-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .result-subtitle {
+            font-size: 1.3rem;
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            max-width: 600px;
+        }
+
+        .plan-summary {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 2.5rem;
+            border-radius: 2px;
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 3rem;
+            text-align: left;
+        }
+
+        .plan-item {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+        }
+
+        .plan-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .plan-item-label {
+            font-size: 0.85rem;
+            color: rgba(248, 250, 252, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .plan-item-value {
+            font-size: 1.1rem;
+            color: var(--color-off-white);
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .btn-continue-objectives {
+            margin-top: 2rem;
+        }
+
+        /* Mobile Bottom Nav - World-Class B2B SaaS Standard */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 0.5rem 0;
+            padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+            z-index: 999;
+        }
+
+        .mobile-nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            position: relative;
+            padding-top: 0.5rem;
+        }
+
+        .mobile-nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex: 1;
+            gap: 0.5rem;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            color: rgba(248, 250, 252, 0.6);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color 0.2s, transform 0.1s;
+            padding: 0.5rem;
+            min-height: 48px; /* Minimum touch target */
+            min-width: 60px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-nav-item:active {
+            color: var(--color-off-white);
+            transform: scale(0.95);
+        }
+
+        .mobile-nav-item.active {
+            color: var(--color-gold);
+        }
+
+        .mobile-nav-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        /* Floating CTA Button - Center Position */
+        .mobile-nav-cta {
+            position: absolute;
+            left: 50%;
+            top: -20px;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(197, 160, 40, 0.25);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+            z-index: 1000;
+        }
+
+        .mobile-nav-cta:active {
+            transform: translateX(-50%) scale(0.92);
+            box-shadow: 0 1px 4px rgba(197, 160, 40, 0.3);
+        }
+
+        .mobile-nav-cta-text {
+            line-height: 1.2;
+            padding: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            /* iOS Safe Area Support */
+            body {
+                padding-top: calc(60px + env(safe-area-inset-top));
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            }
+
+            .mobile-nav {
+                display: block;
+            }
+
+            .step-container {
+                padding-top: calc(60px + 1rem);
+                padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+            }
+
+            .progress-bar {
+                top: 60px;
+            }
+
+            .option-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                min-height: 48px; /* Touch target compliance */
+            }
+
+            /* Ensure floating CTA is visible */
+            .mobile-nav-cta {
+                width: 64px;
+                height: 64px;
+                min-height: 48px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* iOS Safe Area Support for small screens */
+            body {
+                padding-top: calc(60px + env(safe-area-inset-top));
+                padding-bottom: calc(80px + env(safe-area-inset-bottom));
+            }
+
+            .logo-header {
+                top: calc(60px + 1rem + env(safe-area-inset-top));
+            }
+
+            .lang-header {
+                top: calc(60px + 1rem + env(safe-area-inset-top));
+            }
+
+            .step-container {
+                padding-top: calc(60px + 0.75rem);
+            }
+
+            .processing-banner {
+                padding: 0.75rem 1rem;
+            }
+
+            .processing-title {
+                font-size: 0.85rem;
+            }
+
+            .processing-time {
+                font-size: 0.75rem;
+            }
+
+            .sponsor-logo-placeholder {
+                width: 60px;
+                height: 24px;
+                font-size: 0.6rem;
+            }
+
+            .step-title {
+                font-size: 2rem;
+            }
+
+            .step-description {
+                font-size: 1rem;
+            }
+
+            .input-field,
+            .input-select {
+                padding: 1rem 1.25rem;
+                min-height: 48px; /* Touch target compliance */
+                font-size: 1rem;
+            }
+
+            /* Floating CTA adjustments for small screens */
+            .mobile-nav-cta {
+                width: 60px;
+                height: 60px;
+                font-size: 0.7rem;
+            }
+        }
+        /* Ad slot — FINDIAG banner (maximize) */
+        .ad-slot-onboarding { min-height: 120px; text-align: center; background: rgba(248, 250, 252, 0.04); border: 1px solid rgba(248, 250, 252, 0.1); border-radius: 8px; padding: 1rem 0; }
+        .ad-slot-onboarding .ad-placeholder { display: block; min-height: 100px; padding: 1.25rem; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9)); border: 1px solid rgba(212, 176, 67, 0.35); border-radius: 8px; color: rgba(248, 250, 252, 0.95); text-align: center; }
+        .ad-slot-onboarding .ad-placeholder .ad-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.6; margin-bottom: 0.5rem; }
+        .ad-slot-onboarding .ad-placeholder .ad-headline { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: ***REMOVED***F8FAFC; }
+        .ad-slot-onboarding .ad-placeholder .ad-sub { font-size: 0.85rem; opacity: 0.85; margin-bottom: 0.6rem; line-height: 1.4; }
+        .ad-slot-onboarding .ad-placeholder .ad-cta { display: inline-block; padding: 0.5rem 1.25rem; background: ***REMOVED***C5A028; color: ***REMOVED***0F172A; font-weight: 700; font-size: 0.85rem; border-radius: 4px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="logo-header">
+        <a href="/ui/en/soarb2b_home.html" class="logo-link" style="text-decoration: none; color: inherit;">
+            <div class="logo-container">
+                <span class="logo-soar">
+                    SOA<span class="logo-soar-r">R
+                        <svg class="logo-r-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 12L12 2M12 2H6M12 2V8" stroke="***REMOVED***C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </span>
+                <span class="logo-divider"></span>
+                <span class="logo-b2b">B2B</span>
+            </div>
+        </a>
+    </div>
+    <div class="lang-header">
+        <div class="lang-selector" id="langSelector">
+            <div class="lang-toggle" id="langToggle">
+                <svg class="world-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+                </svg>
+                <span class="lang-current" id="langCurrent">EN</span>
+                <svg class="lang-arrow" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="lang-menu" id="langMenu">
+                <a href="/ui/en/soarb2b_onboarding_5q.html" class="lang-menu-item active" data-lang="EN">EN - English</a>
+                <a href="/ui/de/soarb2b_onboarding_5q.html" class="lang-menu-item" data-lang="DE">DE - Deutsch</a>
+                <a href="/ui/es/soarb2b_onboarding_5q.html" class="lang-menu-item" data-lang="ES">ES - Español</a>
+                <a href="/ui/fr/soarb2b_onboarding_5q.html" class="lang-menu-item" data-lang="FR">FR - Français</a>
+                <a href="/ui/ar/soarb2b_onboarding_5q.html" class="lang-menu-item" data-lang="AR">AR - العربية</a>
+                <a href="/ui/tr/soarb2b_onboarding_5q.html" class="lang-menu-item" data-lang="TR">TR - Türkçe</a>
+            </div>
+        </div>
+    </div>
+    <!-- Fixed Processing Banner -->
+    <div class="processing-banner">
+        <div class="processing-banner-content">
+            <div class="processing-text">
+                <div class="processing-title">Processing your request...</div>
+                <div class="processing-time">Estimated time: 10–20 seconds</div>
+            </div>
+        </div>
+        <div class="sponsor-logo-placeholder">Sponsor</div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner-large"></div>
+        <div class="loading-text" id="loadingText">Processing your request...</div>
+        <div class="loading-progress" id="loadingProgress">This may take 10–20 seconds</div>
+    </div>
+
+    <div class="onboarding-container">
+        <!-- Step 1: Target Type -->
+        <div class="step-container active" id="step1">
+            <div class="step-number">Question 01 / 05</div>
+            <h1 class="step-title">Which industry are you conquering?</h1>
+            <p class="step-description">Tell us the type of businesses you want to reach</p>
+            <div class="input-group">
+                <label class="input-label">Target Business Type</label>
+                <input type="text" class="input-field" id="targetType" placeholder="e.g., 3-5 star hotels, manufacturing companies, retail chains" autocomplete="off">
+                <div class="option-grid" style="margin-top: 1rem;">
+                    <div class="option-card" data-value="Hotels">Hotels</div>
+                    <div class="option-card" data-value="Manufacturing">Manufacturing</div>
+                    <div class="option-card" data-value="Retail">Retail</div>
+                    <div class="option-card" data-value="Healthcare">Healthcare</div>
+                    <div class="option-card" data-value="Technology">Technology</div>
+                    <div class="option-card" data-value="Real Estate">Real Estate</div>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-primary" onclick="nextStep()" id="btnNext1">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Decision Maker -->
+        <div class="step-container" id="step2">
+            <div class="step-number">Question 02 / 05</div>
+            <h1 class="step-title">Who is the decision maker?</h1>
+            <p class="step-description">Identify the role that makes purchasing decisions</p>
+            <div class="input-group">
+                <label class="input-label">Decision Maker Role</label>
+                <input type="text" class="input-field" id="decisionMaker" placeholder="e.g., CEO, VP Sales, Procurement Manager" autocomplete="off">
+                <div class="option-grid" style="margin-top: 1rem;">
+                    <div class="option-card" data-value="CEO">CEO</div>
+                    <div class="option-card" data-value="VP Sales">VP Sales</div>
+                    <div class="option-card" data-value="Procurement Manager">Procurement</div>
+                    <div class="option-card" data-value="Operations Manager">Operations</div>
+                    <div class="option-card" data-value="IT Director">IT Director</div>
+                    <div class="option-card" data-value="Marketing Director">Marketing</div>
+                </div>
+            </div>
+            <!-- Upload Target Persona (optional) -->
+            <div class="input-group" style="margin-top: 1.5rem; padding: 1rem; background: rgba(248, 250, 252, 0.04); border-radius: 8px; border: 1px solid rgba(248, 250, 252, 0.08);">
+                <label class="input-label">Upload Target Persona (Optional)</label>
+                <p style="font-size: 0.85rem; color: rgba(248, 250, 252, 0.6); margin-bottom: 1rem;">You can upload a LinkedIn profile you already have access to. SOAR does not scrape or access private data.</p>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div>
+                        <input type="url" class="input-field" id="uploadLinkedInUrl" placeholder="LinkedIn profile URL (e.g. linkedin.com/in/name)" autocomplete="off" style="margin-bottom: 0;">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.85rem; color: rgba(248, 250, 252, 0.7);">PDF or paste text</label>
+                        <input type="file" id="uploadLinkedInPdf" accept=".pdf" style="margin-top: 0.25rem; color: rgba(248, 250, 252, 0.8); font-size: 0.9rem;">
+                        <textarea class="input-field" id="uploadLinkedInText" placeholder="Paste profile info here" rows="3" style="margin-top: 0.5rem; min-height: 80px; resize: vertical;"></textarea>
+                    </div>
+                    <button type="button" class="btn btn-secondary" id="btnUploadLinkedIn" style="align-self: flex-start;">Get preview</button>
+                </div>
+                <div id="linkedinUploadPreview" style="display: none; margin-top: 1rem; padding: 1rem; background: rgba(197, 160, 40, 0.08); border: 1px solid rgba(197, 160, 40, 0.3); border-radius: 8px;">
+                    <div id="linkedinPreviewContent" style="font-size: 0.9rem; color: rgba(248, 250, 252, 0.9);"></div>
+                    <button type="button" class="btn btn-primary" id="btnApplyLinkedIn" style="margin-top: 0.75rem;">Continue with this data</button>
+                </div>
+            </div>
+            <!-- Upload Company Target (optional) -->
+            <div class="input-group" style="margin-top: 1.5rem; padding: 1rem; background: rgba(248, 250, 252, 0.04); border-radius: 8px; border: 1px solid rgba(248, 250, 252, 0.08);">
+                <label class="input-label">Upload Company Target (Optional)</label>
+                <p style="font-size: 0.85rem; color: rgba(248, 250, 252, 0.6); margin-bottom: 1rem;">Sell to these companies: enter name, domain, Google Maps link, or CSV. After preview, &quot;Continue with this data&quot; adds them to your plan.</p>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <input type="text" class="input-field" id="uploadCompanyName" placeholder="Company name" autocomplete="off">
+                    <input type="text" class="input-field" id="uploadCompanyDomain" placeholder="Domain (e.g. example.com)" autocomplete="off">
+                    <input type="url" class="input-field" id="uploadCompanyMapsUrl" placeholder="Google Maps URL (optional)" autocomplete="off">
+                    <textarea class="input-field" id="uploadCompanyCsv" placeholder="CSV: company_name, website, city (one per line)" rows="3" style="min-height: 80px; resize: vertical;"></textarea>
+                    <button type="button" class="btn btn-secondary" id="btnUploadCompany" style="align-self: flex-start;">Get preview</button>
+                </div>
+                <div id="companyUploadPreview" style="display: none; margin-top: 1rem; padding: 1rem; background: rgba(197, 160, 40, 0.08); border: 1px solid rgba(197, 160, 40, 0.3); border-radius: 8px;">
+                    <div id="companyPreviewContent" style="font-size: 0.9rem; color: rgba(248, 250, 252, 0.9);"></div>
+                    <button type="button" class="btn btn-primary" id="btnApplyCompany" style="margin-top: 0.75rem;">Continue with this data</button>
+                </div>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn btn-primary" onclick="nextStep()" id="btnNext2">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Geography -->
+        <div class="step-container" id="step3">
+            <div class="step-number">Question 03 / 05</div>
+            <h1 class="step-title">Primary region?</h1>
+            <p class="step-description">Where should we focus the targeting?</p>
+            
+            <!-- Region Selection Buttons -->
+            <div class="input-group">
+                <label class="input-label">Select Region</label>
+                <div class="option-grid" style="margin-bottom: 2rem;">
+                    <div class="option-card" data-value="North America">North America</div>
+                    <div class="option-card" data-value="Europe">Europe</div>
+                    <div class="option-card" data-value="DACH">DACH</div>
+                    <div class="option-card" data-value="MENA">MENA</div>
+                    <div class="option-card" data-value="UK & Ireland">UK & Ireland</div>
+                    <div class="option-card" data-value="Turkey">Turkey</div>
+                    <div class="option-card" data-value="Asia Pacific">Asia Pacific</div>
+                </div>
+            </div>
+
+            <!-- Address / Place name (validated as country–city) -->
+            <div class="input-group">
+                <label class="input-label">Address or place name</label>
+                <p class="step-description" style="margin-bottom: 0.75rem; font-size: 0.9rem; color: rgba(248, 250, 252, 0.7);">Enter a city, address, or place; we'll validate it (country – city).</p>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-start;">
+                    <input type="text" class="input-field" id="addressPlaceName" placeholder="e.g. Paris France, Istanbul Turkey, New York USA" autocomplete="off" style="flex: 1; min-width: 200px;">
+                    <button type="button" class="btn btn-secondary" id="validateAddressBtn" style="white-space: nowrap;">Validate</button>
+                </div>
+                <div id="addressValidationResult" style="margin-top: 0.75rem; padding: 0.75rem 1rem; border-radius: 4px; display: none; font-size: 0.9rem;"></div>
+            </div>
+
+            <!-- ZIP/Postal Code and Radius -->
+            <div class="input-group">
+                <label class="input-label">ZIP / Postal Code</label>
+                <input type="text" class="input-field" id="zipCode" placeholder="e.g., 75001 or 34000" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Radius (Miles)</label>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <input type="range" class="range-slider" id="radiusMiles" min="1" max="100" value="10" step="1" style="flex: 1;">
+                    <span class="slider-value mono" id="radiusValue" style="font-size: 1.2rem; min-width: 50px; text-align: right;">10</span>
+                    <span style="color: rgba(248, 250, 252, 0.6); font-size: 0.9rem;">miles</span>
+                </div>
+            </div>
+
+            <!-- Map Selection -->
+            <div class="input-group">
+                <label class="input-label">Select from Map (Optional)</label>
+                <button type="button" class="btn btn-secondary" id="openMapBtn" style="width: 100%; margin-bottom: 1rem;">
+                    📍 Open Map
+                </button>
+                <div id="mapContainer" style="display: none; margin-top: 1rem;">
+                    <div id="map" style="height: 300px; border-radius: 4px; border: 1px solid rgba(248, 250, 252, 0.1);"></div>
+                    <div id="mapSelectedInfo" style="margin-top: 1rem; padding: 1rem; background: rgba(248, 250, 252, 0.05); border-radius: 4px; display: none;">
+                        <div style="font-size: 0.9rem; color: rgba(248, 250, 252, 0.7);">Selected Location:</div>
+                        <div id="mapSelectedLocation" style="margin-top: 0.5rem; font-weight: 500; color: var(--color-gold);"></div>
+                    </div>
+                </div>
+                <input type="hidden" id="selectedLat" />
+                <input type="hidden" id="selectedLng" />
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn btn-primary" onclick="nextStep()" id="btnNext3">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Product/Service -->
+        <div class="step-container" id="step4">
+            <div class="step-number">Question 04 / 05</div>
+            <h1 class="step-title">What product or service are you selling?</h1>
+            <p class="step-description">Briefly describe your offering</p>
+            <div class="input-group">
+                <label class="input-label">Product / Service Description</label>
+                <textarea class="input-field" id="productService" placeholder="E.g., Professional cleaning products for hotels and restaurants" rows="4" style="min-height: 120px; resize: vertical;" autocomplete="off"></textarea>
+            </div>
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn btn-primary" onclick="nextStep()" id="btnNext4">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Meeting Goal -->
+        <div class="step-container" id="step5">
+            <div class="step-number">Question 05 / 05</div>
+            <h1 class="step-title">Your monthly meeting goal?</h1>
+            <p class="step-description">How many meetings do you want to book per month?</p>
+
+            <div class="input-group">
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Monthly Meetings</span>
+                        <span class="slider-value mono" id="meetingGoalValue">5</span>
+                    </div>
+                    <input type="range" class="range-slider" id="meetingGoal" min="1" max="50" value="5" step="1">
+                </div>
+            </div>
+
+            <div class="input-group" style="margin-top: 1rem;">
+                <div style="padding: 1.5rem; background: rgba(248, 250, 252, 0.05); border: 1px solid rgba(248, 250, 252, 0.1); border-radius: 4px;">
+                    <label style="display: flex; align-items: center; gap: 1rem; cursor: pointer;">
+                        <input type="checkbox" id="autoStartQueries" style="width: 20px; height: 20px; cursor: pointer;">
+                        <div>
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">Start analysis automatically after submission?</div>
+                            <div style="font-size: 0.9rem; color: rgba(248, 250, 252, 0.7);">If Yes → Query starts instantly. If No → Query is saved as draft and awaits admin review.</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Usage-Based Pricing Info -->
+            <div class="pricing-section" style="padding: 1.5rem; background: rgba(248, 250, 252, 0.05); border: 1px solid rgba(248, 250, 252, 0.1); border-radius: 4px; margin-top: 1rem;">
+                <div style="font-weight: 600; margin-bottom: 0.75rem; color: var(--color-gold);">Pay-as-you-go Pricing</div>
+                <div style="font-size: 0.9rem; color: rgba(248, 250, 252, 0.7); line-height: 1.6;">
+                    • Account activation: <strong>$0.98/month</strong><br>
+                    • Query execution: <strong>$1.99/query</strong> (max 100 businesses)<br>
+                    • Optional modules available (Persona, Visit Route, Export, Outreach)
+                </div>
+                <div style="margin-top: 0.75rem; font-size: 0.85rem; color: rgba(248, 250, 252, 0.5);">
+                    💡 <a href="/ui/en/soarb2b_home.html***REMOVED***pricing" target="_blank" style="color: var(--color-gold); text-decoration: underline;">Estimate your cost</a> or <a href="***REMOVED***contact" style="color: var(--color-gold); text-decoration: underline;">contact us</a> for Enterprise/Agency
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="prevStep()">Back</button>
+                <button class="btn btn-primary" onclick="submitForm()" id="btnSubmit">Submit Request</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div class="result-screen" id="resultScreen">
+        <div class="result-icon">✓</div>
+        <h1 class="result-title">Request received.</h1>
+        <p class="result-subtitle">Your request has been successfully received. Our team will review it shortly and contact you if needed.</p>
+        <div class="action-buttons">
+            <button class="btn btn-primary btn-continue-objectives" onclick="goToObjectiveSelection()">Choose Your Objectives</button>
+        </div>
+        
+        <div class="plan-summary" id="planSummary">
+            <!-- Populated by JavaScript -->
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="goToObjectiveSelection()">Choose Your Objectives</button>
+            <a href="soarb2b_home.html" class="btn btn-secondary">View Home</a>
+        </div>
+
+        <!-- Ad slot: onboarding-mid (Novarchive placeholder when no live ads) -->
+        <div class="ad-slot-onboarding" data-slot="onboarding-mid" id="ad-slot-onboarding" style="margin: 2rem auto; max-width: 900px; padding: 0 1rem;">
+            <div class="ad-slot-inner" id="ad-slot-onboarding-inner"></div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation - World-Class B2B SaaS Standard -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-content">
+            <div class="mobile-nav-items">
+                <a href="soarb2b_home.html" class="mobile-nav-item">
+                    <div class="mobile-nav-icon">🏠</div>
+                    <span>Home</span>
+                </a>
+                <a href="case_library_index.html" class="mobile-nav-item">
+                    <div class="mobile-nav-icon">📚</div>
+                    <span>Cases</span>
+                </a>
+            </div>
+            <!-- Floating CTA Button - Center Position -->
+            <a href="soarb2b_home.html" class="mobile-nav-cta">
+                <div class="mobile-nav-cta-text">Get<br>Started</div>
+            </a>
+            <div class="mobile-nav-items">
+                <a href="demo_showcase.html" class="mobile-nav-item">
+                    <div class="mobile-nav-icon">🎯</div>
+                    <span>Demo</span>
+                </a>
+                <a href="***REMOVED***" class="mobile-nav-item" id="mobileNavMore">
+                    <div class="mobile-nav-icon">⋯</div>
+                    <span>More</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Leaflet JS for map -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+        const formData = {};
+        let map = null;
+        let mapMarker = null;
+        let mapInitialized = false;
+
+        // Language selector dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            const langSelector = document.getElementById('langSelector');
+            const langToggle = document.getElementById('langToggle');
+            const langMenu = document.getElementById('langMenu');
+            
+            if (langToggle && langMenu) {
+                // Toggle menu on click
+                langToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    langSelector.classList.toggle('open');
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!langSelector.contains(e.target)) {
+                        langSelector.classList.remove('open');
+                    }
+                });
+                
+                // Close menu when selecting a language
+                const langItems = langMenu.querySelectorAll('.lang-menu-item:not(.disabled)');
+                langItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        langSelector.classList.remove('open');
+                    });
+                });
+            }
+        });
+
+        // Option card selection
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const step = this.closest('.step-container');
+                const allCards = step.querySelectorAll('.option-card');
+                
+                allCards.forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Save selected region to formData
+                const selectedValue = this.dataset.value;
+                formData['geography'] = selectedValue || '';
+            });
+        });
+
+        // Radius slider
+        const radiusSlider = document.getElementById('radiusMiles');
+        const radiusValue = document.getElementById('radiusValue');
+        if (radiusSlider && radiusValue) {
+            radiusSlider.addEventListener('input', function() {
+                radiusValue.textContent = this.value;
+                formData['radiusMiles'] = this.value;
+            });
+            // Initialize value
+            formData['radiusMiles'] = radiusSlider.value;
+        }
+
+        // Map initialization
+        function initializeMap() {
+            if (mapInitialized || !document.getElementById('map')) return;
+            
+            const mapEl = document.getElementById('map');
+            if (!mapEl) return;
+
+            // Initialize map centered on Turkey (default) or user location
+            map = L.map('map', {
+                zoomControl: true,
+                dragging: true,
+                touchZoom: true,
+                doubleClickZoom: true,
+                scrollWheelZoom: true,
+                boxZoom: false,
+                keyboard: true
+            }).setView([39.9334, 32.8597], 6); // Turkey center
+
+            // Add OpenStreetMap tiles (dark theme compatible)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Map click handler
+            map.on('click', function(e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+
+                // Remove existing marker
+                if (mapMarker) {
+                    map.removeLayer(mapMarker);
+                }
+
+                // Add new marker
+                mapMarker = L.marker([lat, lng], {
+                    draggable: true
+                }).addTo(map);
+
+                // Update form data
+                document.getElementById('selectedLat').value = lat;
+                document.getElementById('selectedLng').value = lng;
+                formData['selectedLat'] = lat;
+                formData['selectedLng'] = lng;
+
+                // Show selected location info
+                const infoDiv = document.getElementById('mapSelectedInfo');
+                const locationDiv = document.getElementById('mapSelectedLocation');
+                if (infoDiv && locationDiv) {
+                    locationDiv.textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+                    infoDiv.style.display = 'block';
+                }
+
+                // Marker drag handler
+                mapMarker.on('dragend', function(e) {
+                    const pos = e.target.getLatLng();
+                    document.getElementById('selectedLat').value = pos.lat;
+                    document.getElementById('selectedLng').value = pos.lng;
+                    formData['selectedLat'] = pos.lat;
+                    formData['selectedLng'] = pos.lng;
+                    if (locationDiv) {
+                        locationDiv.textContent = `${pos.lat.toFixed(4)}, ${pos.lng.toFixed(4)}`;
+                    }
+                });
+            });
+
+            mapInitialized = true;
+        }
+
+        // Open map button handler
+        const openMapBtn = document.getElementById('openMapBtn');
+        if (openMapBtn) {
+            openMapBtn.addEventListener('click', function() {
+                const mapContainer = document.getElementById('mapContainer');
+                if (mapContainer) {
+                    if (mapContainer.style.display === 'none') {
+                        mapContainer.style.display = 'block';
+                        // Initialize map on first open
+                        setTimeout(() => {
+                            initializeMap();
+                            if (map) {
+                                map.invalidateSize(); // Fix map sizing
+                            }
+                        }, 100);
+                        this.textContent = '📍 Close Map';
+                    } else {
+                        mapContainer.style.display = 'none';
+                        this.textContent = '📍 Open Map';
+                    }
+                }
+            });
+        }
+
+        // Meeting goal slider
+        const meetingGoalSlider = document.getElementById('meetingGoal');
+        const meetingGoalValue = document.getElementById('meetingGoalValue');
+        
+        meetingGoalSlider.addEventListener('input', function() {
+            meetingGoalValue.textContent = this.value;
+        });
+
+        // Input validation
+        function validateStep(stepNum) {
+            const step = document.getElementById(`step${stepNum}`);
+            const inputs = step.querySelectorAll('.input-field, .input-select');
+            
+            for (let input of inputs) {
+                if (input.hasAttribute('required') && !input.value.trim()) {
+                    return false;
+                }
+            }
+            
+            // Special validation for step 5 (slider is always valid)
+            if (stepNum === 5) {
+                return true;
+            }
+            
+            return true;
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showStep(stepNum) {
+            // Hide all steps
+            document.querySelectorAll('.step-container').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Show current step
+            const currentStepEl = document.getElementById(`step${stepNum}`);
+            if (currentStepEl) {
+                setTimeout(() => {
+                    currentStepEl.classList.add('active');
+                    // Auto scroll to top on step change (mobile-friendly)
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    // Also scroll the container if needed
+                    document.querySelector('.onboarding-container').scrollTop = 0;
+                }, 50);
+            }
+
+            updateProgress();
+        }
+
+        function saveStepData(stepNum) {
+            const step = document.getElementById(`step${stepNum}`);
+            const inputs = step.querySelectorAll('.input-field, .input-select, .range-slider, textarea');
+            
+            inputs.forEach(input => {
+                if (input.id) {
+                    formData[input.id] = input.value;
+                }
+            });
+
+            // Save selected region from option cards
+            if (stepNum === 3) {
+                const selectedCard = step.querySelector('.option-card.selected');
+                if (selectedCard) {
+                    formData['geography'] = selectedCard.dataset.value || '';
+                }
+                
+                // Save ZIP code
+                const zipCode = document.getElementById('zipCode');
+                if (zipCode) {
+                    formData['zipCode'] = zipCode.value;
+                }
+                
+                // Save radius (already saved in slider handler)
+                // Save map coordinates (already saved in map click handler)
+            }
+        }
+
+        function nextStep() {
+            if (!validateStep(currentStep)) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            saveStepData(currentStep);
+            
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+                // Auto scroll to top - smooth animation
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+                // Focus first input (optional, as scroll handles visibility)
+                const firstInput = document.querySelector(`***REMOVED***step${currentStep} .input-field, ***REMOVED***step${currentStep} .input-select`);
+                if (firstInput) {
+                    setTimeout(() => firstInput.focus(), 400);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+                // Auto scroll to top on back
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }, 100);
+            }
+        }
+
+        // --- Upload: LinkedIn profile preview & apply ---
+        async function uploadLinkedIn() {
+            const url = document.getElementById('uploadLinkedInUrl')?.value?.trim();
+            const text = document.getElementById('uploadLinkedInText')?.value?.trim();
+            const fileInput = document.getElementById('uploadLinkedInPdf');
+            let pdfBase64 = null;
+            if (fileInput?.files?.length) {
+                const file = fileInput.files[0];
+                const buf = await file.arrayBuffer();
+                const b64 = btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
+                pdfBase64 = 'data:application/pdf;base64,' + b64;
+            }
+            if (!url && !pdfBase64 && !text) {
+                alert('Enter LinkedIn URL, PDF, or text.');
+                return;
+            }
+            const API_BASE = window.location.origin;
+            const body = { linkedin_url: url || null, pdf_base64: pdfBase64 || null, plain_text: text || null };
+            try {
+                const r = await fetch(API_BASE + '/api/v1/public/upload/linkedin-profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (r.status === 403) {
+                    const j = await r.json().catch(() => ({}));
+                    const d = j.detail || j;
+                    if (typeof showCaptchaModal === 'function') showCaptchaModal(d.message || 'We detected unusual activity. Please verify to continue.');
+                    return;
+                }
+                if (!r.ok) throw new Error(await r.text());
+                const data = await r.json();
+                formData.linkedinUploadId = data.upload_id;
+                formData.linkedinPreviewRole = data.role || null;
+                const parts = [];
+                if (data.role) parts.push('Role: ' + data.role);
+                if (data.seniority) parts.push('Seniority: ' + data.seniority);
+                if (data.department) parts.push('Department: ' + data.department);
+                if (data.company_match) parts.push('Company: ' + data.company_match);
+                if (data.raw_preview) parts.push(data.raw_preview);
+                document.getElementById('linkedinPreviewContent').innerHTML = (parts.length ? parts.join('<br>') : data.message) + '<br><small>Upload ID: ' + data.upload_id + '</small>';
+                document.getElementById('linkedinUploadPreview').style.display = 'block';
+            } catch (e) {
+                alert('Upload error: ' + e.message);
+            }
+        }
+        function applyLinkedInPreview() {
+            if (formData.linkedinPreviewRole && document.getElementById('decisionMaker')) {
+                document.getElementById('decisionMaker').value = formData.linkedinPreviewRole;
+            }
+            document.getElementById('linkedinUploadPreview').style.display = 'none';
+        }
+        document.getElementById('btnUploadLinkedIn')?.addEventListener('click', uploadLinkedIn);
+        document.getElementById('btnApplyLinkedIn')?.addEventListener('click', applyLinkedInPreview);
+
+        // --- Upload: Company target preview & apply ---
+        async function uploadCompany() {
+            const name = document.getElementById('uploadCompanyName')?.value?.trim();
+            const domain = document.getElementById('uploadCompanyDomain')?.value?.trim();
+            const mapsUrl = document.getElementById('uploadCompanyMapsUrl')?.value?.trim();
+            const csv = document.getElementById('uploadCompanyCsv')?.value?.trim();
+            if (!name && !domain && !mapsUrl && !csv) {
+                alert('Enter company name, domain, Maps URL, or CSV.');
+                return;
+            }
+            const API_BASE = window.location.origin;
+            const body = { company_name: name || null, domain: domain || null, google_maps_url: mapsUrl || null, csv_text: csv || null };
+            try {
+                const r = await fetch(API_BASE + '/api/v1/public/upload/company-target', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (r.status === 403) {
+                    const j = await r.json().catch(() => ({}));
+                    const d = j.detail || j;
+                    if (typeof showCaptchaModal === 'function') showCaptchaModal(d.message || 'We detected unusual activity. Please verify to continue.');
+                    return;
+                }
+                if (!r.ok) throw new Error(await r.text());
+                const data = await r.json();
+                formData.companyUploadId = data.upload_id;
+                let html = 'Companies: ' + (data.preview_count || (data.companies && data.companies.length) || 0) + '<br>';
+                if (data.companies && data.companies.length) {
+                    data.companies.slice(0, 5).forEach(c => { html += '• ' + (c.name || c.domain || c.website || JSON.stringify(c)) + '<br>'; });
+                    if (data.companies.length > 5) html += '...';
+                }
+                html += '<small>Upload ID: ' + data.upload_id + '</small>';
+                document.getElementById('companyPreviewContent').innerHTML = html;
+                document.getElementById('companyUploadPreview').style.display = 'block';
+            } catch (e) {
+                alert('Upload error: ' + e.message);
+            }
+        }
+        function applyCompanyPreview() {
+            document.getElementById('companyUploadPreview').style.display = 'none';
+        }
+        document.getElementById('btnUploadCompany')?.addEventListener('click', uploadCompany);
+        document.getElementById('btnApplyCompany')?.addEventListener('click', applyCompanyPreview);
+
+        async function submitForm() {
+            saveStepData(currentStep);
+            
+            // Show loading state
+            const btn = document.getElementById('btnSubmit');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span>Submitting...';
+            
+            // Show loading overlay
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const loadingText = document.getElementById('loadingText');
+            const loadingProgress = document.getElementById('loadingProgress');
+            if (loadingOverlay) {
+                loadingOverlay.classList.add('active');
+            }
+
+            try {
+                const API_BASE = window.location.origin;
+                const endpoint = `${API_BASE}/api/v1/b2b/onboarding/create-plan`;
+                const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+
+                // Update loading text
+                if (loadingText) loadingText.textContent = 'Creating your meeting plan...';
+                if (loadingProgress) loadingProgress.textContent = 'Analyzing your requirements...';
+
+                const autoStart = document.getElementById('autoStartQueries')?.checked || false;
+                let quoteToken = null;
+                if (autoStart) {
+                    if (loadingProgress) loadingProgress.textContent = 'Calculating cost...';
+                    const calcUrl = `${API_BASE}/v1/subscriptions/pricing/calculate?max_results=100`;
+                    const calcRes = await fetch(calcUrl);
+                    if (calcRes.ok) {
+                        const calcData = await calcRes.json();
+                        quoteToken = calcData.quote_token || null;
+                    }
+                    if (!quoteToken) {
+                        throw new Error('Could not calculate cost. Please try again or turn off "Start query immediately" and submit.');
+                    }
+                }
+
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        target_type: formData.targetType || '',
+                        geography: formData.geography || '',
+                        decision_roles: formData.decisionMaker || '',
+                        product_service: formData.productService || '',
+                        meeting_goal: formData.meetingGoal || '5',
+                        zip_code: formData.zipCode || null,
+                        radius_miles: formData.radiusMiles || null,
+                        selected_lat: formData.selectedLat ? parseFloat(formData.selectedLat) : null,
+                        selected_lng: formData.selectedLng ? parseFloat(formData.selectedLng) : null,
+                        auto_start_queries: autoStart,
+                        quote_token: quoteToken || undefined,
+                        max_results: 100,
+                        linkedin_upload_id: formData.linkedinUploadId || null,
+                        company_upload_id: formData.companyUploadId || null
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    let errorMessage = `Failed to submit request (${response.status})`;
+                    try {
+                        const errorJson = JSON.parse(errorText);
+                        errorMessage = errorJson.detail || errorMessage;
+                    } catch (e) {
+                        errorMessage = errorText || errorMessage;
+                    }
+                    throw new Error(errorMessage);
+                }
+
+                if (loadingText) loadingText.textContent = 'Finalizing your plan...';
+                if (loadingProgress) loadingProgress.textContent = 'Almost done...';
+
+                const result = await response.json();
+                
+                // Store plan result for objective selection
+                sessionStorage.setItem('lastPlanResult', JSON.stringify(result));
+                if (result.plan_id) {
+                    try {
+                        var ids = JSON.parse(localStorage.getItem('soarb2b_plan_ids') || '[]');
+                        if (ids.indexOf(result.plan_id) === -1) ids.push(result.plan_id);
+                        localStorage.setItem('soarb2b_plan_ids', JSON.stringify(ids));
+                    } catch (e) {}
+                }
+                // Hide loading overlay
+                if (loadingOverlay) {
+                    loadingOverlay.classList.remove('active');
+                }
+                
+                // Show confirmation screen
+                displayConfirmation(result);
+                
+            } catch (error) {
+                // Hide loading overlay
+                if (loadingOverlay) {
+                    loadingOverlay.classList.remove('active');
+                }
+                
+                alert('Error submitting request: ' + error.message);
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        }
+
+        function goToObjectiveSelection() {
+            const resultJson = sessionStorage.getItem('lastPlanResult');
+            if (!resultJson) {
+                alert('Plan ID not found. Please try again.');
+                return;
+            }
+            const result = JSON.parse(resultJson);
+            const planId = result.plan_id;
+            if (planId) {
+                window.location.href = `/ui/en/soarb2b_objective_selection.html?plan_id=${planId}`;
+            } else {
+                alert('Plan ID not found. Please try again.');
+            }
+        }
+
+        function displayConfirmation(result) {
+            const resultScreen = document.getElementById('resultScreen');
+            const planSummary = document.getElementById('planSummary');
+            
+            // Build plan summary from API response
+            let summaryHTML = '<div style="padding: 1rem 0;">';
+            
+            if (result.plan_id) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Plan ID</div>
+                    <div class="plan-item-value">${result.plan_id}</div>
+                </div>`;
+            }
+            
+            if (result.target_type) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Target Type</div>
+                    <div class="plan-item-value">${result.target_type}</div>
+                </div>`;
+            }
+            
+            if (result.geography) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Geography</div>
+                    <div class="plan-item-value">${result.geography}</div>
+                </div>`;
+            }
+            
+            if (result.decision_roles) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Decision Roles</div>
+                    <div class="plan-item-value">${result.decision_roles}</div>
+                </div>`;
+            }
+            
+            if (result.product_service) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Product/Service</div>
+                    <div class="plan-item-value">${result.product_service}</div>
+                </div>`;
+            }
+            
+            if (result.meeting_goal) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Monthly Meeting Goal</div>
+                    <div class="plan-item-value">${result.meeting_goal}</div>
+                </div>`;
+            }
+            
+            if (result.recommendations) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Recommendations</div>
+                    <div class="plan-item-value" style="margin-top: 1rem;">`;
+                
+                if (result.recommendations.first_actions && Array.isArray(result.recommendations.first_actions)) {
+                    result.recommendations.first_actions.forEach(action => {
+                        summaryHTML += `<div style="margin-bottom: 0.5rem; color: rgba(248, 250, 252, 0.8);">• ${action}</div>`;
+                    });
+                }
+                
+                summaryHTML += `</div></div>`;
+            }
+            
+            summaryHTML += '</div>';
+            
+            planSummary.innerHTML = summaryHTML;
+            
+            // Hide onboarding container
+            document.querySelector('.onboarding-container').style.display = 'none';
+            
+            // Show result screen
+            setTimeout(() => {
+                resultScreen.classList.add('active');
+            }, 100);
+        }
+
+        function goToObjectiveSelection() {
+            const result = JSON.parse(sessionStorage.getItem('lastPlanResult') || '{}');
+            const planId = result.plan_id;
+            if (planId) {
+                window.location.href = `/ui/en/soarb2b_objective_selection.html?plan_id=${planId}`;
+            } else {
+                alert('Plan ID not found. Please try again.');
+            }
+        }
+
+        function displayConfirmation(result) {
+            const resultScreen = document.getElementById('resultScreen');
+            const planSummary = document.getElementById('planSummary');
+            
+            // Store plan result for objective selection
+            sessionStorage.setItem('lastPlanResult', JSON.stringify(result));
+            
+            // Build plan summary from API response
+            let summaryHTML = '<div style="padding: 1rem 0;">';
+            
+            if (result.plan_id) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Plan ID</div>
+                    <div class="plan-item-value">${result.plan_id}</div>
+                </div>`;
+            }
+            
+            if (result.target_type) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Target Type</div>
+                    <div class="plan-item-value">${result.target_type}</div>
+                </div>`;
+            }
+            
+            if (result.geography) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Geography</div>
+                    <div class="plan-item-value">${result.geography}</div>
+                </div>`;
+            }
+            
+            if (result.decision_roles) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Decision Roles</div>
+                    <div class="plan-item-value">${result.decision_roles}</div>
+                </div>`;
+            }
+            
+            if (result.product_service) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Product/Service</div>
+                    <div class="plan-item-value">${result.product_service}</div>
+                </div>`;
+            }
+            
+            if (result.meeting_goal) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Monthly Meeting Goal</div>
+                    <div class="plan-item-value">${result.meeting_goal}</div>
+                </div>`;
+            }
+            
+            if (result.recommendations) {
+                summaryHTML += `<div class="plan-item">
+                    <div class="plan-item-label">Recommendations</div>
+                    <div class="plan-item-value" style="margin-top: 1rem;">`;
+                
+                if (result.recommendations.first_actions && Array.isArray(result.recommendations.first_actions)) {
+                    result.recommendations.first_actions.forEach(action => {
+                        summaryHTML += `<div style="margin-bottom: 0.5rem; color: rgba(248, 250, 252, 0.8);">• ${action}</div>`;
+                    });
+                }
+                
+                summaryHTML += `</div></div>`;
+            }
+            
+            summaryHTML += '</div>';
+            
+            planSummary.innerHTML = summaryHTML;
+            
+            // Hide onboarding container
+            document.querySelector('.onboarding-container').style.display = 'none';
+            
+            // Show result screen
+            setTimeout(() => {
+                resultScreen.classList.add('active');
+            }, 100);
+        }
+
+        // Ad slot: show Novarchive placeholder when no live ads
+        (function() {
+            var el = document.getElementById('ad-slot-onboarding-inner');
+            if (!el) return;
+            var API_BASE = window.location.origin + (window.API_BASE_PATH || '');
+            fetch(API_BASE + '/api/v1/public/ad-config', { credentials: 'same-origin' }).then(function(r) { return r.json(); }).then(function(c) {
+                var slotId = c.slots && c.slots['onboarding-mid'];
+                if (c.enabled && c.client_id && slotId) {
+                    var ins = document.createElement('ins');
+                    ins.className = 'adsbygoogle';
+                    ins.style.display = 'block';
+                    ins.setAttribute('data-ad-client', c.client_id);
+                    ins.setAttribute('data-ad-slot', slotId);
+                    ins.setAttribute('data-ad-format', 'auto');
+                    el.appendChild(ins);
+                    if (window.adsbygoogle) (window.adsbygoogle = window.adsbygoogle || []).push({});
+                    return;
+                }
+                el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">Where Clinical Data Becomes Trusted Diagnosis</div><div class="ad-sub">FINDIAG: full chain-of-custody, AI-powered analysis, audit-ready. Built for rare disease and translational research.</div><a href="***REMOVED***" class="ad-cta">Book Your Demo</a></div>';
+            }).catch(function() { if (el) el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">FINDIAG</div><div class="ad-sub">Evidence-based diagnostics. Book Your Demo.</div><a href="***REMOVED***" class="ad-cta">Book Your Demo</a></div>'; });
+        })();
+
+        // Initialize
+        updateProgress();
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+WARNING: google-cloud-aiplatform 1.71.1 does not provide the extra 'all'
+WARNING: The candidate selected for download or install is a yanked version: 'numpy' candidate (version 2.4.0 at https://files.pythonhosted.org/packages/4f/f1/719010ff8061da6e8a26e1980cf090412d4f5f8060b31f0c45d77dd67a01/numpy-2.4.0-cp313-cp313-win_amd64.whl (from https://pypi.org/simple/numpy/) (requires-python:>=3.11))
+Reason for being yanked: Backward compatibility bug
+  WARNING: Failed to remove contents in a temporary directory 'C:\Users\issan\AppData\Local\Programs\Python\Python313\Lib\site-packages\~ebsockets'.
+  You can safely remove it manually.
+  WARNING: Failed to remove contents in a temporary directory 'C:\Users\issan\AppData\Local\Programs\Python\Python313\Lib\site-packages\google\~upb'.
+  You can safely remove it manually.
+  WARNING: Failed to remove contents in a temporary directory 'C:\Users\issan\AppData\Local\Programs\Python\Python313\Lib\site-packages\~umpy.libs'.
+  You can safely remove it manually.
+  WARNING: Failed to remove contents in a temporary directory 'C:\Users\issan\AppData\Local\Programs\Python\Python313\Lib\site-packages\~umpy'.
+  You can safely remove it manually.
+
+[notice] A new release of pip is available: 25.3 -> 26.0
+[notice] To update, run: python.exe -m pip install --upgrade pip

@@ -1,0 +1,55 @@
+***REMOVED*** Git files
+.git
+.gitignore
+
+***REMOVED*** Python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+***REMOVED*** Virtual environments
+.venv
+venv
+env
+ENV
+
+***REMOVED*** IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+***REMOVED*** OS
+.DS_Store
+Thumbs.db
+
+***REMOVED*** Documentation
+*.md
+docs/
+
+***REMOVED*** Tests
+tests/
+test_*.py
+
+***REMOVED*** Logs
+*.log
+logs/
+
+***REMOVED*** Temporary files
+tmp/
+*.tmp
+
+***REMOVED*** Deployment scripts (not needed in image)
+*.ps1
+*.sh
+!entrypoint.sh
+deploy*.md
+DEPLOY*.md
+
+***REMOVED*** Docker files (except the one being used)
+docker-compose.yml
+.dockerignore

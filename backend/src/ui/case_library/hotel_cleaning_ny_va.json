@@ -1,0 +1,64 @@
+{
+  "case_id": "HOTEL_CLEANING_NY_VA_MANUFACTURER",
+  "access_level": "public",
+  "metadata": {
+    "sector": "Hospitality",
+    "region": "New York - Virginia corridor",
+    "company_type": "manufacturer",
+    "product_category": "Professional cleaning supplies",
+    "created_date": "2025-01-15",
+    "updated_date": "2025-01-15"
+  },
+  "business_objective": {
+    "summary": "A manufacturer of professional cleaning products needed to establish regular supply agreements with hotels in the New York to Virginia region. The goal was to book meetings with decision-makers who control purchasing budgets and operational supply chains.",
+    "goal": "Hotels between New York and Virginia to book meetings with procurement and housekeeping managers."
+  },
+  "target_profile": {
+    "company_type": "3-5 star hotels",
+    "departments": ["Procurement", "Housekeeping", "Operations"],
+    "roles": ["Procurement Manager", "Housekeeping Director", "Operations Manager"],
+    "geographic_scope": "New York, New Jersey, Pennsylvania, Maryland, Virginia (urban and resort areas)"
+  },
+  "communication_flow": [
+    "Verified hotel list created (region-based, 3-5 star properties)",
+    "Decision-maker roles identified and mapped (procurement, housekeeping, operations)",
+    "Location + persona targeted visibility (LinkedIn, Google Ads, role-specific landing pages)",
+    "Platform expansion (Meta, Instagram for broader reach)",
+    "Direct outreach escalation (email templates, phone scripts for non-responders)"
+  ],
+  "results": {
+    "list_size": {
+      "min": 120,
+      "max": 180,
+      "note": "Verified hotel locations with addresses and contact information"
+    },
+    "decision_maker_coverage": {
+      "min": 65,
+      "max": 75,
+      "unit": "percent",
+      "note": "Percentage of hotels with identified decision-maker roles"
+    },
+    "meeting_requests": {
+      "min": 8,
+      "max": 15,
+      "note": "Confirmed meeting requests from target roles"
+    },
+    "timeframe_days": {
+      "min": 30,
+      "max": 60,
+      "note": "Time from campaign start to first meeting bookings"
+    },
+    "additional_metrics": {
+      "response_rate": "2-6%",
+      "qualified_response_uplift": "3-5x vs untargeted outreach"
+    }
+  },
+  "usage": {
+    "sales_demo": true,
+    "onboarding_results": true,
+    "pricing_justification": true,
+    "feature_roadmap": false,
+    "public_marketing": true
+  },
+  "notes": "Used as primary public case study. Numbers rounded for external use. No brand names included."
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Workflow Governance Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 480px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***1d4ed8; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Workflow governance (H-032 foundation)</h1>
+  <p class="muted">Static contracts, effort levels, session create, compress/decay, validation, runtime summary. Envelope flags autonomous execution off.</p>
+  <button type="button" id="cBtn">GET contracts</button>
+  <button type="button" id="eBtn">GET effort-levels</button>
+  <button type="button" id="sBtn">POST session (procurement_analysis)</button>
+  <button type="button" id="pBtn">POST compress</button>
+  <button type="button" id="vBtn">POST validate (sample)</button>
+  <button type="button" id="rBtn">GET runtime-summary</button>
+  <div class="card"><h2>Output</h2><pre id="out">(idle)</pre></div>
+  <script>
+    const base = "";
+    let lastSession = null;
+    document.getElementById("cBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/workflows/contracts");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("eBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/workflows/effort-levels");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("sBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/workflows/session", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ workflow_name: "procurement_analysis", label: "demo" })
+      });
+      const j = await r.json();
+      if (j.session) lastSession = j.session.session_id;
+      document.getElementById("out").textContent = JSON.stringify(j, null, 2);
+    };
+    document.getElementById("pBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/workflows/compress", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          context_text: "Line ".repeat(5000),
+          token_estimate: 90000,
+          turn_count: 40
+        })
+      });
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("vBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/workflows/validate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          workflow_name: "procurement_analysis",
+          outputs: {
+            requirements_matrix_present: true,
+            risk_notes_present: true,
+            next_steps_explicit: true
+          },
+          constraints_respected: true,
+          escalation_acknowledged: true
+        })
+      });
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+    document.getElementById("rBtn").onclick = async () => {
+      const r = await fetch(base + "/api/v1/system/workflows/runtime-summary");
+      document.getElementById("out").textContent = JSON.stringify(await r.json(), null, 2);
+    };
+  </script>
+</body>
+</html>

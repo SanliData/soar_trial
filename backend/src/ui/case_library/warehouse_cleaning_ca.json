@@ -1,0 +1,65 @@
+{
+  "case_id": "WAREHOUSE_CLEANING_CA_WHOLESALER",
+  "access_level": "internal",
+  "metadata": {
+    "sector": "Logistics & Warehousing",
+    "region": "California",
+    "company_type": "wholesaler",
+    "product_category": "Industrial cleaning supplies and equipment",
+    "created_date": "2025-01-05",
+    "updated_date": "2025-01-05"
+  },
+  "business_objective": {
+    "summary": "A wholesale supplier of industrial cleaning products needed to establish relationships with warehouse and logistics facility managers in California. The focus was on facilities managers and operations directors who control large-scale supply purchases.",
+    "goal": "Warehouse and logistics facilities in California to book meetings with facilities managers and operations directors."
+  },
+  "target_profile": {
+    "company_type": "Warehouses, distribution centers, logistics facilities",
+    "departments": ["Facilities Management", "Operations", "Procurement"],
+    "roles": ["Facilities Manager", "Operations Director", "Warehouse Manager", "Procurement Manager"],
+    "geographic_scope": "California: Los Angeles, San Francisco Bay Area, San Diego, Sacramento metropolitan areas"
+  },
+  "communication_flow": [
+    "Verified warehouse and logistics facility list created (facility type, size-based filtering)",
+    "Decision-maker roles identified (facilities managers, operations directors, warehouse managers)",
+    "Location + persona targeted visibility (industrial B2B platforms, LinkedIn, industry-specific targeting)",
+    "Platform expansion (LinkedIn for facilities managers, Google Ads for industrial supply searches)",
+    "Direct outreach escalation (bulk pricing offers, facility assessment consultation emails)"
+  ],
+  "results": {
+    "list_size": {
+      "min": 150,
+      "max": 220,
+      "note": "Verified warehouse and logistics facilities with verified addresses"
+    },
+    "decision_maker_coverage": {
+      "min": 60,
+      "max": 70,
+      "unit": "percent",
+      "note": "Percentage of facilities with identified decision-makers"
+    },
+    "meeting_requests": {
+      "min": 10,
+      "max": 18,
+      "note": "Meeting requests from facilities managers and operations directors"
+    },
+    "timeframe_days": {
+      "min": 40,
+      "max": 70,
+      "note": "Time from campaign start to first meeting bookings"
+    },
+    "additional_metrics": {
+      "response_rate": "2-5%",
+      "average_deal_size_qualified": "$15,000-$45,000 annual",
+      "internal_note": "Lower response rate but higher deal value. Facilities managers more difficult to reach but more valuable when engaged."
+    }
+  },
+  "usage": {
+    "sales_demo": true,
+    "onboarding_results": false,
+    "pricing_justification": true,
+    "feature_roadmap": true,
+    "public_marketing": false
+  },
+  "notes": "Internal use only. Real performance ranges. Used for product development decisions regarding industrial/logistics sector targeting features. Not for external sharing due to specific metrics."
+}

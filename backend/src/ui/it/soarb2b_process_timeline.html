@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SOAR B2B — La Tua Timeline del Processo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+        }
+        .container {
+            min-height: 100vh;
+            padding: 4rem 2rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header {
+            margin-bottom: 3rem;
+        }
+        h1 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(248, 250, 252, 0.7);
+        }
+        .timeline-container {
+            margin-bottom: 3rem;
+        }
+        .timeline-step {
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-left: 3px solid var(--color-gold);
+            border-radius: 4px;
+        }
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .step-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-gold);
+            margin-right: 1rem;
+        }
+        .step-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            flex: 1;
+        }
+        .step-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-pending { background: rgba(248, 250, 252, 0.1); color: rgba(248, 250, 252, 0.6); }
+        .status-in_progress { background: rgba(59, 130, 246, 0.2); color: ***REMOVED***3b82f6; }
+        .status-completed { background: rgba(34, 197, 94, 0.2); color: ***REMOVED***22c55e; }
+        .step-description {
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 0.5rem;
+        }
+        .admin-note {
+            display: none;
+            padding: 1rem;
+            margin: 2rem 0;
+            background: rgba(197, 160, 40, 0.1);
+            border: 1px solid var(--color-gold);
+            border-radius: 4px;
+            color: rgba(248, 250, 252, 0.9);
+        }
+        .admin-note.show {
+            display: block;
+        }
+        .transparency-notice {
+            padding: 1.5rem;
+            margin: 2rem 0;
+            background: rgba(248, 250, 252, 0.03);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+        }
+        .transparency-notice strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--color-gold);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border: none;
+            border-radius: 4px;
+            font-family: 'Satoshi', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 2rem;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: ***REMOVED***C19D2D;
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-primary.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>La Tua Timeline del Processo</h1>
+            <p class="subtitle">Monitora i progressi del tuo piano passo dopo passo</p>
+        </div>
+
+        <div class="timeline-container" id="timelineContainer">
+            <!-- Timeline steps will be loaded here -->
+        </div>
+
+        <div class="admin-note" id="adminNote">
+            ℹ️ Il tuo piano è stato revisionato e ottimizzato da un stratega SOAR.
+        </div>
+
+        <div class="transparency-notice">
+            <strong>Avviso di Trasparenza:</strong>
+            SOAR non attiva campagne, raccoglie dati personali o avvia contatti senza la tua approvazione esplicita. Scegli tu quali fasi attivare e quando.
+        </div>
+
+        <button class="btn-primary hidden" id="viewResultsBtn" onclick="viewResults()">Visualizza Centro Risultati</button>
+    </div>
+
+    <script>
+        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        const planId = new URLSearchParams(window.location.search).get('plan_id');
+
+        async function loadTimeline() {
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plan/${planId}/timeline`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+                if (!response.ok) throw new Error(`Failed to load timeline: ${response.status}`);
+                
+                const timeline = await response.json();
+                displayTimeline(timeline);
+            } catch (error) {
+                alert('Errore nel caricamento della timeline: ' + error.message);
+            }
+        }
+
+        function displayTimeline(timeline) {
+            const container = document.getElementById('timelineContainer');
+            container.innerHTML = '';
+            
+            timeline.stages.forEach(stage => {
+                const stepEl = document.createElement('div');
+                stepEl.className = 'timeline-step';
+                stepEl.innerHTML = `
+                    <div class="step-header">
+                        <div style="display: flex; align-items: center;">
+                            <span class="step-number">${stage.order}</span>
+                            <div class="step-title">${getStepTitle(stage.name)}</div>
+                        </div>
+                        <div class="step-status status-${stage.status}">${getStatusText(stage.status)}</div>
+                    </div>
+                    <div class="step-description">${stage.description}</div>
+                `;
+                container.appendChild(stepEl);
+            });
+            
+            // Show admin note if exists
+            if (timeline.admin_note) {
+                document.getElementById('adminNote').textContent = `ℹ️ ${timeline.admin_note}`;
+                document.getElementById('adminNote').classList.add('show');
+            }
+            
+            // Show "View Results" button if any stage is completed
+            const hasCompleted = timeline.stages.some(s => s.status === 'completed');
+            if (hasCompleted) {
+                document.getElementById('viewResultsBtn').classList.remove('hidden');
+            }
+        }
+
+        function getStepTitle(name) {
+            const titles = {
+                'market_scan': 'Scansione del Mercato',
+                'persona_mapping': 'Mappatura Persona',
+                'reachability_assessment': 'Valutazione Raggiungibilità',
+                'activation_options': 'Opzioni di Attivazione',
+                'activation': 'Attivazione'
+            };
+            return titles[name] || name;
+        }
+
+        function getStatusText(status) {
+            const statuses = {
+                'pending': '🟡 In attesa',
+                'in_progress': '🟢 In corso',
+                'completed': '✅ Completato'
+            };
+            return statuses[status] || status;
+        }
+
+        function viewResults() {
+            window.location.href = `/ui/it/soarb2b_results_hub.html?plan_id=${planId}`;
+        }
+
+        if (planId) {
+            loadTimeline();
+        } else {
+            alert('ID piano non trovato');
+        }
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

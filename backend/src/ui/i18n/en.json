@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "title": "SOAR B2B — Turn Companies Into Booked Meetings",
+    "description": "Reach verified businesses, engage real decision-makers, and convert outreach into meetings. B2B appointment engine for manufacturers and wholesalers."
+  },
+  "header": {
+    "signIn": "Sign In",
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "title": "Turn the right companies into booked meetings.",
+    "description": "Find real companies, reach the right decision-makers, and turn attention into meetings.",
+    "ctaPrimary": "Build Your Meeting Plan",
+    "ctaSecondary": "See a Real Example"
+  },
+  "flow": {
+    "step01": {
+      "title": "Target",
+      "description": "Verified companies in your geography"
+    },
+    "step02": {
+      "title": "Identify",
+      "description": "Decision-maker roles and departments"
+    },
+    "step03": {
+      "title": "Expose",
+      "description": "Multi-channel, role-focused visibility"
+    },
+    "step04": {
+      "title": "Meet",
+      "description": "Confirmed meetings, not leads"
+    }
+  },
+  "trustBand": {
+    "label": "Strategic data & ecosystem partners"
+  },
+  "whatYouGet": {
+    "title": "What You Get",
+    "subtitle": "Outputs that turn exposure into meetings",
+    "items": [
+      {
+        "title": "Verified Company Lists",
+        "description": "Business locations with addresses, contacts, and website links. Exportable to CRM.",
+        "metric": "Avg. 120–180 companies / campaign"
+      },
+      {
+        "title": "Decision-Maker Targeting",
+        "description": "Department and role mapping. Procurement, operations, management — the roles that buy.",
+        "metric": "65–75% decision-maker coverage"
+      },
+      {
+        "title": "Location-Accurate Reach",
+        "description": "Precision geo-targeting for radius-based campaigns. Verified addresses, not estimates.",
+        "metric": "10m–50km radius targeting"
+      },
+      {
+        "title": "Persona-Based Exposure",
+        "description": "Role-focused messaging and targeting criteria. Ready for LinkedIn, Meta, Google Ads.",
+        "metric": "Role + location targeting"
+      },
+      {
+        "title": "Meeting-Driven Campaigns",
+        "description": "Optimized landing pages and meeting request forms. Single, clear call-to-action.",
+        "metric": "2–6% meeting request rates"
+      },
+      {
+        "title": "Active + Passive Tracking",
+        "description": "Monitor both direct responses and passive engagement. Full visibility into conversion path.",
+        "metric": "Multi-channel tracking"
+      },
+      {
+        "title": "CRM-Ready Export",
+        "description": "Pre-mapped fields: company, address, role, contact, email/phone. One-click export.",
+        "metric": "CSV, Excel, API"
+      },
+      {
+        "title": "Performance Visibility",
+        "description": "Response rates, meeting requests, conversion tracking. Real numbers, not vanity metrics.",
+        "metric": "Real-time dashboards"
+      }
+    ]
+  },
+  "trusted": {
+    "title": "Trusted by"
+  },
+  "sequence": {
+    "title": "The Sequence",
+    "subtitle": "Start with low-cost, permission-based outreach. Scale to targeted ads. Then direct access.",
+    "steps": [
+      {
+        "number": "01",
+        "process": "Intelligence",
+        "title": "Companies identified",
+        "output": "Verified company list"
+      },
+      {
+        "number": "02",
+        "process": "Mapping",
+        "title": "Decision roles mapped",
+        "output": "Role targeting data"
+      },
+      {
+        "number": "03",
+        "process": "Omni-Presence",
+        "title": "Targeted exposure",
+        "output": "Multi-channel campaigns"
+      },
+      {
+        "number": "04",
+        "process": "Engagement",
+        "title": "High-intent outreach",
+        "output": "Direct access tools"
+      },
+      {
+        "number": "05",
+        "process": "Result",
+        "title": "Confirmed Meeting",
+        "output": "Booked calendar slot"
+      }
+    ]
+  },
+  "metrics": {
+    "title": "Performance Metrics",
+    "subtitle": "Real results from real campaigns",
+    "items": [
+      {
+        "value": "28%",
+        "label": "Avg. Response Rate",
+        "note": "Role-targeted campaigns"
+      },
+      {
+        "value": "12",
+        "label": "Days Avg. Time to First Meeting",
+        "note": "From campaign start"
+      },
+      {
+        "value": "$240",
+        "label": "Cost Per Qualified Meeting",
+        "note": "Average across industries"
+      },
+      {
+        "value": "3–7",
+        "label": "Meetings / 30 Days",
+        "note": "Typical campaign output"
+      }
+    ]
+  },
+  "caseLibrary": {
+    "title": "Case Library",
+    "subtitle": "Real results from real campaigns",
+    "cta": "View All Cases"
+  },
+  "onboarding": {
+    "title": "Build Your Meeting Plan",
+    "subtitle": "Answer 5 questions. Get a tailored meeting strategy.",
+    "cta": "Start Building"
+  },
+  "pricing": {
+    "title": "Choose Your Plan",
+    "subtitle": "Start free, scale as you grow"
+  },
+  "caseLibraryPreview": {
+    "title": "Case Library",
+    "subtitle": "Real results from companies like yours",
+    "viewAll": "View All Cases",
+    "viewCase": "View case",
+    "cases": [
+      {
+        "id": "Case 01",
+        "title": "Turkish Textile Giant — US Market Entry",
+        "description": "Manufacturing company targeting US distributors and retailers.",
+        "result": "42 Meetings in 3 months"
+      },
+      {
+        "id": "Case 02",
+        "title": "SaaS Scale-up — Enterprise Expansion",
+        "description": "B2B software targeting enterprise IT decision-makers.",
+        "result": "$1.2M Pipeline Generated",
+        "featured": true
+      },
+      {
+        "id": "Case 03",
+        "title": "Warehouse Cleaning Services — Regional Growth",
+        "description": "Service provider targeting facility managers in logistics hubs.",
+        "result": "28 Meetings / 60 days"
+      }
+    ]
+  },
+  "sponsorBadge": {
+    "label": "Benchmark data verified by",
+    "name": "Global Analytics Partners"
+  },
+  "footer": {
+    "tagline": "SOAR B2B is built for companies that sell, not pitch.",
+    "poweredBy": "Powered by SOAR B2B Platform",
+    "sections": {
+      "product": {
+        "title": "Product",
+        "links": [
+          {"text": "Intelligence", "href": "***REMOVED***intelligence"},
+          {"text": "Exposure", "href": "***REMOVED***exposure"},
+          {"text": "Meetings", "href": "***REMOVED***meetings"},
+          {"text": "Demo", "href": "demo_showcase.html"}
+        ]
+      },
+      "useCases": {
+        "title": "Use Cases",
+        "links": [
+          {"text": "Market Entry", "href": "soarb2b_case_hotel_cleaning.html"},
+          {"text": "Enterprise Expansion", "href": "case_library_index.html"},
+          {"text": "Regional Growth", "href": "case_library_index.html"}
+        ]
+      },
+      "access": {
+        "title": "Access",
+        "links": [
+          {"text": "Enterprise", "href": "***REMOVED***enterprise"},
+          {"text": "Partner API", "href": "***REMOVED***partner-api"},
+          {"text": "Agency White-label", "href": "***REMOVED***agency"}
+        ]
+      },
+      "legal": {
+        "title": "Legal",
+        "links": [
+          {"text": "Privacy Policy", "href": "***REMOVED***privacy"},
+          {"text": "Terms of Service", "href": "***REMOVED***terms"},
+          {"text": "Compliance", "href": "***REMOVED***compliance"}
+        ]
+      }
+    },
+    "ecosystem": {
+      "title": "Ecosystem Partners",
+      "partners": [
+        "CRM Connectors",
+        "Data Providers",
+        "Regional Media Agencies",
+        "B2B Service Firms"
+      ]
+    }
+  },
+  "mobileNav": {
+    "home": "Home",
+    "cases": "Cases",
+    "demo": "Demo",
+    "more": "More",
+    "getStarted": "Get<br>Started"
+  }
+}

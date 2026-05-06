@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>SOAR B2B — Elige tu objetivo</title>
+    <link rel="alternate" hreflang="tr" href="https://soarb2b.com/ui/tr/soarb2b_objective_selection.html" />
+    <link rel="alternate" hreflang="en" href="https://soarb2b.com/ui/en/soarb2b_objective_selection.html" />
+    <link rel="alternate" hreflang="es" href="https://soarb2b.com/ui/es/soarb2b_objective_selection.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+            --color-text-secondary: ***REMOVED***475569;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+        .container {
+            min-height: 100vh;
+            padding: 4rem 2rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(248, 250, 252, 0.7);
+            margin-bottom: 2rem;
+        }
+        .objective-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        .objective-card {
+            padding: 2rem;
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .objective-card:hover {
+            border-color: var(--color-gold);
+            background: rgba(248, 250, 252, 0.08);
+        }
+        .objective-card.selected {
+            border-color: var(--color-gold);
+            background: rgba(197, 160, 40, 0.1);
+        }
+        .objective-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--color-gold);
+        }
+        .objective-card.selected .objective-title {
+            color: var(--color-gold);
+        }
+        .objective-items {
+            font-size: 0.95rem;
+            color: rgba(248, 250, 252, 0.7);
+            line-height: 1.8;
+        }
+        .transparency-notice {
+            padding: 1.5rem;
+            background: rgba(248, 250, 252, 0.03);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: rgba(248, 250, 252, 0.8);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            border: none;
+            border-radius: 4px;
+            font-family: 'Satoshi', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: ***REMOVED***C19D2D;
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Elige tu objetivo</h1>
+            <p class="subtitle">¿Qué deseas lograr? (Puedes seleccionar más de uno)</p>
+            <div class="capped-warning" id="cappedWarning" style="display: none; padding: 1rem; margin-top: 1rem; background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3); border-radius: 4px; color: rgba(248, 250, 252, 0.9);">
+                ⚠️ Esta región contiene más de 100 empresas elegibles. Por favor, refina tus criterios o continúa con una muestra limitada.
+            </div>
+        </div>
+
+        <div class="objective-grid">
+            <div class="objective-card" data-objective="market_intelligence">
+                <div class="objective-title">Inteligencia de Mercado</div>
+                <div class="objective-items">• Lista de empresas de la región objetivo<br>• Información de dirección, escala y actividad</div>
+            </div>
+
+            <div class="objective-card" data-objective="persona_discovery">
+                <div class="objective-title">Descubrimiento de Personas</div>
+                <div class="objective-items">• Departamentos objetivo (Compras, Operaciones, Fundador…)<br>• Análisis de autoridad y tipo de decisión</div>
+            </div>
+
+            <div class="objective-card" data-objective="reachability_report">
+                <div class="objective-title">Informe de Accesibilidad (Vista previa)</div>
+                <div class="objective-items">• Estado de accesibilidad Email / LinkedIn / Teléfono<br>• Recuentos y ratios basados en canales</div>
+            </div>
+
+            <div class="objective-card" data-objective="precision_exposure">
+                <div class="objective-title">Exposición de Precisión</div>
+                <div class="objective-items">• Publicidad a las personas correctas en el lugar correcto<br>• Visibilidad de menor costo</div>
+            </div>
+
+            <div class="objective-card" data-objective="soft_conversion">
+                <div class="objective-title">Conversión Suave</div>
+                <div class="objective-items">• Visitas al sitio web<br>• Consumo de contenido</div>
+            </div>
+
+            <div class="objective-card" data-objective="direct_access">
+                <div class="objective-title">Acceso Directo (Opcional)</div>
+                <div class="objective-items">• Alcance / cita (premium)</div>
+            </div>
+        </div>
+
+        <div class="transparency-notice">
+            🔒 Tú tienes el control. Nada se activa sin tu aprobación.
+        </div>
+
+        <div style="padding: 1rem; margin-bottom: 2rem; background: rgba(248, 250, 252, 0.03); border: 1px solid rgba(248, 250, 252, 0.1); border-radius: 4px; font-size: 0.9rem; color: rgba(248, 250, 252, 0.7);">
+            <strong style="color: var(--color-gold);">SOAR B2B ofrece resultados controlados y de alta calidad.</strong><br>
+            Las regiones grandes se muestrean para proteger la precisión y el rendimiento. Máximo 100 resultados por consulta.
+        </div>
+
+        <button class="btn-primary" id="continueBtn" onclick="saveObjectives()" disabled>Continuar</button>
+    </div>
+
+    <script>
+        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        const planId = new URLSearchParams(window.location.search).get('plan_id');
+        const selectedObjectives = new Set();
+
+        if (planId) {
+            checkPreviewWarning();
+        }
+
+        async function checkPreviewWarning() {
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plan/${planId}/preview`, {
+                    headers: { 'X-API-Key': API_KEY }
+                });
+                if (!response.ok) return;
+                
+                const preview = await response.json();
+                if (preview.requires_refinement && preview.warning_message) {
+                    document.getElementById('cappedWarning').style.display = 'block';
+                    document.getElementById('cappedWarning').textContent = '⚠️ ' + preview.warning_message;
+                }
+            } catch (error) {
+                // Ignore
+            }
+        }
+
+        document.querySelectorAll('.objective-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('selected');
+                const objective = card.dataset.objective;
+                if (selectedObjectives.has(objective)) {
+                    selectedObjectives.delete(objective);
+                } else {
+                    selectedObjectives.add(objective);
+                }
+                document.getElementById('continueBtn').disabled = selectedObjectives.size === 0;
+            });
+        });
+
+        async function saveObjectives() {
+            if (selectedObjectives.size === 0) return;
+
+            const btn = document.getElementById('continueBtn');
+            btn.disabled = true;
+            btn.textContent = 'Guardando...';
+
+            try {
+                const response = await fetch(`${window.location.origin}/api/v1/b2b/plan/objectives`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': API_KEY
+                    },
+                    body: JSON.stringify({
+                        plan_id: planId,
+                        objectives: Array.from(selectedObjectives)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Failed to save objectives: ${response.status}`);
+                }
+
+                window.location.href = `/ui/es/soarb2b_process_timeline.html?plan_id=${planId}`;
+            } catch (error) {
+                alert('Error al guardar objetivos: ' + error.message);
+                btn.disabled = false;
+                btn.textContent = 'Continuar';
+            }
+        }
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

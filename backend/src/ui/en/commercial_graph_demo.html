@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commercial Graph Demo — FinderOS / SOAR B2B</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background: ***REMOVED***0f172a; color: ***REMOVED***f8fafc; }
+    pre { background: ***REMOVED***020617; padding: 12px; border-radius: 8px; overflow: auto; max-height: 420px; font-size: 11px; }
+    button { margin: 8px 8px 0 0; padding: 8px 14px; border-radius: 6px; border: none; cursor: pointer; background: ***REMOVED***2563eb; color: ***REMOVED***fff; }
+    .muted { color: ***REMOVED***94a3b8; font-size: 14px; margin-top: 8px; }
+    .card { margin-top: 16px; padding: 12px; border-radius: 8px; background: ***REMOVED***1e293b; border: 1px solid ***REMOVED***334155; }
+  </style>
+</head>
+<body>
+  <h1>Commercial graph intelligence (foundation)</h1>
+  <p class="muted">
+    Seeds demo entities and relationships via API, then loads traversal output. Deterministic only — no autonomous graph agents.
+  </p>
+  <button type="button" id="seedBtn">Seed sample graph</button>
+  <button type="button" id="traverseBtn">Traverse from first entity</button>
+  <div class="card">
+    <h2>Traversal</h2>
+    <pre id="out">(run seed first)</pre>
+  </div>
+  <script>
+    let firstEntityId = null;
+    document.getElementById("seedBtn").onclick = async () => {
+      const base = "";
+      const municipalities = await fetch(base + "/api/v1/system/graph/entity", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          entity_type: "municipality",
+          name: "Demo Municipality",
+          authority_score: 0.84,
+          freshness_days: 12,
+          tags: ["demo"]
+        })
+      }).then(r => r.json());
+      const company = await fetch(base + "/api/v1/system/graph/entity", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          entity_type: "company",
+          name: "Demo Company",
+          authority_score: 0.81,
+          freshness_days: 9,
+          tags: ["demo"]
+        })
+      }).then(r => r.json());
+      const cluster = await fetch(base + "/api/v1/system/graph/entity", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          entity_type: "opportunity_cluster",
+          name: "Demo Cluster",
+          authority_score: 0.77,
+          freshness_days: 20,
+          tags: ["demo", "opportunity"]
+        })
+      }).then(r => r.json());
+      firstEntityId = municipalities.entity.entity_id;
+      await fetch(base + "/api/v1/system/graph/relationship", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          source_entity_id: company.entity.entity_id,
+          target_entity_id: municipalities.entity.entity_id,
+          relationship_type: "operates_in",
+          evidence_sources: ["registry"]
+        })
+      });
+      await fetch(base + "/api/v1/system/graph/relationship", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          source_entity_id: cluster.entity.entity_id,
+          target_entity_id: company.entity.entity_id,
+          relationship_type: "related_to",
+          evidence_sources: ["market_scan"]
+        })
+      });
+      document.getElementById("out").textContent = "Seeded. firstEntityId=" + firstEntityId;
+    };
+    document.getElementById("traverseBtn").onclick = async () => {
+      if (!firstEntityId) {
+        document.getElementById("out").textContent = "Seed first.";
+        return;
+      }
+      const base = "";
+      const url = base + "/api/v1/system/graph/traverse?entity_id=" + encodeURIComponent(firstEntityId)
+        + "&depth=4&include_opportunities=true";
+      const j = await fetch(url).then(r => r.json());
+      document.getElementById("out").textContent = JSON.stringify(j, null, 2);
+    };
+  </script>
+</body>
+</html>

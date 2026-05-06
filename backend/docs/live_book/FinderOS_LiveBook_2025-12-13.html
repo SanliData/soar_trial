@@ -1,0 +1,1898 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinderOS – LiveBook (Operational) (2025-12-13)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:***REMOVED***0F172A;
+    --fg:***REMOVED***F8FAFC;
+    --muted:rgba(248,250,252,.72);
+    --border:rgba(248,250,252,.10);
+    --panel:rgba(248,250,252,.04);
+    --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --sans:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    --head:'Satoshi', sans-serif;
+    --gold:***REMOVED***C5A028;
+  }
+  body { font-family: var(--sans); margin: 0; line-height: 1.65; color:var(--fg); background: var(--bg); padding-top: 72px; }
+  a{ color: rgba(248,250,252,.9); text-decoration: none; }
+  a:hover{ color: var(--fg); text-decoration: underline; }
+  .topbar{
+    position: fixed; inset: 0 0 auto 0; height: 60px;
+    background: rgba(15,23,42,.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border); z-index: 50;
+    display:flex; align-items:center;
+  }
+  .topbar .inner{ max-width: 1100px; padding: 0 18px; margin: 0 auto; width:100%; display:flex; align-items:center; gap:14px; }
+  .brand{ font-family: var(--head); font-weight: 900; letter-spacing: .02em; }
+  .nav{ margin-left: auto; display:flex; gap:12px; flex-wrap: wrap; }
+  .nav a{ font-size: 13px; opacity: .9; padding: 6px 10px; border: 1px solid transparent; border-radius: 999px; }
+  .nav a:hover{ border-color: var(--border); text-decoration:none; }
+  .container{ max-width: 980px; margin: 0 auto; padding: 24px 18px 64px; }
+  h1,h2,h3{ font-family: var(--head); font-weight: 900; letter-spacing: -0.02em; }
+  h1 { font-size: 30px; margin: 0 0 10px; }
+  h2 { font-size: 20px; margin-top: 28px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 16px; margin-top: 18px; }
+  .meta { color:var(--muted); font-size: 13px; margin-bottom: 18px; }
+  code, pre { font-family: var(--mono); }
+  pre { background: rgba(11,16,32,.9); color:***REMOVED***e5e7eb; padding: 12px; border-radius: 10px; overflow:auto; border: 1px solid rgba(248,250,252,.10); }
+  .box { border:1px solid var(--border); border-radius: 12px; padding: 14px 16px; background: var(--panel); }
+  table { border-collapse: collapse; width:100%; margin-top: 10px; }
+  th, td { border:1px solid var(--border); padding: 8px; text-align:left; vertical-align: top; }
+  th { background: rgba(248,250,252,.06); }
+  .pill{ display:inline-block; font-size: 12px; padding: 2px 10px; border-radius: 999px; border:1px solid rgba(197,160,40,.35); color: rgba(248,250,252,.9); background: rgba(197,160,40,.08); }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="inner">
+    <div class="brand">FinderOS Docs</div>
+    <div class="nav">
+      <a href="/ui/en/soarb2b_home.html">SOAR B2B</a>
+      <a href="/ui/docs/finderos_livebook.html">LiveBook</a>
+      <a href="/ui/docs/finderos_mainbook.html">Main Book</a>
+      <a href="/ui/docs/appendix_growth_activation.html">Appendix I</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+<h1>FinderOS – LiveBook (Operational) <span class="pill">2025-12-13</span></h1>
+<div class="meta">
+  LiveBook = çalışan sistemin kendi kendini açıklayan operasyon kitabı (runbook + contracts + metrics + governance checks).
+</div>
+
+<h2>1. Health</h2>
+<div class="box">
+  <pre><code>GET /v1/health
+GET /v1/metrics
+GET /__flow_map</code></pre>
+</div>
+
+<h2>2. Runbooks</h2>
+<h3>2.1 Ingestion</h3>
+<ul>
+  <li>Fetch failures: throttle/backoff, retry budgets, proxy policy.</li>
+  <li>Parse errors: parser version bump, sample-based tests.</li>
+</ul>
+
+<h3>2.2 Activation</h3>
+<ul>
+  <li>Low response: tighten category targeting, improve contact verification, rotate creatives.</li>
+</ul>
+
+<h2>3. Operational Contracts</h2>
+<table>
+  <tr><th>Endpoint</th><th>Idempotency</th><th>Rate Limit</th><th>Audit</th></tr>
+  <tr><td>POST /v1/vendors</td><td>Idempotency-Key</td><td>429 contract</td><td>create log</td></tr>
+  <tr><td>POST /v1/vendors/{id}/verify</td><td>safe retry</td><td>429 contract</td><td>verification log</td></tr>
+  <tr><td>POST /v1/exports/findiag</td><td>payload_hash</td><td>429 contract</td><td>export audit log</td></tr>
+</table>
+
+<h2>4. Minimum Metrics</h2>
+<ul>
+  <li>ingestion.listings_added_total</li>
+  <li>enrichment.contacts_found_total</li>
+  <li>verification.attempts_total</li>
+  <li>verification.verified_total</li>
+  <li>export.findiag.success_total</li>
+  <li>export.findiag.fail_total</li>
+</ul>
+
+<h2>5. Governance Checks</h2>
+<ul>
+  <li>UTF-8 (no BOM) scan before run/deploy.</li>
+  <li>Router audit: no business logic in router layer.</li>
+  <li>Secrets scan: no secrets in repo.</li>
+</ul>
+
+<h2>12. SOAR B2B Access & Exposure Architecture (2025-01-09)</h2>
+<h3>12.1. Operational Endpoints</h3>
+<div class="box">
+  <pre><code>POST /api/v1/b2b/feasibility/generate - Generate aggregated feasibility report (preview only)
+GET /api/v1/b2b/feasibility/report/{report_id} - Get feasibility report (counts only)
+POST /api/v1/b2b/feasibility/unlock - Unlock report after purchase
+POST /api/v1/b2b/exposure/create - Create precision exposure campaign
+POST /api/v1/b2b/exposure/track-conversion - Track impressions/clicks/views (soft conversion)
+GET /api/v1/b2b/exposure/conversions/{exposure_id} - Get conversion statistics
+POST /api/v1/b2b/reachability/escalation - Create escalation (optional, requires enable)
+POST /api/v1/b2b/reachability/enable - Enable/disable outreach module
+GET /api/v1/b2b/reachability/status - Get escalation module status</code></pre>
+</div>
+
+<h3>12.2. Data Models</h3>
+<ul>
+  <li><code>FeasibilityReport</code> - Aggregated counts only (no PII in preview)</li>
+  <li><code>PrecisionExposure</code> - Contextual targeting (location + persona context)</li>
+  <li><code>ExposureConversion</code> - Soft conversion tracking (impressions, clicks, views)</li>
+  <li><code>AccessGate</code> - Purchase gating and usage tracking</li>
+  <li><code>ReachabilityEscalation</code> - Optional outreach (disabled by default)</li>
+</ul>
+
+<h3>12.3. Frontend Updates</h3>
+<div class="box">
+  <pre><code>Onboarding Confirmation Message (All Languages):
+  EN: "We have received your English request. Your process will begin after our experts have evaluated it."
+  TR: "İngilizce talebinizi aldık. Uzmanlarımız değerlendirmesini yaptıktan sonra işleminiz başlayacaktır."
+  DE: "Wir haben Ihre englische Anfrage erhalten. Ihr Prozess beginnt, nachdem unsere Experten sie bewertet haben."
+  ES: "Hemos recibido su solicitud en inglés. Su proceso comenzará después de que nuestros expertos la evalúen."
+  FR: "Nous avons reçu votre demande en anglais. Votre processus commencera après que nos experts l'aient évaluée."
+  AR: "لقد استلمنا طلبك باللغة الإنجليزية. ستبدأ عملية الخاص بك بعد أن يقوم خبراؤنا بتقييمها."
+
+Files Updated:
+  - backend/src/ui/en/soarb2b_onboarding_5q.html
+  - backend/src/ui/tr/soarb2b_onboarding_5q.html
+  - backend/src/ui/de/soarb2b_onboarding_5q.html
+  - backend/src/ui/es/soarb2b_onboarding_5q.html
+  - backend/src/ui/fr/soarb2b_onboarding_5q.html
+  - backend/src/ui/ar/soarb2b_onboarding_5q.html</code></pre>
+</div>
+
+<h2>6. Frontend Enhancements (2025-12-13)</h2>
+<h3>6.1. Smart Stepper Navigation</h3>
+<div class="box">
+  <pre><code>Location: Left sidebar
+Features: Vertical navigation, auto-save, step completion tracking
+Files: frontend/finder_os_dashboard.html</code></pre>
+</div>
+
+<h3>6.2. Magic Dashboard</h3>
+<div class="box">
+  <pre><code>Location: Tab 0
+API Endpoints:
+  - GET /v1/discovery/records (Total Leads)
+  - GET /v1/campaigns/list (Active Ads)
+  - GET /v1/appointments/list (Upcoming Meetings)
+  - GET /v1/usage/statistics (Plan Usage)</code></pre>
+</div>
+
+<h3>6.3. Drag & Drop CSV/Excel Upload</h3>
+<div class="box">
+  <pre><code>Location: Step 4 (Research & Company Pool)
+Features: File upload, skeleton loader, column mapping
+JavaScript: handleFileDrop(), processFile()</code></pre>
+</div>
+
+<h3>6.4. FullCalendar Integration</h3>
+<div class="box">
+  <pre><code>Location: Step 11 (Appointment)
+Library: FullCalendar 5.11.5
+Features: Month/Week/Day views, drag & drop reschedule
+API: GET /v1/appointments/list</code></pre>
+</div>
+
+<h3>6.5. Dark Mode</h3>
+<div class="box">
+  <pre><code>Toggle: Top-right button
+Storage: localStorage
+CSS: Dark mode styles for all components
+Function: toggleDarkMode()</code></pre>
+</div>
+
+<h3>6.6. AI Co-Pilot</h3>
+<div class="box">
+  <pre><code>Location: Floating button (bottom-right)
+API: Gemini API integration ready
+Features: Context-aware advice, step-specific recommendations
+Function: getAICopilotAdvice()</code></pre>
+</div>
+
+<h2>7. HTTPS Support (2025-12-13)</h2>
+<h3>7.1. Configuration</h3>
+<div class="box">
+  <pre><code>Environment Variables:
+  FINDEROS_USE_HTTPS=true
+  FINDEROS_SSL_CERTFILE=/path/to/cert.pem
+  FINDEROS_SSL_KEYFILE=/path/to/key.pem
+  FINDEROS_FORCE_HTTPS=true</code></pre>
+</div>
+
+<h3>7.2. Middleware</h3>
+<div class="box">
+  <pre><code>File: src/middleware/https_redirect_middleware.py
+Purpose: Redirect HTTP to HTTPS in production
+Status: Active when FINDEROS_FORCE_HTTPS=true</code></pre>
+</div>
+
+<h3>7.3. Frontend Auto-Detection</h3>
+<div class="box">
+  <pre><code>Development: http://localhost:8000
+Production: https://yourdomain.com
+Auto-detection based on hostname</code></pre>
+</div>
+
+<h2>8. Industrial Chain Hunter (2025-12-13)</h2>
+<h3>8.1. API Endpoints</h3>
+<div class="box">
+  <pre><code>POST /v1/industrial-chain-hunter/hunt
+  Request: { "raw_material": "Maya", "min_confidence": 0.5 }
+  Response: { "end_products": [...], "producers": [...] }
+
+POST /v1/industrial-chain-hunter/add-to-pool
+  Request: { "producer_ids": [1, 2, 3] }
+  Response: { "success": true, "added_count": 3 }</code></pre>
+</div>
+
+<h3>8.2. Service</h3>
+<div class="box">
+  <pre><code>File: src/services/industrial_chain_hunter_service.py
+Methods:
+  - analyze_raw_material_to_products() - X → Y analysis
+  - search_producers_for_product() - Google/Amazon search
+  - _analyze_producer_status() - Producer/Reseller filter
+  - hunt_manufacturers() - Full workflow</code></pre>
+</div>
+
+<h2>9. Sniper-B2B Autonomous Sales Cycle (2025-12-13)</h2>
+<h3>9.1. API Endpoints</h3>
+<div class="box">
+  <pre><code>POST /v1/sniper-b2b/execute-cycle
+  Request: { "raw_material": "Maya" }
+  Response: { "producers": [...], "sniper_ready_count": 5 }
+
+POST /v1/sniper-b2b/mark-won
+  Request: { "company_id": 123, "conversion_type": "appointment" }
+  Response: { "success": true }
+
+GET /v1/sniper-b2b/won-customers
+  Response: { "won_customers": [...] }</code></pre>
+</div>
+
+<h3>9.2. Services</h3>
+<div class="box">
+  <pre><code>src/services/sniper_b2b_service.py - Main cycle orchestrator
+src/services/geocoding_service.py - Address → Coordinates
+src/services/google_ads_service.py - 10m radius targeting</code></pre>
+</div>
+
+<h3>9.3. Geocoding</h3>
+<div class="box">
+  <pre><code>Primary: Google Geocoding API
+Fallback: Nominatim (OpenStreetMap)
+Accuracy Levels: ROOFTOP, RANGE_INTERPOLATED, GEOMETRIC_CENTER, APPROXIMATE</code></pre>
+</div>
+
+<h2>10. Multi-Language Support (2025-12-13)</h2>
+<h3>10.1. API Endpoints</h3>
+<div class="box">
+  <pre><code>All endpoints accept Accept-Language header:
+  Accept-Language: tr, en, de, es
+
+Locale is automatically set in request.state.locale</code></pre>
+</div>
+
+<h3>10.2. Middleware</h3>
+<div class="box">
+  <pre><code>File: src/middleware/locale_middleware.py
+Purpose: Extract locale from Accept-Language header
+Sets: request.state.locale</code></pre>
+</div>
+
+<h2>11. Conversion Path Selector (2025-12-13)</h2>
+<h3>11.1. API Endpoints</h3>
+<div class="box">
+  <pre><code>POST /v1/sales-page-audit/audit
+  Request: { "url": "https://...", "target_market": "US" }
+  Response: { "audit": {...}, "raw_analysis": "..." }</code></pre>
+</div>
+
+<h3>11.2. Services</h3>
+<div class="box">
+  <pre><code>src/services/utm_service.py - UTM parameter generation
+src/services/sales_page_audit_service.py - LPO recommendations</code></pre>
+</div>
+
+<h2>12. SOAR B2B Post-Onboarding Flow (2025-01-16 Update)</h2>
+<h3>12.4. Frontend Files (Multi-Language)</h3>
+<div class="box">
+  <pre><code>Objective Selection (7 languages):
+  - backend/src/ui/en/soarb2b_objective_selection.html
+  - backend/src/ui/es/soarb2b_objective_selection.html
+  - backend/src/ui/fr/soarb2b_objective_selection.html
+  - backend/src/ui/de/soarb2b_objective_selection.html
+  - backend/src/ui/it/soarb2b_objective_selection.html
+  - backend/src/ui/tr/soarb2b_objective_selection.html
+  - backend/src/ui/ar/soarb2b_objective_selection.html (RTL)
+
+Process Timeline (7 languages):
+  - backend/src/ui/en/soarb2b_process_timeline.html
+  - backend/src/ui/es/soarb2b_process_timeline.html
+  - backend/src/ui/fr/soarb2b_process_timeline.html
+  - backend/src/ui/de/soarb2b_process_timeline.html
+  - backend/src/ui/it/soarb2b_process_timeline.html
+  - backend/src/ui/tr/soarb2b_process_timeline.html
+  - backend/src/ui/ar/soarb2b_process_timeline.html (RTL)
+
+Results Hub (6 languages):
+  - backend/src/ui/en/soarb2b_results_hub.html
+  - backend/src/ui/tr/soarb2b_results_hub.html
+  - backend/src/ui/de/soarb2b_results_hub.html
+  - backend/src/ui/es/soarb2b_results_hub.html
+  - backend/src/ui/fr/soarb2b_results_hub.html
+  - backend/src/ui/ar/soarb2b_results_hub.html (RTL)</code></pre>
+</div>
+
+<h3>12.5. API Endpoints</h3>
+<div class="box">
+  <pre><code>POST /api/v1/b2b/onboarding/create-plan - Create plan from onboarding
+GET /api/v1/b2b/plan/{plan_id}/preview - Get preview report (before purchase)
+POST /api/v1/b2b/plan/objectives - Save selected objectives
+GET /api/v1/b2b/plan/{plan_id}/timeline - Get process timeline
+GET /api/v1/b2b/plans/{plan_id}/results - Get Results Hub data
+GET /api/v1/b2b/plans/{plan_id}/routes - Get visit routes
+POST /api/v1/b2b/plans/{plan_id}/export - Create export job
+GET /api/v1/b2b/exports/{export_id}/status - Get export status</code></pre>
+</div>
+
+<h3>12.6. Query & Result Limits</h3>
+<div class="box">
+  <pre><code>MAX_RESULTS_PER_QUERY = 100
+Applies to:
+  - Business count
+  - Persona count
+  - Contact records
+Region-based capping with warning message:
+  "This region contains more than 100 eligible businesses.
+   Please refine your criteria or continue with a capped sample."</code></pre>
+</div>
+
+<h2>13. Deployment Scripts (2025-01-16 Update)</h2>
+<h3>13.1. Cloud Shell Deployment</h3>
+<div class="box">
+  <pre><code>File: deploy_gcp.sh
+Purpose: Automated deployment to Google Cloud Run
+Features:
+  - gcloud CLI check
+  - Authentication verification
+  - Project ID validation
+  - Environment variable loading from .env
+  - Docker image build and push
+  - Cloud Run deployment
+  - Service URL output</code></pre>
+</div>
+
+<h3>13.2. Pre-Deployment Validation</h3>
+<div class="box">
+  <pre><code>File: PRE_DEPLOYMENT_CHECK.ps1
+Purpose: Validate all files before deployment
+Checks:
+  - Critical files (app.py, main.py, dockerfile, requirements.txt)
+  - Multi-language files (14/14 files)
+  - Dockerfile configuration
+  - Dependencies (FastAPI, Uvicorn, SQLAlchemy)
+  - Git status
+  - Server health (optional)</code></pre>
+</div>
+
+<h3>13.3. Multi-Language Frontend Testing</h3>
+<div class="box">
+  <pre><code>File: TEST_MULTILINGUAL_FRONTEND.ps1
+Purpose: Test all language versions of frontend files
+Tests:
+  - 7 languages x 2 files = 14 files
+  - HTTP 200 status check
+  - Response time measurement
+  - Language tag validation
+  - RTL support check (Arabic)</code></pre>
+</div>
+
+<h2>14. Updated Files (2025-01-16)</h2>
+<table>
+  <tr><th>File</th><th>Change</th></tr>
+  <tr><td>backend/src/ui/{lang}/soarb2b_objective_selection.html</td><td>New: ES, FR, IT, AR versions (4 new files)</td></tr>
+  <tr><td>backend/src/ui/{lang}/soarb2b_process_timeline.html</td><td>New: DE, ES, FR, IT, AR versions (5 new files)</td></tr>
+  <tr><td>backend/src/ui/en/soarb2b_results_hub.html</td><td>Updated: Fixed URL consistency (/plans/ plural), enhanced outcome display</td></tr>
+  <tr><td>backend/src/http/v1/visit_route_router.py</td><td>Updated: Route path changed to /plans/{id}/routes (plural)</td></tr>
+  <tr><td>backend/src/services/result_service.py</td><td>Updated: Empty state handling, auto-create Results Hub on export</td></tr>
+  <tr><td>backend/src/services/visit_route_service.py</td><td>Updated: Fixed metadata column name (meta_data)</td></tr>
+  <tr><td>backend/src/models/visit_route.py</td><td>Updated: Fixed relationship definitions, metadata column renamed</td></tr>
+  <tr><td>backend/src/middleware/rate_limiting_middleware.py</td><td>Updated: Dev environment bypass, static file exclusion</td></tr>
+  <tr><td>backend/src/http/v1/b2b_api_router.py</td><td>Updated: Always read dev_api_keys.txt for dynamic key loading</td></tr>
+  <tr><td>deploy_gcp.sh</td><td>New: Cloud Shell deployment script</td></tr>
+  <tr><td>PRE_DEPLOYMENT_CHECK.ps1</td><td>New: Pre-deployment validation script</td></tr>
+  <tr><td>TEST_MULTILINGUAL_FRONTEND.ps1</td><td>New: Multi-language frontend test script</td></tr>
+  <tr><td>ABOUT_FINDEROS.md</td><td>Updated: Multi-language support section, latest updates</td></tr>
+</table>
+
+<h2>15. SOARB2B Değişiklikler (Operasyonel Özet)</h2>
+<p>Runbook ve operasyon için: <code>docs/DEGISIKLIK_RAPORU.md</code> ile uyumlu özet.</p>
+
+<h3>15.1. Yeni / Güncel Endpoint'ler</h3>
+<div class="box">
+  <pre><code>POST /v1/analytics/query          - NL soru → SQL → result + summary
+GET  /v1/graph/company/{id}       - Şirket düğümü + ilişkili kişiler
+GET  /v1/graph/similar/{id}       - Benzer şirketler
+POST /v1/graph/refresh            - Graf yeniden oluşturma
+GET  /v1/signals/industry?industry=...
+GET  /v1/signals/region?region=...
+GET  /v1/opportunities/recommendations?industry=&amp;region=&amp;limit=&amp;use_cache=</code></pre>
+</div>
+
+<h3>15.2. Modül Özeti (İzleme ve Hata Tipleri)</h3>
+<ul>
+  <li><strong>intelligence_graph / company_graph</strong>: Graf cache; startup’ta rebuild (veya kuyruk). Hata: graph_generation_failure.</li>
+  <li><strong>nl_query / analytics</strong>: Sadece SELECT, whitelist. Hata: analytics_query_failure, query_timeout, invalid_sql_generation, nl_query_parsing_error.</li>
+  <li><strong>sales_skills / skills</strong>: SkillExecutor, run_pipeline; log: skill_execution_logs.</li>
+  <li><strong>market_signals</strong>: Redis signal list; opportunity_detector ile beslenir.</li>
+  <li><strong>opportunity_engine</strong>: detect → rank → cache; GET /v1/opportunities/recommendations.</li>
+</ul>
+
+<h3>15.3. Admin ve Muafiyet</h3>
+<ul>
+  <li>Admin e-posta: isanli058@gmail.com; <code>SOARB2B_ADMIN_EMAILS</code> ile genişletilebilir.</li>
+  <li>Admin API: X-Admin-Key veya Bearer JWT (admin e-posta). Plan oluşturma ve start-run’da quote_token gerekmez; plan limiti uygulanmaz.</li>
+</ul>
+
+<p><em>Tam liste: <code>docs/DEGISIKLIK_RAPORU.md</code></em></p>
+
+</div>
+<div class="container">
+<h2>16. Verification Protocol for Strategic Hardening</h2>
+
+<h3>16.1 Health checks</h3>
+<div class="box">
+  <pre><code>GET /health
+GET /healthz
+GET /readyz</code></pre>
+</div>
+
+<h3>16.2 Static UI checks</h3>
+<div class="box">
+  <pre><code>GET /ui/tr/soarb2b_home.html
+GET /ui/en/soarb2b_home.html</code></pre>
+</div>
+
+<h3>16.3 Docs checks</h3>
+<ul>
+  <li>MainBook contains <strong>16. Strategic Hardening Backlog</strong>.</li>
+  <li>LiveBook contains <strong>16. Verification Protocol for Strategic Hardening</strong>.</li>
+  <li><code>docs/SOARB2B_MASTER_BACKLOG.md</code> exists.</li>
+</ul>
+
+<h3>16.4 Governance checks</h3>
+<ul>
+  <li>UTF-8 no BOM scan passes for changed text files.</li>
+  <li>No obvious secrets in changed files (exclude placeholders/examples).</li>
+  <li>Routers do not receive new business logic (routers limited to validation/auth/context binding/rate limit/logging/error mapping).</li>
+</ul>
+
+<p>
+  Recommended automation: <code>python scripts/verify_soarb2b_hardening.py</code>
+</p>
+
+</div>
+<div class="container">
+<h2>17. H-019 Verification — Controlled Generative UI</h2>
+
+<h3>17.1 Endpoint</h3>
+<div class="box">
+  <pre><code>POST /api/v1/b2b/generative-ui/render
+Header: X-API-Key (B2B API key)
+Body: JSON structured payload (widget_type allowlist; no raw HTML field)</code></pre>
+</div>
+
+<h3>17.2 Demo UI</h3>
+<div class="box">
+  <pre><code>GET /ui/tr/soarb2b_generative_ui_demo.html
+GET /ui/en/soarb2b_generative_ui_demo.html</code></pre>
+</div>
+
+<h3>17.3 Security</h3>
+<ul>
+  <li>Parent page must embed returned HTML in an <code>iframe</code> with a restrictive <code>sandbox</code> (no arbitrary JS from model output).</li>
+  <li>API response must indicate <code>sandbox_required=true</code> and <code>runtime_js_allowed=false</code>.</li>
+  <li>No user-supplied raw HTML accepted; output is template-bound and escaped.</li>
+</ul>
+
+<h3>17.4 Docs</h3>
+<ul>
+  <li><code>docs/H-019_GENERATIVE_UI_FOUNDATION.md</code> exists.</li>
+</ul>
+
+<p>
+  Automation: <code>python scripts/verify_h019_generative_ui.py</code>
+</p>
+
+</div>
+<div class="container">
+<h2>18. H-020 Verification — Semantic Capability Layer</h2>
+
+<h3>18.1 Endpoint</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/capabilities</code></pre>
+  <ul>
+    <li>Anonymous read of curated manifests (still subject to infra/WAF/network policy).</li>
+    <li>Response excludes secrets, `.env`, private keys, and internal tokens.</li>
+  </ul>
+</div>
+
+<h3>18.2 Registry checks</h3>
+<ul>
+  <li><code>capability_registry.py</code> validates via loader (unique IDs, allowed risk enums).</li>
+  <li>Orchestration metadata keys present per row: <code>orchestration_safe</code>, <code>destructive_action</code>, <code>human_approval_required</code>.</li>
+  <li>Exposure onboarding and visit-route artefacts require <code>human_approval_required=true</code>.</li>
+</ul>
+
+<h3>18.3 Security &amp; ergonomics</h3>
+<ul>
+  <li>UTF-8 no BOM enforced on authored files touched for H-020.</li>
+  <li>Router invokes export service only (no branching business logic in router layer).</li>
+  <li>Secret-sniff heuristic scan on authored Python/Markdown files.</li>
+</ul>
+
+<h3>18.4 Docs</h3>
+<ul>
+  <li><code>docs/H-020_SEMANTIC_CAPABILITY_LAYER.md</code> exists and explains boundaries.</li>
+</ul>
+
+<p>
+  Automation: <code>python scripts/verify_h020_semantic_layer.py</code>
+</p>
+
+</div>
+<div class="container">
+<h2>19. Verification — Documentation and Proof Baseline</h2>
+<p>
+  Confirms mandatory documentation/proof artefacts exist before treating any backlog closure as audited.
+</p>
+
+<h3>19.1 Files and references</h3>
+<ul>
+  <li><code>docs/TASK_IMPLEMENTATION_AND_PROOF_STANDARD.md</code> canonical checklist exists.</li>
+  <li><code>.cursor/rules/ta<REDACTED_OPENAI_API_KEY>.mdc</code> always-on Cursor rule mirrors obligations.</li>
+  <li>MainBook §19 and LiveBook §19 cite the standard explicitly.</li>
+  <li>Master backlog introductory block references <code>TASK_IMPLEMENTATION_AND_PROOF_STANDARD.md</code>.</li>
+</ul>
+
+<h3>19.2 Automation</h3>
+<div class="box">
+  <pre><code>python scripts/verify_task_standard.py</code></pre>
+  <pre><code>cd backend
+python -m pytest tests/test_task_standard_docs.py -q</code></pre>
+</div>
+
+<h3>19.3 DOCX parity</h3>
+<p>
+  If exported Word documents are tracked: regenerate them from HTML/source after edits; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code> and MainBook analogue.
+</p>
+
+</div>
+<div class="container">
+<h2>20. H-021 Verification — AI Runtime Optimization Layer</h2>
+
+<h3>20.1 Endpoints</h3>
+<div class="box">
+  <pre><code>POST /api/v1/system/ai-runtime/profile
+GET /api/v1/system/ai-runtime/profiles</code></pre>
+</div>
+
+<h3>20.2 Behaviour checks</h3>
+<ul>
+  <li>Responses include <code>llm_invoked=false</code> on both routes.</li>
+  <li>Profiles expose <code>estimated_*_tokens</code>, <code>selected_model</code>, compaction flags, latency fields.</li>
+  <li>Large inputs trigger deterministic compaction marker <code>[Context compacted deterministically]</code> when budgets demand it.</li>
+  <li>No remote LLM invocation occurs inside these endpoints.</li>
+</ul>
+
+<h3>20.3 Engineering hygiene</h3>
+<ul>
+  <li>UTF-8 no BOM on authored files.</li>
+  <li>No prohibited inference-server deps (vLLM, TensorRT, CUDA stacks, Triton, DeepSpeed) added for this foundation.</li>
+  <li>Router forwards to services only—no bespoke orchestration logic embedded in router layer.</li>
+</ul>
+
+<h3>20.4 Automation</h3>
+<pre><code>python scripts/verify_h021_ai_runtime.py
+cd backend
+python -m pytest tests/test_ai_runtime.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>21. H-022 Verification — Reflection Optimization Layer</h2>
+
+<h3>21.1 Endpoints</h3>
+<div class="box">
+  <pre><code>POST /api/v1/system/reflection/trace
+POST /api/v1/system/reflection/candidate
+GET /api/v1/system/reflection/traces
+GET /api/v1/system/reflection/candidates
+POST /api/v1/system/reflection/candidate/{candidate_id}/approve
+POST /api/v1/system/reflection/candidate/{candidate_id}/reject</code></pre>
+</div>
+
+<h3>21.2 Behaviour</h3>
+<ul>
+  <li>All JSON responses include <code>autonomous_execution=false</code>.</li>
+  <li>Candidates default <code>approval_status=pending</code> and <code>human_review_required=true</code>.</li>
+  <li>No endpoint deploys production prompts; governance actions require explicit approve/reject POST bodies.</li>
+  <li>Revision text is template-derived from structured failure codes—no remote LLM execution.</li>
+</ul>
+
+<h3>21.3 Review UI</h3>
+<ul>
+  <li><code>/ui/en/reflection_review_demo.html</code></li>
+  <li><code>/ui/tr/reflection_review_demo.html</code></li>
+</ul>
+
+<h3>21.4 Automation</h3>
+<pre><code>python scripts/verify_h022_reflection_layer.py
+cd backend
+python -m pytest tests/test_reflection_optimization.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>22. H-024 Verification — Knowledge Ingestion Layer</h2>
+
+<h3>22.1 Endpoints</h3>
+<div class="box">
+  <pre><code>POST /api/v1/system/knowledge/block
+GET /api/v1/system/knowledge/blocks
+GET /api/v1/system/knowledge/policies</code></pre>
+</div>
+
+<h3>22.2 Behaviour checks</h3>
+<ul>
+  <li>POST and GET responses include <code>deterministic_ingestion=true</code> and <code>scraping_executed=false</code>.</li>
+  <li>Knowledge block creation validates block types, approved source registry, and numeric ranges.</li>
+  <li>Authority scores stay within 0..1; freshness metadata is monotonic with age for scoring helpers.</li>
+  <li>Semantic chunking splits on paragraph boundaries before line splitting (section context preserved in tests).</li>
+  <li>Retrieval policy weights are exposed via GET policies; list endpoint returns ranking explanations.</li>
+  <li>Anonymous unverified scraping sources are rejected.</li>
+</ul>
+
+<h3>22.3 Engineering hygiene</h3>
+<ul>
+  <li>No scraping/crawl execution dependencies added under <code>knowledge_ingestion</code>.</li>
+  <li>UTF-8 no BOM on authored files; router delegates to services only.</li>
+  <li>No secrets or connection strings in demo or verification artefacts.</li>
+</ul>
+
+<h3>22.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/knowledge_ingestion_demo.html</code></li>
+  <li><code>/ui/tr/knowledge_ingestion_demo.html</code></li>
+</ul>
+
+<h3>22.5 Automation</h3>
+<pre><code>python scripts/verify_h024_knowledge_ingestion.py
+cd backend
+python -m pytest tests/test_knowledge_ingestion.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>23. H-025 Verification — Interactive Widget Layer</h2>
+
+<h3>23.1 Endpoints</h3>
+<div class="box">
+  <pre><code>POST /api/v1/system/widgets/render
+GET /api/v1/system/widgets/types
+GET /api/v1/system/widgets/demo</code></pre>
+</div>
+
+<h3>23.2 Behaviour checks</h3>
+<ul>
+  <li>Responses include <code>deterministic_rendering=true</code> and <code>script_injection_blocked=true</code>.</li>
+  <li>Widget types and visualization types are registry-bound; invalid combinations return 422.</li>
+  <li>HTML output uses escaping; demo fragments contain no raw <code>&lt;script&gt;</code> tags from the server pipeline.</li>
+  <li>Payload data is scanned for obvious script-like patterns.</li>
+</ul>
+
+<h3>23.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to services; no inline template HTML in the router module.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in demos.</li>
+  <li>No MCP migration or distributed orchestration code paths added for this foundation.</li>
+</ul>
+
+<h3>23.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/intelligence_widgets_demo.html</code></li>
+  <li><code>/ui/tr/intelligence_widgets_demo.html</code></li>
+</ul>
+
+<h3>23.5 Automation</h3>
+<pre><code>python scripts/verify_h025_widgets.py
+cd backend
+python -m pytest tests/test_intelligence_widgets.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>24. H-026 Verification — Commercial Graph Layer</h2>
+
+<h3>24.1 Endpoints</h3>
+<div class="box">
+  <pre><code>POST /api/v1/system/graph/entity
+POST /api/v1/system/graph/relationship
+GET /api/v1/system/graph/entity/{entity_id}
+GET /api/v1/system/graph/relationships
+GET /api/v1/system/graph/traverse</code></pre>
+</div>
+
+<h3>24.2 Behaviour checks</h3>
+<ul>
+  <li>JSON responses include <code>deterministic_graph=true</code> and <code>graph_db_required=false</code>.</li>
+  <li>Entity and relationship types are allow-listed; unknown types return 422.</li>
+  <li>Traversal uses deterministic BFS bounds; optional opportunity projections from connected clusters.</li>
+  <li>Confidence scoring is reproducible for identical inputs.</li>
+  <li><code>explain_relationship</code> exposes registry semantics plus factor breakdown (library tests / internal reasoning service).</li>
+</ul>
+
+<h3>24.3 Engineering hygiene</h3>
+<ul>
+  <li>No Neo4j/FalkorDB driver requirement in <code>commercial_graph</code> foundation package.</li>
+  <li>UTF-8 no BOM; router delegates storage and traversal to services.</li>
+  <li>No autonomous graph mutation agents introduced.</li>
+</ul>
+
+<h3>24.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/commercial_graph_demo.html</code></li>
+  <li><code>/ui/tr/commercial_graph_demo.html</code></li>
+</ul>
+
+<h3>24.5 Automation</h3>
+<pre><code>python scripts/verify_h026_graph_layer.py
+cd backend
+python -m pytest tests/test_commercial_graph.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>25. H-027 Verification — Prompt Orchestration Layer</h2>
+
+<h3>25.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/prompts/strategies
+GET /api/v1/system/prompts/personas
+GET /api/v1/system/prompts/arq-templates
+POST /api/v1/system/prompts/evaluate</code></pre>
+</div>
+
+<h3>25.2 Behaviour checks</h3>
+<ul>
+  <li>Responses include <code>deterministic_prompt_orchestration=true</code>, <code>autonomous_prompt_evolution=false</code>, <code>chain_of_thought_exposure=none</code>.</li>
+  <li>Strategy, persona, contract, and ARQ identifiers are allow-listed; invalid POST bodies return 422.</li>
+  <li>Reasoning policy mapping is deterministic for identical task labels.</li>
+  <li>Evaluation scoring is rule-based—no LLM invocation inside this foundation package.</li>
+</ul>
+
+<h3>25.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates evaluation to services; no hidden reasoning generation.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in demos.</li>
+</ul>
+
+<h3>25.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/prompt_orchestration_demo.html</code></li>
+  <li><code>/ui/tr/prompt_orchestration_demo.html</code></li>
+</ul>
+
+<h3>25.5 Automation</h3>
+<pre><code>python scripts/verify_h027_prompt_orchestration.py
+cd backend
+python -m pytest tests/test_prompt_orchestration.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>26. H-028 Verification — Relative Trajectory Evaluation Layer</h2>
+
+<h3>26.1 Endpoints</h3>
+<div class="box">
+  <pre><code>POST /api/v1/system/trajectory
+POST /api/v1/system/trajectory/group
+POST /api/v1/system/trajectory/evaluate
+GET /api/v1/system/trajectory/groups
+GET /api/v1/system/trajectory/evaluations</code></pre>
+</div>
+
+<h3>26.2 Behaviour checks</h3>
+<ul>
+  <li>Trajectory creation succeeds with governance envelope (<code>deterministic_trajectory_evaluation=true</code>, <code>reinforcement_learning_training=false</code>, <code>hidden_reasoning_exposure=none</code>).</li>
+  <li>Group creation rejects mixed workflows or unknown trajectory IDs (422).</li>
+  <li>Relative scoring is deterministic for identical inputs; ranked order tie-breaks lexicographically on <code>trajectory_id</code>.</li>
+  <li>Comparison reasoning uses fixed templates over explicit metadata facets—no hidden chain-of-thought export.</li>
+  <li>Evaluation traces append without muting prior trajectory rows.</li>
+</ul>
+
+<h3>26.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates scoring and traces to services; no RL stack imports in the package.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in demos.</li>
+</ul>
+
+<h3>26.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/trajectory_evaluation_demo.html</code></li>
+  <li><code>/ui/tr/trajectory_evaluation_demo.html</code></li>
+</ul>
+
+<h3>26.5 Automation</h3>
+<pre><code>python scripts/verify_h028_trajectory_layer.py
+cd backend
+python -m pytest tests/test_trajectory_evaluation.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>27. H-029 Verification — Agent Security Layer</h2>
+
+<h3>27.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/security/capabilities
+POST /api/v1/system/security/sanitize-prompt
+POST /api/v1/system/security/sanitize-retrieval
+GET /api/v1/system/security/traces
+POST /api/v1/system/security/risk-score</code></pre>
+</div>
+
+<h3>27.2 Behaviour checks</h3>
+<ul>
+  <li>Capability registry export is static JSON; responses include <code>agent_security_foundation=true</code>, <code>autonomous_tool_execution=false</code>, <code>unrestricted_mcp_execution=false</code>.</li>
+  <li>Sanitization endpoints emit findings arrays and append audit traces.</li>
+  <li>Trust boundary validation rejects unknown tools and disallowed actions (fail closed).</li>
+  <li>Delegation matrix rejects unspecified tool pairs.</li>
+  <li>Risk scoring is deterministic for identical inputs.</li>
+</ul>
+
+<h3>27.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to security services; no arbitrary execution helpers in router.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in demos.</li>
+</ul>
+
+<h3>27.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/agent_security_demo.html</code></li>
+  <li><code>/ui/tr/agent_security_demo.html</code></li>
+</ul>
+
+<h3>27.5 Automation</h3>
+<pre><code>python scripts/verify_h029_agent_security.py
+cd backend
+python -m pytest tests/test_agent_security.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>28. H-030 Verification — Runtime Context Engineering Layer</h2>
+
+<h3>28.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/runtime/metadata
+GET /api/v1/system/runtime/capabilities
+GET /api/v1/system/runtime/topology
+GET /api/v1/system/runtime/hints
+POST /api/v1/system/runtime/context-budget</code></pre>
+</div>
+
+<h3>28.2 Behaviour checks</h3>
+<ul>
+  <li>Metadata snapshot exposes structured fields with governance envelope (<code>runtime_self_modification=false</code>).</li>
+  <li>Capability summaries load before optional full depth; invalid depth returns 422.</li>
+  <li>Topology payload is static curated manifest — no blind socket/process scans.</li>
+  <li>Hints are deterministic strings derived from structured bundle fields.</li>
+  <li>Context budgeting applies explicit truncation markers for oversize samples.</li>
+</ul>
+
+<h3>28.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to runtime context services; no hidden introspection helpers.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>28.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/runtime_context_demo.html</code></li>
+  <li><code>/ui/tr/runtime_context_demo.html</code></li>
+</ul>
+
+<h3>28.5 Automation</h3>
+<pre><code>python scripts/verify_h030_runtime_context.py
+cd backend
+python -m pytest tests/test_runtime_context.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>29. H-031 Verification — Agent Harness Architecture Layer</h2>
+
+<h3>29.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/harness/memory
+GET /api/v1/system/harness/skills
+GET /api/v1/system/harness/protocols
+POST /api/v1/system/harness/compress
+GET /api/v1/system/harness/runtime-summary</code></pre>
+</div>
+
+<h3>29.2 Behaviour checks</h3>
+<ul>
+  <li>Memory registry exports deterministic domain metadata.</li>
+  <li>Skill registry returns fixed catalog — no runtime mutation.</li>
+  <li>Protocol registry returns static protocol manifests.</li>
+  <li>Compression endpoints use deterministic transforms and visible truncation markers.</li>
+  <li>Evaluation routing uses static workflow → evaluation lookup.</li>
+  <li>Sub-agent isolation is enforced (explicit scope, permissions, foundation spawn cap).</li>
+  <li>API envelope declares <code>recursive_agent_swarm=false</code> and <code>unrestricted_subagent_spawning=false</code>.</li>
+  <li>No unrestricted orchestration expansion APIs in the foundation surface.</li>
+</ul>
+
+<h3>29.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to harness services; no business orchestration logic in the router module.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>29.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/agent_harness_demo.html</code></li>
+  <li><code>/ui/tr/agent_harness_demo.html</code></li>
+</ul>
+
+<h3>29.5 Automation</h3>
+<pre><code>python scripts/verify_h031_agent_harness.py
+cd backend
+python -m pytest tests/test_agent_harness.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>30. H-032 Verification — Workflow Governance Layer</h2>
+
+<h3>30.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/workflows/contracts
+GET /api/v1/system/workflows/effort-levels
+POST /api/v1/system/workflows/session
+POST /api/v1/system/workflows/compress
+POST /api/v1/system/workflows/validate
+GET /api/v1/system/workflows/runtime-summary</code></pre>
+</div>
+
+<h3>30.2 Behaviour checks</h3>
+<ul>
+  <li>Workflow contracts are served from a static registry — no runtime mutation.</li>
+  <li>Effort governance returns deterministic levels and routing metadata.</li>
+  <li>Session management creates tracked sessions with deterministic summaries.</li>
+  <li>Context decay service exposes rot scores and explicit truncation markers.</li>
+  <li>Delegation policies require explicit targets and enforce caps.</li>
+  <li>Parallelization policies enforce max parallel limits.</li>
+  <li>Envelope declares <code>unrestricted_autonomous_execution=false</code> and <code>recursive_workflow_swarm=false</code>.</li>
+  <li>No unrestricted orchestration expansion in the foundation API.</li>
+</ul>
+
+<h3>30.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to workflow governance services only.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>30.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/workflow_governance_demo.html</code></li>
+  <li><code>/ui/tr/workflow_governance_demo.html</code></li>
+</ul>
+
+<h3>30.5 Automation</h3>
+<pre><code>python scripts/verify_h032_workflow_governance.py
+cd backend
+python -m pytest tests/test_workflow_governance.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>31. H-033 Verification — Reliability Governance Layer</h2>
+
+<h3>31.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/reliability/drift
+GET /api/v1/system/reliability/retrieval
+GET /api/v1/system/reliability/embeddings
+GET /api/v1/system/reliability/workflows
+GET /api/v1/system/reliability/context
+GET /api/v1/system/reliability/traces</code></pre>
+</div>
+
+<h3>31.2 Behaviour checks</h3>
+<ul>
+  <li>Drift monitoring returns deterministic signals and risk bands; evaluation governance bundled on drift route.</li>
+  <li>Embedding health returns freshness and validity scoring — no embedding mutation endpoint.</li>
+  <li>Retrieval quality exposes explainable component breakdown.</li>
+  <li>Workflow reliability surfaces pressure scores for tokens, retries, delegation flaps, acceptance failures, context rot.</li>
+  <li>Context stability returns recommendations without hidden summarization logic.</li>
+  <li>Observability traces include canonical examples and bounded buffer semantics.</li>
+  <li>Envelope declares <code>distributed_observability_mesh=false</code> and <code>uncontrolled_monitoring_sprawl=false</code>.</li>
+  <li>No blind infra introspection or uncontrolled telemetry sprawl in this foundation.</li>
+</ul>
+
+<h3>31.3 Engineering hygiene</h3>
+<ul>
+  <li>Router binds query parameters only; governance logic lives in services.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>31.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/reliability_governance_demo.html</code></li>
+  <li><code>/ui/tr/reliability_governance_demo.html</code></li>
+</ul>
+
+<h3>31.5 Automation</h3>
+<pre><code>python scripts/verify_h033_reliability_governance.py
+cd backend
+python -m pytest tests/test_reliability_governance.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>32. H-034 Verification — Semantic Capability Graph Layer</h2>
+
+<h3>32.1 Endpoints (graph)</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/capabilities (H-020 flat manifest + semantic_capability_graph extension)
+GET /api/v1/system/capabilities/graph
+GET /api/v1/system/capabilities/topology
+GET /api/v1/system/capabilities/contracts
+GET /api/v1/system/capabilities/awareness
+GET /api/v1/system/capabilities/runtime-context</code></pre>
+</div>
+
+<h3>32.2 Behaviour checks</h3>
+<ul>
+  <li>Semantic capability graph registry is static — no runtime mutation API.</li>
+  <li>Topology responses are derived deterministically from registry and edges.</li>
+  <li>Semantic contracts are explicit and validated against registered capability ids.</li>
+  <li>Runtime semantic snapshots are curated lists — no blind socket/process introspection.</li>
+  <li>Envelope declares <code>recursive_capability_mutation=false</code> and <code>autonomous_capability_discovery=false</code>.</li>
+  <li>H-020 catalog JSON includes <code>semantic_capability_graph</code> metadata without replacing capability rows.</li>
+</ul>
+
+<h3>32.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to semantic_capability_graph services only.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>32.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/semantic_capability_graph_demo.html</code></li>
+  <li><code>/ui/tr/semantic_capability_graph_demo.html</code></li>
+</ul>
+
+<h3>32.5 Automation</h3>
+<pre><code>python scripts/verify_h034_semantic_capability_graph.py
+cd backend
+python -m pytest tests/test_semantic_capability_graph.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>33. H-035 Verification — Spec Verification Governance Layer</h2>
+
+<h3>33.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/specs
+GET /api/v1/system/specs/contracts
+POST /api/v1/system/specs/validate
+GET /api/v1/system/specs/traces
+POST /api/v1/system/specs/trace-to-eval
+GET /api/v1/system/specs/review-status</code></pre>
+</div>
+
+<h3>33.2 Behaviour checks</h3>
+<ul>
+  <li>Specification registry is static — no runtime mutation API.</li>
+  <li>Acceptance validation uses deterministic criteria and explainable missing-key lists.</li>
+  <li>Verification traces combine canonical rows with bounded live buffer.</li>
+  <li>Trace-to-eval returns fixed mappings — <code>autonomous_rule_mutation=false</code>.</li>
+  <li>Architecture contracts export declarative enforcement metadata.</li>
+  <li>Envelope declares autonomous architecture mutation and unrestricted engineering flags false.</li>
+</ul>
+
+<h3>33.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to spec_verification_governance services only.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>33.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/spec_verification_demo.html</code></li>
+  <li><code>/ui/tr/spec_verification_demo.html</code></li>
+</ul>
+
+<h3>33.5 Automation</h3>
+<pre><code>python scripts/verify_h035_spec_verification.py
+cd backend
+python -m pytest tests/test_spec_verification_governance.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>34. H-036 Verification — Evolution Governance Layer</h2>
+
+<h3>34.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/evolution/proposals
+POST /api/v1/system/evolution/simulate
+GET /api/v1/system/evolution/traces
+POST /api/v1/system/evolution/rollback-check
+GET /api/v1/system/evolution/policies</code></pre>
+</div>
+
+<h3>34.2 Behaviour checks</h3>
+<ul>
+  <li>Mutation proposal registry is static — envelope declares unrestricted runtime self-modification false.</li>
+  <li>Sandbox simulate requires <code>sandbox_only=true</code>; production deploy flag rejected.</li>
+  <li>Rollback governance exposes readiness checks; rollback mandatory semantic on promotion paths.</li>
+  <li>Evolution traces combine canonical rows with bounded live buffer.</li>
+  <li>Workflow and prompt comparisons are deterministic lookups — no autonomous rewriting.</li>
+</ul>
+
+<h3>34.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to evolution_governance services only.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>34.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/evolution_governance_demo.html</code></li>
+  <li><code>/ui/tr/evolution_governance_demo.html</code></li>
+</ul>
+
+<h3>34.5 Automation</h3>
+<pre><code>python scripts/verify_h036_evolution_governance.py
+cd backend
+python -m pytest tests/test_evolution_governance.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>35. H-037 Verification — Capability Gateway Layer</h2>
+
+<h3>35.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/gateways
+GET /api/v1/system/providers
+GET /api/v1/system/execution-policies
+GET /api/v1/system/local-inference
+GET /api/v1/system/browser-policies
+GET /api/v1/system/hybrid-serving</code></pre>
+</div>
+
+<h3>35.2 Behaviour checks</h3>
+<ul>
+  <li>Gateway registry is static — envelope declares unrestricted external execution false.</li>
+  <li>Provider abstraction exports deterministic routing metadata — no hidden failover flags.</li>
+  <li>Browser policies require sandbox semantic and disallow unrestricted automation.</li>
+  <li>Local inference and hybrid serving responses are metadata-only manifests.</li>
+  <li>External tool governance module caps chain depth — unrestricted chaining false.</li>
+</ul>
+
+<h3>35.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to capability_gateway services only.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>35.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/capability_gateway_demo.html</code></li>
+  <li><code>/ui/tr/capability_gateway_demo.html</code></li>
+</ul>
+
+<h3>35.5 Automation</h3>
+<pre><code>python scripts/verify_h037_capability_gateway.py
+cd backend
+python -m pytest tests/test_capability_gateway.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>36. H-038 Verification — Workspace Protocol Layer</h2>
+
+<h3>36.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/workspaces/policies
+GET /api/v1/system/workspaces/rules
+GET /api/v1/system/workspaces/memory
+GET /api/v1/system/workspaces/commands
+GET /api/v1/system/workspaces/skills
+GET /api/v1/system/workspaces/permissions</code></pre>
+</div>
+
+<h3>36.2 Behaviour checks</h3>
+<ul>
+  <li>Workspace policies are static registry rows with explicit permission unions.</li>
+  <li>Runtime rules load as named buckets — merge strategy is deterministic metadata.</li>
+  <li>Project memory exports scoped-only manifest; envelope flags unrestricted persistent memory false.</li>
+  <li>Command and skill registries are deterministic sorts of static ids.</li>
+  <li>Permissions include allow/deny lists; subagent scopes forbid uncontrolled spawn.</li>
+</ul>
+
+<h3>36.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to workspace_protocol services only.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>36.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/workspace_protocol_demo.html</code></li>
+  <li><code>/ui/tr/workspace_protocol_demo.html</code></li>
+</ul>
+
+<h3>36.5 Automation</h3>
+<pre><code>python scripts/verify_h038_workspace_protocol.py
+cd backend
+python -m pytest tests/test_workspace_protocol.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>37. H-039 Verification — Agent Proxy Firewall Layer</h2>
+
+<h3>37.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/firewall/gateways
+GET /api/v1/system/firewall/input-filters
+GET /api/v1/system/firewall/output-filters
+GET /api/v1/system/firewall/policies
+GET /api/v1/system/firewall/protected-actions
+GET /api/v1/system/firewall/interception-traces</code></pre>
+</div>
+
+<h3>37.2 Behaviour checks</h3>
+<ul>
+  <li>Input and output filter manifests declare sequential strict ordering and audit traces.</li>
+  <li>Policy response embeds execution firewall; envelope flags unrestricted autonomous execution false.</li>
+  <li>Gateways include compression resilience manifest — context-only security insufficient.</li>
+  <li>Protected actions list requires mandatory interception metadata.</li>
+  <li>Interception traces expose canonical blocked-prompt/output exemplars.</li>
+</ul>
+
+<h3>37.3 Engineering hygiene</h3>
+<ul>
+  <li>Router delegates to agent_proxy_firewall services only.</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>37.4 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/agent_proxy_firewall_demo.html</code></li>
+  <li><code>/ui/tr/agent_proxy_firewall_demo.html</code></li>
+</ul>
+
+<h3>37.5 Automation</h3>
+<pre><code>python scripts/verify_h039_agent_proxy_firewall.py
+cd backend
+python -m pytest tests/test_agent_proxy_firewall.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>38. H-040 Verification — Skill Runtime Layer</h2>
+
+<h3>38.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/skills
+GET /api/v1/system/skills/active
+GET /api/v1/system/skills/permissions
+GET /api/v1/system/skills/dependencies
+GET /api/v1/system/skills/context-optimization
+GET /api/v1/system/skills/traces</code></pre>
+</div>
+
+<h3>38.2 Behaviour checks</h3>
+<ul>
+  <li>Skill registry exists (<code>skill_runtime</code> services) with deterministic ordering.</li>
+  <li>Dynamic loading is scoped only — <code>plan_skill_load</code> validates intent, scope, permissions, dependency closure (no global preload).</li>
+  <li>Permissions enforced via manifest and <code>evaluate_skill_permission_gate</code> — deterministic outcomes.</li>
+  <li>Dependency governance: acyclic closure validation, unsafe inheritance patterns rejected.</li>
+  <li>Context optimization manifest present — token budgeting and pruning recommendations (no hidden mutation).</li>
+  <li>Unrestricted skill spawning is false in router envelope and activation manifests.</li>
+</ul>
+
+<h3>38.3 Engineering hygiene</h3>
+<ul>
+  <li>Router contains no business logic (delegates to <code>skill_runtime</code> services).</li>
+  <li>UTF-8 no BOM on authored files; no secrets in manifests.</li>
+</ul>
+
+<h3>38.4 Semantic layer</h3>
+<ul>
+  <li>H-020 includes <code>skills.registry</code>, <code>skills.activation</code>, <code>skills.permissions</code>, <code>skills.dependencies</code>, <code>skills.context_optimization</code> with <code>orchestration_safe=true</code> and <code>destructive_action=false</code>.</li>
+</ul>
+
+<h3>38.5 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/skill_runtime_demo.html</code></li>
+  <li><code>/ui/tr/skill_runtime_demo.html</code></li>
+</ul>
+
+<h3>38.6 Automation</h3>
+<pre><code>python scripts/verify_h040_skill_runtime.py
+cd backend
+python -m pytest tests/test_skill_runtime.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>39. H-041 Verification — Inference Runtime Governance Layer</h2>
+
+<h3>39.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/inference/kv-cache
+GET /api/v1/system/inference/batching
+GET /api/v1/system/inference/token-budgets
+GET /api/v1/system/inference/costs
+GET /api/v1/system/inference/parallelism
+GET /api/v1/system/inference/speculative
+GET /api/v1/system/inference/telemetry
+GET /api/v1/system/inference/collapse-risk
+GET /api/v1/system/inference/prefill-pressure
+GET /api/v1/system/inference/efficiency</code></pre>
+</div>
+
+<h3>39.2 Behaviour checks</h3>
+<ul>
+  <li>Token budgets manifest exists with six categories and explicit overflow policy.</li>
+  <li>Batching and KV manifests are deterministic metadata-only.</li>
+  <li>Runtime telemetry exposes explainable canonical fields.</li>
+  <li>Collapse detection returns flags only — <code>autonomous_shutdown</code> false.</li>
+  <li>Prefill pressure classified into low–critical without automatic optimization.</li>
+  <li>Runtime efficiency uses documented weights.</li>
+  <li>Uncontrolled runtime expansion is false on inference envelope.</li>
+</ul>
+
+<h3>39.3 Engineering hygiene</h3>
+<ul>
+  <li>Inference router delegates to <code>inference_runtime</code> services only.</li>
+  <li>UTF-8 no BOM; no secrets in manifests.</li>
+</ul>
+
+<h3>39.4 Cross-layer</h3>
+<ul>
+  <li>H-039 firewall gateways include <code>runtime_inference_alignment</code> (detection-only; no autonomous blocking).</li>
+  <li>H-040 skills include optional token/prefill/cache/batching/efficiency metadata.</li>
+</ul>
+
+<h3>39.5 Demo pages</h3>
+<ul>
+  <li><code>/ui/en/inference_runtime_demo.html</code></li>
+  <li><code>/ui/tr/inference_runtime_demo.html</code></li>
+</ul>
+
+<h3>39.6 Automation</h3>
+<pre><code>python scripts/verify_h041_inference_runtime.py
+cd backend
+python -m pytest tests/test_inference_runtime.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>40. H-042 Verification — Persistent Operational Intelligence Layer</h2>
+
+<h3>40.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/workspace/state
+GET /api/v1/system/workspace/schedules
+GET /api/v1/system/graph/traversals
+GET /api/v1/system/graph/hybrid-query
+GET /api/v1/system/clustering/groups
+GET /api/v1/system/clustering/semantic-batches</code></pre>
+</div>
+
+<h3>40.2 Behaviour checks</h3>
+<ul>
+  <li>Typed state registry includes five canonical state types.</li>
+  <li>Scheduled execution manifest declares cadence caps and forbids autonomous infinite execution.</li>
+  <li>Graph traversal plan caps depth deterministically.</li>
+  <li>Hybrid query manifest keeps graph augmentation optional (<code>mandatory_graph_dependency</code> false).</li>
+  <li>Clustering manifests reject giant infra requirements at foundation level.</li>
+  <li>Envelope flags include <code>uncontrolled_persistent_execution</code> false on workspace responses.</li>
+</ul>
+
+<h3>40.3 Engineering hygiene</h3>
+<ul>
+  <li>Routers delegate to domain services; no business logic in routers.</li>
+  <li>UTF-8 no BOM; no secrets in manifests.</li>
+</ul>
+
+<h3>40.4 Automation</h3>
+<pre><code>python scripts/verify_h042_persistent_operational_layer.py
+cd backend
+python -m pytest tests/test_persistent_operational_layer.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>41. H-043 Verification — Long Context, Private Runtime &amp; Ensemble Governance Layer</h2>
+
+<h3>41.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/context/pressure
+GET /api/v1/system/context/partitions
+GET /api/v1/system/context/sparse-providers
+GET /api/v1/system/context/fallbacks
+GET /api/v1/system/runtime/isolation
+GET /api/v1/system/runtime/network-exposure
+GET /api/v1/system/runtime/private-mesh
+GET /api/v1/system/runtime/non-root
+GET /api/v1/system/ensemble/evaluators
+GET /api/v1/system/ensemble/consensus
+GET /api/v1/system/ensemble/variance
+GET /api/v1/system/ensemble/randomization</code></pre>
+</div>
+
+<h3>41.2 Behaviour checks</h3>
+<ul>
+  <li>Adaptive context loading and pressure manifests are deterministic; no full-context default loading flag true.</li>
+  <li>Sparse provider endpoint returns metadata_only / no orchestration mutation markers.</li>
+  <li>Runtime isolation and private-mesh envelopes deny public default exposure.</li>
+  <li>Network exposure assessments are detection_only with no autonomous shutdown.</li>
+  <li>Ensemble evaluators expose weights; consensus and variance manifests are deterministic.</li>
+  <li>H-037 provider export includes sparse/long-context metadata fields (no auto-switch).</li>
+  <li>H-039 firewall alignment includes H-043 exposure detections.</li>
+</ul>
+
+<h3>41.3 Engineering hygiene</h3>
+<ul>
+  <li>Three H-043 routers delegate to services only; UTF-8 no BOM; no secrets.</li>
+</ul>
+
+<h3>41.4 Automation</h3>
+<pre><code>python scripts/verify_h043_long_context_private_runtime.py
+cd backend
+python -m pytest tests/test_h043_long_context_private_runtime.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>42. H-044 Verification — Typed Context, Document Intelligence &amp; MCP Runtime Layer</h2>
+
+<h3>42.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/context/types
+GET /api/v1/system/context/lifecycle
+GET /api/v1/system/context/priorities
+
+GET /api/v1/system/context/compression
+GET /api/v1/system/context/duplicates
+GET /api/v1/system/context/relevance
+
+GET /api/v1/system/context/isolation
+GET /api/v1/system/context/boundaries
+GET /api/v1/system/context/partitions
+
+GET /api/v1/system/documents/ocr-pipeline
+GET /api/v1/system/documents/layout
+GET /api/v1/system/documents/form-structure
+GET /api/v1/system/documents/markdown-projection
+
+GET /api/v1/system/mcp/capabilities
+GET /api/v1/system/mcp/tools
+GET /api/v1/system/mcp/transports
+GET /api/v1/system/mcp/gateway</code></pre>
+</div>
+
+<h3>42.2 Behaviour checks</h3>
+<ul>
+  <li>Six context types are separated and validated; invalid <code>context_type</code> is rejected.</li>
+  <li>Guardrail context remains visible and is not compressed away by default.</li>
+  <li>Compression is deterministic, marked, and preserves lineage.</li>
+  <li>Duplicate detection returns recommendations only; no automatic deletion.</li>
+  <li>Workflow isolation blocks cross-workflow context access unless explicitly allowed.</li>
+  <li>Document intelligence is abstraction-only: deterministic placeholder extraction; lineage required; unsafe file metadata rejected.</li>
+  <li>MCP tools are projections only: policy-scoped; no public MCP server; no unrestricted execution.</li>
+  <li>H-039 firewall recognizes guardrail/tool/MCP/document-derived policy domains (interception only).</li>
+</ul>
+
+<h3>42.3 Engineering hygiene</h3>
+<ul>
+  <li>Routers contain no business logic; UTF-8 no BOM; no secrets.</li>
+</ul>
+
+<h3>42.4 Automation</h3>
+<pre><code>python scripts/verify_h044_typed_context_document_mcp.py
+cd backend
+python -m pytest tests/test_h044_typed_context_document_mcp.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>43. H-045 Verification — Agent OS, Federated Retrieval &amp; Selective Context Runtime</h2>
+
+<h3>43.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/agents
+GET /api/v1/system/agents/roles
+GET /api/v1/system/agents/fleet
+GET /api/v1/system/agents/permissions
+GET /api/v1/system/agents/observability
+
+GET /api/v1/system/nl-control/intents
+GET /api/v1/system/nl-control/approval
+GET /api/v1/system/nl-control/audit
+
+GET /api/v1/system/retrieval/connectors
+GET /api/v1/system/retrieval/sync
+GET /api/v1/system/retrieval/search
+GET /api/v1/system/retrieval/lineage
+GET /api/v1/system/retrieval/observability
+
+GET /api/v1/system/selective-context/compression
+GET /api/v1/system/selective-context/relevance
+GET /api/v1/system/selective-context/expansion
+GET /api/v1/system/selective-context/token-pressure
+GET /api/v1/system/selective-context/budgets</code></pre>
+</div>
+
+<h3>43.2 Behaviour checks</h3>
+<ul>
+  <li>Agent registry and fleet visibility exist; no autonomous spawning or fleet mutation flags are enabled.</li>
+  <li>NL control plane returns intent metadata only; high-risk commands require human approval metadata; every command is auditable.</li>
+  <li>Federated retrieval connectors and incremental sync are metadata-only; no live external sync required.</li>
+  <li>All retrieval results preserve required source lineage.</li>
+  <li>Selective context runtime returns deterministic compression, relevance, and selective expansion with explicit retrieval budgets.</li>
+  <li>No unrestricted NL execution; no uncontrolled retrieval expansion; no RL training infrastructure.</li>
+  <li>Firewall recognizes NL/dispatch/connector/expansion risk domains (detection/interception only).</li>
+</ul>
+
+<h3>43.3 Engineering hygiene</h3>
+<ul>
+  <li>Routers contain no business logic; UTF-8 no BOM; no secrets.</li>
+</ul>
+
+<h3>43.4 Automation</h3>
+<pre><code>python scripts/verify_h045_agent_os_federated_retrieval.py
+cd backend
+python -m pytest tests/test_h045_agent_os_federated_retrieval.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+
+</div>
+<div class="container">
+<h2>44. H-046 Verification — System Visibility Layer</h2>
+
+<h3>44.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/visibility/health
+GET /api/v1/system/visibility/runtime-pressure
+GET /api/v1/system/visibility/workflow-audit
+GET /api/v1/system/visibility/retrieval
+GET /api/v1/system/visibility/connectors
+GET /api/v1/system/visibility/orchestration
+GET /api/v1/system/visibility/approvals
+GET /api/v1/system/visibility/agents</code></pre>
+</div>
+
+<h3>44.2 Behaviour checks</h3>
+<ul>
+  <li>Dashboard exists: <code>/ui/en/system_visibility_dashboard.html</code> (and <code>/ui/tr/…</code>).</li>
+  <li>Operational visibility is deterministic; no fake uptime metrics; no hidden status overrides.</li>
+  <li>Runtime pressure exposes explainable thresholds (token/context/orchestration/retrieval/agent/retry).</li>
+  <li>Approval queue is metadata-only; no auto-approval.</li>
+</ul>
+
+<h3>44.3 Engineering hygiene</h3>
+<ul>
+  <li>Routers contain no business logic; UTF-8 no BOM; no secrets.</li>
+</ul>
+
+<h3>44.4 Automation</h3>
+<pre><code>python scripts/verify_h046_visibility_layer.py
+cd backend
+python -m pytest tests/test_h046_visibility_layer.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>45. H-047 Verification — Commercial Intelligence Results Hub</h2>
+
+<h3>45.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/results/opportunities
+GET /api/v1/results/contractors
+GET /api/v1/results/risks
+GET /api/v1/results/executive-summary
+GET /api/v1/results/evidence
+GET /api/v1/results/recommendations
+GET /api/v1/results/relationships
+GET /api/v1/results/explainability</code></pre>
+</div>
+
+<h3>45.2 Behaviour checks</h3>
+<ul>
+  <li>Results hub UI exists: <code>/ui/en/results_hub.html</code> (and <code>/ui/tr/…</code>).</li>
+  <li>Admin index exists: <code>/ui/en/system_admin_index.html</code> (and <code>/ui/tr/…</code>).</li>
+  <li>Explainability is mandatory; hidden ranking logic rejected.</li>
+  <li>Evidence lineage is preserved; no orphaned conclusions.</li>
+  <li>Recommendations only; no autonomous action execution.</li>
+</ul>
+
+<h3>45.3 Engineering hygiene</h3>
+<ul>
+  <li>Routers contain no business logic; UTF-8 no BOM; no secrets.</li>
+</ul>
+
+<h3>45.4 Automation</h3>
+<pre><code>python scripts/verify_h047_results_hub.py
+cd backend
+python -m pytest tests/test_h047_results_hub.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>46. H-048 Verification — Conversational Eval, AG-UI Runtime &amp; HITL Layer</h2>
+
+<h3>46.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/conversation-eval/sessions
+GET /api/v1/system/conversation-eval/traces
+GET /api/v1/system/conversation-eval/policy-alignment
+GET /api/v1/system/conversation-eval/turn-analysis
+
+GET /api/v1/system/generative-ui/components
+GET /api/v1/system/generative-ui/dashboards
+GET /api/v1/system/generative-ui/charts
+GET /api/v1/system/generative-ui/graphs
+
+GET /api/v1/system/agui/events
+GET /api/v1/system/agui/workflows
+GET /api/v1/system/agui/tool-streams
+GET /api/v1/system/agui/approval-stream
+
+GET /api/v1/system/hitl/checkpoints
+GET /api/v1/system/hitl/review-queue
+GET /api/v1/system/hitl/escalations</code></pre>
+</div>
+
+<h3>46.2 Behaviour checks</h3>
+<ul>
+  <li>Conversational evaluation exists; turn-level analysis exists; policy alignment scoring is deterministic and explainable.</li>
+  <li>Event streaming exists as metadata; workflow lineage is required; no hidden event execution.</li>
+  <li>Generated UI registry exists; whitelist-only component projection; no raw HTML/JS execution.</li>
+  <li>Approval checkpoints exist; no automatic approval; approval lineage mandatory; escalation policies deterministic.</li>
+  <li>No autonomous workflow completion or self-mutating workflows.</li>
+</ul>
+
+<h3>46.3 Engineering hygiene</h3>
+<ul>
+  <li>Routers contain no business logic; UTF-8 no BOM; no secrets.</li>
+</ul>
+
+<h3>46.4 Demo UI</h3>
+<div class="box">
+  <pre><code>/ui/en/conversational_eval_demo.html
+/ui/en/generative_operational_ui_demo.html
+/ui/en/agui_runtime_demo.html
+/ui/en/hitl_runtime_demo.html</code></pre>
+</div>
+
+<h3>46.5 Automation</h3>
+<pre><code>python scripts/verify_h048_conversational_eval_agui.py
+cd backend
+python -m pytest tests/test_h048_conversational_eval_agui.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>47. H-049 Verification — Agentic Identity, Hardware Runtime &amp; Adaptive Clustering Layer</h2>
+
+<h3>47.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/identity/registry
+GET /api/v1/system/identity/policies
+GET /api/v1/system/identity/audit
+GET /api/v1/system/identity/budgets
+GET /api/v1/system/identity/shadow-agents
+GET /api/v1/system/identity/mcp-governance
+
+GET /api/v1/system/runtime/hardware-profiles
+GET /api/v1/system/runtime/hardware-routing
+GET /api/v1/system/runtime/hardware-costs
+GET /api/v1/system/runtime/latency-profiles
+GET /api/v1/system/runtime/inference-acceleration
+
+GET /api/v1/system/clustering/breathing
+GET /api/v1/system/clustering/utility
+GET /api/v1/system/clustering/variance
+GET /api/v1/system/clustering/runtime-optimization</code></pre>
+</div>
+
+<h3>47.2 Behaviour checks</h3>
+<ul>
+  <li>Identity registry exists; identity lineage is mandatory; no hidden identity escalation; no self-authorizing agents.</li>
+  <li>Shadow agent detection exists (detection only); surfaced in system visibility.</li>
+  <li>MCP governance exists; no unrestricted MCP execution or endpoint exposure.</li>
+  <li>Hardware runtime metadata exists; routing is recommendation-only; no fake benchmark claims.</li>
+  <li>Adaptive clustering exists as deterministic metadata; optimization proposals are recommendation-only; no autonomous mutation.</li>
+</ul>
+
+<h3>47.3 Engineering hygiene</h3>
+<ul>
+  <li>Routers contain no business logic; UTF-8 no BOM; no secrets.</li>
+</ul>
+
+<h3>47.4 Demo UI</h3>
+<div class="box">
+  <pre><code>/ui/en/agentic_identity_demo.html
+/ui/en/hardware_runtime_demo.html
+/ui/en/adaptive_clustering_demo.html</code></pre>
+</div>
+
+<h3>47.5 Automation</h3>
+<pre><code>python scripts/verify_h049_identity_hardware_clustering.py
+cd backend
+python -m pytest tests/test_h049_identity_hardware_clustering.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<div class="container">
+<h2>48. H-050 Verification — Prompt Cache Governance &amp; Deployment Profile Layer</h2>
+
+<h3>48.1 Endpoints</h3>
+<div class="box">
+  <pre><code>GET /api/v1/system/cache/static-prefix
+GET /api/v1/system/cache/dynamic-suffix
+GET /api/v1/system/cache/breakpoints
+GET /api/v1/system/cache/efficiency
+GET /api/v1/system/cache/tool-schema-stability
+GET /api/v1/system/cache/model-session-stability
+GET /api/v1/system/cache/compression
+
+GET /api/v1/system/deployment/profiles
+GET /api/v1/system/deployment/channels
+GET /api/v1/system/deployment/private-runtime
+GET /api/v1/system/deployment/safety</code></pre>
+</div>
+
+<h3>48.2 Behaviour checks</h3>
+<ul>
+  <li>Static prefix registry exists; no volatile content in cacheable prefix (no timestamps/random IDs).</li>
+  <li>Dynamic suffix exists and does not mutate static prefix.</li>
+  <li>Cache breakpoints exist with explicit, explainable validity/invalidation metadata.</li>
+  <li>Cache efficiency calculation exists; divide-by-zero handled safely; no fake provider claims.</li>
+  <li>Tool schema stability exists (detection-only) and emits cache reset warnings (no automatic mutation).</li>
+  <li>Model session stability exists; model switches require explicit reset metadata.</li>
+  <li>Cache-safe compression exists; preserves static prefix and records compression events.</li>
+  <li>Deployment profiles exist; no unrestricted public deployment defaults.</li>
+</ul>
+
+<h3>48.3 Engineering hygiene</h3>
+<ul>
+  <li>Routers contain no business logic; UTF-8 no BOM; no secrets.</li>
+</ul>
+
+<h3>48.4 Demo UI</h3>
+<div class="box">
+  <pre><code>/ui/en/prompt_cache_governance_demo.html
+/ui/en/agent_deployment_profiles_demo.html</code></pre>
+</div>
+
+<h3>48.5 Automation</h3>
+<pre><code>python scripts/verify_h050_prompt_cache_deployment.py
+cd backend
+python -m pytest tests/test_h050_prompt_cache_deployment.py -q</code></pre>
+
+<p class="meta">
+  DOCX regeneration required from HTML/source when maintaining Word parity; see <code>backend/docs/live_book/DOCX_REGEN_NOTE.md</code>.
+</p>
+</div>
+<script src="/ui/assets/ad-rails.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Özel çalışma zamanı güvenliği</title>
+<style>body{font-family:system-ui;margin:20px;background:***REMOVED***0f172a;color:***REMOVED***e2e8f0}button{margin:4px;padding:8px;background:***REMOVED***14532d;color:***REMOVED***fff;border:none;border-radius:6px;cursor:pointer}pre{background:***REMOVED***020617;padding:12px;border-radius:8px;overflow:auto;max-height:480px;font-size:10px}</style>
+</head>
+<body>
+<h1>Özel çalışma zamanı güvenliği (H-043)</h1>
+<button type="button" data-p="/api/v1/system/runtime/isolation">isolation</button>
+<button type="button" data-p="/api/v1/system/runtime/network-exposure">network-exposure</button>
+<button type="button" data-p="/api/v1/system/runtime/private-mesh">private-mesh</button>
+<button type="button" data-p="/api/v1/system/runtime/non-root">non-root</button>
+<pre id="o">boşta</pre>
+<script>document.querySelectorAll('button[data-p]').forEach(b=>{b.onclick=()=>fetch(b.dataset.p).then(r=>r.json()).then(j=>{document.getElementById('o').textContent=JSON.stringify(j,null,2)})});</script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B — Strategist Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: ***REMOVED***0F172A;
+            --surface: ***REMOVED***1e293b;
+            --text: ***REMOVED***F8FAFC;
+            --muted: rgba(248,250,252,0.6);
+            --gold: ***REMOVED***C5A028;
+            --danger: ***REMOVED***ef4444;
+            --success: ***REMOVED***22c55e;
+            --warn: ***REMOVED***eab308;
+            --info: ***REMOVED***3b82f6;
+        }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+        .header { padding: 1rem 1.5rem; border-bottom: 1px solid rgba(248,250,252,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; }
+        .header h1 { font-size: 1.25rem; }
+        .header a { color: var(--gold); text-decoration: none; font-size: 0.9rem; }
+        .header a:hover { text-decoration: underline; }
+        .panels { display: grid; grid-template-columns: 320px 1fr 320px; gap: 0; min-height: calc(100vh - 56px); }
+        @media (max-width: 1200px) { .panels { grid-template-columns: 280px 1fr 280px; } }
+        @media (max-width: 900px)  { .panels { grid-template-columns: 1fr; } }
+        .panel { border-right: 1px solid rgba(248,250,252,0.08); padding: 1rem; overflow-y: auto; }
+        .panel:last-child { border-right: none; }
+        .panel-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.75rem; }
+        .plan-card { background: var(--surface); border: 1px solid rgba(248,250,252,0.1); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; cursor: pointer; transition: border-color 0.2s; }
+        .plan-card:hover { border-color: var(--gold); }
+        .plan-card.selected { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+        .plan-card .plan-id { font-family: ui-monospace, monospace; font-size: 0.85rem; color: var(--gold); margin-bottom: 0.35rem; }
+        .plan-card .plan-meta { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+        .plan-card .plan-meta strong { color: var(--text); }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; margin-top: 0.5rem; }
+        .badge.pending { background: rgba(234,179,8,0.2); color: ***REMOVED***fde047; }
+        .badge.running { background: rgba(59,130,246,0.2); color: ***REMOVED***93c5fd; }
+        .badge.completed { background: rgba(34,197,94,0.2); color: ***REMOVED***86efac; }
+        .badge.attention { background: rgba(239,68,68,0.2); color: ***REMOVED***fca5a5; }
+        .badge.draft { background: rgba(248,250,252,0.15); color: var(--muted); }
+        .filters { margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+        .filters select { padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px solid rgba(248,250,252,0.2); background: rgba(248,250,252,0.05); color: var(--text); font-size: 0.85rem; }
+        .detail-section { margin-bottom: 1.25rem; }
+        .detail-section h3 { font-size: 0.9rem; color: var(--gold); margin-bottom: 0.5rem; }
+        .detail-section p, .detail-section ul { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+        .detail-section ul { list-style: none; }
+        .detail-section ul li { padding: 0.25rem 0; }
+        .detail-section ul li:before { content: "☑ "; color: var(--success); }
+        .detail-section ul li.off:before { content: "☐ "; color: var(--muted); }
+        .action-group { margin-bottom: 1rem; }
+        .action-group label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 0.35rem; }
+        .action-group input[type="text"], .action-group textarea { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid rgba(248,250,252,0.2); border-radius: 6px; background: rgba(248,250,252,0.05); color: var(--text); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .action-group textarea { min-height: 80px; resize: vertical; }
+        .action-group .radio-group { display: flex; gap: 1rem; margin-bottom: 0.5rem; }
+        .action-group .radio-group label { display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; }
+        .action-group .addons { display: flex; flex-direction: column; gap: 0.35rem; }
+        .action-group .addons label { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .btn { padding: 0.6rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; font-size: 0.9rem; }
+        .btn-primary { background: var(--gold); color: var(--bg); }
+        .btn-primary:hover { filter: brightness(1.1); }
+        .btn-secondary { background: rgba(248,250,252,0.15); color: var(--text); }
+        .btn-secondary:hover { background: rgba(248,250,252,0.25); }
+        .btn-row { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+        .empty-state { color: var(--muted); font-size: 0.9rem; padding: 2rem; text-align: center; }
+        .technical-toggle { font-size: 0.8rem; color: var(--muted); cursor: pointer; margin-top: 1rem; }
+        .technical-toggle:hover { color: var(--gold); }
+        .technical-content { display: none; margin-top: 0.75rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 6px; font-size: 0.75rem; white-space: pre-wrap; max-height: 300px; overflow: auto; }
+        .technical-content.open { display: block; }
+        .chat-placeholder { font-size: 0.85rem; color: var(--muted); padding: 1rem; border: 1px dashed rgba(248,250,252,0.2); border-radius: 8px; }
+        .time-ago { font-size: 0.75rem; color: var(--muted); }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>SOAR B2B — Strategist Dashboard</h1>
+        <div>
+            <a href="/ui/admin.html">← Admin Tools</a>
+            <span style="margin: 0 0.5rem;">|</span>
+            <span id="adminKeyHint" style="font-size: 0.8rem; color: var(--muted);">Admin key required</span>
+        </div>
+    </header>
+
+    <div class="panels">
+        <!-- A) Plan Queue (left) -->
+        <aside class="panel">
+            <div class="panel-title">Active Plans</div>
+            <div class="filters">
+                <select id="filterStatus">
+                    <option value="">All status</option>
+                    <option value="pending_review">Pending Review</option>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                </select>
+                <select id="filterRegion">
+                    <option value="">All regions</option>
+                </select>
+                <button class="btn btn-secondary" id="refreshPlans" style="padding: 0.4rem 0.6rem; font-size: 0.8rem;">Refresh</button>
+            </div>
+            <div id="planQueue"></div>
+        </aside>
+
+        <!-- B) Plan Detail (center) -->
+        <main class="panel">
+            <div class="panel-title">Plan Summary</div>
+            <div id="planDetail">
+                <div class="empty-state">Select a plan from the list to view summary, requested outputs, and system recommendation.</div>
+            </div>
+            <div class="technical-toggle" id="toggleTechnical">▼ Technical details (JSON)</div>
+            <div class="technical-content" id="technicalContent"></div>
+            <div class="detail-section" id="chatSection" style="margin-top: 1.5rem;">
+                <h3>Chat history</h3>
+                <div class="chat-placeholder" id="chatPlaceholder">Chat history will appear here when linked to plan_id. (SOAR B2B Asistan yazışmaları plan_id ile eşleşince listelenecek.)</div>
+            </div>
+        </main>
+
+        <!-- C) Admin Actions (right) -->
+        <aside class="panel">
+            <div class="panel-title">Admin Actions</div>
+            <div id="adminActions">
+                <div class="empty-state">Select a plan to add notes, set mode, and approve or save as draft.</div>
+            </div>
+            <div id="adminActionsForm" style="display: none;">
+                <div class="action-group">
+                    <label>Algorithm mode</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="algorithmMode" value="standard" checked> Standard</label>
+                        <label><input type="radio" name="algorithmMode" value="customized"> Customized</label>
+                    </div>
+                </div>
+                <div class="action-group">
+                    <label>Custom notes (visible to user as guidance)</label>
+                    <textarea id="adminNote" placeholder="e.g. Persona ağırlığını procurement'a çekelim. LinkedIn coverage zayıf."></textarea>
+                </div>
+                <div class="action-group">
+                    <label>Recommended add-ons</label>
+                    <div class="addons">
+                        <label><input type="checkbox" id="addonVisitRoute"> Visit Route Engine</label>
+                        <label><input type="checkbox" id="addonPartnerAds"> Partner Ad Management</label>
+                        <label><input type="checkbox" id="addonOutreach"> Direct Outreach (future)</label>
+                    </div>
+                </div>
+                <div class="btn-row">
+                    <button class="btn btn-primary" id="btnApprove">Approve & Run</button>
+                    <button class="btn btn-secondary" id="btnSaveDraft">Save as Draft</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const ADMIN_PREFIX = '/api/v1/admin';
+
+        function getAdminKey() { return sessionStorage.getItem('soarb2b_admin_key') || ''; }
+        function getAdminToken() { try { return localStorage.getItem('soarb2b_token') || ''; } catch (e) { return ''; } }
+
+        async function adminFetch(path, options = {}) {
+            const key = getAdminKey();
+            const token = getAdminToken();
+            if (!key && !token) {
+                document.getElementById('adminKeyHint').textContent = 'Set admin key on Admin Tools page';
+                return null;
+            }
+            document.getElementById('adminKeyHint').textContent = 'Connected';
+            const headers = {};
+            if (key) headers['X-Admin-Key'] = key;
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+            Object.assign(headers, options.headers || {});
+            if (options.body && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
+            const res = await fetch(API_BASE + ADMIN_PREFIX + path, { ...options, headers });
+            const text = await res.text();
+            let data;
+            try { data = JSON.parse(text); } catch (e) { return { _raw: text, _ok: res.ok, _status: res.status }; }
+            if (!res.ok) throw new Error(data.detail || JSON.stringify(data));
+            return data;
+        }
+
+        function timeAgo(iso) {
+            if (!iso) return '';
+            const d = new Date(iso);
+            const n = new Date();
+            const min = Math.floor((n - d) / 60000);
+            if (min < 60) return min + 'm ago';
+            const h = Math.floor(min / 60);
+            if (h < 24) return h + 'h ago';
+            const day = Math.floor(h / 24);
+            return day + 'd ago';
+        }
+
+        function badgeClass(statusBadge) {
+            if (!statusBadge) return 'draft';
+            const s = (statusBadge || '').toLowerCase();
+            if (s.includes('pending')) return 'pending';
+            if (s.includes('running') || s.includes('progress')) return 'running';
+            if (s.includes('completed')) return 'completed';
+            if (s.includes('attention') || s.includes('need')) return 'attention';
+            return 'draft';
+        }
+
+        let selectedPlanId = null;
+        let plansCache = [];
+
+        function renderPlanQueue(plans) {
+            plansCache = plans || [];
+            const regionSet = new Set();
+            (plans || []).forEach(p => { if (p.geography) regionSet.add(p.geography); });
+            const regionFilter = document.getElementById('filterRegion');
+            const opts = regionFilter.querySelectorAll('option');
+            for (let i = 1; i < opts.length; i++) opts[i].remove();
+            [...regionSet].sort().forEach(r => {
+                const o = document.createElement('option');
+                o.value = r;
+                o.textContent = r;
+                regionFilter.appendChild(o);
+            });
+
+            const container = document.getElementById('planQueue');
+            if (!plans || !plans.length) {
+                container.innerHTML = '<div class="empty-state">No plans found. Refresh or adjust filters.</div>';
+                return;
+            }
+            container.innerHTML = plans.map(p => {
+                const badge = p.status_badge || p.current_stage || 'Pending';
+                const cls = badgeClass(badge);
+                return '<div class="plan-card' + (selectedPlanId === p.plan_id ? ' selected' : '') + '" data-plan-id="' + (p.plan_id || '') + '">' +
+                    '<div class="plan-id">' + (p.short_plan_id || (p.plan_id || '').slice(-8)) + '</div>' +
+                    '<div class="plan-meta"><strong>Product:</strong> ' + (p.product_service || '—') + '</div>' +
+                    '<div class="plan-meta"><strong>Region:</strong> ' + (p.geography || '—') + '</div>' +
+                    '<div class="plan-meta"><strong>Goal:</strong> ' + (p.meeting_goal || p.decision_roles || '—') + '</div>' +
+                    '<span class="badge ' + cls + '">' + badge + '</span>' +
+                    '<div class="time-ago">' + timeAgo(p.created_at) + '</div>' +
+                    '</div>';
+            }).join('');
+
+            container.querySelectorAll('.plan-card').forEach(el => {
+                el.addEventListener('click', function() {
+                    selectedPlanId = this.dataset.planId;
+                    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    loadPlanDetail(selectedPlanId);
+                    showAdminActionsForm(selectedPlanId);
+                });
+            });
+        }
+
+        function loadPlanDetail(planId) {
+            const detailEl = document.getElementById('planDetail');
+            const techEl = document.getElementById('technicalContent');
+            detailEl.innerHTML = '<div class="empty-state">Loading…</div>';
+            techEl.textContent = '';
+            adminFetch('/plan/' + encodeURIComponent(planId)).then(data => {
+                const od = data.onboarding_data || {};
+                const product = od.product_service || od.target_type || '—';
+                const region = od.geography || '—';
+                const goal = od.meeting_goal || od.monthly_meetings || '—';
+                const roles = od.decision_roles || '—';
+                const objectives = data.objectives || [];
+                const selected = data.selected_objectives || data.onboarding_data?.selected_objectives || (objectives.length ? objectives.map(o => o.objective_type || o.type) : null) || [];
+                const outputKeys = ['business_discovery', 'persona_summary', 'visit_route', 'precision_exposure', 'outreach_outcomes'];
+                const outputLabels = ['Company List', 'Persona Pool', 'Visit Route', 'Precision Exposure', 'Outreach'];
+                let outputsHtml = outputLabels.map((label, i) => {
+                    const key = outputKeys[i];
+                    const on = selected && selected.some(s => (s || '').toLowerCase().includes(key));
+                    return '<li class="' + (on ? '' : 'off') + '">' + label + '</li>';
+                }).join('');
+                detailEl.innerHTML =
+                    '<div class="detail-section"><h3>Plan Summary</h3>' +
+                    '<p><strong>Product:</strong> ' + product + '</p>' +
+                    '<p><strong>Region:</strong> ' + region + '</p>' +
+                    '<p><strong>Objective:</strong> ' + (od.meeting_goal || 'Appointment / Lead') + '</p>' +
+                    '<p><strong>Monthly goal:</strong> ' + goal + '</p>' +
+                    '<p><strong>Decision roles:</strong> ' + roles + '</p>' +
+                    '<p><strong>Query cap:</strong> 100 (auto)</p></div>' +
+                    '<div class="detail-section"><h3>Requested outputs</h3><ul>' + outputsHtml + '</ul></div>' +
+                    '<div class="detail-section"><h3>System recommendation</h3><p>Review plan to see data confidence and caps. (Placeholder: 124 companies found, capped to 100; high data confidence; ads recommended.)</p></div>';
+                techEl.textContent = JSON.stringify(data, null, 2);
+            }).catch(e => {
+                detailEl.innerHTML = '<div class="empty-state">Error: ' + e.message + '</div>';
+            });
+        }
+
+        function showAdminActionsForm(planId) {
+            document.getElementById('adminActions').style.display = 'none';
+            const form = document.getElementById('adminActionsForm');
+            form.style.display = 'block';
+            adminFetch('/plan/' + encodeURIComponent(planId)).then(data => {
+                document.getElementById('adminNote').value = data.admin_note || '';
+                const mode = (data.admin_adjustments && data.admin_adjustments.algorithm_mode) || 'standard';
+                document.querySelectorAll('input[name="algorithmMode"]').forEach(r => { r.checked = r.value === mode; });
+                const addons = (data.admin_adjustments && data.admin_adjustments.recommended_addons) || [];
+                document.getElementById('addonVisitRoute').checked = addons.includes('visit_route');
+                document.getElementById('addonPartnerAds').checked = addons.includes('partner_ads');
+                document.getElementById('addonOutreach').checked = addons.includes('outreach');
+            }).catch(() => {});
+        }
+
+        document.getElementById('toggleTechnical').addEventListener('click', function() {
+            document.getElementById('technicalContent').classList.toggle('open');
+            this.textContent = document.getElementById('technicalContent').classList.contains('open') ? '▲ Technical details' : '▼ Technical details (JSON)';
+        });
+
+        function getRecommendedAddons() {
+            const out = [];
+            if (document.getElementById('addonVisitRoute').checked) out.push('visit_route');
+            if (document.getElementById('addonPartnerAds').checked) out.push('partner_ads');
+            if (document.getElementById('addonOutreach').checked) out.push('outreach');
+            return out;
+        }
+
+        function submitAdminAction(action) {
+            if (!selectedPlanId) return;
+            const body = {
+                admin_note: document.getElementById('adminNote').value.trim() || null,
+                algorithm_mode: document.querySelector('input[name="algorithmMode"]:checked')?.value || 'standard',
+                recommended_addons: getRecommendedAddons(),
+                action: action,
+            };
+            adminFetch('/plan/' + encodeURIComponent(selectedPlanId) + '/admin-action', { method: 'POST', body: JSON.stringify(body) }).then(() => {
+                alert(action === 'approve' ? 'Plan approved and set to run.' : 'Plan saved as draft.');
+                refreshPlans();
+                loadPlanDetail(selectedPlanId);
+            }).catch(e => alert('Error: ' + e.message));
+        }
+
+        document.getElementById('btnApprove').addEventListener('click', () => submitAdminAction('approve'));
+        document.getElementById('btnSaveDraft').addEventListener('click', () => submitAdminAction('save_draft'));
+
+        function refreshPlans() {
+            const status = document.getElementById('filterStatus').value;
+            const region = document.getElementById('filterRegion').value;
+            let path = '/plans?limit=100';
+            if (status) path += '&status_filter=' + status;
+            adminFetch(path).then(data => {
+                let list = data.plans || [];
+                if (region) list = list.filter(p => (p.geography || '').toLowerCase().includes(region.toLowerCase()));
+                renderPlanQueue(list);
+            }).catch(() => renderPlanQueue([]));
+        }
+
+        document.getElementById('refreshPlans').addEventListener('click', refreshPlans);
+        document.getElementById('filterStatus').addEventListener('change', refreshPlans);
+        document.getElementById('filterRegion').addEventListener('change', refreshPlans);
+
+        if (getAdminKey() || getAdminToken()) {
+            refreshPlans();
+        } else {
+            document.getElementById('planQueue').innerHTML = '<div class="empty-state">Open <a href="/ui/admin.html" style="color: var(--gold);">Admin Tools</a>, set X-Admin-Key, then return here.</div>';
+        }
+    </script>
+</body>
+</html>

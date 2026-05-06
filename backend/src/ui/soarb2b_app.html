@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B - Uygulama & Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: ***REMOVED***f5f7fa;
+            color: ***REMOVED***2d3748;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, ***REMOVED***667eea 0%, ***REMOVED***764ba2 100%);
+            color: ***REMOVED***fff;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-size: 1.75rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            color: ***REMOVED***fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-tab.active {
+            background: ***REMOVED***fff;
+            color: ***REMOVED***667eea;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            display: none;
+            background: ***REMOVED***fff;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            color: ***REMOVED***1a202c;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 3px solid ***REMOVED***667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .step-card {
+            background: ***REMOVED***f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            border-top: 4px solid ***REMOVED***667eea;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .step-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card h3 {
+            color: ***REMOVED***1a202c;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-card p {
+            color: ***REMOVED***4a5568;
+            font-size: 0.9rem;
+        }
+
+        .playbook-step {
+            background: ***REMOVED***f7fafc;
+            border-left: 4px solid ***REMOVED***667eea;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .playbook-step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .step-badge {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, ***REMOVED***667eea 0%, ***REMOVED***764ba2 100%);
+            color: ***REMOVED***fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .playbook-step-header h3 {
+            color: ***REMOVED***1a202c;
+            font-size: 1.3rem;
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .priority-high {
+            background: ***REMOVED***fee2e2;
+            color: ***REMOVED***991b1b;
+        }
+
+        .priority-medium {
+            background: ***REMOVED***fef3c7;
+            color: ***REMOVED***92400e;
+        }
+
+        .priority-low {
+            background: ***REMOVED***dbeafe;
+            color: ***REMOVED***1e40af;
+        }
+
+        .output-box {
+            background: ***REMOVED***f0fdf4;
+            border: 2px solid ***REMOVED***10b981;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .output-box h4 {
+            color: ***REMOVED***047857;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .output-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .output-box li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid ***REMOVED***d1fae5;
+            color: ***REMOVED***065f46;
+            font-size: 0.9rem;
+        }
+
+        .output-box li:last-child {
+            border-bottom: none;
+        }
+
+        .output-box strong {
+            color: ***REMOVED***047857;
+        }
+
+        .example-output {
+            background: ***REMOVED***fff7ed;
+            border: 2px solid ***REMOVED***f59e0b;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .example-output h4 {
+            color: ***REMOVED***92400e;
+            margin-bottom: 0.75rem;
+        }
+
+        .example-output pre {
+            background: ***REMOVED***fff;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            color: ***REMOVED***78350f;
+            white-space: pre-wrap;
+        }
+
+        .case-study {
+            background: ***REMOVED***f7fafc;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .case-study h3 {
+            color: ***REMOVED***1a202c;
+            margin-bottom: 1rem;
+            border: none;
+            padding: 0;
+        }
+
+        .case-scenario {
+            background: ***REMOVED***fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid ***REMOVED***047857;
+        }
+
+        .product-outputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: ***REMOVED***f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid ***REMOVED***667eea;
+        }
+
+        .product-card h4 {
+            color: ***REMOVED***1a202c;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .product-card p {
+            color: ***REMOVED***4a5568;
+            font-size: 0.9rem;
+        }
+
+        .demo-section {
+            background: ***REMOVED***e0e7ff;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .demo-section h3 {
+            color: ***REMOVED***1e40af;
+            margin-bottom: 1rem;
+            border: none;
+            padding: 0;
+        }
+
+        .flow-diagram {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .flow-item {
+            background: ***REMOVED***fff;
+            padding: 1rem;
+            border-radius: 8px;
+            min-width: 150px;
+            text-align: center;
+            border: 2px solid ***REMOVED***667eea;
+        }
+
+        .flow-item::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            color: ***REMOVED***667eea;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .flow-item:last-child::after {
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, ***REMOVED***667eea 0%, ***REMOVED***764ba2 100%);
+            color: ***REMOVED***fff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .toggle-btn {
+            background: ***REMOVED***667eea;
+            color: ***REMOVED***fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .toggle-btn:hover {
+            background: ***REMOVED***5568d3;
+        }
+
+        .collapsible {
+            display: none;
+        }
+
+        .collapsible.show {
+            display: block;
+        }
+
+        /* Assistant panel (right drawer) - PlanSpec orchestrator */
+        .assistant-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, ***REMOVED***667eea 0%, ***REMOVED***764ba2 100%);
+            color: ***REMOVED***fff;
+            border: none;
+            box-shadow: 0 4px 14px rgba(102, 126, 234, 0.5);
+            cursor: pointer;
+            z-index: 999;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .assistant-fab:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6); }
+        .assistant-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 420px;
+            max-width: 100%;
+            height: 100vh;
+            background: ***REMOVED***fff;
+            box-shadow: -4px 0 24px rgba(0,0,0,0.12);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .assistant-drawer.open { display: flex; }
+        .assistant-drawer-header {
+            padding: 1.25rem 1.5rem;
+            background: linear-gradient(135deg, ***REMOVED***667eea 0%, ***REMOVED***764ba2 100%);
+            color: ***REMOVED***fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .assistant-drawer-header h2 { font-size: 1.25rem; margin: 0; font-weight: 600; }
+        .assistant-drawer-close {
+            background: rgba(255,255,255,0.25);
+            border: none;
+            color: ***REMOVED***fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+        .assistant-drawer-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+        .assistant-section {
+            margin-bottom: 1.5rem;
+        }
+        .assistant-section label {
+            display: block;
+            font-weight: 600;
+            color: ***REMOVED***1a202c;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .assistant-section .hint {
+            font-size: 0.8rem;
+            color: ***REMOVED***718096;
+            margin-top: 0.35rem;
+        }
+        .assistant-textarea {
+            width: 100%;
+            min-height: 140px;
+            padding: 0.75rem;
+            border: 1px solid ***REMOVED***e2e8f0;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            resize: vertical;
+        }
+        .assistant-textarea:focus {
+            outline: none;
+            border-color: ***REMOVED***667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        .assistant-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+        .assistant-btn-primary { background: ***REMOVED***667eea; color: ***REMOVED***fff; }
+        .assistant-btn-primary:hover:not(:disabled) { background: ***REMOVED***5a67d8; }
+        .assistant-btn-secondary { background: ***REMOVED***e2e8f0; color: ***REMOVED***2d3748; }
+        .assistant-btn-secondary:hover:not(:disabled) { background: ***REMOVED***cbd5e0; }
+        .assistant-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .assistant-outcome {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .assistant-outcome.show { display: block; }
+        .assistant-outcome.success { background: ***REMOVED***f0fdf4; border: 1px solid ***REMOVED***86efac; color: ***REMOVED***166534; }
+        .assistant-outcome.error { background: ***REMOVED***fef2f2; border: 1px solid ***REMOVED***fecaca; color: ***REMOVED***991b1b; }
+        .assistant-outcome.info { background: ***REMOVED***eff6ff; border: 1px solid ***REMOVED***93c5fd; color: ***REMOVED***1e40af; }
+        .assistant-preview-box {
+            margin-top: 0.75rem;
+            padding: 1rem;
+            background: ***REMOVED***f8fafc;
+            border-radius: 8px;
+            border: 1px solid ***REMOVED***e2e8f0;
+            font-size: 0.9rem;
+        }
+        .assistant-preview-box strong { color: ***REMOVED***1e293b; }
+        .assistant-link {
+            color: ***REMOVED***667eea;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+        .assistant-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>🚀 SOAR B2B - Tüm Özellikler</h1>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showSection('overview')">Genel Bakış</button>
+                <button class="nav-tab" onclick="showSection('how-it-works')">Nasıl Çalışır?</button>
+                <button class="nav-tab" onclick="showSection('playbook')">İletişim Playbook</button>
+                <button class="nav-tab" onclick="showSection('case-study')">Vaka Çalışması</button>
+                <button class="nav-tab" onclick="showSection('outputs')">Tüm Çıktılar</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Genel Bakış -->
+        <div id="overview" class="section active">
+            <h2>SOAR B2B Randevu Motoru - Genel Bakış</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; color: ***REMOVED***4a5568;">
+                <strong>Ana Hedef:</strong> Doğru kişilerle randevu oluşturmak. SOAR B2B, hedef şirketlerinizdeki karar vericilere ulaşmak için optimize edilmiş bir iletişim stratejisi sunar.
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">Aşamalı Süreç</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, ***REMOVED***11998e 0%, ***REMOVED***38ef7d 100%);">
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Ürün Çıktısı</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, ***REMOVED***f093fb 0%, ***REMOVED***f5576c 100%);">
+                    <div class="stat-value">5</div>
+                    <div class="stat-label">İletişim Adımı</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, ***REMOVED***4facfe 0%, ***REMOVED***00f2fe 100%);">
+                    <div class="stat-value">A→E</div>
+                    <div class="stat-label">Öncelik Sırası</div>
+                </div>
+            </div>
+
+            <div class="demo-section" style="margin-top: 2rem;">
+                <h3>İletişim Stratejisi Özeti</h3>
+                <div class="flow-diagram">
+                    <div class="flow-item" style="position: relative;">
+                        <strong>A</strong><br>Listeleme + CRM
+                    </div>
+                    <div class="flow-item" style="position: relative;">
+                        <strong>B</strong><br>Pasif Dönüşüm
+                    </div>
+                    <div class="flow-item" style="position: relative;">
+                        <strong>C</strong><br>Hedefli Reklam
+                    </div>
+                    <div class="flow-item" style="position: relative;">
+                        <strong>D</strong><br>Sosyal Reklam
+                    </div>
+                    <div class="flow-item" style="position: relative;">
+                        <strong>E</strong><br>Aktif Erişim
+                    </div>
+                </div>
+                <p style="margin-top: 1rem; color: ***REMOVED***1e40af; font-weight: 500;">
+                    <strong>Kritik Kural:</strong> Önce düşük maliyet/izinli → sonra hedefli reklam → sonra platform içi randevu → en sonda aktif erişim (email/telefon).
+                </p>
+            </div>
+
+            <div class="product-outputs" style="margin-top: 3rem;">
+                <div class="product-card">
+                    <h4>1. Şirket Listeleri</h4>
+                    <p>Adres, temel iletişim bilgileri ve web sitesi linklerini içeren hedeflenmiş şirket listeleri.</p>
+                </div>
+                <div class="product-card">
+                    <h4>2. Departman & Rol Listeleri</h4>
+                    <p>Her şirkette hedef departmanlar ve rol bilgileri. Ulaşım yollarıyla birlikte.</p>
+                </div>
+                <div class="product-card">
+                    <h4>3. CRM Aktarım</h4>
+                    <p>CSV/Excel formatında hazır alan haritası: şirket, adres, rol, kişi, email/telefon, not.</p>
+                </div>
+                <div class="product-card">
+                    <h4>4. Reklam Hazırlığı</h4>
+                    <p>Persona tanımı, lokasyon kriterleri ve anahtar terim listesi. Hedefli reklam kampanyaları için hazır içerik.</p>
+                </div>
+                <div class="product-card">
+                    <h4>5. Randevu Hedefi</h4>
+                    <p>Hedef kişinin SOAR B2B sayfanıza gelmesi ve talep bırakması için optimize edilmiş landing sayfası ve form.</p>
+                </div>
+                <div class="product-card">
+                    <h4>6. Alternatif Kanallar</h4>
+                    <p>LinkedIn, Instagram ve Meta reklamları için hazır içerik ve hedefleme kriterleri.</p>
+                </div>
+                <div class="product-card">
+                    <h4>7. Aktif Erişim</h4>
+                    <p>Son çare olarak: email taslakları, telefon scriptleri ve randevu takip planı.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nasıl Çalışır? -->
+        <div id="how-it-works" class="section">
+            <h2>5 Adımda Randevu Motoru</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; color: ***REMOVED***4a5568;">
+                SOAR B2B, sistematik bir yaklaşımla hedef kitlenize ulaşmanızı sağlar. Her adım, bir sonraki için hazırlık yapar.
+            </p>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon">🔍</div>
+                    <h3>1. Bul</h3>
+                    <p>Hedef şirket listelerini oluştur. Adres, temel iletişim bilgileri ve web siteleriyle birlikte. Kaynak: açık kaynak, kamu verileri, web dizinleri.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">🎯</div>
+                    <h3>2. Hedefle</h3>
+                    <p>Her şirkette doğru departman ve rolü belirle. Satınalma, operasyon, yönetim gibi karar verici pozisyonları hedefle.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">📋</div>
+                    <h3>3. Hazırla</h3>
+                    <p>CRM'e aktarılabilir listeleri hazırla. Persona tanımları, lokasyon kriterleri ve anahtar terimleri belirle.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">📥</div>
+                    <h3>4. Çek</h3>
+                    <p>Landing sayfası ve randevu formu ile hedef kişilerin senin sayfana gelmesini sağla. Tek ve net bir çağrı.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon">📈</div>
+                    <h3>5. Sırayla Büyüt</h3>
+                    <p>Pasif dönüşümden başla. Sonra hedefli reklam, sosyal reklam genişletme. En sonda aktif erişim.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- İletişim Playbook -->
+        <div id="playbook" class="section">
+            <h2>İletişim Playbook (Öncelik Sırasıyla)</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; color: ***REMOVED***4a5568;">
+                Her adımın çıktılarını ve uygulama detaylarını görün.
+            </p>
+
+            <!-- Adım A -->
+            <div class="playbook-step">
+                <div class="playbook-step-header">
+                    <div class="step-badge">A</div>
+                    <h3>Listeleme + CRM Hazırlığı <span class="priority-badge priority-high">Yüksek Öncelik</span></h3>
+                </div>
+                <p><strong>Amaç:</strong> Hedef şirket listelerini oluştur, rollerini belirle ve CRM'e aktarılabilir formata hazırla.</p>
+                <button class="toggle-btn" onclick="toggleDetails('output-a')">Çıktıları Göster/Gizle</button>
+                <div id="output-a" class="collapsible">
+                    <div class="output-box">
+                        <h4>📋 Çıktılar</h4>
+                        <ul>
+                            <li><strong>Şirket Listesi:</strong> CSV/Excel formatında (şirket adı, adres, şehir, web sitesi, kaynak notu)</li>
+                            <li><strong>Rol Listesi:</strong> Her şirket için hedef departman ve pozisyonlar (örn: Satınalma Müdürü, Operasyon Müdürü)</li>
+                            <li><strong>CRM Alan Haritası:</strong> Hazır eşleştirme (şirket, adres, rol, kişi, email/telefon, not)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adım B -->
+            <div class="playbook-step">
+                <div class="playbook-step-header">
+                    <div class="step-badge">B</div>
+                    <h3>Pasif Dönüşüm (En Temiz ve Ucuz) <span class="priority-badge priority-high">Yüksek Öncelik</span></h3>
+                </div>
+                <p><strong>Amaç:</strong> Hedef kişilerin kendi inisiyatifiyle landing sayfanıza gelip randevu talep etmesini sağla.</p>
+                <button class="toggle-btn" onclick="toggleDetails('output-b')">Çıktıları Göster/Gizle</button>
+                <div id="output-b" class="collapsible">
+                    <div class="output-box">
+                        <h4>📋 Çıktılar</h4>
+                        <ul>
+                            <li><strong>Landing Sayfası URL:</strong> soarb2b.com/[ürün-odaklı-url]</li>
+                            <li><strong>Randevu Formu:</strong> Tek CTA ile optimize edilmiş form (ad, soyad, şirket, pozisyon, telefon, tercih edilen gün)</li>
+                            <li><strong>Yönlendirme Stratejisi:</strong> SEO, email imzası, sosyal medya paylaşımları, LinkedIn mesajları</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adım C -->
+            <div class="playbook-step">
+                <div class="playbook-step-header">
+                    <div class="step-badge">C</div>
+                    <h3>Hedefli Reklam (Persona + Lokasyon + Anahtar Terimler) <span class="priority-badge priority-medium">Orta Öncelik</span></h3>
+                </div>
+                <p><strong>Amaç:</strong> Önce lokasyon + rol odaklı, sonra ilgi/iş unvanı genişletmeli reklam stratejisi ile hedef kitleyi çek.</p>
+                <button class="toggle-btn" onclick="toggleDetails('output-c')">Çıktıları Göster/Gizle</button>
+                <div id="output-c" class="collapsible">
+                    <div class="output-box">
+                        <h4>📋 Çıktılar</h4>
+                        <ul>
+                            <li><strong>Persona Tanımı:</strong> Hedef müşteri profilinin detaylı tanımı (pozisyon, sorumluluklar, ihtiyaçlar)</li>
+                            <li><strong>Lokasyon Kriterleri:</strong> Şehirler, bölgeler, yarıçap (örn: İstanbul, 25km yarıçaplı)</li>
+                            <li><strong>Anahtar Terim Listesi:</strong> Reklam kampanyaları için kullanılacak arama terimleri ve ilgi alanları</li>
+                            <li><strong>Reklam Platform Önerileri:</strong> Google Ads, LinkedIn Ads, Facebook/Instagram Ads için hazır ayarlar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adım D -->
+            <div class="playbook-step">
+                <div class="playbook-step-header">
+                    <div class="step-badge">D</div>
+                    <h3>Sosyal Reklam Genişletme (LinkedIn / Meta / Instagram) <span class="priority-badge priority-medium">Orta Öncelik</span></h3>
+                </div>
+                <p><strong>Amaç:</strong> Aynı mesajı farklı kanallarda yay. Her platformun kendi optimizasyonunu yap.</p>
+                <button class="toggle-btn" onclick="toggleDetails('output-d')">Çıktıları Göster/Gizle</button>
+                <div id="output-d" class="collapsible">
+                    <div class="output-box">
+                        <h4>📋 Çıktılar</h4>
+                        <ul>
+                            <li><strong>LinkedIn Kampanya Ayarları:</strong> İş unvanı + lokasyon + endüstri filtreleri hazır</li>
+                            <li><strong>Meta/Instagram Kampanya Ayarları:</strong> İlgi alanları + demografik + lokasyon filtreleri hazır</li>
+                            <li><strong>Platform Özel İçerikler:</strong> Her platform için uyarlanmış görsel ve metin hazırlığı</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adım E -->
+            <div class="playbook-step">
+                <div class="playbook-step-header">
+                    <div class="step-badge">E</div>
+                    <h3>Aktif Erişim (Son Çare) <span class="priority-badge priority-low">Düşük Öncelik</span></h3>
+                </div>
+                <p><strong>Amaç:</strong> Pasif ve reklam yöntemleri yeterli olmadığında, aktif erişim kanallarını kullan. Adım adım ilerle.</p>
+                <button class="toggle-btn" onclick="toggleDetails('output-e')">Çıktıları Göster/Gizle</button>
+                <div id="output-e" class="collapsible">
+                    <div class="output-box">
+                        <h4>📋 Çıktılar</h4>
+                        <ul>
+                            <li><strong>Email Taslağı 1 (İlk Temas):</strong> Kişiselleştirilmiş, değer odaklı ilk email</li>
+                            <li><strong>Email Taslağı 2 (Takip):</strong> 3-5 gün sonra gönderilecek kısa takip email'i</li>
+                            <li><strong>Telefon Script:</strong> 5-7 gün sonra kullanılacak telefon görüşmesi script'i</li>
+                            <li><strong>Aktif Erişim Sırası:</strong> Email → Takip Email (3-5 gün) → Telefon (5-7 gün) → Yerinde Ziyaret (gerekirse)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vaka Çalışması -->
+        <div id="case-study" class="section">
+            <h2>Örnek Vaka: Otellere Temizlik Malzemesi Satışı</h2>
+            
+            <div class="case-study">
+                <div class="case-scenario">
+                    <h3>Senaryo</h3>
+                    <p><strong>Şirket:</strong> Temizlik malzemesi üreticisi/toptancısı</p>
+                    <p><strong>Hedef Müşteri:</strong> Oteller (3-5 yıldızlı)</p>
+                    <p><strong>Hedef Roller:</strong></p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>Satınalma Müdürü (ana karar verici)</li>
+                        <li>Housekeeping Müdürü (operasyonel karar verici)</li>
+                        <li>Operasyon Müdürü (opsiyonel)</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Amaç:</strong> Otellerle düzenli temizlik malzemesi tedarik anlaşması için randevu oluşturmak.</p>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3>A) Listeleme + CRM Hazırlığı</h3>
+                    <p>İstanbul, Ankara, İzmir ve Antalya bölgelerindeki 3-5 yıldızlı otelleri listele. Her otel için temel bilgileri topla.</p>
+                    <button class="toggle-btn" onclick="toggleDetails('case-a')">Çıktıları Göster/Gizle</button>
+                    <div id="case-a" class="collapsible">
+                        <div class="output-box">
+                            <h4>📋 Çıktılar</h4>
+                            <ul>
+                                <li><strong>Otel Listesi:</strong> 150+ otel (adres + temel iletişim + site linki). Kaynak: açık kaynak dizinler, kamu kayıtları.</li>
+                                <li><strong>Hedef Roller:</strong> Satınalma Müdürü (150), Housekeeping Müdürü (150), Operasyon Müdürü (opsiyonel, 50).</li>
+                                <li><strong>CRM'e Aktarılabilir Liste:</strong> CSV/Excel dosyası hazır. Tüm alanlar eşleştirilmiş durumda.</li>
+                            </ul>
+                        </div>
+                        <div class="example-output">
+                            <h4>Örnek CSV Çıktısı</h4>
+                            <pre>Şirket Adı, Şehir, Adres, Web Sitesi, Hedef Rol, Kaynak
+Grand Hotel Istanbul, İstanbul, Taksim Meydanı No:1, www.grandhotel.com, Satınalma Müdürü, Açık kaynak dizin
+Beach Resort Antalya, Antalya, Konyaaltı Sahil, www.beachresort.com, Housekeeping Müdürü, Kamu kayıtları</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3>B) Pasif Dönüşüm</h3>
+                    <p>Landing / Teklif Sayfası + Randevu Formu (tek CTA) - Hedef kişilerin buraya yönlendirilmesi.</p>
+                    <button class="toggle-btn" onclick="toggleDetails('case-b')">Çıktıları Göster/Gizle</button>
+                    <div id="case-b" class="collapsible">
+                        <div class="output-box">
+                            <h4>📋 Çıktılar</h4>
+                            <ul>
+                                <li><strong>Landing Sayfası URL:</strong> soarb2b.com/otel-temizlik-teklifi</li>
+                                <li><strong>Randevu CTA Metni:</strong> "Otel işletmeniz için özel temizlik çözümleri ve fiyat teklifi almak için randevu oluşturun"</li>
+                                <li><strong>Yönlendirme Planı:</strong> LinkedIn mesajları, email imzası linki, SEO optimizasyonu, sosyal medya paylaşımları.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3>C) Hedefli Reklam</h3>
+                    <p>Önce "lokasyon + rol" odaklı, sonra "ilgi/iş unvanı" genişletmeli reklam stratejisi.</p>
+                    <button class="toggle-btn" onclick="toggleDetails('case-c')">Çıktıları Göster/Gizle</button>
+                    <div id="case-c" class="collapsible">
+                        <div class="output-box">
+                            <h4>📋 Çıktılar</h4>
+                            <ul>
+                                <li><strong>Persona Tanımı:</strong> 3-5 yıldızlı otellerde çalışan, bütçe ve tedarik kararı veren, operasyonel maliyet optimizasyonuna odaklı profesyoneller.</li>
+                                <li><strong>Lokasyon Kriterleri:</strong> Istanbul, Ankara, İzmir, Antalya şehirleri ve çevresi (25km yarıçaplı).</li>
+                                <li><strong>Anahtar Terim Listesi:</strong> "otel temizlik malzemesi", "hotel cleaning supplies", "toplu temizlik ürünleri", "otel tedarik", "housekeeping supplies", "procurement cleaning".</li>
+                                <li><strong>Reklam Platformları:</strong> Google Ads (arama + display), LinkedIn Ads (iş unvanı hedefleme), Facebook/Instagram (ilgi bazlı).</li>
+                            </ul>
+                        </div>
+                        <div class="example-output">
+                            <h4>Örnek Reklam İçeriği</h4>
+                            <pre>Başlık: "Otel İşletmeleri İçin Profesyonel Temizlik Çözümleri"
+Açıklama: "Toplu alım avantajları ve özel fiyatlandırma için randevu alın"
+Hedefleme: İstanbul, Ankara, İzmir, Antalya + İş unvanı: "Satınalma Müdürü", "Housekeeping Müdürü"</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3>D) Sosyal Reklam Genişletme</h3>
+                    <p>LinkedIn / Meta / Instagram - Aynı mesaj, farklı kanal.</p>
+                    <button class="toggle-btn" onclick="toggleDetails('case-d')">Çıktıları Göster/Gizle</button>
+                    <div id="case-d" class="collapsible">
+                        <div class="output-box">
+                            <h4>📋 Çıktılar</h4>
+                            <ul>
+                                <li><strong>LinkedIn Kampanya Ayarları:</strong> İş unvanı + lokasyon + endüstri filtreleri hazır.</li>
+                                <li><strong>Meta/Instagram Kampanya Ayarları:</strong> İlgi alanları + demografik + lokasyon filtreleri hazır.</li>
+                                <li><strong>Platform Özel İçerikler:</strong> Her platform için uyarlanmış görsel ve metin hazırlığı tamamlandı.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3>E) Aktif Erişim (Son)</h3>
+                    <p>1) Email → 2) Takip email → 3) Telefon ile randevu → 4) Gerekirse kısa yerinde ziyaret.</p>
+                    <button class="toggle-btn" onclick="toggleDetails('case-e')">Çıktıları Göster/Gizle</button>
+                    <div id="case-e" class="collapsible">
+                        <div class="output-box">
+                            <h4>📋 Çıktılar</h4>
+                            <ul>
+                                <li><strong>Email Taslağı 1 (İlk Temas):</strong> "Sayın [Ad Soyad], [Otel Adı] için profesyonel temizlik çözümleri sunuyoruz. Ücretsiz konsültasyon için randevu alabilir misiniz?"</li>
+                                <li><strong>Email Taslağı 2 (Takip):</strong> "Önceki mesajımıza ek olarak, toplu alım için özel indirim kampanyamız hakkında bilgi vermek istedik."</li>
+                                <li><strong>Telefon Script:</strong> "Merhaba, [Ad Soyad] ben. [Şirket Adı]'ndan arıyorum. Otel işletmeniz için temizlik çözümleri sunuyoruz. 15 dakikalık bir görüşme için uygun musunuz?"</li>
+                                <li><strong>Aktif Erişim Sırası:</strong> Email → Takip Email (3-5 gün) → Telefon (5-7 gün) → Yerinde Ziyaret (gerekirse, belirli bölgeler).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tüm Çıktılar -->
+        <div id="outputs" class="section">
+            <h2>Tüm Ürün Çıktıları</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 2rem; color: ***REMOVED***4a5568;">
+                SOAR B2B'nin ürettiği tüm çıktılar ve kullanım alanları.
+            </p>
+
+            <div class="product-outputs">
+                <div class="product-card">
+                    <h4>1. Şirket Listeleri</h4>
+                    <p><strong>İçerik:</strong> Adres, temel iletişim bilgileri ve web sitesi linklerini içeren hedeflenmiş şirket listeleri.</p>
+                    <p><strong>Kaynak:</strong> Açık kaynak, kamu verileri ve web dizinleri.</p>
+                    <p><strong>Format:</strong> CSV/Excel</p>
+                </div>
+                <div class="product-card">
+                    <h4>2. Departman & Rol Listeleri</h4>
+                    <p><strong>İçerik:</strong> Her şirkette hedef departmanlar (satınalma, operasyon, yönetim) ve rol bilgileri.</p>
+                    <p><strong>Ulaşım Yolları:</strong> Email, telefon, LinkedIn profili, direkt adres.</p>
+                    <p><strong>Format:</strong> CSV/Excel + JSON API</p>
+                </div>
+                <div class="product-card">
+                    <h4>3. CRM Aktarım</h4>
+                    <p><strong>Alan Haritası:</strong> Şirket, adres, rol, kişi, email/telefon, not.</p>
+                    <p><strong>Desteklenen Sistemler:</strong> Salesforce, HubSpot, Zoho, Pipedrive, Excel/CSV.</p>
+                    <p><strong>Format:</strong> CSV/Excel (eşleştirme hazır)</p>
+                </div>
+                <div class="product-card">
+                    <h4>4. Reklam Hazırlığı</h4>
+                    <p><strong>Persona Tanımı:</strong> Hedef müşteri profili detayları.</p>
+                    <p><strong>Lokasyon Kriterleri:</strong> Şehirler, bölgeler, yarıçap.</p>
+                    <p><strong>Anahtar Terimler:</strong> Reklam kampanyaları için hazır liste.</p>
+                </div>
+                <div class="product-card">
+                    <h4>5. Randevu Hedefi</h4>
+                    <p><strong>Landing Sayfası:</strong> Optimize edilmiş, tek CTA'lı sayfa.</p>
+                    <p><strong>Randevu Formu:</strong> Ad, soyad, şirket, pozisyon, telefon, tercih edilen gün.</p>
+                    <p><strong>Yönlendirme:</strong> SEO, email imzası, sosyal medya linkleri.</p>
+                </div>
+                <div class="product-card">
+                    <h4>6. Alternatif Kanallar</h4>
+                    <p><strong>LinkedIn:</strong> İş unvanı + lokasyon + endüstri hedefleme.</p>
+                    <p><strong>Meta/Instagram:</strong> İlgi bazlı + demografik + lokasyon.</p>
+                    <p><strong>Google Ads:</strong> Arama + display reklamları için hazır içerik.</p>
+                </div>
+                <div class="product-card">
+                    <h4>7. Aktif Erişim</h4>
+                    <p><strong>Email Taslakları:</strong> İlk temas + takip email örnekleri.</p>
+                    <p><strong>Telefon Script:</strong> Randevu talep etme için hazır konuşma metni.</p>
+                    <p><strong>Ziyaret Planı:</strong> Belirli bölgeler için öncelikli ziyaret listesi.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assistant panel: PlanSpec → Plan → Preview → Run → Results Hub -->
+    <button type="button" class="assistant-fab" id="assistantFab" title="Plan Asistanı (PlanSpec)">◇</button>
+    <div class="assistant-drawer" id="assistantDrawer">
+        <div class="assistant-drawer-header">
+            <h2>Plan Asistanı</h2>
+            <button type="button" class="assistant-drawer-close" id="assistantDrawerClose" aria-label="Kapat">×</button>
+        </div>
+        <div class="assistant-drawer-body">
+            <p style="font-size: 0.9rem; color: ***REMOVED***4a5568; margin-bottom: 1rem;">GPT’de 5 soruyu cevaplayıp üretilen <strong>PlanSpec JSON</strong>’u yapıştırın veya aşağıdaki örnekle plan oluşturun.</p>
+            <div class="assistant-section">
+                <label for="assistantPlanSpec">PlanSpec JSON</label>
+                <textarea id="assistantPlanSpec" class="assistant-textarea" placeholder='{"product":"...","region":{"type":"city","value":"Istanbul"},"modules":["discovery","persona"],"limits":{"company_limit":100},"flags":{"simulation_mode":false},"targets":{"primary_goal":"meetings"}}'></textarea>
+                <p class="hint">Min: product, region (type+value), modules, limits, flags, targets</p>
+            </div>
+            <button type="button" class="assistant-btn assistant-btn-primary" id="assistantCreatePlan">Plan oluştur</button>
+            <div id="assistantCreateOutcome" class="assistant-outcome"></div>
+
+            <div class="assistant-section" id="assistantPlanIdSection" style="display: none;">
+                <label>Plan ID</label>
+                <div class="assistant-preview-box" id="assistantPlanIdBox"></div>
+                <button type="button" class="assistant-btn assistant-btn-secondary" id="assistantPreviewScope">Kapsam önizle (Preview)</button>
+                <div id="assistantPreviewOutcome" class="assistant-outcome"></div>
+            </div>
+
+            <div class="assistant-section" id="assistantRunSection" style="display: none;">
+                <button type="button" class="assistant-btn assistant-btn-primary" id="assistantStartRun">Çalıştır (Start run)</button>
+                <div id="assistantRunOutcome" class="assistant-outcome"></div>
+            </div>
+
+            <div class="assistant-section" id="assistantResultsSection" style="display: none;">
+                <a href="***REMOVED***" id="assistantResultsLink" class="assistant-link" target="_blank">→ Results Hub’a git</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Update active tab
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function toggleDetails(id) {
+            const element = document.getElementById(id);
+            element.classList.toggle('show');
+        }
+
+        // --- Assistant panel (PlanSpec orchestrator) ---
+        (function() {
+            var API_BASE = window.location.origin;
+            var API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+            var currentPlanId = null;
+
+            var fab = document.getElementById('assistantFab');
+            var drawer = document.getElementById('assistantDrawer');
+            var closeBtn = document.getElementById('assistantDrawerClose');
+            var planSpecEl = document.getElementById('assistantPlanSpec');
+            var createBtn = document.getElementById('assistantCreatePlan');
+            var createOutcome = document.getElementById('assistantCreateOutcome');
+            var planIdSection = document.getElementById('assistantPlanIdSection');
+            var planIdBox = document.getElementById('assistantPlanIdBox');
+            var previewBtn = document.getElementById('assistantPreviewScope');
+            var previewOutcome = document.getElementById('assistantPreviewOutcome');
+            var runSection = document.getElementById('assistantRunSection');
+            var startRunBtn = document.getElementById('assistantStartRun');
+            var runOutcome = document.getElementById('assistantRunOutcome');
+            var resultsSection = document.getElementById('assistantResultsSection');
+            var resultsLink = document.getElementById('assistantResultsLink');
+
+            function showOutcome(el, text, type) {
+                el.textContent = text;
+                el.className = 'assistant-outcome show ' + (type || 'info');
+            }
+            function hideOutcome(el) { el.classList.remove('show'); }
+
+            fab && fab.addEventListener('click', function() { drawer.classList.add('open'); });
+            closeBtn && closeBtn.addEventListener('click', function() { drawer.classList.remove('open'); });
+
+            createBtn && createBtn.addEventListener('click', async function() {
+                var raw = (planSpecEl && planSpecEl.value) ? planSpecEl.value.trim() : '';
+                if (!raw) {
+                    showOutcome(createOutcome, 'PlanSpec JSON girin veya yapıştırın.', 'error');
+                    return;
+                }
+                var spec;
+                try { spec = JSON.parse(raw); } catch (e) {
+                    showOutcome(createOutcome, 'Geçersiz JSON: ' + e.message, 'error');
+                    return;
+                }
+                createBtn.disabled = true;
+                hideOutcome(createOutcome);
+                try {
+                    var res = await fetch(API_BASE + '/api/v1/b2b/assistant/create-plan', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+                        body: JSON.stringify(spec)
+                    });
+                    var data = await res.json().catch(function() { return {}; });
+                    if (!res.ok) {
+                        showOutcome(createOutcome, (data.detail || data.message || 'Plan oluşturulamadı (' + res.status + ')'), 'error');
+                        createBtn.disabled = false;
+                        return;
+                    }
+                    currentPlanId = data.plan_id;
+                    showOutcome(createOutcome, 'Plan oluşturuldu: ' + data.plan_id, 'success');
+                    planIdBox.textContent = data.plan_id;
+                    planIdSection.style.display = 'block';
+                    runSection.style.display = 'block';
+                    resultsSection.style.display = 'block';
+                    resultsLink.href = API_BASE + '/ui/en/soarb2b_results_hub.html?plan_id=' + encodeURIComponent(data.plan_id);
+                    hideOutcome(previewOutcome);
+                    hideOutcome(runOutcome);
+                } catch (err) {
+                    showOutcome(createOutcome, 'İstek hatası: ' + err.message, 'error');
+                }
+                createBtn.disabled = false;
+            });
+
+            previewBtn && previewBtn.addEventListener('click', async function() {
+                if (!currentPlanId) return;
+                previewBtn.disabled = true;
+                hideOutcome(previewOutcome);
+                try {
+                    var res = await fetch(API_BASE + '/api/v1/b2b/assistant/preview-scope/' + encodeURIComponent(currentPlanId), {
+                        headers: { 'X-API-Key': API_KEY }
+                    });
+                    var data = await res.json().catch(function() { return {}; });
+                    if (!res.ok) {
+                        showOutcome(previewOutcome, (data.detail || 'Önizleme alınamadı (' + res.status + ')'), 'error');
+                        previewBtn.disabled = false;
+                        return;
+                    }
+                    var msg = data.estimated_total + ' firma, örnek: ' + data.sample_100 + (data.target_region ? ' — ' + data.target_region : '');
+                    if (data.warnings && data.warnings.length) msg += '\n⚠ ' + data.warnings.join(' ');
+                    showOutcome(previewOutcome, msg, 'success');
+                } catch (err) {
+                    showOutcome(previewOutcome, 'İstek hatası: ' + err.message, 'error');
+                }
+                previewBtn.disabled = false;
+            });
+
+            startRunBtn && startRunBtn.addEventListener('click', async function() {
+                if (!currentPlanId) return;
+                startRunBtn.disabled = true;
+                hideOutcome(runOutcome);
+                try {
+                    var res = await fetch(API_BASE + '/api/v1/b2b/assistant/start-run', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY },
+                        body: JSON.stringify({ plan_id: currentPlanId })
+                    });
+                    var data = await res.json().catch(function() { return {}; });
+                    if (!res.ok) {
+                        showOutcome(runOutcome, (data.detail && (data.detail.error || data.detail.message)) || data.detail || 'Run başlatılamadı (' + res.status + ')', 'error');
+                        startRunBtn.disabled = false;
+                        return;
+                    }
+                    if (data.requires_cost_confirmation && data.cost_preview) {
+                        showOutcome(runOutcome, 'Maliyet onayı gerekebilir. Önce pricing/calculate ile quote_token alın.', 'info');
+                    } else if (data.success) {
+                        showOutcome(runOutcome, 'Çalıştırma başlatıldı. Results Hub\'dan ilerlemeyi takip edin.', 'success');
+                    } else {
+                        showOutcome(runOutcome, data.message || 'Run yanıtı: ' + JSON.stringify(data), 'info');
+                    }
+                } catch (err) {
+                    showOutcome(runOutcome, 'İstek hatası: ' + err.message, 'error');
+                }
+                startRunBtn.disabled = false;
+            });
+        })();
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

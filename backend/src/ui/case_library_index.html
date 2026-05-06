@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B - Case Library</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028; /* Darkened Mat Gold for web */
+            --color-text-primary: ***REMOVED***0F172A;
+            --color-text-secondary: ***REMOVED***475569;
+            --color-border: ***REMOVED***E2E8F0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue); /* Always dark night blue background */
+            color: var(--color-off-white);
+            line-height: 1.7;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography - Satoshi-Black for headings - Professional Authority */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900; /* Satoshi-Black */
+            letter-spacing: -0.03em;
+            line-height: 0.95; /* Tight vertical spacing - Paula Scher style */
+        }
+
+        /* B2B text tracking */
+        .logo-b2b,
+        .b2b-text {
+            letter-spacing: 0.02em;
+        }
+
+        /* Buttons - Satoshi Bold */
+        .btn,
+        button {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        header {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            padding: 2rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* SOAR B2B Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-soar {
+            display: inline-flex;
+            align-items: baseline;
+            font-size: 1.75rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 900;
+            color: var(--color-off-white);
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+
+        .logo-soar-r {
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-r-arrow {
+            position: absolute;
+            right: -3px;
+            bottom: -1px;
+            width: 14px;
+            height: 14px;
+        }
+
+        .logo-divider {
+            width: 1px;
+            height: 24px;
+            background: rgba(248, 250, 252, 0.3);
+            margin: 0;
+        }
+
+        .logo-b2b {
+            font-size: 1.5rem;
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 700;
+            color: var(--color-off-white);
+            letter-spacing: 0.02em; /* B2B tracking */
+        }
+
+        .header-content h1 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 3.5rem; /* Larger, more authoritative */
+            font-weight: 900; /* Satoshi-Black */
+            line-height: 0.95; /* Tight vertical spacing */
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .lang-toggle {
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.7);
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .lang-toggle button {
+            background: transparent;
+            border: 1px solid rgba(248, 250, 252, 0.3);
+            color: rgba(248, 250, 252, 0.7);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px; /* Maximum 8px - sharp, enterprise feel */
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .lang-toggle button:hover {
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+        }
+
+        .lang-toggle button.active {
+            border-color: var(--color-gold);
+            color: var(--color-gold);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem; /* Increased spacing - each section breathes */
+        }
+
+        .featured-banner {
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            padding: 2rem;
+            border-radius: 4px; /* Maximum 8px - sharp, enterprise feel */
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--color-gold);
+        }
+
+        .featured-banner h2 {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 2.5rem; /* Larger, more authoritative */
+            font-weight: 900; /* Satoshi-Black */
+            line-height: 0.95; /* Tight vertical spacing */
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .featured-banner p {
+            color: rgba(248, 250, 252, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .filter-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 4px; /* Maximum 8px - sharp, enterprise feel */
+            margin-bottom: 2rem;
+            border: 1px solid var(--color-border);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .filter-group select {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 4px; /* Maximum 8px - sharp, enterprise feel */
+            font-size: 0.9rem;
+            font-family: inherit;
+            background: white;
+            color: var(--color-text-primary);
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--color-gold);
+        }
+
+        .access-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px; /* Maximum 8px - sharp, enterprise feel */
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-public {
+            background: rgba(16, 185, 129, 0.1);
+            color: ***REMOVED***047857;
+        }
+
+        .badge-sales {
+            background: rgba(251, 191, 36, 0.1);
+            color: ***REMOVED***92400e;
+        }
+
+        .badge-internal {
+            background: rgba(239, 68, 68, 0.1);
+            color: ***REMOVED***991b1b;
+        }
+
+        .case-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .case-card {
+            background: rgba(248, 250, 252, 0.05);
+            border-radius: 4px; /* Maximum 8px - sharp, enterprise feel */
+            padding: 2.5rem;
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            transition: all 0.2s;
+        }
+
+        .case-card:hover {
+            border-color: var(--color-night-blue);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .case-card.featured {
+            border-color: var(--color-gold);
+            border-width: 2px;
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .case-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .case-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            opacity: 0.7;
+        }
+
+        .case-metadata {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: rgba(248, 250, 252, 0.6);
+        }
+
+        /* Case Last Updated Metadata - Live & Fresh Signal */
+        .case-updated {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            color: rgba(248, 250, 252, 0.5);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(248, 250, 252, 0.05);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        .metadata-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .section {
+            margin-bottom: 3rem; /* Increased spacing - each section breathes */
+        }
+
+        .section h3 {
+            font-family: 'Satoshi', sans-serif;
+            color: var(--color-off-white);
+            font-size: 1.8rem; /* Larger, more authoritative */
+            font-weight: 900; /* Satoshi-Black */
+            line-height: 0.95;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .section p {
+            color: var(--color-text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+
+        .metrics-preview {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 4px; /* Maximum 8px - sharp, enterprise feel */
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metric-item {
+            background: rgba(248, 250, 252, 0.05);
+            padding: 1rem;
+            border-radius: 4px; /* Maximum 8px - sharp, enterprise feel */
+            border: 1px solid rgba(248, 250, 252, 0.1);
+        }
+
+        .metric-label {
+            font-family: 'Satoshi', sans-serif;
+            font-size: 0.7rem; /* Smaller, secondary - Satoshi-Medium */
+            font-weight: 500;
+            color: rgba(248, 250, 252, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem; /* Prominently large - numbers as output */
+            font-weight: 600;
+            color: var(--color-gold);
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .metric-range {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--color-night-blue);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--color-gold);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--color-text-secondary);
+        }
+
+        .error {
+            text-align: center;
+            padding: 3rem;
+            color: ***REMOVED***dc2626;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div>
+                <div class="logo-container" style="margin-bottom: 1rem;">
+                    <span class="logo-soar">
+                        SOA<span class="logo-soar-r">R
+                            <svg class="logo-r-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 12L12 2M12 2H6M12 2V8" stroke="***REMOVED***C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </span>
+                    <span class="logo-divider"></span>
+                    <span class="logo-b2b">B2B</span>
+                </div>
+                <h1>Case Library</h1>
+                <p style="color: rgba(248, 250, 252, 0.7); font-weight: 300;">Reference cases for sales, onboarding, and product development</p>
+            </div>
+            <div class="lang-toggle">
+                <button class="active" id="lang-en">EN</button>
+                <span>/</span>
+                <button id="lang-tr">TR</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="soarb2b_home.html" class="back-link">← Back to Home</a>
+
+        <div id="featured-banner" class="featured-banner" style="display: none;">
+            <h2>Featured: Turkey Market Entry</h2>
+            <p>See how we help companies expand into the Turkish hospitality market with verified results.</p>
+        </div>
+
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label>Access Level:</label>
+                <select id="access-filter">
+                    <option value="all">All Levels</option>
+                    <option value="public">Public</option>
+                    <option value="sales">Sales/Demo</option>
+                    <option value="internal">Internal</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Sector:</label>
+                <select id="sector-filter">
+                    <option value="">All Sectors</option>
+                    <option value="Hospitality">Hospitality</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Logistics & Warehousing">Logistics</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Region:</label>
+                <select id="region-filter">
+                    <option value="">All Regions</option>
+                    <option value="TR">Turkey</option>
+                    <option value="US">United States</option>
+                    <option value="EU">Europe</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="case-container" class="case-grid">
+            <div class="loading">Loading cases...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
+        
+        let allCases = [];
+        let currentLanguage = 'en';
+
+        function getCaseTitle(caseData) {
+            return caseData.meta?.title || caseData.case_id || 'Untitled Case';
+        }
+
+        function getCaseId(caseData) {
+            return caseData.meta?.case_id || caseData.case_id;
+        }
+
+        function getAccessLevel(caseData) {
+            return caseData.meta?.access_level || caseData.access_level || 'public';
+        }
+
+        function getSector(caseData) {
+            return caseData.meta?.sector || caseData.metadata?.sector || 'Unknown';
+        }
+
+        function getRegion(caseData) {
+            return caseData.meta?.region || caseData.metadata?.region || 'Unknown';
+        }
+
+        function getLastUpdated(caseData) {
+            if (caseData.meta?.updated_at) {
+                const date = new Date(caseData.meta.updated_at);
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                return `${months[date.getMonth()]} ${date.getFullYear()}`;
+            }
+            // Default to current date for fresh feel
+            const date = new Date();
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${months[date.getMonth()]} ${date.getFullYear()}`;
+        }
+
+        function getObjective(caseData) {
+            if (caseData.objective) {
+                return caseData.objective.paragraph || caseData.objective.one_liner || '';
+            }
+            if (caseData.business_objective) {
+                return caseData.business_objective.summary || caseData.business_objective.goal || '';
+            }
+            return '';
+        }
+
+        async function loadCases() {
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/b2b/case-library/cases?access_level=public`, {
+                    headers: {
+                        'X-API-Key': API_KEY
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to load cases: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                allCases = data.cases || [];
+                filterAndDisplayCases();
+            } catch (error) {
+                console.error('Error loading cases:', error);
+                document.getElementById('case-container').innerHTML = 
+                    `<div class="error">Error loading cases: ${error.message}</div>`;
+            }
+        }
+
+        async function loadCaseAnalysis(caseId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/b2b/case-library/cases/${caseId}/analysis`, {
+                    headers: {
+                        'X-API-Key': API_KEY
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.analysis_result;
+                }
+            } catch (error) {
+                console.warn(`Could not load analysis for case ${caseId}:`, error);
+            }
+            return null;
+        }
+
+        function formatMetricValue(value, unit) {
+            if (typeof value === 'object' && value.min !== undefined) {
+                const min = value.min;
+                const max = value.max;
+                const u = value.unit || unit || '';
+                if (u === 'percent') {
+                    return `${min}% - ${max}%`;
+                } else if (u === 'USD') {
+                    return `$${min} - $${max}`;
+                } else {
+                    return `${min} - ${max}${u ? ' ' + u : ''}`;
+                }
+            }
+            return String(value || 'N/A');
+        }
+
+        function renderMetricsPreview(analysisResult) {
+            if (!analysisResult) {
+                return '<p style="color: var(--color-text-secondary); font-size: 0.9rem;">Metrics preview not available</p>';
+            }
+
+            const metrics = [];
+            
+            if (analysisResult.impressions) {
+                metrics.push({
+                    label: 'Impressions',
+                    value: analysisResult.impressions
+                });
+            }
+            if (analysisResult.clicks) {
+                metrics.push({
+                    label: 'Clicks',
+                    value: analysisResult.clicks
+                });
+            }
+            if (analysisResult.ctr) {
+                metrics.push({
+                    label: 'CTR',
+                    value: analysisResult.ctr,
+                    unit: 'percent'
+                });
+            }
+            if (analysisResult.meeting_requests) {
+                metrics.push({
+                    label: 'Meeting Requests',
+                    value: analysisResult.meeting_requests
+                });
+            }
+            if (analysisResult.meetings_booked) {
+                metrics.push({
+                    label: 'Meetings Booked',
+                    value: analysisResult.meetings_booked
+                });
+            }
+            if (analysisResult.timeframe_days) {
+                metrics.push({
+                    label: 'Timeframe',
+                    value: analysisResult.timeframe_days,
+                    unit: 'days'
+                });
+            }
+
+            if (metrics.length === 0) {
+                return '<p style="color: var(--color-text-secondary); font-size: 0.9rem;">No metrics available</p>';
+            }
+
+            const metricsHtml = metrics.map(m => `
+                <div class="metric-item">
+                    <div class="metric-label">${m.label}</div>
+                    <div class="metric-value">${formatMetricValue(m.value, m.unit)}</div>
+                </div>
+            `).join('');
+
+            return `
+                <div class="metrics-preview">
+                    <h3 style="font-size: 0.9rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Metrics Preview</h3>
+                    <div class="metrics-grid">
+                        ${metricsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        async function displayCases(caseList) {
+            const container = document.getElementById('case-container');
+            
+            if (caseList.length === 0) {
+                container.innerHTML = '<div class="loading">No cases match the selected filters.</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+
+            for (const caseItem of caseList) {
+                const caseId = getCaseId(caseItem);
+                const isTRCase = getRegion(caseItem) === 'TR';
+                const isFeatured = caseId === 'HOTEL_CLEANING_TR_NATIONWIDE';
+
+                const card = document.createElement('div');
+                card.className = 'case-card' + (isFeatured ? ' featured' : '');
+
+                const accessLevel = getAccessLevel(caseItem);
+                const accessClass = {
+                    'public': 'badge-public',
+                    'sales': 'badge-sales',
+                    'internal': 'badge-internal'
+                }[accessLevel] || 'badge-public';
+
+                const analysisResult = await loadCaseAnalysis(caseId);
+
+                card.innerHTML = `
+                    <div class="case-header">
+                        <div>
+                            <div class="case-title">${getCaseTitle(caseItem)}</div>
+                            <div class="case-id">${caseId}</div>
+                            <div class="case-metadata">
+                                <span class="metadata-item">${getSector(caseItem)}</span>
+                                <span class="metadata-item">${getRegion(caseItem)}</span>
+                            </div>
+                        </div>
+                        <span class="access-badge ${accessClass}">${accessLevel.toUpperCase()}</span>
+                    </div>
+
+                    <div class="section">
+                        <h3>Objective</h3>
+                        <p>${getObjective(caseItem)}</p>
+                    </div>
+
+                    ${analysisResult ? renderMetricsPreview(analysisResult) : ''}
+
+                    <div class="case-updated">Last Updated: ${getLastUpdated(caseItem)}</div>
+                `;
+
+                container.appendChild(card);
+            }
+
+            if (caseList.some(c => getRegion(c) === 'TR')) {
+                document.getElementById('featured-banner').style.display = 'block';
+            } else {
+                document.getElementById('featured-banner').style.display = 'none';
+            }
+        }
+
+        function filterAndDisplayCases() {
+            const accessFilter = document.getElementById('access-filter').value;
+            const sectorFilter = document.getElementById('sector-filter').value;
+            const regionFilter = document.getElementById('region-filter').value;
+
+            let filtered = allCases;
+
+            if (accessFilter !== 'all') {
+                filtered = filtered.filter(c => getAccessLevel(c) === accessFilter);
+            }
+
+            if (sectorFilter) {
+                filtered = filtered.filter(c => getSector(c) === sectorFilter);
+            }
+
+            if (regionFilter) {
+                filtered = filtered.filter(c => getRegion(c) === regionFilter);
+            }
+
+            displayCases(filtered);
+        }
+
+        document.getElementById('access-filter').addEventListener('change', async function() {
+            const accessLevel = this.value === 'all' ? 'public' : this.value;
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/b2b/case-library/cases?access_level=${accessLevel}`, {
+                    headers: {
+                        'X-API-Key': API_KEY
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    allCases = data.cases || [];
+                    filterAndDisplayCases();
+                }
+            } catch (error) {
+                console.error('Error filtering cases:', error);
+            }
+        });
+
+        document.getElementById('sector-filter').addEventListener('change', filterAndDisplayCases);
+        document.getElementById('region-filter').addEventListener('change', filterAndDisplayCases);
+
+        document.getElementById('lang-en').addEventListener('click', function() {
+            currentLanguage = 'en';
+            document.getElementById('lang-en').classList.add('active');
+            document.getElementById('lang-tr').classList.remove('active');
+        });
+
+        document.getElementById('lang-tr').addEventListener('click', function() {
+            currentLanguage = 'tr';
+            document.getElementById('lang-tr').classList.add('active');
+            document.getElementById('lang-en').classList.remove('active');
+        });
+
+        loadCases();
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR B2B — Pricing</title>
+    <meta name="description" content="SOAR B2B plans and estimated pricing: Free, Premium, Agency.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --color-night-blue: ***REMOVED***0F172A;
+            --color-off-white: ***REMOVED***F8FAFC;
+            --color-gold: ***REMOVED***C5A028;
+            --color-text-primary: ***REMOVED***0F172A;
+            --color-text-secondary: ***REMOVED***475569;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--color-night-blue);
+            color: var(--color-off-white);
+            line-height: 1.7;
+            padding-top: 100px;
+        }
+        h1, h2, h3 { font-family: 'Satoshi', sans-serif; font-weight: 900; letter-spacing: -0.03em; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+        .header-nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(248, 250, 252, 0.1);
+            padding: 1.5rem 0;
+            z-index: 1000;
+        }
+        .header-nav-content {
+            max-width: 1400px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .header-logo {
+            text-decoration: none; font-size: 1.5rem; font-weight: 900;
+            color: var(--color-off-white); font-family: 'Satoshi', sans-serif;
+        }
+        .header-actions { display: flex; gap: 1rem; align-items: center; }
+        .btn-header {
+            padding: 0.75rem 1.5rem; border-radius: 4px; text-decoration: none;
+            font-weight: 500; font-size: 0.95rem; border: 1px solid rgba(248, 250, 252, 0.2);
+            color: var(--color-off-white); font-family: 'Satoshi', sans-serif; font-weight: 700;
+        }
+        .btn-header:hover { background: rgba(248, 250, 252, 0.1); }
+        .pricing-hero { text-align: center; margin-bottom: 3rem; }
+        .pricing-hero h1 { font-size: 3rem; margin-bottom: 0.75rem; color: var(--color-off-white); }
+        .pricing-hero p { font-size: 1.15rem; color: rgba(248, 250, 252, 0.8); }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .pricing-card {
+            background: rgba(248, 250, 252, 0.05);
+            border: 1px solid rgba(248, 250, 252, 0.1);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: border-color 0.2s;
+        }
+        .pricing-card:hover { border-color: rgba(248, 250, 252, 0.2); }
+        .pricing-card.featured { border-color: var(--color-gold); background: rgba(197, 160, 40, 0.08); }
+        .pricing-plan-name { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--color-off-white); }
+        .pricing-subtitle { font-size: 0.9rem; color: rgba(248, 250, 252, 0.6); margin-bottom: 1rem; }
+        .pricing-price { font-size: 2.5rem; font-weight: 900; color: var(--color-gold); margin-bottom: 0.25rem; }
+        .pricing-period { font-size: 0.9rem; color: rgba(248, 250, 252, 0.6); margin-bottom: 1.5rem; }
+        .pricing-features { list-style: none; }
+        .pricing-features li {
+            padding: 0.4rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+            color: rgba(248, 250, 252, 0.85);
+            font-size: 0.95rem;
+        }
+        .pricing-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-gold);
+            font-weight: 700;
+        }
+        .pricing-cta {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.9rem 1.75rem;
+            background: var(--color-gold);
+            color: var(--color-night-blue);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Satoshi', sans-serif;
+            transition: background 0.2s;
+        }
+        .pricing-cta:hover { background: ***REMOVED***C19D2D; }
+        .pricing-cta.secondary {
+            background: transparent;
+            color: var(--color-off-white);
+            border: 1px solid rgba(248, 250, 252, 0.3);
+        }
+        .pricing-cta.secondary:hover { background: rgba(248, 250, 252, 0.08); }
+        .footer-links { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid rgba(248, 250, 252, 0.1); text-align: center; }
+        .footer-links a { color: rgba(248, 250, 252, 0.7); text-decoration: none; margin: 0 1rem; }
+        .footer-links a:hover { color: var(--color-off-white); }
+        .pricing-loading { text-align: center; padding: 3rem; color: rgba(248, 250, 252, 0.6); }
+        .ad-placeholder { display: block; min-height: 90px; padding: 1.25rem; background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.9)); border: 1px solid rgba(212,176,67,0.35); border-radius: 8px; color: rgba(248,250,252,0.95); text-align: center; }
+        .ad-placeholder .ad-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.6; margin-bottom: 0.5rem; }
+        .ad-placeholder .ad-headline { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.35rem; color: ***REMOVED***F8FAFC; }
+        .ad-placeholder .ad-sub { font-size: 0.82rem; opacity: 0.85; margin-bottom: 0.6rem; }
+        .ad-placeholder .ad-cta { display: inline-block; padding: 0.5rem 1.25rem; background: ***REMOVED***C5A028; color: ***REMOVED***0F172A; font-weight: 700; font-size: 0.85rem; border-radius: 4px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <nav class="header-nav">
+        <div class="header-nav-content">
+            <a href="soarb2b_home.html" class="header-logo">SOAR<span style="color: var(--color-gold);">→</span>B2B</a>
+            <div class="header-actions">
+                <a href="soarb2b_about.html" class="btn-header">About</a>
+                <a href="soarb2b_readme.html" class="btn-header">Read Me</a>
+                <a href="support.html" class="btn-header">Contact</a>
+                <a href="soarb2b_home.html" class="btn-header">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="pricing-hero">
+            <h1>Pay-As-You-Go</h1>
+            <p>Flexible. Scalable. Transparent. Plans and pricing loaded from the API.</p>
+        </div>
+
+        <div class="pricing-grid" id="pricingGrid">
+            <div class="pricing-loading">Loading plans...</div>
+        </div>
+
+        <p class="pricing-footnote" style="max-width: 640px; margin: 0 auto 2rem; font-size: 0.85rem; color: rgba(248,250,252,0.6); text-align: center;">
+            Query fees may vary by data sources and processing intensity. All usage is visible in real time via the dashboard.
+        </p>
+
+        <!-- Ad slot (maximize inventory) -->
+        <div class="ad-slot" data-slot="pricing-above-footer" style="min-height: 110px; margin: 2rem auto; padding: 1rem; background: rgba(248,250,252,0.04); border: 1px solid rgba(248,250,252,0.1); border-radius: 8px;">
+            <div id="ad-slot-pricing-inner"></div>
+        </div>
+
+        <div class="footer-links">
+            <a href="soarb2b_home.html">Home</a>
+            <a href="soarb2b_agencies.html">For Agencies</a>
+            <a href="soarb2b_about.html">About</a>
+            <a href="soarb2b_readme.html">Read Me</a>
+            <a href="support.html">Contact</a>
+        </div>
+    </div>
+
+    <script>
+(function() {
+    var API_BASE = window.API_BASE || window.location.origin;
+    var grid = document.getElementById('pricingGrid');
+    fetch(API_BASE + '/v1/subscriptions/plans', { credentials: 'same-origin' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var plans = data.plans || {};
+            if (!plans || Object.keys(plans).length === 0) {
+                grid.innerHTML = '<div class="pricing-loading">No plans available. You can view plans on the homepage.</div>';
+                return;
+            }
+            grid.innerHTML = '';
+            var order = ['free', 'premium', 'agency'];
+            order.forEach(function(planKey) {
+                if (!plans[planKey]) return;
+                var plan = plans[planKey];
+                var name = plan.name;
+                var subtitle = plan.subtitle || '';
+                var features = plan.features || [];
+                var isFeatured = planKey === 'premium';
+                var regFee = plan.registration_fee != null ? plan.registration_fee : 0;
+                var card = document.createElement('div');
+                card.className = 'pricing-card' + (isFeatured ? ' featured' : '');
+                var period = planKey === 'free' ? 'Forever' : 'Pay-as-you-go';
+                var extra = planKey === 'premium' && regFee > 0 ? ' <span style="font-size:0.85rem;color:rgba(248,250,252,0.6);">(+ registration fee $' + regFee + ')</span>' : '';
+                card.innerHTML =
+                    '<div class="pricing-plan-name">' + name + '</div>' +
+                    (subtitle ? '<div class="pricing-subtitle">' + subtitle + '</div>' : '') +
+                    '<div class="pricing-price">$' + (plan.price != null ? plan.price : 0) + '</div>' +
+                    '<div class="pricing-period">' + period + extra + '</div>' +
+                    '<ul class="pricing-features">' + features.map(function(f) { return '<li>' + f + '</li>'; }).join('') + '</ul>' +
+                    '<a href="soarb2b_home.html" class="pricing-cta ' + (isFeatured ? '' : 'secondary') + '">' + (planKey === 'free' ? 'Get Started Free' : 'Choose Plan') + '</a>';
+                grid.appendChild(card);
+            });
+        })
+        .catch(function() {
+            grid.innerHTML = '<div class="pricing-loading">Could not load pricing. <a href="soarb2b_home.html" style="color: var(--color-gold);">View plans on the homepage</a>.</div>';
+        });
+})();
+    </script>
+    <script>
+(function() {
+    var el = document.getElementById('ad-slot-pricing-inner');
+    if (!el) return;
+    el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">Secure, Traceable, Evidence-Driven Diagnostics</div><div class="ad-sub">FINDIAG: Every sample. Every step. Fully traceable. Built for precision, compliance, and speed.</div><a href="***REMOVED***" class="ad-cta">Request a Demo</a></div>';
+})();
+    </script>
+<script src="/ui/assets/ad-rails.js"></script>
+</body>
+</html>

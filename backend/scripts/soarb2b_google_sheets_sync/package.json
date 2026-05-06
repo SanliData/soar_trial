@@ -1,0 +1,14 @@
+{
+  "name": "soarb2b-google-sheets-sync",
+  "version": "1.0.0",
+  "description": "SOAR B2B API'den şirket verilerini Google Sheets'e aktarır (mükerrer kontrolü ile)",
+  "main": "sync.js",
+  "scripts": {
+    "sync": "node sync.js",
+    "start": "node sync.js"
+  },
+  "dependencies": {
+    "google-auth-library": "^9.0.0",
+    "googleapis": "^128.0.0"
+  }
+}
