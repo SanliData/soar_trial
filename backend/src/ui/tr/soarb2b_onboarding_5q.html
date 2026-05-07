@@ -22,12 +22,12 @@
         }
 
         :root {
-            --color-night-blue: ***REMOVED***0F172A;
-            --color-off-white: ***REMOVED***F8FAFC;
-            --color-gold: ***REMOVED***C5A028; /* Darkened Mat Gold for web */
-            --color-text-primary: ***REMOVED***0F172A;
-            --color-text-secondary: ***REMOVED***475569;
-            --color-border: ***REMOVED***E2E8F0;
+            --color-night-blue: #0F172A;
+            --color-off-white: #F8FAFC;
+            --color-gold: #C5A028; /* Darkened Mat Gold for web */
+            --color-text-primary: #0F172A;
+            --color-text-secondary: #475569;
+            --color-border: #E2E8F0;
         }
 
         body {
@@ -504,11 +504,11 @@
         }
 
         /* Map container styles */
-        ***REMOVED***mapContainer {
+        #mapContainer {
             margin-top: 1rem;
         }
 
-        ***REMOVED***map {
+        #map {
             height: 300px;
             border-radius: 4px;
             border: 1px solid rgba(248, 250, 252, 0.1);
@@ -575,7 +575,7 @@
         }
 
         .btn-primary:hover {
-            background: ***REMOVED***C19D2D;
+            background: #C19D2D;
             transform: translateY(-1px);
         }
 
@@ -1019,7 +1019,7 @@
                 <span class="logo-soar">
                     SOA<span class="logo-soar-r">R
                         <svg class="logo-r-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2 12L12 2M12 2H6M12 2V8" stroke="***REMOVED***C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 2M12 2H6M12 2V8" stroke="#C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
                 </span>
@@ -1331,7 +1331,7 @@
                     <div class="mobile-nav-icon">🎯</div>
                     <span>Demo</span>
                 </a>
-                <a href="***REMOVED***" class="mobile-nav-item" id="mobileNavMore">
+                <a href="#" class="mobile-nav-item" id="mobileNavMore">
                     <div class="mobile-nav-icon">⋯</div>
                     <span>Daha Fazla</span>
                 </a>
@@ -1603,7 +1603,7 @@
                     });
                 }, 100);
                 // Focus first input (optional, as scroll handles visibility)
-                const firstInput = document.querySelector(`***REMOVED***step${currentStep} .input-field, ***REMOVED***step${currentStep} .input-select`);
+                const firstInput = document.querySelector(`#step${currentStep} .input-field, #step${currentStep} .input-select`);
                 if (firstInput) {
                     setTimeout(() => firstInput.focus(), 400);
                 }
@@ -1764,7 +1764,7 @@
                 if (token) {
                     headers['Authorization'] = 'Bearer ' + token;
                 } else {
-                    headers['X-API-Key'] = (new URLSearchParams(window.location.search).get('api_key') || '');
+                    headers['X-API-Key'] = '<REDACTED_SOARB2B_API_KEY>';
                 }
 
                 // Update loading text

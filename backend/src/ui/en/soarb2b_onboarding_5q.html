@@ -22,12 +22,12 @@
         }
 
         :root {
-            --color-night-blue: ***REMOVED***0F172A;
-            --color-off-white: ***REMOVED***F8FAFC;
-            --color-gold: ***REMOVED***C5A028; /* Darkened Mat Gold for web */
-            --color-text-primary: ***REMOVED***0F172A;
-            --color-text-secondary: ***REMOVED***475569;
-            --color-border: ***REMOVED***E2E8F0;
+            --color-night-blue: #0F172A;
+            --color-off-white: #F8FAFC;
+            --color-gold: #C5A028; /* Darkened Mat Gold for web */
+            --color-text-primary: #0F172A;
+            --color-text-secondary: #475569;
+            --color-border: #E2E8F0;
         }
 
         body {
@@ -505,11 +505,11 @@
         }
 
         /* Map container styles */
-        ***REMOVED***mapContainer {
+        #mapContainer {
             margin-top: 1rem;
         }
 
-        ***REMOVED***map {
+        #map {
             height: 300px;
             border-radius: 4px;
             border: 1px solid rgba(248, 250, 252, 0.1);
@@ -576,7 +576,7 @@
         }
 
         .btn-primary:hover {
-            background: ***REMOVED***C19D2D;
+            background: #C19D2D;
             transform: translateY(-1px);
         }
 
@@ -1010,9 +1010,9 @@
         .ad-slot-onboarding { min-height: 120px; text-align: center; background: rgba(248, 250, 252, 0.04); border: 1px solid rgba(248, 250, 252, 0.1); border-radius: 8px; padding: 1rem 0; }
         .ad-slot-onboarding .ad-placeholder { display: block; min-height: 100px; padding: 1.25rem; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9)); border: 1px solid rgba(212, 176, 67, 0.35); border-radius: 8px; color: rgba(248, 250, 252, 0.95); text-align: center; }
         .ad-slot-onboarding .ad-placeholder .ad-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.6; margin-bottom: 0.5rem; }
-        .ad-slot-onboarding .ad-placeholder .ad-headline { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: ***REMOVED***F8FAFC; }
+        .ad-slot-onboarding .ad-placeholder .ad-headline { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: #F8FAFC; }
         .ad-slot-onboarding .ad-placeholder .ad-sub { font-size: 0.85rem; opacity: 0.85; margin-bottom: 0.6rem; line-height: 1.4; }
-        .ad-slot-onboarding .ad-placeholder .ad-cta { display: inline-block; padding: 0.5rem 1.25rem; background: ***REMOVED***C5A028; color: ***REMOVED***0F172A; font-weight: 700; font-size: 0.85rem; border-radius: 4px; text-decoration: none; }
+        .ad-slot-onboarding .ad-placeholder .ad-cta { display: inline-block; padding: 0.5rem 1.25rem; background: #C5A028; color: #0F172A; font-weight: 700; font-size: 0.85rem; border-radius: 4px; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -1022,7 +1022,7 @@
                 <span class="logo-soar">
                     SOA<span class="logo-soar-r">R
                         <svg class="logo-r-arrow" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2 12L12 2M12 2H6M12 2V8" stroke="***REMOVED***C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M2 12L12 2M12 2H6M12 2V8" stroke="#C5A028" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
                 </span>
@@ -1278,7 +1278,7 @@
                     • Optional modules available (Persona, Visit Route, Export, Outreach)
                 </div>
                 <div style="margin-top: 0.75rem; font-size: 0.85rem; color: rgba(248, 250, 252, 0.5);">
-                    💡 <a href="/ui/en/soarb2b_home.html***REMOVED***pricing" target="_blank" style="color: var(--color-gold); text-decoration: underline;">Estimate your cost</a> or <a href="***REMOVED***contact" style="color: var(--color-gold); text-decoration: underline;">contact us</a> for Enterprise/Agency
+                    💡 <a href="/ui/en/soarb2b_home.html#pricing" target="_blank" style="color: var(--color-gold); text-decoration: underline;">Estimate your cost</a> or <a href="#contact" style="color: var(--color-gold); text-decoration: underline;">contact us</a> for Enterprise/Agency
                 </div>
             </div>
 
@@ -1335,7 +1335,7 @@
                     <div class="mobile-nav-icon">🎯</div>
                     <span>Demo</span>
                 </a>
-                <a href="***REMOVED***" class="mobile-nav-item" id="mobileNavMore">
+                <a href="#" class="mobile-nav-item" id="mobileNavMore">
                     <div class="mobile-nav-icon">⋯</div>
                     <span>More</span>
                 </a>
@@ -1607,7 +1607,7 @@
                     });
                 }, 100);
                 // Focus first input (optional, as scroll handles visibility)
-                const firstInput = document.querySelector(`***REMOVED***step${currentStep} .input-field, ***REMOVED***step${currentStep} .input-select`);
+                const firstInput = document.querySelector(`#step${currentStep} .input-field, #step${currentStep} .input-select`);
                 if (firstInput) {
                     setTimeout(() => firstInput.focus(), 400);
                 }
@@ -1748,7 +1748,7 @@
             try {
                 const API_BASE = window.location.origin;
                 const endpoint = `${API_BASE}/api/v1/b2b/onboarding/create-plan`;
-                const API_KEY = new URLSearchParams(window.location.search).get('api_key') || '';
+                const API_KEY = '<REDACTED_SOARB2B_API_KEY>';
 
                 // Update loading text
                 if (loadingText) loadingText.textContent = 'Creating your meeting plan...';
@@ -2037,8 +2037,8 @@
                     if (window.adsbygoogle) (window.adsbygoogle = window.adsbygoogle || []).push({});
                     return;
                 }
-                el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">Where Clinical Data Becomes Trusted Diagnosis</div><div class="ad-sub">FINDIAG: full chain-of-custody, AI-powered analysis, audit-ready. Built for rare disease and translational research.</div><a href="***REMOVED***" class="ad-cta">Book Your Demo</a></div>';
-            }).catch(function() { if (el) el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">FINDIAG</div><div class="ad-sub">Evidence-based diagnostics. Book Your Demo.</div><a href="***REMOVED***" class="ad-cta">Book Your Demo</a></div>'; });
+                el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">Where Clinical Data Becomes Trusted Diagnosis</div><div class="ad-sub">FINDIAG: full chain-of-custody, AI-powered analysis, audit-ready. Built for rare disease and translational research.</div><a href="#" class="ad-cta">Book Your Demo</a></div>';
+            }).catch(function() { if (el) el.innerHTML = '<div class="ad-placeholder"><span class="ad-label">Sponsored</span><div class="ad-headline">FINDIAG</div><div class="ad-sub">Evidence-based diagnostics. Book Your Demo.</div><a href="#" class="ad-cta">Book Your Demo</a></div>'; });
         })();
 
         // Initialize
